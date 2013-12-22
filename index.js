@@ -22,3 +22,4 @@ collection.insert([{hello:'world_safe1'}
 */
 
 // alert(d3)
+

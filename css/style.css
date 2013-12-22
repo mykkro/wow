@@ -1,0 +1,25 @@
+html {
+	
+}
+
+#textinput {
+	width: 500px;
+	height: 200px;
+}
+
+#output p {
+	margin: 0;
+}
+
+#output .source {
+	color: gray;
+	margin-top: 10px;
+}
+
+#output .result {
+	color: black;
+}
+
+#output .error {
+	color: red;
+}

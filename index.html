@@ -2,20 +2,42 @@
 <html>
   <head>
     <title>Window title goes here</title>
-  </head>
+ <link href="css/style.css" media="all" rel="stylesheet" type="text/css" />
+   </head>
   <body>
 
         <button id="open"><img src="img/16x16/file.png"/>Open</button>
 		<input style="display:none;" id="openFile" type="file" />
 
 
+<div><textarea id="textinput"></textarea></div>
+<button id="run">Run</button>
+<pre id="output"></pre>
+
   	<script src="js/jquery/jquery-2.0.3.min.js"></script>
   	<script src="js/d3/d3.v3.min.js"></script>
   	<script src="index.js"></script>
 
   	<script>
+$("#run").click(function() {
+  var src = $("#textinput").val()
+  try {
+  var out = eval(src)
+  $("#output").prepend($("<p>").addClass("source").text(src), $("<p>").addClass("result").text(out))
+  $("#textinput").val("")
+}
+catch(e) {
+  $("#output").prepend($("<p>").addClass("source").text(src), $("<p>").addClass("error").text(e))
+}
+})
+
+
 var gui = require("nw.gui");
 var fs = require("fs");
+
+var Thumbbot = require('thumbbot')
+
+
 
 function handleOpenButton() {
     $("#openFile").trigger("click")
@@ -35,13 +57,29 @@ function readFileIntoEditor(theFileEntry) {
     console.log(theFileEntry)
     //console.log(String(data))
 
-	fs.writeFile("userdata/pokus.jpg", data, function (err) {
+	fs.writeFile("userdata/pokus.ogg", data, function (err) {
     	if (err) {
       	console.log("Write failed: " + err);
       	return;
     	}
 
     	console.log("Write completed.");
+      var bot = new Thumbbot('userdata/pokus.ogg', 'userdata/thumb.jpg')
+      bot.set({width: 300, height: 400, method:'resize'})
+      bot.snap(function(err) {
+        if (err) {
+          console.log("Resize failed: " + err);
+          return;
+        }
+console.log("Resize completed.");
+
+var Magician = require('magician');
+var img = new Magician('userdata/thumb.jpg')
+img.getDimensions(function(err, data) {
+  console.log(data);
+})
+      })
+
   	});
 
   });
@@ -52,6 +90,13 @@ $("#open").on("click", handleOpenButton);
 $("#openFile").change(function(evt) {
 	onChosenFileToOpen($(this).val());
 });
+
+
+var googleImages = require('google-images');
+googleImages.search("liquido", function(err, images) {
+  console.log(images)
+})
+
 
   	</script>
   </body>
