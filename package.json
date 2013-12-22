@@ -1,0 +1,21 @@
+{
+  "name": "wow",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "window": {
+    "toolbar": true,
+    "width": 900,
+    "height": 600,
+    "kiosk": false
+  },
+  "dependencies": {
+    "markdown": "~0.5.0",
+    "tingodb": "~0.1.18"
+  }
+}

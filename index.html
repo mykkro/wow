@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Window title goes here</title>
+  </head>
+  <body>
+
+        <button id="open"><img src="img/16x16/file.png"/>Open</button>
+		<input style="display:none;" id="openFile" type="file" />
+
+
+  	<script src="js/jquery/jquery-2.0.3.min.js"></script>
+  	<script src="js/d3/d3.v3.min.js"></script>
+  	<script src="index.js"></script>
+
+  	<script>
+var gui = require("nw.gui");
+var fs = require("fs");
+
+function handleOpenButton() {
+    $("#openFile").trigger("click")
+}
+
+var onChosenFileToOpen = function(theFileEntry) {
+  //setFile(theFileEntry, false);
+  readFileIntoEditor(theFileEntry);
+};
+
+function readFileIntoEditor(theFileEntry) {
+  fs.readFile(theFileEntry, function (err, data) {
+    if (err) {
+      console.log("Read failed: " + err);
+    }
+    //editor.setValue(String(data));
+    console.log(theFileEntry)
+    //console.log(String(data))
+
+	fs.writeFile("userdata/pokus.jpg", data, function (err) {
+    	if (err) {
+      	console.log("Write failed: " + err);
+      	return;
+    	}
+
+    	console.log("Write completed.");
+  	});
+
+  });
+}
+
+$("#open").on("click", handleOpenButton);
+
+$("#openFile").change(function(evt) {
+	onChosenFileToOpen($(this).val());
+});
+
+  	</script>
+  </body>
+</html>
