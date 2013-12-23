@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  	<script src="js/jquery/jquery-2.0.3.min.js"></script>
+  	<script src="js/jquery.svg/jquery.svg.min.js"></script>
+  	<script src="js/jquery.svg/jquery.svgdom.min.js"></script>
+	<script src="js/d3/d3.v3.min.js"></script>
+	<script>
+
+$.fn.filterNode = function(name) {
+      return this.find('*').filter(function() {
+        return this.nodeName === name;
+      });
+    };
+
+// usage: 
+// $(document).filterNode("myapp:piechart")
+// --> problem je v tom, ze se to porad tvari jako jmeno myapp:piechart v namespace svg
+
+d3.ns.prefix.myapp = "http://example.org/myapp"
+
+$(document).ready(function() {
+
+	/* proc tohle nefunguje? */
+	//var elements = document.getElementsByTagNameNS("http://example.org/myapp", 'piechart');
+
+	/* this works! */
+	var elements = document.getElementsByTagName("myapp:piechart");
+
+    console.log("Found elements: "+elements.length)
+
+	var matchingElements = [];
+  ;
+  for (var i = 0; i < elements.length; i++)
+  {
+    if (elements[i].getAttribute("name"))
+    {
+      // Element exists with attribute. Add to array.
+      matchingElements.push(elements[i]);
+    }
+  }
+  console.log(matchingElements);
+
+	/* SVG "widgetization" */
+
+	/* how to get elements myapp:something (maybe with name=?) */
+
+	/* create svg representation of new element... */
+	var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'path'); //Create a path in SVG's namespace
+	newElement.setAttribute("d","M 0 0 L 10 10"); //Set path's data
+	newElement.style.stroke = "#000"; //Set stroke colour
+	newElement.style.strokeWidth = "5px"; //Set stroke width
+
+	/* get the old element... */
+  	var el = elements[0]
+  	/* replace it */
+  	//el.parentNode.replaceChild(newElement, el);
+
+
+	var el = $(document).filterNode("myapp:piechart")[0]
+	console.log(el)
+
+})
+	</script>
+</head>
+<body>
+
+<h1>My first SVG</h1>
+
+<svg width="100" height="100"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:myapp="http://example.org/myapp"
+>
+  <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+</svg>
+
+<svg 
+	width="300" 
+	height="300" 
+	version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:myapp="http://example.org/myapp"
+   	>
+    <myapp:piechart name="foo" title="Sales by Region">
+      <myapp:pieslice label="Northern Region" value="1.23"/>
+      <myapp:pieslice label="Eastern Region" value="2.53"/>
+      <myapp:pieslice label="Southern Region" value="3.89"/>
+      <myapp:pieslice label="Western Region" value="2.04"/>
+	  <desc>This chart includes private data in another namespace
+	  </desc>
+      <!-- Other private data goes here -->
+    </myapp:piechart>
+</svg>
+</body>
+</html>

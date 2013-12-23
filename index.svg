@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="200" height="150">
+<desc>A simple example of g element 
+</desc>
+<g id="group1">
+<!-- here are different elements such as line, rect, circle, etc. -->
+</g>
+</svg>
