@@ -9,16 +9,79 @@
         <button id="open"><img src="img/16x16/file.png"/>Open</button>
 		<input style="display:none;" id="openFile" type="file" />
 
-
+<div id="imagerwrap"><img id="imager" src="userdata/thumb.png"></img></div>
 <div><textarea id="textinput"></textarea></div>
 <button id="run">Run</button>
 <pre id="output"></pre>
 
   	<script src="js/jquery/jquery-2.0.3.min.js"></script>
   	<script src="js/d3/d3.v3.min.js"></script>
+    <script src="js/pixastic/pixastic.custom.js"></script>
+    <script src="js/imagesloaded/imagesloaded.pkgd.js"></script>
   	<script src="index.js"></script>
 
   	<script>
+
+// from: http://aboutcode.net/2013/01/09/load-images-with-jquery-deferred.html
+$.loadImage = function(url) {
+  // Define a "worker" function that should eventually resolve or reject the deferred object.
+  var loadImage = function(deferred) {
+    var image = new Image();
+     
+    // Set up event handlers to know when the image has loaded
+    // or fails to load due to an error or abort.
+    image.onload = loaded;
+    image.onerror = errored; // URL returns 404, etc
+    image.onabort = errored; // IE may call this if user clicks "Stop"
+     
+    // Setting the src property begins loading the image.
+    image.src = url;
+     
+    function loaded() {
+      unbindEvents();
+      // Calling resolve means the image loaded sucessfully and is ready to use.
+      deferred.resolve(image);
+    }
+    function errored() {
+      unbindEvents();
+      // Calling reject means we failed to load the image (e.g. 404, server offline, etc).
+      deferred.reject(image);
+    }
+    function unbindEvents() {
+      // Ensures the event callbacks only get called once.
+      image.onload = null;
+      image.onerror = null;
+      image.onabort = null;
+    }
+  };
+   
+  // Create the deferred object that will contain the loaded image.
+  // We don't want callers to have access to the resolve() and reject() methods, 
+  // so convert to "read-only" by calling `promise()`.
+  return $.Deferred(loadImage).promise();
+};
+
+
+
+// ??? jak udelat aby se filtr aplikoval vzdy po zmene image?
+
+function updateImage() {
+var src = "userdata/thumb.png#" + new Date().getTime()
+  $("#imagerwrap").empty().append($("<img>").attr("id", "imager").attr("src", src), $("<img>").attr("id", "imager2").attr("src", src))
+$.loadImage(src)
+.done(function(image) {
+  //alert("Loaded image: " + image.width + "x" + image.height);
+  $("#imager2")
+    .pixastic("blurfast", {amount:0.2})
+    .pixastic("emboss", {direction:"topleft", rect:{left:50,top:50,width:150,height:150}});
+})
+.fail(function(image) {
+  alert("Failed to load image");
+});
+}
+
+updateImage()
+
 $("#run").click(function() {
   var src = $("#textinput").val()
   try {
@@ -57,15 +120,15 @@ function readFileIntoEditor(theFileEntry) {
     console.log(theFileEntry)
     //console.log(String(data))
 
-	fs.writeFile("userdata/pokus.ogg", data, function (err) {
+	fs.writeFile("userdata/pokus.jpg", data, function (err) {
     	if (err) {
       	console.log("Write failed: " + err);
       	return;
     	}
 
     	console.log("Write completed.");
-      var bot = new Thumbbot('userdata/pokus.ogg', 'userdata/thumb.jpg')
-      bot.set({width: 300, height: 400, method:'resize'})
+      var bot = new Thumbbot('userdata/pokus.jpg', 'userdata/thumb.png')
+      bot.set({width: 300, height: 300, method:'resize'})
       bot.snap(function(err) {
         if (err) {
           console.log("Resize failed: " + err);
@@ -73,8 +136,10 @@ function readFileIntoEditor(theFileEntry) {
         }
 console.log("Resize completed.");
 
+updateImage()
+
 var Magician = require('magician');
-var img = new Magician('userdata/thumb.jpg')
+var img = new Magician('userdata/thumb.png')
 img.getDimensions(function(err, data) {
   console.log(data);
 })

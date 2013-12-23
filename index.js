@@ -23,3 +23,19 @@ collection.insert([{hello:'world_safe1'}
 
 // alert(d3)
 
+/*
+var gui = require('nw.gui');
+var clipboard = gui.Clipboard.get();
+
+// Read from clipboard
+var text = clipboard.get('text');
+console.log(text);
+
+// Or write something
+clipboard.set('I love node-webkit :)', 'text');
+
+// And clear it!
+clipboard.clear();
+*/
+
+var modules = {}
