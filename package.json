@@ -19,6 +19,7 @@
     "tingodb": "~0.1.18",
     "thumbbot": "~0.2.1",
     "magician": "~0.1.1",
-    "google-images": "~0.1.0"
+    "google-images": "~0.1.0",
+    "underscore": "~1.5.2"
   }
 }
