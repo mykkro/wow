@@ -26,6 +26,10 @@ var SvgHelper = function(document) {
 			node.setAttribute(attr, value)
 			return node
 		},
+		transform: function(node, tr) {
+			node.setAttribute("transform", tr)
+			return node
+		},
 		measure: function(node, tempGroupId) {
   			var tempGroup = document.getElementById(tempGroupId || "tempgroup")
 		    tempGroup.appendChild(node)

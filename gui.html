@@ -15,10 +15,10 @@
 
 
 
+var _ = require("underscore")
+var Base = require("basejs")
 var PieChart = require("./js/piechart")(document)
 var SVG = require("./js/svghelper")(document)
-
-var _ = require("underscore")
 
 d3.ns.prefix.wow = wowNS
 
@@ -42,7 +42,14 @@ $(document).ready(function() {
 
   var widgets = {}
 
-  var widget = function(type, element) {
+  var Dim = Base.extend({
+    constructor: function(w, h) {
+      this.width = w
+      this.height = h
+    }
+  })
+
+  var widget = function(type, element, dim) {
     var id = newWidgetId()
     var group = SVG.attrs(SVG.group(), {
       "data-wow": type,
@@ -60,7 +67,7 @@ $(document).ready(function() {
 
     // in order to get bounding box, the node must be inserted in the DOM
     var bbox = SVG.measure(group)
-    var dim = { 
+    if(!dim) dim = { 
         width: bbox.x+bbox.width,
         height: bbox.y+bbox.height
     }
@@ -104,23 +111,81 @@ $(document).ready(function() {
     },
     flow: function(element) {
       // children are already widgetized...
-      var subwidgets = $(element).find("[data-wow]")
-      var conts = []
+      var direction = $(element).attr("direction") || "right"
+      var anchor = $(element).attr("anchor") || "middle"
+      var subwidgets = _.map($(element).find("[data-wow]"), function(e) {
+        return widgets[e.getAttribute("id")]
+      })
+      var boxes = _.map(subwidgets, function(sw) {
+        return { x:0, y:0, w:sw.dim.width, h:sw.dim.height }
+      })
+      var gg = SVG.group()
       var x = 0
       var y = 0
-      _.each(subwidgets, function(sw) {
-        var grp = SVG.group()
-        grp.appendChild(sw)
-        grp.setAttribute("transform", "translate("+x+", "+y+")")
-        // get widget based on DOM node
-        var id = sw.getAttribute("id")
-        // get widget based on its ID
-        var widget = widgets[id]
-        // do layout...
-        x += widget.dim.width
-        conts.push(grp)
+      var xmin=0,ymin=0,xmax=0,ymax=0
+      var maxwidth=0, maxheight=0
+      _.each(boxes, function(box) {
+        maxwidth = Math.max(maxwidth, box.w)
+        maxheight = Math.max(maxheight, box.h)
       })
-      return widget("flow", conts)
+      var horiz = !(direction=="up" || direction=="down")
+      // apply anchor...
+      _.each(boxes, function(box) {
+        if(horiz) {
+          // set y coordinates
+          var y=0
+          if(anchor=="bottom") {
+            y=maxheight-box.h
+          } else if(anchor=="middle") {
+            y=(maxheight-box.h)/2
+          }
+          box.y = y
+        } else {
+          // set x coordinates
+          var x=0
+          if(anchor=="right") {
+            x=maxwidth-box.w
+          } else if(anchor=="middle") {
+            x=(maxwidth-box.w)/2
+          }
+          box.x = x
+        }
+      })
+      // apply direction...
+      _.each(boxes, function(box) {
+        if(direction=="right") {
+          box.x = x
+          x += box.w
+          xmax = x
+          ymax = Math.max(ymax, box.h)
+        } else if(direction=="left") {
+          x -= box.w
+          box.x = x
+          xmin = x
+          ymax = Math.max(ymax, box.h)
+        } else if(direction=="up") {
+          y -= box.h
+          box.y = y
+          ymin = y
+          xmax = Math.max(xmax, box.w)
+        } else if(direction=="down") {
+          box.y = y
+          y += box.h
+          ymax = y
+          xmax = Math.max(xmax, box.w)
+        } 
+      })
+      // lay out widgets...
+      _.each(subwidgets, function(widget, i) {
+        var grp = SVG.group()
+        grp.appendChild(widget.element)
+        // do layout...
+        var box = boxes[i]
+        SVG.transform(grp, "translate("+box.x+", "+box.y+")")
+        gg.appendChild(grp)
+      })
+      SVG.transform(gg, "translate("+(-xmin)+","+(-ymin)+")")
+      return widget("flow", gg, {width: xmax-xmin, height: ymax-ymin})
     }
   }
 
@@ -164,7 +229,7 @@ $(document).ready(function() {
     xmlns="http://www.w3.org/2000/svg"
     xmlns:wow="http://example.org/wow"
     >
-<wow:flow direction="right">
+<wow:flow direction="up" anchor="right">
     <wow:piechart name="foo" title="Sales by Region">
       <wow:pieslice label="Northern Region" value="1.23" color="blue"/>
       <wow:pieslice label="Eastern Region" value="2.53" color="red"/>
