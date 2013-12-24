@@ -1,94 +1,93 @@
-/**
- * Create an <svg> element and draw a pie chart into it.
- * Arguments:
- *   width,height: the size of the SVG graphic, in pixels
- *   cx, cy, r: the center and radius of the pie
- *   lx, ly: the upper-left corner of the chart legend
- * Returns: 
- *    An <svg> element that holds the pie chart.
- *    The caller must insert the returned element into the document.
- */
-var pieChart = function(document, slices, width, height, cx, cy, r, lx, ly) {
-    // This is the XML namespace for svg elements
-    var svgns = "http://www.w3.org/2000/svg";    // Create the <svg> element, and specify pixel size and user coordinates
-    var chart = document.createElementNS(svgns, "svg");
-    chart.setAttribute("width", width);
-    chart.setAttribute("height", height);
-    chart.setAttribute("viewBox", "0 0 " + width + " " + height);
+module.exports = function(document) {
 
-    // Add up the data values so we know how big the pie is
-    var total = 0;
-    for(var i = 0; i < slices.length; i++) total += slices[i].value;
-    
-    // Now figure out how big each slice of pie is. Angles in radians.
-    var angles = []
-    for(var i = 0; i < slices.length; i++) angles[i] = slices[i].value/total*Math.PI*2;
+    /**
+     * Create a <g> element and draw a pie chart into it.
+     * Arguments:
+     *   cx, cy, r: the center and radius of the pie
+     *   lx, ly: the upper-left corner of the chart legend
+     * Returns: 
+     *    A <g> element that holds the pie chart.
+     *    The caller must insert the returned element into the document.
+     */
+    var pieChart = function(slices, cx, cy, r, lx, ly) {
+        var svgns = "http://www.w3.org/2000/svg";
+        var chart = document.createElementNS(svgns, "g");
 
-    // Loop through each slice of pie.
-    startangle = 0;
-    for(var i = 0; i < slices.length; i++) {
-        // This is where the wedge ends
-        var endangle = startangle + angles[i];
-
-        // Compute the two points where our wedge intersects the circle
-        // These formulas are chosen so that an angle of 0 is at 12 o'clock
-        // and positive angles increase clockwise.
-        var x1 = cx + r * Math.sin(startangle);
-        var y1 = cy - r * Math.cos(startangle);
-        var x2 = cx + r * Math.sin(endangle);
-        var y2 = cy - r * Math.cos(endangle);
+        // Add up the data values so we know how big the pie is
+        var total = 0;
+        for(var i = 0; i < slices.length; i++) total += slices[i].value;
         
-        // This is a flag for angles larger than than a half circle
-        // It is required by the SVG arc drawing component
-        var big = 0;
-        if (endangle - startangle > Math.PI) big = 1;
-        
-        // We describe a wedge with an <svg:path> element
-        // Notice that we create this with createElementNS()
-        var path = document.createElementNS(svgns, "path");
-        
-        // This string holds the path details
-        var d = "M " + cx + "," + cy +  // Start at circle center
-            " L " + x1 + "," + y1 +     // Draw line to (x1,y1)
-            " A " + r + "," + r +       // Draw an arc of radius r
-            " 0 " + big + " 1 " +       // Arc details...
-            x2 + "," + y2 +             // Arc goes to to (x2,y2)
-            " Z";                       // Close path back to (cx,cy)
+        // Now figure out how big each slice of pie is. Angles in radians.
+        var angles = []
+        for(var i = 0; i < slices.length; i++) angles[i] = slices[i].value/total*Math.PI*2;
 
-        // Now set attributes on the <svg:path> element
-        path.setAttribute("d", d);              // Set this path 
-        path.setAttribute("fill", slices[i].color);   // Set wedge color
-        path.setAttribute("stroke", "black");   // Outline wedge in black
-        path.setAttribute("stroke-width", "2"); // 2 units thick
-        chart.appendChild(path);                // Add wedge to chart
+        // Loop through each slice of pie.
+        startangle = 0;
+        for(var i = 0; i < slices.length; i++) {
+            // This is where the wedge ends
+            var endangle = startangle + angles[i];
 
-        // The next wedge begins where this one ends
-        startangle = endangle;
+            // Compute the two points where our wedge intersects the circle
+            // These formulas are chosen so that an angle of 0 is at 12 o'clock
+            // and positive angles increase clockwise.
+            var x1 = cx + r * Math.sin(startangle);
+            var y1 = cy - r * Math.cos(startangle);
+            var x2 = cx + r * Math.sin(endangle);
+            var y2 = cy - r * Math.cos(endangle);
+            
+            // This is a flag for angles larger than than a half circle
+            // It is required by the SVG arc drawing component
+            var big = 0;
+            if (endangle - startangle > Math.PI) big = 1;
+            
+            // We describe a wedge with an <svg:path> element
+            // Notice that we create this with createElementNS()
+            var path = document.createElementNS(svgns, "path");
+            
+            // This string holds the path details
+            var d = "M " + cx + "," + cy +  // Start at circle center
+                " L " + x1 + "," + y1 +     // Draw line to (x1,y1)
+                " A " + r + "," + r +       // Draw an arc of radius r
+                " 0 " + big + " 1 " +       // Arc details...
+                x2 + "," + y2 +             // Arc goes to to (x2,y2)
+                " Z";                       // Close path back to (cx,cy)
 
-        // Now draw a little matching square for the key
-        var icon = document.createElementNS(svgns, "rect");
-        icon.setAttribute("x", lx);             // Position the square
-        icon.setAttribute("y", ly + 30*i);
-        icon.setAttribute("width", 20);         // Size the square
-        icon.setAttribute("height", 20);
-        icon.setAttribute("fill", slices[i].color);   // Same fill color as wedge
-        icon.setAttribute("stroke", "black");   // Same outline, too.
-        icon.setAttribute("stroke-width", "2");
-        chart.appendChild(icon);                // Add to the chart
+            // Now set attributes on the <svg:path> element
+            path.setAttribute("d", d);              // Set this path 
+            path.setAttribute("fill", slices[i].color);   // Set wedge color
+            path.setAttribute("stroke", "black");   // Outline wedge in black
+            path.setAttribute("stroke-width", "2"); // 2 units thick
+            chart.appendChild(path);                // Add wedge to chart
 
-        // And add a label to the right of the rectangle
-        var label = document.createElementNS(svgns, "text");
-        label.setAttribute("x", lx + 30);       // Position the text
-        label.setAttribute("y", ly + 30*i + 14);
-        // Text style attributes could also be set via CSS
-        label.setAttribute("font-family", "sans-serif");
-        label.setAttribute("font-size", "12");
-        // Add a DOM text node to the <svg:text> element
-        label.appendChild(document.createTextNode(slices[i].label));
-        chart.appendChild(label);               // Add text to the chart
+            // The next wedge begins where this one ends
+            startangle = endangle;
+
+            // Now draw a little matching square for the key
+            var icon = document.createElementNS(svgns, "rect");
+            icon.setAttribute("x", lx);             // Position the square
+            icon.setAttribute("y", ly + 30*i);
+            icon.setAttribute("width", 20);         // Size the square
+            icon.setAttribute("height", 20);
+            icon.setAttribute("fill", slices[i].color);   // Same fill color as wedge
+            icon.setAttribute("stroke", "black");   // Same outline, too.
+            icon.setAttribute("stroke-width", "2");
+            chart.appendChild(icon);                // Add to the chart
+
+            // And add a label to the right of the rectangle
+            var label = document.createElementNS(svgns, "text");
+            label.setAttribute("x", lx + 30);       // Position the text
+            label.setAttribute("y", ly + 30*i + 14);
+            // Text style attributes could also be set via CSS
+            label.setAttribute("font-family", "sans-serif");
+            label.setAttribute("font-size", "12");
+            // Add a DOM text node to the <svg:text> element
+            label.appendChild(document.createTextNode(slices[i].label));
+            chart.appendChild(label);               // Add text to the chart
+        }
+
+        return chart;
     }
 
-    return chart;
-}
+    return pieChart
 
-module.exports = pieChart
+}

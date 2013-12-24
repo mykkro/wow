@@ -20,6 +20,7 @@
     "thumbbot": "~0.2.1",
     "magician": "~0.1.1",
     "google-images": "~0.1.0",
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "basejs": "~1.1.1"
   }
 }
