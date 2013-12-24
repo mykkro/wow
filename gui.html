@@ -228,8 +228,11 @@ $(document).ready(function() {
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:wow="http://example.org/wow"
+    xmlns:xlink= "http://www.w3.org/1999/xlink"
     >
-<wow:flow direction="up" anchor="right">
+<image xlink:href="icons/SVG/accessibility.svg" x="300" y="100" height="100" width="100"/>
+
+<wow:flow direction="up" anchor="middle">
     <wow:piechart name="foo" title="Sales by Region">
       <wow:pieslice label="Northern Region" value="1.23" color="blue"/>
       <wow:pieslice label="Eastern Region" value="2.53" color="red"/>
@@ -244,6 +247,14 @@ $(document).ready(function() {
       <wow:pieslice label="C++" value="2" color="green"/>
     </wow:piechart>
 </g>
+    <wow:piechart name="bar" title="Sales by Region">
+      <wow:pieslice label="Python" value="1.23" color="blue"/>
+      <wow:pieslice label="Java" value="2.53" color="red"/>
+      <wow:pieslice label="C++" value="2" color="green"/>
+      <wow:pieslice label="C++" value="2" color="yellow"/>
+      <wow:pieslice label="C++" value="2" color="purple"/>
+      <wow:pieslice label="C++" value="2" color="salmon"/>
+    </wow:piechart>
 
 </wow:flow>
 <g id="tempgroup" style="display:none;"></g>
