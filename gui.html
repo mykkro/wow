@@ -198,7 +198,7 @@ $(document).ready(function() {
       if(output) {        
         // replace element with output
         $(element).replaceWith(output.element)
-        console.log(output)
+        // console.log(output) -> this causes error under node=webkit on Windows
         return output;
       }
     } else {

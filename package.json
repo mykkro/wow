@@ -15,12 +15,16 @@
     "kiosk": false
   },
   "dependencies": {
-    "markdown": "~0.5.0",
-    "tingodb": "~0.1.18",
-    "thumbbot": "~0.2.1",
-    "magician": "~0.1.1",
-    "google-images": "~0.1.0",
-    "underscore": "~1.5.2",
-    "basejs": "~1.1.1"
-  }
+    "markdown": "0.5.0",
+    "tingodb": "0.1.18",
+    "thumbbot": "0.2.1",
+    "magician": "0.1.1",
+    "google-images": "0.1.0",
+    "underscore": "1.5.2",
+    "basejs": "1.1.1"
+  },
+ "repository": {
+    "type": "git",
+    "url": "git@github.com:mykkro/wow.git"
+  }  
 }
