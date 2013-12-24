@@ -16,7 +16,6 @@
 
 
 var PieChart = require("./js/piechart")
-console.log(PieChart)
 
 var _ = require("underscore")
 
@@ -32,33 +31,27 @@ $(document).ready(function() {
 
     console.log("Found elements: "+elements.length)
 
-	var matchingElements = [];
-  ;
-  for (var i = 0; i < elements.length; i++)
-  {
-    if (elements[i].getAttribute("name"))
-    {
-      // Element exists with attribute. Add to array.
-      matchingElements.push(elements[i]);
-    }
+  var widgetId = 1;
+
+  var newWidgetId = function() {
+    return "widget"+(widgetId++)
   }
-  console.log(matchingElements);
 
-	/* SVG "widgetization" */
+  var widgets = {}
 
-	/* how to get elements myapp:something (maybe with name=?) */
-
-	/* create svg representation of new element... */
-	
-
-	/* get the old element... */
-  	var el = elements[0]
-  	/* replace it */
-  	//el.parentNode.replaceChild(newElement, el);
-
-
-	var el = $(document).filterNode("wow:piechart")[0]
-	console.log(el)
+  var widget = function(type, element) {
+    var id = newWidgetId()
+    var group = document.createElementNS(svgNS, "g")        
+    group.setAttribute("data-wow", type)
+    group.setAttribute("data-wid", id)
+    group.appendChild(element)
+    widgets[id] = {
+      element: group,
+      type: type,
+      id: id
+    }
+    return widgets[id]
+  }
 
   var widgetizers = {
     pieslice: null,
@@ -66,13 +59,15 @@ $(document).ready(function() {
       /* pie chart has several slices */
       var slices = $(element).filterNode("wow:pieslice")
       slices = _.map(slices, function(s) {
-        return {label:$(s).attr("label"), value:$(s).attr("value")}
+        var $s = $(s)
+        return {label:$s.attr("label"), value:parseFloat($s.attr("value")), color:$s.attr("color")}
       })
-      console.log(slices)
 
       /* create pie chart */
-      var newElement = PieChart(document, [13,32,53], 200, 100, 50, 50, 40, ["red","green","blue"], ["Label 1","Second","Another"], 110, 10)
-      return newElement
+      var newElement = PieChart(document, slices, 300, 140, 50, 50, 40, 110, 10)
+
+        return widget("piechart", newElement)
+
     }
   }
 
@@ -82,9 +77,10 @@ $(document).ready(function() {
     if(widgetizer) {
       /* we can run widgetizer on an element... */
       var output = widgetizer(element)
-      if(output) {
+      if(output) {        
+        console.log(output)
         // replace element with output
-        $(element).replaceWith(output)
+        $(element).replaceWith(output.element)
       }
     } else {
       console.warn("Unknown widget type: "+type)
@@ -98,6 +94,8 @@ $(document).ready(function() {
   }
 
   widgetize()
+
+  // search for widgetized elements: $("[data-wow]")
 
 })
 	</script>
@@ -115,14 +113,20 @@ $(document).ready(function() {
     >
 
     <wow:piechart name="foo" title="Sales by Region">
-      <wow:pieslice label="Northern Region" value="1.23"/>
-      <wow:pieslice label="Eastern Region" value="2.53"/>
-      <wow:pieslice label="Southern Region" value="3.89"/>
-      <wow:pieslice label="Western Region" value="2.04"/>
-	  <desc>This chart includes private data in another namespace
-	  </desc>
-      <!-- Other private data goes here -->
+      <wow:pieslice label="Northern Region" value="1.23" color="blue"/>
+      <wow:pieslice label="Eastern Region" value="2.53" color="red"/>
+      <wow:pieslice label="Southern Region" value="3.89" color="green"/>
+      <wow:pieslice label="Western Region" value="2.04" color="yellow"/>
     </wow:piechart>
+
+<g transform="translate(0, 200)">
+    <wow:piechart name="bar" title="Sales by Region">
+      <wow:pieslice label="Python" value="1.23" color="blue"/>
+      <wow:pieslice label="Java" value="2.53" color="red"/>
+      <wow:pieslice label="C++" value="2" color="green"/>
+    </wow:piechart>
+</g>
+
 </svg>
 </body>
 </html>
