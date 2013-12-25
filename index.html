@@ -95,10 +95,11 @@ catch(e) {
 })
 
 
-var gui = require("nw.gui");
-var fs = require("fs");
+var gui = require("nw.gui")
+var fs = require("fs")
+var path = require('path')
 
-var Thumbbot = require('thumbbot')
+var Thumbbot = require('./js/my-thumbbot')
 
 
 
@@ -116,18 +117,21 @@ function readFileIntoEditor(theFileEntry) {
     if (err) {
       console.log("Read failed: " + err);
     }
-    //editor.setValue(String(data));
-    console.log(theFileEntry)
-    //console.log(String(data))
+    var ext = path.extname(theFileEntry).toLowerCase()
+    // TODO check if extension is supported...
+    console.log(ext)
+    
+    var newFileName = "userdata/pokus" + ext
+    var thumbFileName = 'userdata/thumb.png'
 
-	fs.writeFile("userdata/pokus.jpg", data, function (err) {
+	fs.writeFile(newFileName, data, function (err) {
     	if (err) {
       	console.log("Write failed: " + err);
       	return;
     	}
 
     	console.log("Write completed.");
-      var bot = new Thumbbot('userdata/pokus.jpg', 'userdata/thumb.png')
+      var bot = new Thumbbot(newFileName, thumbFileName)
       bot.set({width: 300, height: 300, method:'resize'})
       bot.snap(function(err) {
         if (err) {
@@ -139,7 +143,7 @@ console.log("Resize completed.");
 updateImage()
 
 var Magician = require('magician');
-var img = new Magician('userdata/thumb.png')
+var img = new Magician(thumbFileName)
 img.getDimensions(function(err, data) {
   console.log(data);
 })
