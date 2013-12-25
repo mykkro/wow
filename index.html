@@ -177,11 +177,27 @@ $("#openFile").change(function(evt) {
 
 
 var googleImages = require('google-images');
+
+//// googleImages.search("liquido", function(err, images) { console.log(images) })
+// Warning: this causes an exception under node-webkit in Windows...
+// even under node shell in Windows
+
+// in node-webklit console: Uncaught ReferenceError: require is not defined
 /*
-// Warning: this causes sometimes an exception under node-webkit...
-googleImages.search("liquido", function(err, images) {
-  console.log(images)
-})
+SyntaxError: Unexpected token u
+    at Object.parse (native)
+    at Request._callback (C:\Users\Mykkro\Documents\GitHub\wow\node_modules\goog
+le-images\lib\google-images.js:25:20)
+    at self.callback (C:\Users\Mykkro\Documents\GitHub\wow\node_modules\google-i
+mages\node_modules\request\request.js:123:22)
+    at Request.EventEmitter.emit (events.js:95:17)
+    at ClientRequest.self.clientErrorHandler (C:\Users\Mykkro\Documents\GitHub\w
+ow\node_modules\google-images\node_modules\request\request.js:232:10)
+    at ClientRequest.EventEmitter.emit (events.js:95:17)
+    at Socket.socketErrorListener (http.js:1547:9)
+    at Socket.EventEmitter.emit (events.js:95:17)
+    at net.js:830:16
+    at process._tickCallback (node.js:415:13)
 */
   	</script>
   </body>
