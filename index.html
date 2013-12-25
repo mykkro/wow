@@ -9,6 +9,8 @@
         <button id="open"><img src="img/16x16/file.png"/>Open</button>
 		<input style="display:none;" id="openFile" type="file" />
 
+		<button id="vidconv">Video Convert</button>
+
 <div id="imagerwrap"><img id="imager" src="userdata/thumb.png"></img></div>
 <div><textarea id="textinput"></textarea></div>
 <button id="run">Run</button>
@@ -21,6 +23,18 @@
   	<script src="index.js"></script>
 
   	<script>
+
+var ffmpeg = require('fluent-ffmpeg');
+
+$('#vidconv').click(function() {
+   var proc = new ffmpeg({ source: 'test/fluent-ffmpeg/media/test.mp4' })
+   .withSize('640x360')
+   .keepPixelAspect(true)
+   .saveToFile('userdata/converted.webm', function(stdout, stderr) {
+        alert('file has been converted succesfully');
+    });
+
+})
 
 // from: http://aboutcode.net/2013/01/09/load-images-with-jquery-deferred.html
 $.loadImage = function(url) {
@@ -161,12 +175,14 @@ $("#openFile").change(function(evt) {
 });
 
 
+
 var googleImages = require('google-images');
+/*
+// Warning: this causes sometimes an exception under node-webkit...
 googleImages.search("liquido", function(err, images) {
   console.log(images)
 })
-
-
+*/
   	</script>
   </body>
 </html>
