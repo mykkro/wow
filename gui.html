@@ -129,7 +129,7 @@ $(document).ready(function() {
 			maxChars: maxChars,
 			x: 0,
 			y: 0,
-			boxWidth: 300,
+			boxWidth: 200,
 			boxHeight: 30,
 			textYOffset: 22,
 			textStyles: {"font-family":"Arial,Helvetica","font-size":15,"fill":"dimgray"},
@@ -222,6 +222,9 @@ $(document).ready(function() {
   }
 
   var makeWidget = function(element) {
+    /* if the widget has subwidgets, create them... */
+    widgetize(element)
+	/* create the widget */
     var type = element.nodeName.split(":")[1]
     var widgetizer = widgetizers[type]
     if(widgetizer) {
@@ -239,12 +242,33 @@ $(document).ready(function() {
     }
   }
 
+  var findWowNodes = function(node, inNodes, childrenOnly) {
+    if(!inNodes) inNodes = []
+	if(!childrenOnly && node.nodeType == 1) {
+		if(node.nodeName.startsWith("wow:")) {
+			inNodes.push(node)	
+			// do not search deeper in this subtree...
+			return inNodes
+		}
+	}		
+	var children = node.children
+	for(var i=0; i<children.length; i++) {
+		if(children[i].nodeType == 1) {
+			// element --> recurse
+			inNodes = findWowNodes(children[i], inNodes, false)
+		}
+	}
+	return inNodes
+}
+  
+  /* make widgets from node's descendants... */
   var widgetize = function(node) {
     var node = node || document
-    var items = $(node).filterByPrefix("wow").reverse()
-    _.each(items, makeWidget)
+	var nodes = findWowNodes(node, [], true)
+    _.each(nodes, makeWidget)
   }
 
+  /* widgetize the entire page */
   widgetize()
 
   // search for widgetized elements: $("[data-wow]")
@@ -272,11 +296,11 @@ $(document).ready(function() {
 <g id="textbox1">
 </g>
 
-<wow:textbox maxchars=30>Hello, SVG!</wow:textbox>
 <g transform="translate(300,300)">
 <wow:textbox maxchars=20 value="Mykkro"></wow:textbox>
 </g>
 
+<!-- TODO: nested flows do not work properly... -->
 <wow:flow direction="up" anchor="middle">
     <wow:piechart name="foo" title="Sales by Region">
       <wow:pieslice label="Northern Region" value="1.23" color="blue"/>
@@ -284,14 +308,13 @@ $(document).ready(function() {
       <wow:pieslice label="Southern Region" value="3.89" color="green"/>
       <wow:pieslice label="Western Region" value="2.04" color="yellow"/>
     </wow:piechart>
+<wow:textbox maxchars=30>Hello, SVG!</wow:textbox>
 
-<g transform="translate(0, 160)">
     <wow:piechart name="bar" title="Sales by Region">
       <wow:pieslice label="Python" value="1.23" color="blue"/>
       <wow:pieslice label="Java" value="2.53" color="red"/>
       <wow:pieslice label="C++" value="2" color="green"/>
     </wow:piechart>
-</g>
     <wow:piechart name="bar" title="Sales by Region">
       <wow:pieslice label="Python" value="1.23" color="blue"/>
       <wow:pieslice label="Java" value="2.53" color="red"/>
@@ -300,8 +323,8 @@ $(document).ready(function() {
       <wow:pieslice label="C++" value="2" color="purple"/>
       <wow:pieslice label="C++" value="2" color="salmon"/>
     </wow:piechart>
-
 </wow:flow>
+
 <g id="tempgroup" style="display:none;"></g>
 
 
