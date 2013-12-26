@@ -80,6 +80,10 @@ $(document).ready(function() {
         height: bbox.y+bbox.height
     }
 
+	// add text with size info and ID
+	var txt = SVG.text(id+" ("+(dim.width).toFixed(1)+", "+(dim.height).toFixed(1)+")", {"x":dim.width, "y":10, "fill":"#333", "font-size":10, "font-family":"Verdana", "text-anchor":"end"})
+	group.appendChild(txt)
+	
     // add widget bounding box...
     var bbe = SVG.box(bbox)
     SVG.attr(bbe, "stroke", "blue");
@@ -117,6 +121,13 @@ $(document).ready(function() {
         return widget("piechart", newElement)
 
     },
+	box: function(element) {
+		var width = $(element).attr("width") || 100
+		var height = $(element).attr("height") || 100
+		var fill = $(element).attr("fill") || "gray"
+		var newElement = SVG.box({width:width,height:height,fill:fill})
+        return widget("box", newElement)
+	},
 	textbox: function(element) {
 		var maxChars = $(element).attr("maxchars") || 20
 		var newElement = SVG.group()
@@ -145,7 +156,9 @@ $(document).ready(function() {
       // children are already widgetized...
       var direction = $(element).attr("direction") || "right"
       var anchor = $(element).attr("anchor") || "middle"
-      var subwidgets = _.map($(element).find("[data-wow]"), function(e) {
+	  // we must find topmost widgets...
+	  var nodes = findWidgetizedNodes(element, [], true)
+      subwidgets = _.map(nodes, function(e) {
         return widgets[e.getAttribute("id")]
       })
       var boxes = _.map(subwidgets, function(sw) {
@@ -242,24 +255,18 @@ $(document).ready(function() {
     }
   }
 
+
+  var findWidgetizedNodes = function(node, inNodes, childrenOnly) {
+	return findTopmostNodes(node, inNodes, childrenOnly, function(node) {
+		return !!$(node).attr("data-wow")
+	})
+  }
+  
   var findWowNodes = function(node, inNodes, childrenOnly) {
-    if(!inNodes) inNodes = []
-	if(!childrenOnly && node.nodeType == 1) {
-		if(node.nodeName.startsWith("wow:")) {
-			inNodes.push(node)	
-			// do not search deeper in this subtree...
-			return inNodes
-		}
-	}		
-	var children = node.children
-	for(var i=0; i<children.length; i++) {
-		if(children[i].nodeType == 1) {
-			// element --> recurse
-			inNodes = findWowNodes(children[i], inNodes, false)
-		}
-	}
-	return inNodes
-}
+	return findTopmostNodes(node, inNodes, childrenOnly, function(node) {
+		return node.nodeName.startsWith("wow:")
+	})
+  }
   
   /* make widgets from node's descendants... */
   var widgetize = function(node) {
@@ -301,7 +308,7 @@ $(document).ready(function() {
 </g>
 
 <!-- TODO: nested flows do not work properly... -->
-<wow:flow direction="up" anchor="middle">
+<wow:flow direction="up" anchor="left">
     <wow:piechart name="foo" title="Sales by Region">
       <wow:pieslice label="Northern Region" value="1.23" color="blue"/>
       <wow:pieslice label="Eastern Region" value="2.53" color="red"/>
@@ -315,6 +322,12 @@ $(document).ready(function() {
       <wow:pieslice label="Java" value="2.53" color="red"/>
       <wow:pieslice label="C++" value="2" color="green"/>
     </wow:piechart>
+	<wow:box width=300 height=60 fill="red"></wow:box>
+<wow:flow direction="right" anchor="top">
+	<wow:box width=200 height=200 fill="blue"></wow:box>
+	<wow:box width=150 height=140 fill="cyan"></wow:box>
+</wow:flow>
+
     <wow:piechart name="bar" title="Sales by Region">
       <wow:pieslice label="Python" value="1.23" color="blue"/>
       <wow:pieslice label="Java" value="2.53" color="red"/>
@@ -328,10 +341,10 @@ $(document).ready(function() {
 <g id="tempgroup" style="display:none;"></g>
 
 
-<rect x="25" y="25" width="250" height="200" fill="#ff0000" stroke="#000000"/>
 <!-- alas, transform attribute does not work well with foreignObject forms -->
-<g transform="">
-    <foreignObject x="50" y="50" width="200" height="150">
+<!-- as well as wrapping it into svg element... -->
+<g>
+    <foreignObject x="350" y="50" width="200" height="150">
         <body xmlns="http://www.w3.org/1999/xhtml">
             <form>
                 <input id="inner1" type="text"/>
@@ -339,7 +352,7 @@ $(document).ready(function() {
             </form>
         </body>
     </foreignObject>
-    <circle cx="60" cy="80" r="30" fill="#00ff00" fill-opacity="0.5"/>
+    <circle cx="360" cy="80" r="30" fill="#00ff00" fill-opacity="0.5"/>
 </g>
 </svg>
 
