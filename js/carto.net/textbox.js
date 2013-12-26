@@ -192,9 +192,7 @@ textbox.prototype.createTextbox = function() {
 			this.textboxText.setAttributeNS(null,attrib,value);
 		}
 		this.textboxText.setAttributeNS(null,"id",this.id+"Text");
-		if (myMapApp.navigator != "Opera") {
-			this.textboxText.setAttributeNS(null,"pointer-events","none");
-		}
+		this.textboxText.setAttributeNS(null,"pointer-events","none");
 		this.textboxText.setAttributeNS("http://www.w3.org/XML/1998/namespace","space","preserve");
 		//check if defaultVal is longer than maxChars and truncate if necessary
 		if (this.defaultVal.length <= this.maxChars) {
@@ -239,6 +237,8 @@ textbox.prototype.createTextbox = function() {
 		this.textboxParent.addEventListener("mousedown",this,false);
 		this.textboxParent.addEventListener("mousemove",this,false);
 		this.textboxParent.addEventListener("mouseup",this,false);
+		//this.textboxParent.addEventListener("keypress",this,false);
+		//this.textboxParent.addEventListener("keydown",this,false);
 		this.textboxParent.setAttributeNS(null,"cursor","text");
 		
 		//test if the svgviewer supports getting geometries of individual characters
@@ -313,10 +313,8 @@ textbox.prototype.handleEvent = function(evt) {
 				this.calcCursorPosFromMouseEvt(evt);
 				// set event listeners, this is only done on first mousedown in the textbox
 				if (this.textboxStatus == 0) {
-					if (myMapApp.navigator == "Adobe") {
-						svgsvg.addEventListener("keydown",this,false);
-					}
-					svgsvg.addEventListener("keypress",this,false);
+					window.addEventListener("keydown",this,false);
+					window.addEventListener("keypress",this,false);
 					svgsvg.addEventListener("mousedown",this,false);
 					svgsvg.addEventListener("mouseup",this,false);
 					svgsvg.addEventListener("mousemove",this,false);
@@ -386,6 +384,10 @@ textbox.prototype.handleEvent = function(evt) {
 				this.mouseDown = false;
 		}
 	}
+	if (evt.type == "keydown") {
+		//console.log(evt.keyCode)
+		this.specialCharacters(evt);
+	}	
 	if (evt.type == "keypress") {			
         if (evt.keyCode) {
         	var charCode = evt.keyCode;
@@ -398,17 +400,8 @@ textbox.prototype.handleEvent = function(evt) {
 		this.changed = false; //this tracks if the text was actually changed (if the content was changed)
 		//alert("keyCode="+evt.keyCode+", charCode="+evt.charCode+", shiftKey"+evt.shiftKey);
 				
-		if (myMapApp.navigator != "Adobe") {
-			//note that Adobe SVG enters this method through the keydown event
-			this.specialCharacters(evt);
-		}
-		
-		if (myMapApp.navigator == "Opera") {
-			if (evt.keyCode > 31 && evt.keyCode != 35 && evt.keyCode != 36 && evt.keyCode != 37 && evt.keyCode != 39 && evt.keyCode != 46) {
-				evt.charCode = evt.keyCode;
-			}
-		}
-		
+		this.specialCharacters(evt);
+				
 		//all real characters
 		if (keyCode > 31 && keyCode != 127 && keyCode < 65535 && evt.charCode && evt.charCode < 65535) {			
 			var textChanged = false;
@@ -471,10 +464,6 @@ textbox.prototype.handleEvent = function(evt) {
 		}
 		//suppress unwanted browser shortcuts. e.g. in Opera or Mozilla
     	evt.preventDefault();
-	}
-	//this part is only because the Adobe viewer doesn't return certain keys "onkeypress"
-	if (evt.type == "keydown") {
-		this.specialCharacters(evt);
 	}
 }
 
@@ -716,12 +705,6 @@ textbox.prototype.specialCharacters = function(evt) {
 					}
 			}
 		}
-		//fire function if text changed
-		if (myMapApp.navigator == "Adobe") {
-			if (this.changed) {
-				this.timer.setTimeout("fireFunction",this.timerMs);
-			}
-		}
 }
 
 textbox.prototype.setCursorPos = function() {
@@ -806,10 +789,8 @@ textbox.prototype.release = function() {
 	// set textbox status
 	this.textboxStatus = 0;
 	// remove event listeners
-	svgsvg.removeEventListener("keypress",this,false);
-	if (myMapApp.navigator == "Adobe") {
-		svgsvg.removeEventListener("keydown",this,false);			
-	}
+	window.removeEventListener("keydown",this,false);
+	window.removeEventListener("keypress",this,false);
 	svgsvg.removeEventListener("mousedown",this,false);
 	svgsvg.removeEventListener("mousemove",this,false);
 	svgsvg.removeEventListener("mouseup",this,false);
@@ -825,9 +806,38 @@ textbox.prototype.releaseShift = function() {
 	this.shiftDown = false;	
 }
 
+
+textbox.prototype.calcCoord = function(evt,ctmNode) {
+	var svgPoint = svgsvg.createSVGPoint();
+	svgPoint.x = evt.clientX;
+	svgPoint.y = evt.clientY;
+	if (!svgsvg.getScreenCTM) {
+		//undo the effect of transformations
+		if (ctmNode) {
+			var matrix = getTransformToRootElement(ctmNode);
+		}
+		else {
+			var matrix = getTransformToRootElement(evt.target);			
+		}
+  		svgPoint = svgPoint.matrixTransform(matrix.inverse().multiply(this.m));
+	}
+	else {
+		//case getScreenCTM is available
+		if (ctmNode) {
+			var matrix = ctmNode.getScreenCTM();
+		}
+		else {
+			var matrix = evt.target.getScreenCTM();		
+		}
+  	svgPoint = svgPoint.matrixTransform(matrix.inverse());
+	}
+  //undo the effect of viewBox and zoomin/scroll
+	return svgPoint;
+}
+
 textbox.prototype.calcCursorPosFromMouseEvt = function(evt) {
 	//determine cursor position of mouse event
-	var myCoords = myMapApp.calcCoord(evt,this.textboxText);
+	var myCoords = this.calcCoord(evt,this.textboxText);
 	//create an SVG Point object
 	var mySVGPoint = svgsvg.createSVGPoint();
 	mySVGPoint.x = myCoords.x;
