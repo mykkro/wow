@@ -17,40 +17,6 @@ Credits:
 
 Documentation: http://www.carto.net/papers/svg/gui/textbox/
 
-----
-
-current version: 1.1.2
-
-version history:
-1.0 (2006-05-03)
-initial version
-
-1.0.1 (2006-05-04)
-fixed a bug with the delete key after clicking into the textbox
-fixed a bug with removing text selection when clicking again after the selectionbox was visible
-
-1.02 (2006-05-18):
-made object multi-namespace aware (hopefully), this probably needs more testing
-it is now allowed to pass numbers in the constructor and .setValue() method
-
-1.03 (2006-05-22):
-fixed a bug in internal method .testSupportsChar() when using an initially empty textbox
-
-1.04 (2006-06-22)
-added constructor parameter this.parentNode; this.parentNode can be of type String (id) or a node reference (g or svg element)
-replaced this.textboxGroup with this.parentGroup to be compatible with other GUI elements; fixed an "out of index" bug that occasionally appeared in Opera 9 when calculating the cursor position
-
-1.1 (2006-07-11)
-fixed a bug with the delete key (ASV only) if cursor was at the end (thanks to David Boyd), fixed another bug with delete key if cursor was at the end it accidentally deleted the first character, fixed a bug in the method .setValue() (thanks to Volker Gersabeck)
-added constructor parameter textYOffset, added methods ".moveTo(x,y)" and ".resize(width)"
-
-1.1.1 (2006-07-13)
-changed the internal structure a bit. An additional group element is now created. This allows several textboxes to be placed in the same parent group. Previously this had failed. No changes in constructor parameters and methods in this release.
-
-1.1.2 (2006-10-04)
-added parameter "fireFunction" to the "setValue()" method in order to determine whether the associated callback function should be fired or not
-introduced new "changetype" with value "set" which indicates that the textbox value was set by method "setValue"
-
 -------
 
 This ECMA script library is free software; you can redistribute it and/or
@@ -83,69 +49,56 @@ somewhere in the source-code-comment or the "about" of your project and give cre
 
 */
 
-var svgsvg = $("#svg").get(0)
-
-function textbox(id,parentNode,defaultVal,maxChars,x,y,boxWidth,boxHeight,textYOffset,textStyles,boxStyles,cursorStyles,selBoxStyles,allowedChars,functionToCall) {
-	var nrArguments = 15;
-	var createTextBox= true;
-	if (arguments.length == nrArguments) {
-		this.id = id; //the id of the textbox
-		this.parentNode = parentNode;  //can be of type string (id) or node reference (svg or g node)
-		this.maxChars = maxChars; //maximum characters allowed
-		this.defaultVal = defaultVal.toString(); //default value to be filled in when textbox is created
-		this.x = x; //left of background rectangle
-		this.y = y; //top of background rectangle
-		this.boxWidth = boxWidth; //background rectangle width
-		this.boxHeight = boxHeight; //background rectangle height
-		this.textYOffset = textYOffset; //the offset of the text element in relation to the upper side of the textbox rectangle
-		this.textStyles = textStyles; //array containing text attributes
-		if (!this.textStyles["font-size"]) {
-			this.textStyles["font-size"] = 15;
-		}
-		this.boxStyles = boxStyles; //array containing box styles attributes
-		this.cursorStyles = cursorStyles; //array containing text attributes
-		this.selBoxStyles = selBoxStyles; //array containing box styles attributes
-		//allowedChars contains regular expressions of allowed character ranges
-		if (allowedChars) {
-			if (typeof(allowedChars) == "string") {
-				if (allowedChars.length > 0) {
-					this.RegExp = new RegExp(allowedChars);
-				}
+function textbox(d) {
+	// d = {id: parentNode: defaultVal: maxChars: x: y: boxWidth: boxHeight: textYOffset: textStyles: boxStyles: cursorStyles: selBoxStyles: allowedChars: functionToCall:}
+	this.id = d.id; //the id of the textbox
+	this.parentNode = d.parentNode;  //can be of type string (id) or node reference (svg or g node)
+	this.maxChars = d.maxChars; //maximum characters allowed
+	this.defaultVal = d.defaultVal.toString(); //default value to be filled in when textbox is created
+	this.x = d.x; //left of background rectangle
+	this.y = d.y; //top of background rectangle
+	this.boxWidth = d.boxWidth; //background rectangle width
+	this.boxHeight = d.boxHeight; //background rectangle height
+	this.textYOffset = d.textYOffset; //the offset of the text element in relation to the upper side of the textbox rectangle
+	this.textStyles = d.textStyles; //array containing text attributes
+	if (!this.textStyles["font-size"]) {
+		this.textStyles["font-size"] = 15;
+	}
+	this.boxStyles = d.boxStyles; //array containing box styles attributes
+	this.cursorStyles = d.cursorStyles; //array containing text attributes
+	this.selBoxStyles = d.selBoxStyles; //array containing box styles attributes
+	//allowedChars contains regular expressions of allowed character ranges
+	if (d.allowedChars) {
+		if (typeof(d.allowedChars) == "string") {
+			if (d.allowedChars.length > 0) {
+				this.RegExp = new RegExp(d.allowedChars);
 			}
 		}
-		else {
-			this.RegExp = undefined;
-		}
-		this.functionToCall = functionToCall; //function to be called if textbox looses focus or enter key is pressed
-		this.textboxRect = null; //later holds reference to rect element
-		this.textboxText = null; //later holds reference to text element
-		this.textboxTextContent = null; //later holds reference to content of text element (first child)
-		this.textboxCursor = null; //later holds reference to cursor
-		this.textboxStatus = 0; //status 0 means unitialized, 1 means partially initalized, 2 means fully initialized and ready to remove event listeners again, 5 means new value was set by method .setValue()
-		this.cursorPosition = 0; //position in whole string
-		this.transX = 0; //offset on the left if text string is larger than box
-		this.textVal = this.defaultVal; //this is the current text string of the content
-		this.shiftDown = false; //boolean value that says if shift was pressed
-		this.mouseDown = false; //boolean value that says if mousedown is active
-		this.startSelection = 0; //position of the start of the selection
-		this.startOrigSelection = 0; //original start position of selection
-		this.endSelection = 0; //position of the end of the selection
-		this.selectionRectVisible = false; //indicates if selection rect is visible or not
-		this.svg = null; //later a nested svg that does clipping
-		this.supportsCharGeom = true; //defines if viewer supports geometry calculations on individual characters, such as .getCharAtPosition(SVGPoint)
 	}
 	else {
-		createTextBox = false;
-		alert("Error ("+id+"): wrong nr of arguments! You have to pass over "+nrArguments+" parameters.");
+		this.RegExp = undefined;
 	}
-	if (createTextBox) {
-		this.timer = new Timer(this); //a Timer instance for calling the functionToCall
-		this.timerMs = 200; //a constant of this object that is used in conjunction with the timer - functionToCall is called after 200 ms
-		this.createTextbox(); //method to initialize textbox
-	}
-	else {
-		alert("Could not create textbox with id '"+id+"' due to errors in the constructor parameters");		
-	}
+	this.functionToCall = d.functionToCall; //function to be called if textbox looses focus or enter key is pressed
+	this.textboxRect = null; //later holds reference to rect element
+	this.textboxText = null; //later holds reference to text element
+	this.textboxTextContent = null; //later holds reference to content of text element (first child)
+	this.textboxCursor = null; //later holds reference to cursor
+	this.textboxStatus = 0; //status 0 means unitialized, 1 means partially initalized, 2 means fully initialized and ready to remove event listeners again, 5 means new value was set by method .setValue()
+	this.cursorPosition = 0; //position in whole string
+	this.transX = 0; //offset on the left if text string is larger than box
+	this.textVal = this.defaultVal; //this is the current text string of the content
+	this.shiftDown = false; //boolean value that says if shift was pressed
+	this.mouseDown = false; //boolean value that says if mousedown is active
+	this.startSelection = 0; //position of the start of the selection
+	this.startOrigSelection = 0; //original start position of selection
+	this.endSelection = 0; //position of the end of the selection
+	this.selectionRectVisible = false; //indicates if selection rect is visible or not
+	this.svg = null; //later a nested svg that does clipping
+	this.supportsCharGeom = true; //defines if viewer supports geometry calculations on individual characters, such as .getCharAtPosition(SVGPoint)
+
+	this.timer = new Timer(this); //a Timer instance for calling the functionToCall
+	this.timerMs = 200; //a constant of this object that is used in conjunction with the timer - functionToCall is called after 200 ms
+	this.createTextbox(); //method to initialize textbox
 }
 
 //create textbox
