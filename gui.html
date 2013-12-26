@@ -7,8 +7,13 @@
   	<script src="js/jquery.svg/jquery.svgdom.min.js"></script>
 	<script src="js/d3/d3.v3.min.js"></script>
 
-  <script src="js/common.js"></script>
-	<script>
+	<script src="js/carto.net/timer.js"></script>
+	<script src="js/carto.net/textbox.js"></script>
+
+	<script src="js/common.js"></script>
+
+
+  <script>
 
 
 // usage: 
@@ -19,10 +24,13 @@ var _ = require("underscore")
 var Base = require("basejs")
 var PieChart = require("./js/piechart")(document)
 var SVG = require("./js/svghelper")(document)
+var svgsvg;
 
 d3.ns.prefix.wow = wowNS
 
 $(document).ready(function() {
+
+	svgsvg = document.getElementById("svg")
 
 	/* proc tohle nefunguje? */
 	//var elements = document.getElementsByTagNameNS("http://example.org/myapp", 'piechart');
@@ -36,8 +44,8 @@ $(document).ready(function() {
 
   var widgetId = 1;
 
-  var newWidgetId = function() {
-    return "wow-widget-"+(widgetId++)
+  var newWidgetId = function(prefix) {
+    return (prefix || "wow-widget-")+(widgetId++)
   }
 
   var widgets = {}
@@ -109,6 +117,30 @@ $(document).ready(function() {
         return widget("piechart", newElement)
 
     },
+	textbox: function(element) {
+		var maxChars = $(element).attr("maxchars") || 20
+		var newElement = SVG.group()
+		var newId = newWidgetId("wow-textfield-")
+		var text = $(element).text() || $(element).attr("value")
+		var tb = new textbox({
+			id: newId,
+			parentNode: newElement,
+			defaultVal: text, 
+			maxChars: maxChars,
+			x: 0,
+			y: 0,
+			boxWidth: 300,
+			boxHeight: 30,
+			textYOffset: 22,
+			textStyles: {"font-family":"Arial,Helvetica","font-size":15,"fill":"dimgray"},
+			boxStyles: {"fill":"white","stroke":"dimgray","stroke-width":1.5},
+			cursorStyles: {"stroke":"red","stroke-width":1.5},
+			selBoxStyles: {"fill":"blue","opacity":0.5},
+			allowedChars: "[a-zA-Z ]",
+			functionToCall: function(textboxId, value, changeType) { console.log(value); }
+		});
+		return widget("textbox", newElement)
+	},
     flow: function(element) {
       // children are already widgetized...
       var direction = $(element).attr("direction") || "right"
@@ -240,6 +272,11 @@ $(document).ready(function() {
 <g id="textbox1">
 </g>
 
+<wow:textbox maxchars=30>Hello, SVG!</wow:textbox>
+<g transform="translate(300,300)">
+<wow:textbox maxchars=20 value="Mykkro"></wow:textbox>
+</g>
+
 <wow:flow direction="up" anchor="middle">
     <wow:piechart name="foo" title="Sales by Region">
       <wow:pieslice label="Northern Region" value="1.23" color="blue"/>
@@ -284,9 +321,6 @@ $(document).ready(function() {
 </svg>
 
 
-<!-- TODO: refactor this or write my own textbox -->
-	<script src="js/carto.net/timer.js"></script>
-	<script src="js/carto.net/textbox.js"></script>
   <script>
 
 $(document).ready(function(){
@@ -295,24 +329,9 @@ $("#inner1").change(function() {
   alert($(this).val())
 })
 
-function writeOutTextContent(textboxId,value,changeType) {
-  console.log(value)
-}
+
 
 function init(svg){
-
-  console.log("Init")
-  
-		var textbox1;
-		var textbox2;
-            //styles
-            var textStyles = {"font-family":"Arial,Helvetica","font-size":15,"fill":"dimgray"};
-            var boxStyles = {"fill":"white","stroke":"dimgray","stroke-width":1.5};
-            var cursorStyles = {"stroke":"red","stroke-width":1.5};
-            var selBoxStyles = {"fill":"blue","opacity":0.5};
-			var textYOffset = 22;
-			//create new textboxes
-			textbox1 = new textbox("textbox1","textbox1","Hello, World",25,200,300,300,30,textYOffset,textStyles,boxStyles,cursorStyles,selBoxStyles,"[a-zA-Z ]",writeOutTextContent);
           
 }
 
