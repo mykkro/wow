@@ -18,6 +18,20 @@ $.fn.filterByPrefix = function(name) {
 $.fn.reverse = [].reverse
 
 
+/* Various polyfills */
+
+if (!String.prototype.startsWith) {
+  Object.defineProperty(String.prototype, 'startsWith', {
+    enumerable: false,
+    configurable: false,
+    writable: false,
+    value: function (searchString, position) {
+      position = position || 0;
+      return this.indexOf(searchString, position) === position;
+    }
+  });
+}
+
 /* commonly used DOM namespaces */
 var wowNS = "http://example.org/wow"
 var svgNS = "http://www.w3.org/2000/svg"
