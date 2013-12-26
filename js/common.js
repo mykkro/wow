@@ -14,6 +14,27 @@ $.fn.filterByPrefix = function(name) {
   });
 };
 
+/* find topmost nodes satisfying a condition */
+var findTopmostNodes = function(node, inNodes, childrenOnly, condition) {
+    if(!inNodes) inNodes = []
+	if(!childrenOnly && node.nodeType == 1) {
+		if(condition(node)) {
+			inNodes.push(node)	
+			// do not search deeper in this subtree...
+			return inNodes
+		}
+	}		
+	var children = node.children
+	for(var i=0; i<children.length; i++) {
+		if(children[i].nodeType == 1) {
+			// element --> recurse
+			inNodes = findTopmostNodes(children[i], inNodes, false, condition)
+		}
+	}
+	return inNodes
+}
+  
+
 /* Reverses a selection */
 $.fn.reverse = [].reverse
 

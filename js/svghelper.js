@@ -9,12 +9,20 @@ var SvgHelper = function(document) {
 			bbe.setAttribute("y", bbox.y || 0);
 			bbe.setAttribute("width", bbox.width || 10);         
 			bbe.setAttribute("height", bbox.height || 10);
-			bbe.setAttribute("fill", "none");  
+			bbe.setAttribute("fill", bbox.fill || "none");  
+			bbe.setAttribute("stroke", bbox.stroke || "black");  
 			return bbe;
 		},
-		group: function() {
+		group: function(options) {
 			var grp = document.createElementNS(svgNS, "g");
+			if(options) this.attrs(grp, options)
 			return grp
+		},
+		text: function(text, options) {
+			var txt = document.createElementNS(svgNS, "text")
+			txt.textContent = text
+			if(options) this.attrs(txt, options)
+			return txt
 		},
 		attrs: function(node, attrs) {
 			for(var key in attrs) {
