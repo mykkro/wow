@@ -105,6 +105,13 @@ $(document).ready(function() {
     return widgets[id]
   }
 
+  /* copy contents from old element to new one */
+  var moveChildren = function(from, to) {
+	$(from).children().each(function() {
+			$(to).append($(this))
+		})
+	}
+	
   var widgetizers = {
     pieslice: null,
     piechart: function(element) {
@@ -126,7 +133,9 @@ $(document).ready(function() {
 		var height = $(element).attr("height") || 100
 		var fill = $(element).attr("fill") || "gray"
 		var newElement = SVG.box({width:width,height:height,fill:fill})
-        return widget("box", newElement)
+        var ww = widget("box", newElement)
+		moveChildren(element, ww.element)
+		return ww
 	},
 	textbox: function(element) {
 		var maxChars = $(element).attr("maxchars") || 20
@@ -324,7 +333,19 @@ $(document).ready(function() {
     </wow:piechart>
 	<wow:box width=300 height=60 fill="red"></wow:box>
 <wow:flow direction="right" anchor="top">
-	<wow:box width=200 height=200 fill="blue"></wow:box>
+	<wow:box width=200 height=200 fill="orange">
+
+<rect x="20" y="20" width="60" height="60" fill="blue">
+  <animateTransform attributeType="xml"
+                    attributeName="transform"
+                    type="rotate"
+                    from="0 50 50"
+                    to="360 50 50"
+                    dur="4s"
+                    repeatCount="indefinite"/>
+</rect>  
+
+	</wow:box>
 	<wow:box width=150 height=140 fill="cyan"></wow:box>
 </wow:flow>
 
@@ -337,6 +358,8 @@ $(document).ready(function() {
       <wow:pieslice label="C++" value="2" color="salmon"/>
     </wow:piechart>
 </wow:flow>
+
+
 
 <g id="tempgroup" style="display:none;"></g>
 
