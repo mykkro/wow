@@ -161,6 +161,60 @@ $(document).ready(function() {
 		});
 		return widget("textbox", newElement)
 	},
+    grid: function(element) {
+      // children are already widgetized...
+      var rows = $(element).attr("rows") || 3
+      var cols = $(element).attr("cols") || 3
+      var halign = $(element).attr("halign") || "center"
+      var valign = $(element).attr("valign") || "center"
+	  // we must find topmost widgets...
+	  var nodes = findWidgetizedNodes(element, [], true)
+      subwidgets = _.map(nodes, function(e) {
+        return widgets[e.getAttribute("id")]
+      })
+      var boxes = _.map(subwidgets, function(sw) {
+        return { x:0, y:0, w:sw.dim.width, h:sw.dim.height }
+      })
+      var gg = SVG.group()
+      var x = 0
+      var y = 0
+      var xmin=0,ymin=0,xmax=0,ymax=0
+      var maxwidth=0, maxheight=0
+      _.each(boxes, function(box) {
+        maxwidth = Math.max(maxwidth, box.w)
+        maxheight = Math.max(maxheight, box.h)
+      })
+	  var col = 0
+	  var row = 0
+      _.each(subwidgets, function(widget) {
+	    x = col*maxwidth
+		y = row*maxheight
+		gg.appendChild(SVG.box({x:x, y:y, width:maxwidth, height:maxheight, fill:((col+row)%2)?"#ffd":"#dff", stroke:"none"}))
+		if(valign == "center") {
+			y += (maxheight-widget.dim.height)/2
+		} else if(valign == "bottom") {
+			y += (maxheight-widget.dim.height)
+		}
+		if(halign == "center") {
+			x += (maxwidth-widget.dim.width)/2
+		} else if(halign == "right") {
+			x += (maxwidth-widget.dim.width)
+		}
+		col++;
+		if(col == cols) {
+		  col = 0;
+		  row++;
+		}
+		if(row == rows) {
+			return
+		}
+        var grp = SVG.group()
+        grp.appendChild(widget.element)		
+        SVG.transform(grp, "translate("+x+", "+y+")")
+        gg.appendChild(grp)
+      })
+      return widget("group", gg, {width: cols*maxwidth, height: rows*maxheight})
+	},
     flow: function(element) {
       // children are already widgetized...
       var direction = $(element).attr("direction") || "right"
@@ -308,16 +362,27 @@ $(document).ready(function() {
     >
 <image xlink:href="icons/SVG/accessibility.svg" x="300" y="100" height="100" width="100"/>
 
+ <defs>
+    <pattern id="checkerPattern" width="80" height="80"
+      patternUnits="userSpaceOnUse">
 
-<g id="textbox1">
-</g>
+      <rect fill="red" fill-opacity="0.2" x="0" y="0" width="40" height="40" />
+      <rect fill="blue" fill-opacity="0.2" fill="blue" x="40" y="0" width="40" height="40" />
+      <rect fill="blue" fill-opacity="0.2" x="0" y="40" width="40" height="40" />
+      <rect fill="red" fill-opacity="0.2" x="40" y="40" width="40" height="40" />
 
-<g transform="translate(300,300)">
-<wow:textbox maxchars=20 value="Mykkro"></wow:textbox>
-</g>
+
+    </pattern>
+  </defs>
+
+  <g transform="translate(50,50)">
+    <rect fill="url(#checkerPattern)" x="0"
+      y="0" width="400" height="400" />
+  </g>
+
 
 <!-- TODO: nested flows do not work properly... -->
-<wow:flow direction="up" anchor="left">
+<wow:grid cols="2"rows="3" valign="center" halign="center">
     <wow:piechart name="foo" title="Sales by Region">
       <wow:pieslice label="Northern Region" value="1.23" color="blue"/>
       <wow:pieslice label="Eastern Region" value="2.53" color="red"/>
@@ -357,7 +422,7 @@ $(document).ready(function() {
       <wow:pieslice label="C++" value="2" color="purple"/>
       <wow:pieslice label="C++" value="2" color="salmon"/>
     </wow:piechart>
-</wow:flow>
+</wow:grid>
 
 
 
@@ -377,7 +442,12 @@ $(document).ready(function() {
     </foreignObject>
     <circle cx="360" cy="80" r="30" fill="#00ff00" fill-opacity="0.5"/>
 </g>
+
+
+
 </svg>
+
+
 
 
   <script>
