@@ -163,6 +163,8 @@ $(document).ready(function() {
 	},
     grid: function(element) {
       // children are already widgetized...
+      var uniformRows = ($(element).attr("uniformRows") == "true")
+      var uniformColumns = ($(element).attr("uniformColumns") == "true")
       var rows = $(element).attr("rows") || 3
       var cols = $(element).attr("cols") || 3
       var halign = $(element).attr("halign") || "center"
@@ -180,30 +182,55 @@ $(document).ready(function() {
       var y = 0
       var xmin=0,ymin=0,xmax=0,ymax=0
       var maxwidth=0, maxheight=0
+	  var maxwidths = []
+	  var maxheights = []
+	  for(var row=0; row<rows; row++) maxheights[row] = 0
+	  for(var col=0; col<cols; col++) maxwidths[col] = 0	  
+	  var col = 0
+	  var row = 0
       _.each(boxes, function(box) {
         maxwidth = Math.max(maxwidth, box.w)
         maxheight = Math.max(maxheight, box.h)
-      })
-	  var col = 0
-	  var row = 0
-      _.each(subwidgets, function(widget) {
-	    x = col*maxwidth
-		y = row*maxheight
-		gg.appendChild(SVG.box({x:x, y:y, width:maxwidth, height:maxheight, fill:((col+row)%2)?"#ffd":"#dff", stroke:"none"}))
-		if(valign == "center") {
-			y += (maxheight-widget.dim.height)/2
-		} else if(valign == "bottom") {
-			y += (maxheight-widget.dim.height)
-		}
-		if(halign == "center") {
-			x += (maxwidth-widget.dim.width)/2
-		} else if(halign == "right") {
-			x += (maxwidth-widget.dim.width)
-		}
+		if(maxwidths[col] < box.w) maxwidths[col] = box.w
+		if(maxheights[row] < box.h) maxheights[row] = box.h
 		col++;
 		if(col == cols) {
 		  col = 0;
 		  row++;
+		}
+		if(row == rows) {
+			return
+		}
+      })
+	  col = 0
+	  row = 0
+	  var x0 = 0
+	  var y0 = 0
+	  var cellWidth
+	  var cellHeight
+      _.each(subwidgets, function(widget) {
+	    x = x0
+		y = y0
+		cellWidth = uniformColumns ?  maxwidth : maxwidths[col]
+		cellHeight = uniformRows ? maxheight : maxheights[row]
+		gg.appendChild(SVG.box({x:x, y:y, width:cellWidth, height:cellHeight, fill:((col+row)%2)?"#ffd":"#dff", stroke:"none"}))
+		if(valign == "center") {
+			y += (cellHeight-widget.dim.height)/2
+		} else if(valign == "bottom") {
+			y += (cellHeight-widget.dim.height)
+		}
+		if(halign == "center") {
+			x += (cellWidth-widget.dim.width)/2
+		} else if(halign == "right") {
+			x += (cellWidth-widget.dim.width)
+		}
+		col++;
+		x0 += cellWidth
+		if(col == cols) {
+		  col = 0;
+		  x0 = 0
+		  row++;
+		  y0 += cellHeight
 		}
 		if(row == rows) {
 			return
@@ -382,7 +409,7 @@ $(document).ready(function() {
 
 
 <!-- TODO: nested flows do not work properly... -->
-<wow:grid cols="2"rows="3" valign="center" halign="center">
+<wow:grid cols="2"rows="3" valign="center" halign="center" uniformColumns="false" uniformRows="true">
     <wow:piechart name="foo" title="Sales by Region">
       <wow:pieslice label="Northern Region" value="1.23" color="blue"/>
       <wow:pieslice label="Eastern Region" value="2.53" color="red"/>
