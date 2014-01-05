@@ -2,16 +2,10 @@
 <html>
 <head>
 
-  	<script src="js/jquery/jquery-2.0.3.min.js"></script>
-  	<script src="js/jquery.svg/jquery.svg.min.js"></script>
-  	<script src="js/jquery.svg/jquery.svgdom.min.js"></script>
 	<script src="js/d3/d3.v3.min.js"></script>
 
 	<script src="js/carto.net/timer.js"></script>
 	<script src="js/carto.net/textbox.js"></script>
-
-	<script src="js/common.js"></script>
-
 
   <script>
 
@@ -20,11 +14,18 @@
 // $(document).filterNode("myapp:piechart")
 // --> problem je v tom, ze se to porad tvari jako jmeno myapp:piechart v namespace svg
 
+var $ = require("jquery")(window)
 var _ = require("underscore")
-var Base = require("basejs")
 var PieChart = require("./js/piechart")(document)
 var SVG = require("./js/svghelper")(document)
+var Dim = require("./js/dim")
+var Widgetizer = require("./js/widgetizer")(window, document, SVG)
 var svgsvg;
+
+/* commonly used DOM namespaces */
+var wowNS = "http://example.org/wow"
+var svgNS = "http://www.w3.org/2000/svg"
+
 
 d3.ns.prefix.wow = wowNS
 
@@ -32,89 +33,32 @@ $(document).ready(function() {
 
 	svgsvg = document.getElementById("svg")
 
-	/* proc tohle nefunguje? */
-	//var elements = document.getElementsByTagNameNS("http://example.org/myapp", 'piechart');
+	/* Finds all nodes with nodeName == name */
+	$.fn.filterNode = function(name) {
+	  return this.find('*').filter(function() {
+		return this.nodeName === name;
+	  });
+	};
 
-	/* this works! */
-  /*
-	var elements = document.getElementsByTagName("wow:piechart");
+	/* Finds all nodes with name NAME:sometag */
+	$.fn.filterByPrefix = function(name) {
+	  return this.find('*').filter(function() {
+		return this.nodeName.split(':')[0] === name;
+	  });
+	};
 
-    console.log("Found elements: "+elements.length)
-  */
 
-  var widgetId = 1;
-
-  var newWidgetId = function(prefix) {
-    return (prefix || "wow-widget-")+(widgetId++)
-  }
-
-  var widgets = {}
-
-  var Dim = Base.extend({
-    constructor: function(w, h) {
-      this.width = w
-      this.height = h
-    }
-  })
-
-  var widget = function(type, element, dim) {
-    var id = newWidgetId()
-    var group = SVG.attrs(SVG.group(), {
-      "data-wow": type,
-      "id": id
-    })
-    if(element.length) {
-      // it is an array of elements!
-      _.each(element, function(e) {
-        group.appendChild(e)
-      })
-    } else {
-      // it is only one element
-      group.appendChild(element)
-    }
-
-    // in order to get bounding box, the node must be inserted in the DOM
-    var bbox = SVG.measure(group)
-    if(!dim) dim = { 
-        width: bbox.x+bbox.width,
-        height: bbox.y+bbox.height
-    }
-
-	// add text with size info and ID
-	var txt = SVG.text(id+" ("+(dim.width).toFixed(1)+", "+(dim.height).toFixed(1)+")", {"x":dim.width, "y":10, "fill":"#333", "font-size":10, "font-family":"Verdana", "text-anchor":"end"})
-	group.appendChild(txt)
-	
-    // add widget bounding box...
-    var bbe = SVG.box(bbox)
-    SVG.attr(bbe, "stroke", "blue");
-    group.appendChild(bbe);   
-
-    // add size box...
-    var bbe = SVG.box(dim)
-    SVG.attr(bbe, "stroke", "gray");
-    group.appendChild(bbe);   
-
-    // return widget object
-    widgets[id] = {
-      element: group,
-      type: type,
-      id: id,
-      bounds: {x:bbox.x, y:bbox.y, width:bbox.width,height:bbox.height},
-      dim: dim
-    }
-    return widgets[id]
-  }
-
-  /* copy contents from old element to new one */
-  var moveChildren = function(from, to) {
-	$(from).children().each(function() {
-			$(to).append($(this))
+	/* copy contents from old element to new one */
+	/* uses jQuery */
+	var moveChildren = function(from, to) {
+		$(from).children().each(function() {
+				$(to).append($(this))
 		})
 	}
+
+
 	
-  var widgetizers = {
-    pieslice: null,
-    piechart: function(element) {
+  Widgetizer.widgetizers.piechart = function(element) {
       /* pie chart has several slices */
       var slices = $(element).filterNode("wow:pieslice")
       slices = _.map(slices, function(s) {
@@ -125,22 +69,24 @@ $(document).ready(function() {
       /* create pie chart */
       var newElement = PieChart(slices, 50, 50, 40, 110, 10)
 
-        return widget("piechart", newElement)
+        return Widgetizer.widget("piechart", newElement)
 
-    },
-	box: function(element) {
+  }
+	
+  Widgetizer.widgetizers.box = function(element) {
 		var width = $(element).attr("width") || 100
 		var height = $(element).attr("height") || 100
 		var fill = $(element).attr("fill") || "gray"
 		var newElement = SVG.box({width:width,height:height,fill:fill})
-        var ww = widget("box", newElement)
+        var ww = Widgetizer.widget("box", newElement)
 		moveChildren(element, ww.element)
 		return ww
-	},
-	textbox: function(element) {
+  }
+  
+  Widgetizer.widgetizers.textbox = function(element) {
 		var maxChars = $(element).attr("maxchars") || 20
 		var newElement = SVG.group()
-		var newId = newWidgetId("wow-textfield-")
+		var newId = Widgetizer.newWidgetId("wow-textfield-")
 		var text = $(element).text() || $(element).attr("value")
 		var tb = new textbox({
 			id: newId,
@@ -159,9 +105,10 @@ $(document).ready(function() {
 			allowedChars: "[a-zA-Z ]",
 			functionToCall: function(textboxId, value, changeType) { console.log(value); }
 		});
-		return widget("textbox", newElement)
-	},
-    grid: function(element) {
+		return Widgetizer.widget("textbox", newElement)
+	}
+	
+    Widgetizer.widgetizers.grid = function(element) {
       // children are already widgetized...
       var uniformRows = ($(element).attr("uniformRows") == "true")
       var uniformColumns = ($(element).attr("uniformColumns") == "true")
@@ -170,9 +117,9 @@ $(document).ready(function() {
       var halign = $(element).attr("halign") || "center"
       var valign = $(element).attr("valign") || "center"
 	  // we must find topmost widgets...
-	  var nodes = findWidgetizedNodes(element, [], true)
+	  var nodes = Widgetizer.findWidgetizedNodes(element, [], true)
       subwidgets = _.map(nodes, function(e) {
-        return widgets[e.getAttribute("id")]
+        return Widgetizer.widgets[e.getAttribute("id")]
       })
       var boxes = _.map(subwidgets, function(sw) {
         return { x:0, y:0, w:sw.dim.width, h:sw.dim.height }
@@ -240,16 +187,17 @@ $(document).ready(function() {
         SVG.transform(grp, "translate("+x+", "+y+")")
         gg.appendChild(grp)
       })
-      return widget("group", gg, {width: cols*maxwidth, height: rows*maxheight})
-	},
-    flow: function(element) {
+      return Widgetizer.widget("group", gg, {width: cols*maxwidth, height: rows*maxheight})
+	}
+	
+    Widgetizer.widgetizers.flow = function(element) {
       // children are already widgetized...
       var direction = $(element).attr("direction") || "right"
       var anchor = $(element).attr("anchor") || "middle"
 	  // we must find topmost widgets...
-	  var nodes = findWidgetizedNodes(element, [], true)
+	  var nodes = Widgetizer.findWidgetizedNodes(element, [], true)
       subwidgets = _.map(nodes, function(e) {
-        return widgets[e.getAttribute("id")]
+        return Widgetizer.widgets[e.getAttribute("id")]
       })
       var boxes = _.map(subwidgets, function(sw) {
         return { x:0, y:0, w:sw.dim.width, h:sw.dim.height }
@@ -320,53 +268,11 @@ $(document).ready(function() {
         gg.appendChild(grp)
       })
       SVG.transform(gg, "translate("+(-xmin)+","+(-ymin)+")")
-      return widget("flow", gg, {width: xmax-xmin, height: ymax-ymin})
+      return Widgetizer.widget("flow", gg, {width: xmax-xmin, height: ymax-ymin})
     }
-  }
-
-  var makeWidget = function(element) {
-    /* if the widget has subwidgets, create them... */
-    widgetize(element)
-	/* create the widget */
-    var type = element.nodeName.split(":")[1]
-    var widgetizer = widgetizers[type]
-    if(widgetizer) {
-      /* we can run widgetizer on an element... */
-      var output = widgetizer(element)
-      if(output) {        
-        // replace element with output
-        $(element).replaceWith(output.element)
-        // console.log(output) -> this causes error under node=webkit on Windows
-        return output;
-      }
-    } else {
-      console.warn("Unknown widget type: "+type)
-      return null
-    }
-  }
-
-
-  var findWidgetizedNodes = function(node, inNodes, childrenOnly) {
-	return findTopmostNodes(node, inNodes, childrenOnly, function(node) {
-		return !!$(node).attr("data-wow")
-	})
-  }
   
-  var findWowNodes = function(node, inNodes, childrenOnly) {
-	return findTopmostNodes(node, inNodes, childrenOnly, function(node) {
-		return node.nodeName.startsWith("wow:")
-	})
-  }
-  
-  /* make widgets from node's descendants... */
-  var widgetize = function(node) {
-    var node = node || document
-	var nodes = findWowNodes(node, [], true)
-    _.each(nodes, makeWidget)
-  }
-
   /* widgetize the entire page */
-  widgetize()
+  Widgetizer.widgetize()
 
   // search for widgetized elements: $("[data-wow]")
 
@@ -480,23 +386,9 @@ $(document).ready(function() {
 
 $(document).ready(function(){
 
-$("#inner1").change(function() {
-  alert($(this).val())
-})
-
-
-
-function init(svg){
-          
-}
-
-  
-  $('#svg').svg({onLoad: init, settings: {
-         //viewBox: '0 0 400 200',
-         version: '1.1'
-          }
-  });
-
+	$("#inner1").change(function() {
+	  alert($(this).val())
+	})
   
 });
   
