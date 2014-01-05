@@ -1,4 +1,5 @@
-module.exports = function(window, SVG) {
+module.exports = function(window) {
+  console.log("Widgetizer script loading...")
   var document = window.document
   var Commons = require("./commons")
   var SVG = require("./svghelper")(window)
@@ -33,6 +34,7 @@ module.exports = function(window, SVG) {
   var Widgetizer = {
 	wowNS: "http://example.org/wow",
 	svgNS: "http://www.w3.org/2000/svg",
+	window: window,
 	SVG: SVG,
     $: $,
 	_: _,
