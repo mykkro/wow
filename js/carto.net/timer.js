@@ -2,6 +2,8 @@
 // The constructor should be called with
 // the parent object (optional, defaults to window).
 
+module.exports = function(window) {
+
 function Timer(){
     this.obj = (arguments.length)?arguments[0]:window;
     return this;
@@ -71,4 +73,7 @@ Timer.getNew = function(){
     var i = 0;
     while(Timer.set[i]) i++;
     return i;
+}
+
+return Timer
 }

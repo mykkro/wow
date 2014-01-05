@@ -1,9 +1,41 @@
-module.exports = function(window, document, SVG) {
+module.exports = function(window, SVG) {
+  var document = window.document
   var Commons = require("./commons")
+  var SVG = require("./svghelper")(window)
   var _ = require("underscore")
   var $ = require("jquery")(window)
 
+	/* Finds all nodes with nodeName == name */
+	$.fn.filterNode = function(name) {
+	  return this.find('*').filter(function() {
+		return this.nodeName === name;
+	  });
+	};
+
+	/* Finds all nodes with name NAME:sometag */
+	$.fn.filterByPrefix = function(name) {
+	  return this.find('*').filter(function() {
+		return this.nodeName.split(':')[0] === name;
+	  });
+	};
+
+
+	/* copy contents from old element to new one */
+	/* uses jQuery */
+	$.fn.moveChildren = function(to) {
+		this.children().each(function() {
+				$(to).append($(this))
+		})
+	}
+
+
+  
   var Widgetizer = {
+	wowNS: "http://example.org/wow",
+	svgNS: "http://www.w3.org/2000/svg",
+	SVG: SVG,
+    $: $,
+	_: _,
 	widgets: {},
 	widgetizers: {},
 	widgetId: 1,

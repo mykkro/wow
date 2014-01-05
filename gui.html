@@ -4,57 +4,23 @@
 
 	<script src="js/d3/d3.v3.min.js"></script>
 
-	<script src="js/carto.net/timer.js"></script>
-	<script src="js/carto.net/textbox.js"></script>
-
-  <script>
-
-
-// usage: 
-// $(document).filterNode("myapp:piechart")
-// --> problem je v tom, ze se to porad tvari jako jmeno myapp:piechart v namespace svg
-
-var $ = require("jquery")(window)
-var _ = require("underscore")
-var PieChart = require("./js/piechart")(document)
-var SVG = require("./js/svghelper")(document)
-var Dim = require("./js/dim")
-var Widgetizer = require("./js/widgetizer")(window, document, SVG)
-var svgsvg;
+	<script>
+	var textbox = require("./js/carto.net/textbox")(window)
+	var PieChart = require("./js/piechart")(window)
+	var Widgetizer = require("./js/widgetizer")(window)
+	var SVG = Widgetizer.SVG
+	var $ = Widgetizer.$
+	var _ = Widgetizer._
+	var svgsvg;
 
 /* commonly used DOM namespaces */
-var wowNS = "http://example.org/wow"
-var svgNS = "http://www.w3.org/2000/svg"
 
 
-d3.ns.prefix.wow = wowNS
+d3.ns.prefix.wow = Widgetizer.wowNS
 
 $(document).ready(function() {
 
 	svgsvg = document.getElementById("svg")
-
-	/* Finds all nodes with nodeName == name */
-	$.fn.filterNode = function(name) {
-	  return this.find('*').filter(function() {
-		return this.nodeName === name;
-	  });
-	};
-
-	/* Finds all nodes with name NAME:sometag */
-	$.fn.filterByPrefix = function(name) {
-	  return this.find('*').filter(function() {
-		return this.nodeName.split(':')[0] === name;
-	  });
-	};
-
-
-	/* copy contents from old element to new one */
-	/* uses jQuery */
-	var moveChildren = function(from, to) {
-		$(from).children().each(function() {
-				$(to).append($(this))
-		})
-	}
 
 
 	
@@ -74,12 +40,13 @@ $(document).ready(function() {
   }
 	
   Widgetizer.widgetizers.box = function(element) {
-		var width = $(element).attr("width") || 100
-		var height = $(element).attr("height") || 100
-		var fill = $(element).attr("fill") || "gray"
+        var $e = $(element)
+		var width = $e.attr("width") || 100
+		var height = $e.attr("height") || 100
+		var fill = $e.attr("fill") || "gray"
 		var newElement = SVG.box({width:width,height:height,fill:fill})
         var ww = Widgetizer.widget("box", newElement)
-		moveChildren(element, ww.element)
+		$e.moveChildren(ww.element)
 		return ww
   }
   

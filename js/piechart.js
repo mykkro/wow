@@ -1,4 +1,5 @@
-module.exports = function(document) {
+module.exports = function(window) {
+	var document = window.document
 
     /**
      * Create a <g> element and draw a pie chart into it.
