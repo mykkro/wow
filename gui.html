@@ -2,248 +2,26 @@
 <html>
 <head>
 
-	<script src="js/d3/d3.v3.min.js"></script>
-
 	<script>
-	var textbox = require("./js/carto.net/textbox")(window)
-	var PieChart = require("./js/piechart")(window)
 	var Widgetizer = require("./js/widgetizer")(window)
-	var SVG = Widgetizer.SVG
 	var $ = Widgetizer.$
 	var _ = Widgetizer._
-	var svgsvg;
 
-/* commonly used DOM namespaces */
+	$(document).ready(function() {
 
+		/* load widgets... */
+		require("./js/widgets/piechart/piechart")(Widgetizer)
+		require("./js/widgets/box/box")(Widgetizer)
+		require("./js/widgets/grid/grid")(Widgetizer)
+		require("./js/widgets/flow/flow")(Widgetizer)
+		require("./js/widgets/textbox/textbox")(Widgetizer)
 
-d3.ns.prefix.wow = Widgetizer.wowNS
+		/* widgetize the entire page */
+		Widgetizer.widgetize()
 
-$(document).ready(function() {
+		// search for widgetized elements: $("[data-wow]")
 
-	svgsvg = document.getElementById("svg")
-
-
-	
-  Widgetizer.widgetizers.piechart = function(element) {
-      /* pie chart has several slices */
-      var slices = $(element).filterNode("wow:pieslice")
-      slices = _.map(slices, function(s) {
-        var $s = $(s)
-        return {label:$s.attr("label"), value:parseFloat($s.attr("value")), color:$s.attr("color")}
-      })
-
-      /* create pie chart */
-      var newElement = PieChart(slices, 50, 50, 40, 110, 10)
-
-        return Widgetizer.widget("piechart", newElement)
-
-  }
-	
-  Widgetizer.widgetizers.box = function(element) {
-        var $e = $(element)
-		var width = $e.attr("width") || 100
-		var height = $e.attr("height") || 100
-		var fill = $e.attr("fill") || "gray"
-		var newElement = SVG.box({width:width,height:height,fill:fill})
-        var ww = Widgetizer.widget("box", newElement)
-		$e.moveChildren(ww.element)
-		return ww
-  }
-  
-  Widgetizer.widgetizers.textbox = function(element) {
-		var maxChars = $(element).attr("maxchars") || 20
-		var newElement = SVG.group()
-		var newId = Widgetizer.newWidgetId("wow-textfield-")
-		var text = $(element).text() || $(element).attr("value")
-		var tb = new textbox({
-			id: newId,
-			parentNode: newElement,
-			defaultVal: text, 
-			maxChars: maxChars,
-			x: 0,
-			y: 0,
-			boxWidth: 200,
-			boxHeight: 30,
-			textYOffset: 22,
-			textStyles: {"font-family":"Arial,Helvetica","font-size":15,"fill":"dimgray"},
-			boxStyles: {"fill":"white","stroke":"dimgray","stroke-width":1.5},
-			cursorStyles: {"stroke":"red","stroke-width":1.5},
-			selBoxStyles: {"fill":"blue","opacity":0.5},
-			allowedChars: "[a-zA-Z ]",
-			functionToCall: function(textboxId, value, changeType) { console.log(value); }
-		});
-		return Widgetizer.widget("textbox", newElement)
-	}
-	
-    Widgetizer.widgetizers.grid = function(element) {
-      // children are already widgetized...
-      var uniformRows = ($(element).attr("uniformRows") == "true")
-      var uniformColumns = ($(element).attr("uniformColumns") == "true")
-      var rows = $(element).attr("rows") || 3
-      var cols = $(element).attr("cols") || 3
-      var halign = $(element).attr("halign") || "center"
-      var valign = $(element).attr("valign") || "center"
-	  // we must find topmost widgets...
-	  var nodes = Widgetizer.findWidgetizedNodes(element, [], true)
-      subwidgets = _.map(nodes, function(e) {
-        return Widgetizer.widgets[e.getAttribute("id")]
-      })
-      var boxes = _.map(subwidgets, function(sw) {
-        return { x:0, y:0, w:sw.dim.width, h:sw.dim.height }
-      })
-      var gg = SVG.group()
-      var x = 0
-      var y = 0
-      var xmin=0,ymin=0,xmax=0,ymax=0
-      var maxwidth=0, maxheight=0
-	  var maxwidths = []
-	  var maxheights = []
-	  for(var row=0; row<rows; row++) maxheights[row] = 0
-	  for(var col=0; col<cols; col++) maxwidths[col] = 0	  
-	  var col = 0
-	  var row = 0
-      _.each(boxes, function(box) {
-        maxwidth = Math.max(maxwidth, box.w)
-        maxheight = Math.max(maxheight, box.h)
-		if(maxwidths[col] < box.w) maxwidths[col] = box.w
-		if(maxheights[row] < box.h) maxheights[row] = box.h
-		col++;
-		if(col == cols) {
-		  col = 0;
-		  row++;
-		}
-		if(row == rows) {
-			return
-		}
-      })
-	  col = 0
-	  row = 0
-	  var x0 = 0
-	  var y0 = 0
-	  var cellWidth
-	  var cellHeight
-      _.each(subwidgets, function(widget) {
-	    x = x0
-		y = y0
-		cellWidth = uniformColumns ?  maxwidth : maxwidths[col]
-		cellHeight = uniformRows ? maxheight : maxheights[row]
-		gg.appendChild(SVG.box({x:x, y:y, width:cellWidth, height:cellHeight, fill:((col+row)%2)?"#ffd":"#dff", stroke:"none"}))
-		if(valign == "center") {
-			y += (cellHeight-widget.dim.height)/2
-		} else if(valign == "bottom") {
-			y += (cellHeight-widget.dim.height)
-		}
-		if(halign == "center") {
-			x += (cellWidth-widget.dim.width)/2
-		} else if(halign == "right") {
-			x += (cellWidth-widget.dim.width)
-		}
-		col++;
-		x0 += cellWidth
-		if(col == cols) {
-		  col = 0;
-		  x0 = 0
-		  row++;
-		  y0 += cellHeight
-		}
-		if(row == rows) {
-			return
-		}
-        var grp = SVG.group()
-        grp.appendChild(widget.element)		
-        SVG.transform(grp, "translate("+x+", "+y+")")
-        gg.appendChild(grp)
-      })
-      return Widgetizer.widget("group", gg, {width: cols*maxwidth, height: rows*maxheight})
-	}
-	
-    Widgetizer.widgetizers.flow = function(element) {
-      // children are already widgetized...
-      var direction = $(element).attr("direction") || "right"
-      var anchor = $(element).attr("anchor") || "middle"
-	  // we must find topmost widgets...
-	  var nodes = Widgetizer.findWidgetizedNodes(element, [], true)
-      subwidgets = _.map(nodes, function(e) {
-        return Widgetizer.widgets[e.getAttribute("id")]
-      })
-      var boxes = _.map(subwidgets, function(sw) {
-        return { x:0, y:0, w:sw.dim.width, h:sw.dim.height }
-      })
-      var gg = SVG.group()
-      var x = 0
-      var y = 0
-      var xmin=0,ymin=0,xmax=0,ymax=0
-      var maxwidth=0, maxheight=0
-      _.each(boxes, function(box) {
-        maxwidth = Math.max(maxwidth, box.w)
-        maxheight = Math.max(maxheight, box.h)
-      })
-      var horiz = !(direction=="up" || direction=="down")
-      // apply anchor...
-      _.each(boxes, function(box) {
-        if(horiz) {
-          // set y coordinates
-          var y=0
-          if(anchor=="bottom") {
-            y=maxheight-box.h
-          } else if(anchor=="middle") {
-            y=(maxheight-box.h)/2
-          }
-          box.y = y
-        } else {
-          // set x coordinates
-          var x=0
-          if(anchor=="right") {
-            x=maxwidth-box.w
-          } else if(anchor=="middle") {
-            x=(maxwidth-box.w)/2
-          }
-          box.x = x
-        }
-      })
-      // apply direction...
-      _.each(boxes, function(box) {
-        if(direction=="right") {
-          box.x = x
-          x += box.w
-          xmax = x
-          ymax = Math.max(ymax, box.h)
-        } else if(direction=="left") {
-          x -= box.w
-          box.x = x
-          xmin = x
-          ymax = Math.max(ymax, box.h)
-        } else if(direction=="up") {
-          y -= box.h
-          box.y = y
-          ymin = y
-          xmax = Math.max(xmax, box.w)
-        } else if(direction=="down") {
-          box.y = y
-          y += box.h
-          ymax = y
-          xmax = Math.max(xmax, box.w)
-        } 
-      })
-      // lay out widgets...
-      _.each(subwidgets, function(widget, i) {
-        var grp = SVG.group()
-        grp.appendChild(widget.element)
-        // do layout...
-        var box = boxes[i]
-        SVG.transform(grp, "translate("+box.x+", "+box.y+")")
-        gg.appendChild(grp)
-      })
-      SVG.transform(gg, "translate("+(-xmin)+","+(-ymin)+")")
-      return Widgetizer.widget("flow", gg, {width: xmax-xmin, height: ymax-ymin})
-    }
-  
-  /* widgetize the entire page */
-  Widgetizer.widgetize()
-
-  // search for widgetized elements: $("[data-wow]")
-
-})
+	})
 	</script>
 </head>
 <body>
@@ -346,19 +124,5 @@ $(document).ready(function() {
 
 </svg>
 
-
-
-
-  <script>
-
-$(document).ready(function(){
-
-	$("#inner1").change(function() {
-	  alert($(this).val())
-	})
-  
-});
-  
-  </script>
 </body>
 </html>

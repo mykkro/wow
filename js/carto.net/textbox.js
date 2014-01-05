@@ -48,11 +48,12 @@ If you use this control, please link to the original (http://www.carto.net/paper
 somewhere in the source-code-comment or the "about" of your project and give credits, thanks!
 
 */
-module.exports = function(window) {
+module.exports = function(window, svgsvg) {
 
 var svgNS = "http://www.w3.org/2000/svg"
 var document = window.document
 var Timer = require("./timer")(window)
+
 
 function textbox(d) {
 	// d = {id: parentNode: defaultVal: maxChars: x: y: boxWidth: boxHeight: textYOffset: textStyles: boxStyles: cursorStyles: selBoxStyles: allowedChars: functionToCall:}
