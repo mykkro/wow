@@ -1,0 +1,36 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title>Page Info</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		var url = require('url')
+		
+		var out = function(label, value) {
+			$(".main").append($("<p>").append($("<span>").text(label), $("<pre>").text(value)))
+		}
+		
+		var outJSON = function(label, value) {
+			out(label, JSON.stringify(value, null, 2))
+		}
+		
+		console.log("Ready!")
+		var loc = window.location.href
+		out("window.location", loc)
+		
+		// !!! hash string must be AFTER the querystring
+		// Ex.: file:/// ... /wow/test/pageinfo/index.html?a=b#hashed
+		var parsed = url.parse(loc, true)
+		outJSON("parsed URL", parsed)
+	})
+	</script>
+    </head>
+    <body>
+     <h1>Page Information</h1>
+	 <div class="main">
+	 </div>
+    </body>
+    </html>
