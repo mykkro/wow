@@ -79,13 +79,13 @@ module.exports = function(Widgetizer) {
 		  row++;
 		  y0 += cellHeight
 		}
-		if(row == rows) {
-			return
-		}
         var grp = SVG.group()
         grp.appendChild(widget.element)		
         SVG.transform(grp, "translate("+x+", "+y+")")
         gg.appendChild(grp)
+		if(row == rows) {
+			return
+		}
       })
       return Widgetizer.widget(widgetname, gg, {width: cols*maxwidth, height: rows*maxheight})
 	}

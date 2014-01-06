@@ -16,20 +16,20 @@
 		require("./js/widgets/flow/flow")(Widgetizer)
 		require("./js/widgets/textbox/textbox")(Widgetizer)
 		require("./js/widgets/text/text")(Widgetizer)
+		require("./js/widgets/viewport/viewport")(Widgetizer)
 
 		/* widgetize the entire page */
 		Widgetizer.widgetize()
 		
-		var SVG = Widgetizer.SVG
-		var se = SVG.svg({width:100, height: 100}, {x:0, y:0, width: 10, height: 10})
-		bb1 = SVG.measure(se);
-		document.getElementById("svg").appendChild(se);
-		bb2 = SVG.measure(se);
-
 		// search for widgetized elements: $("[data-wow]")
 
 	})
 	</script>
+	<style type="text/css">
+	html, svg {
+		-webkit-font-smoothing: antialiased;
+	}
+	</style>
 </head>
 <body>
 
@@ -66,7 +66,7 @@
   </g>
 
 
-<wow:grid cols="3"rows="3" valign="center" halign="center" uniformColumns="false" uniformRows="true">
+<wow:grid cols="3" rows="3" valign="center" halign="center" uniformColumns="false" uniformRows="true">
     <wow:piechart name="foo" title="Sales by Region">
       <wow:pieslice label="Northern Region" value="1.23" color="blue"/>
       <wow:pieslice label="Eastern Region" value="2.53" color="red"/>
@@ -110,6 +110,15 @@
 <wow:text width="100" height="100" class="mytext">
 Multiline text that needs wrapping
 </wow:text>
+
+<wow:viewport width="200" height="100">
+	<wow:box width=30 height=30 fill="cyan"></wow:box>
+</wow:viewport>
+
+<wow:viewport width="200" height="100" preserveAspectRatio="none">
+<rect x="20" y="20" width="60" height="60" fill="blue"></rect>
+<rect x="40" y="40" width="60" height="60" fill="red"></rect>
+</wow:viewport>
 	
 	</wow:grid>
 
