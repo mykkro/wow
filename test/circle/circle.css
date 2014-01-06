@@ -1,0 +1,24 @@
+        circle {
+           stroke: blue;
+	   stroke-width: 3px;
+           fill:   #00cc00;
+        }
+
+	svg body, svg p {
+	  margin: 0;
+	  padding: 0;
+	}
+
+	svg p {
+	  font-size: 20px;
+	  text-align: right;
+	}
+
+	svg textArea {
+	  color: blue;
+	  font-size: 20px;
+	  background-color: orange;
+	  text-align: right;
+	  vertical-align: middle;
+	}
+

@@ -15,6 +15,7 @@
 		require("./js/widgets/grid/grid")(Widgetizer)
 		require("./js/widgets/flow/flow")(Widgetizer)
 		require("./js/widgets/textbox/textbox")(Widgetizer)
+		require("./js/widgets/text/text")(Widgetizer)
 
 		/* widgetize the entire page */
 		Widgetizer.widgetize()
@@ -59,7 +60,7 @@
   </g>
 
 
-<wow:grid cols="2"rows="3" valign="center" halign="center" uniformColumns="false" uniformRows="true">
+<wow:grid cols="3"rows="3" valign="center" halign="center" uniformColumns="false" uniformRows="true">
     <wow:piechart name="foo" title="Sales by Region">
       <wow:pieslice label="Northern Region" value="1.23" color="blue"/>
       <wow:pieslice label="Eastern Region" value="2.53" color="red"/>
@@ -99,7 +100,13 @@
       <wow:pieslice label="C++" value="2" color="purple"/>
       <wow:pieslice label="C++" value="2" color="salmon"/>
     </wow:piechart>
-</wow:grid>
+
+<wow:text width="100" height="100" class="mytext">
+Multiline text that needs wrapping
+</wow:text>
+	
+	</wow:grid>
+
 
 
 
