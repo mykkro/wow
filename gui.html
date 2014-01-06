@@ -19,6 +19,12 @@
 
 		/* widgetize the entire page */
 		Widgetizer.widgetize()
+		
+		var SVG = Widgetizer.SVG
+		var se = SVG.svg({width:100, height: 100}, {x:0, y:0, width: 10, height: 10})
+		bb1 = SVG.measure(se);
+		document.getElementById("svg").appendChild(se);
+		bb2 = SVG.measure(se);
 
 		// search for widgetized elements: $("[data-wow]")
 

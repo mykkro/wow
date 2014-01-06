@@ -4,6 +4,19 @@ var SvgHelper = function(window) {
 	var svgNS = "http://www.w3.org/2000/svg"
 	var htmlNS = "http://www.w3.org/1999/xhtml"
 	return {
+		svg: function(dim, vbox, par) {
+			if(!dim) dim = {}				
+		    var bbe = document.createElementNS(svgNS, "svg");
+			bbe.setAttribute("width", dim.width || 10);         
+			bbe.setAttribute("height", dim.height || 10);			
+			if(vbox) {
+				bbe.setAttribute("viewBox", vbox.x+" "+vbox.y+" "+vbox.width+" "+vbox.height);			
+			}
+			if(par) {
+				bbe.setAttribute("preserveAspectRatio", par)
+			}
+			return bbe;
+		},
 		box: function(bbox) {
 			if(!bbox) bbox = {}				
 		    var bbe = document.createElementNS(svgNS, "rect");
@@ -58,6 +71,15 @@ var SvgHelper = function(window) {
 			return node
 		},
 		measure: function(node, tempGroupId) {
+			if(node.nodeName == "svg" || node.nodename=="foreignObject") {
+				/* svg and foreign object must be handled as special case */
+				return { 
+					x: parseFloat(node.getAttribute("x") || 0),
+					y: parseFloat(node.getAttribute("y") || 0),
+					width: parseFloat(node.getAttribute("width")),
+					height: parseFloat(node.getAttribute("height"))
+				}
+			} 
   			var tempGroup = document.getElementById(tempGroupId || "tempgroup")
 		    tempGroup.appendChild(node)
 		    var bbox = node.getBBox()
