@@ -29,7 +29,6 @@ module.exports = function(window) {
 		})
 	}
 
-
   
   var Widgetizer = {
 	wowNS: "http://example.org/wow",
