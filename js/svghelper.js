@@ -1,4 +1,3 @@
-
 var SvgHelper = function(window) {
 	var document = window.document
 	var svgNS = "http://www.w3.org/2000/svg"
@@ -29,9 +28,7 @@ var SvgHelper = function(window) {
 			bbe.setAttribute("stroke", bbox.stroke || "black");  
 			return bbe;
 		},
-		image: function(bbox, embed) {
-			console.log("Embedding image: "+embed);
-			// TODO if embed, load SVG and create an inline SVG file
+		image: function(bbox) {
 			if(!bbox) bbox = {}				
 		    var bbe = document.createElementNS(svgNS, "image");
 			bbe.setAttribute("width", bbox.width || 100);         
