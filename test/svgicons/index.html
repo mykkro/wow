@@ -1,0 +1,66 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title></title>
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<script>
+	$(document).ready(function() {
+	
+	/*
+     * Replace all SVG images with inline SVG
+     */
+        jQuery('img.svg').each(function(){
+            var $img = jQuery(this);
+            var imgID = $img.attr('id');
+            var imgW = $img.attr('width');
+            var imgH = $img.attr('height');
+            var imgClass = $img.attr('class');
+            var imgURL = $img.attr('src');
+
+			// from: http://stackoverflow.com/questions/11978995/how-to-change-color-of-svg-image-using-css-jquery-svg-image-replacement
+            jQuery.get(imgURL, function(data) {
+                // Get the SVG tag, ignore the rest
+                var $svg = jQuery(data).find('svg');
+
+                // Add replaced image's ID to the new SVG
+                if(typeof imgID !== 'undefined') {
+                    $svg.attr('id', imgID);
+                }
+                if(typeof imgW !== 'undefined') {
+                    $svg.attr('width', imgW);
+                }
+                if(typeof imgH !== 'undefined') {
+                    $svg.attr('height', imgH);
+                }
+                // Add replaced image's classes to the new SVG
+                if(typeof imgClass !== 'undefined') {
+                    $svg.attr('class', imgClass+' replaced-svg');
+                }
+
+                // Remove any invalid XML tags as per http://validator.w3.org
+                $svg.removeAttr('xmlns:a');
+                $svg.removeAttr('xml:space');
+                $svg.removeAttr('enable-background');
+				
+				// remove fill attribute from svg subelements...
+				$svg.find('*').removeAttr("fill");
+
+                // Replace image with new SVG
+                $img.replaceWith($svg);
+
+            }, 'xml');
+
+        });
+	})
+	</script>
+    </head>
+    <body>
+     <img id="foo" class="svg bar" width="100" height="100" src="../../icons/modern-ui/forest.svg"/>
+     <img id="foo2" class="svg bar" width="100" height="100" src="../../icons/SVG/archive.svg"/>
+     <img id="foo3" class="svg bar" width="100" height="100" src="../../icons/SVG/stackoverflow.svg"/>
+    </body>
+    </html>
+
+   
