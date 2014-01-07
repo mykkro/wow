@@ -1,7 +1,7 @@
 module.exports = function(Widgetizer) {
 	/* common fields... */
 	var window = Widgetizer.window
-	var SVG = Widgetizer.SVG
+	var SvgHelper = Widgetizer.SvgHelper
 	var $ = Widgetizer.$
 	var _ = Widgetizer._
 

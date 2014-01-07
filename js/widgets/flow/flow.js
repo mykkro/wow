@@ -1,7 +1,7 @@
 module.exports = function(Widgetizer) {
 	/* common fields... */
 	var window = Widgetizer.window
-	var SVG = Widgetizer.SVG
+	var SvgHelper = Widgetizer.SvgHelper
 	var $ = Widgetizer.$
 	var _ = Widgetizer._
 
@@ -20,7 +20,7 @@ module.exports = function(Widgetizer) {
       var boxes = _.map(subwidgets, function(sw) {
         return { x:0, y:0, w:sw.dim.width, h:sw.dim.height }
       })
-      var gg = SVG.group()
+      var gg = SvgHelper.group()
       var x = 0
       var y = 0
       var xmin=0,ymin=0,xmax=0,ymax=0
@@ -78,14 +78,14 @@ module.exports = function(Widgetizer) {
       })
       // lay out widgets...
       _.each(subwidgets, function(widget, i) {
-        var grp = SVG.group()
+        var grp = SvgHelper.group()
         grp.appendChild(widget.element)
         // do layout...
         var box = boxes[i]
-        SVG.transform(grp, "translate("+box.x+", "+box.y+")")
+        SvgHelper.transform(grp, "translate("+box.x+", "+box.y+")")
         gg.appendChild(grp)
       })
-      SVG.transform(gg, "translate("+(-xmin)+","+(-ymin)+")")
+      SvgHelper.transform(gg, "translate("+(-xmin)+","+(-ymin)+")")
       return Widgetizer.widget(widgetname, gg, {width: xmax-xmin, height: ymax-ymin})
     }
 

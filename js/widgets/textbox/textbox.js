@@ -1,7 +1,7 @@
 module.exports = function(Widgetizer) {
 	/* common fields... */
 	var window = Widgetizer.window
-	var SVG = Widgetizer.SVG
+	var SvgHelper = Widgetizer.SvgHelper
 	var $ = Widgetizer.$
 	var _ = Widgetizer._
 	var svgsvg = window.document.getElementById("svg")
@@ -12,7 +12,7 @@ module.exports = function(Widgetizer) {
 		
 	var factory = function(element) {
 		var maxChars = $(element).attr("maxchars") || 20
-		var newElement = SVG.group()
+		var newElement = SvgHelper.group()
 		var newId = Widgetizer.newWidgetId("wow-textfield-")
 		var text = $(element).text() || $(element).attr("value")
 		var tb = new textbox({

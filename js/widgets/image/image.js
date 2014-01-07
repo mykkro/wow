@@ -1,7 +1,7 @@
 module.exports = function(Widgetizer) {
 	/* common fields... */
 	var window = Widgetizer.window
-	var SVG = Widgetizer.SVG
+	var SvgHelper = Widgetizer.SvgHelper
 	var $ = Widgetizer.$
 	var _ = Widgetizer._
 
@@ -35,7 +35,7 @@ module.exports = function(Widgetizer) {
 		var attrs = { width: 100, height: 100 }
 		getAttrs($e, attrs, { "width":"number", "height":"number", "src":"string", "class":"string", "name":"string"})
 		var embed = isTrueAttr($e, "embed")
-		var newElement = SVG.image(attrs) 
+		var newElement = SvgHelper.image(attrs) 
         var ww = Widgetizer.widget(widgetname, newElement, {width:attrs.width,height:attrs.height})
 		if(embed) {
 			// from: http://stackoverflow.com/questions/11978995/how-to-change-color-of-svg-image-using-css-jquery-svg-image-replacement

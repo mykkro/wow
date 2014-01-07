@@ -1,7 +1,7 @@
 module.exports = function(Widgetizer) {
 	/* common fields... */
 	var window = Widgetizer.window
-	var SVG = Widgetizer.SVG
+	var SvgHelper = Widgetizer.SvgHelper
 	var $ = Widgetizer.$
 	var _ = Widgetizer._
 
@@ -24,7 +24,7 @@ module.exports = function(Widgetizer) {
       var boxes = _.map(subwidgets, function(sw) {
         return { x:0, y:0, w:sw.dim.width, h:sw.dim.height }
       })
-      var gg = SVG.group()
+      var gg = SvgHelper.group()
       var x = 0
       var y = 0
       var xmin=0,ymin=0,xmax=0,ymax=0
@@ -60,7 +60,7 @@ module.exports = function(Widgetizer) {
 		y = y0
 		cellWidth = uniformColumns ?  maxwidth : maxwidths[col]
 		cellHeight = uniformRows ? maxheight : maxheights[row]
-		gg.appendChild(SVG.box({x:x, y:y, width:cellWidth, height:cellHeight, fill:((col+row)%2)?"#ffd":"#dff", stroke:"none"}))
+		gg.appendChild(SvgHelper.box({x:x, y:y, width:cellWidth, height:cellHeight, fill:((col+row)%2)?"#ffd":"#dff", stroke:"none"}))
 		if(valign == "center") {
 			y += (cellHeight-widget.dim.height)/2
 		} else if(valign == "bottom") {
@@ -79,9 +79,9 @@ module.exports = function(Widgetizer) {
 		  row++;
 		  y0 += cellHeight
 		}
-        var grp = SVG.group()
+        var grp = SvgHelper.group()
         grp.appendChild(widget.element)		
-        SVG.transform(grp, "translate("+x+", "+y+")")
+        SvgHelper.transform(grp, "translate("+x+", "+y+")")
         gg.appendChild(grp)
 		if(row == rows) {
 			return

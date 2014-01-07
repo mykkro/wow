@@ -1,7 +1,7 @@
 module.exports = function(Widgetizer) {
 	/* common fields... */
 	var window = Widgetizer.window
-	var SVG = Widgetizer.SVG
+	var SvgHelper = Widgetizer.SvgHelper
 	var $ = Widgetizer.$
 	var _ = Widgetizer._
 
@@ -13,7 +13,7 @@ module.exports = function(Widgetizer) {
 		var width = $e.attr("width") || 100
 		var height = $e.attr("height") || 100
 		var fill = $e.attr("fill") || "gray"
-		var newElement = SVG.box({width:width,height:height,fill:fill})
+		var newElement = SvgHelper.box({width:width,height:height,fill:fill})
         var ww = Widgetizer.widget(widgetname, newElement)
 		$e.moveChildren(ww.element)
 		return ww

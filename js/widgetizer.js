@@ -2,7 +2,7 @@ module.exports = function(window, $) {
   console.log("Widgetizer script loading...")
   var document = window.document
   var Commons = require("./commons")
-  var SVG = require("./svghelper")(window)
+  var SvgHelper = require("./svghelper")(window)
   var _ = require("underscore")
 
 	/* Finds all nodes with nodeName == name */
@@ -33,7 +33,7 @@ module.exports = function(window, $) {
 	wowNS: "http://example.org/wow",
 	svgNS: "http://www.w3.org/2000/svg",
 	window: window,
-	SVG: SVG,
+	SvgHelper: SvgHelper,
     $: $,
 	_: _,
 	widgets: {},
@@ -44,7 +44,7 @@ module.exports = function(window, $) {
 	},
 	widget: function(type, element, dim) {
 		var id = this.newWidgetId()
-		var group = SVG.attrs(SVG.group(), {
+		var group = SvgHelper.attrs(SvgHelper.group(), {
 		  "data-wow": type,
 		  "id": id
 		})
@@ -59,24 +59,24 @@ module.exports = function(window, $) {
 		}
 
 		// in order to get bounding box, the node must be inserted in the DOM
-		var bbox = SVG.measure(group)
+		var bbox = SvgHelper.measure(group)
 		if(!dim) dim = { 
 			width: bbox.x+bbox.width,
 			height: bbox.y+bbox.height
 		}
 
 		// add text with size info and ID
-		var txt = SVG.text(id+" ("+(dim.width).toFixed(1)+", "+(dim.height).toFixed(1)+")", {"x":dim.width, "y":10, "fill":"#333", "font-size":10, "font-family":"Verdana", "text-anchor":"end"})
+		var txt = SvgHelper.text(id+" ("+(dim.width).toFixed(1)+", "+(dim.height).toFixed(1)+")", {"x":dim.width, "y":10, "fill":"#333", "font-size":10, "font-family":"Verdana", "text-anchor":"end"})
 		group.appendChild(txt)
 		
 		// add widget bounding box...
-		var bbe = SVG.box(bbox)
-		SVG.attr(bbe, "stroke", "blue");
+		var bbe = SvgHelper.box(bbox)
+		SvgHelper.attr(bbe, "stroke", "blue");
 		group.appendChild(bbe);   
 
 		// add size box...
-		var bbe = SVG.box(dim)
-		SVG.attr(bbe, "stroke", "gray");
+		var bbe = SvgHelper.box(dim)
+		SvgHelper.attr(bbe, "stroke", "gray");
 		group.appendChild(bbe);   
 
 		// return widget object
