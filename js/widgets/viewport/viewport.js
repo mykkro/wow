@@ -1,7 +1,7 @@
 module.exports = function(Widgetizer) {
 	/* common fields... */
 	var window = Widgetizer.window
-	var SVG = Widgetizer.SVG
+	var SvgHelper = Widgetizer.SvgHelper
 	var $ = Widgetizer.$
 	var _ = Widgetizer._
 
@@ -25,14 +25,14 @@ module.exports = function(Widgetizer) {
 				vbox = { x:0, y:0, width: widget.dim.width, height: widget.dim.height }
 			} else {
 				// get bounding box of the contents and set viewbox accordingly...
-				var g = SVG.group()
+				var g = SvgHelper.group()
 				$e.moveChildren(g)
-				var bbox = SVG.measure(g)
+				var bbox = SvgHelper.measure(g)
 				vbox = { x:bbox.x, y:bbox.y, width: bbox.width, height: bbox.height }
 				$(g).moveChildren($e)
 			}
 		} 
-		var newElement = SVG.svg(dim, vbox, par)
+		var newElement = SvgHelper.svg(dim, vbox, par)
 		if(vboxAttr) newElement.setAttribute("viewBox", vboxAttr)
         var ww = Widgetizer.widget(widgetname, newElement, dim)
 		$e.moveChildren(newElement)
