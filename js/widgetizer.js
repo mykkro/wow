@@ -1,10 +1,9 @@
-module.exports = function(window) {
+module.exports = function(window, $) {
   console.log("Widgetizer script loading...")
   var document = window.document
   var Commons = require("./commons")
   var SVG = require("./svghelper")(window)
   var _ = require("underscore")
-  var $ = require("jquery")(window)
 
 	/* Finds all nodes with nodeName == name */
 	$.fn.filterNode = function(name) {

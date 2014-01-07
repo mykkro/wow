@@ -34,9 +34,32 @@ module.exports = function(Widgetizer) {
         var $e = $(element)
 		var attrs = { width: 100, height: 100 }
 		getAttrs($e, attrs, { "width":"number", "height":"number", "src":"string", "class":"string", "name":"string"})
-		var newElement = SVG.image(attrs, isTrueAttr($e, "embed")) 
+		var embed = isTrueAttr($e, "embed")
+		var newElement = SVG.image(attrs) 
         var ww = Widgetizer.widget(widgetname, newElement, {width:attrs.width,height:attrs.height})
-		$e.moveChildren(ww.element)
+		if(embed) {
+			// from: http://stackoverflow.com/questions/11978995/how-to-change-color-of-svg-image-using-css-jquery-svg-image-replacement
+			$.get(attrs.src, function(data) {
+				// TODO this does not work here!
+				console.log("Loading image for embedding...")
+				// Get the SVG tag, ignore the rest
+				var $svg = $(data).find('svg');
+				// Remove any invalid XML tags as per http://validator.w3.org
+				$svg.removeAttr('xmlns:a');
+				$svg.removeAttr('xml:space');
+				$svg.removeAttr('enable-background');
+				// remove fill attribute from svg subelements...
+				$svg.find('*').removeAttr("fill");
+
+				$svg.attr("width", attrs.width);         
+				$svg.attr("height", attrs.height);
+				console.log("SVG embedded!")
+				$(ww.element).find("image").replaceWith($svg)
+
+			}, 'xml');
+		
+		}
+
 		return ww
 	}
 	/***********************************************************************************************************/

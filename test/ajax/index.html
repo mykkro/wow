@@ -1,0 +1,23 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title>AJAX testing page</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		console.log("Ready!")
+		
+		$.getJSON("data.json").done(function(data) {
+			console.log("Data received!")
+			console.log(JSON.stringify(data))
+		})
+		
+	})
+	</script>
+    </head>
+    <body>
+     
+    </body>
+    </html>
