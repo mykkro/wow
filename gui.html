@@ -37,7 +37,13 @@
 			console.log(JSON.stringify(err))
 		})
 		
-		
+    var draw = SVG('svg1')
+
+    // create image
+    var image = draw.image('icons/SVG/air.svg')		
+    $("#btn1").click(function() {
+      var anim = image.animate(1000, SVG.easing.bounce).move(100, 100)
+    })
 	})
 	</script>
 	<style type="text/css">
@@ -49,7 +55,19 @@
 <body>
 
 <h1>My first SVG</h1>
-
+<div style="width:200px;height:200px;">
+<svg version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:wow="http://example.org/wow"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    unselectable="on" 
+    style="-webkit-user-select: none;"
+    id="svg1"
+    width="200"
+    height="200"
+    >
+  </svg> </div>
+  <button id="btn1">Start animation</button>
 <svg 
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
