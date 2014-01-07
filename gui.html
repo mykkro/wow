@@ -55,7 +55,7 @@
 <body>
 
 <h1>My first SVG</h1>
-<div style="width:200px;height:200px;">
+<div style="width:300px;height:200px;">
 <svg version="1.1"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:wow="http://example.org/wow"
@@ -63,9 +63,32 @@
     unselectable="on" 
     style="-webkit-user-select: none;"
     id="svg1"
-    width="200"
+    width="300"
     height="200"
     >
+<defs>
+    <filter id="dropShadow">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+    <feOffset dx="2" dy="4" />
+    <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+    </feMerge>
+  </filter>
+  <filter id="drop">
+            <feComponentTransfer result="offOut" in="SourceAlpha">
+                <feFuncA type="linear" />
+                <feFuncR type="discrete" tablevalues="0.5" />
+                <feFuncG type="discrete" tablevalues="1"/>
+                <feFuncB type="discrete" />
+            </feComponentTransfer>
+            <feOffset result="shadow" dx="2" dy="4" in="offOut" />
+            <feGaussianBlur stdDeviation="2" result="blurOut" in="shadow" />
+            <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+        </filter>
+  </defs>
+  <rect x="150" width="90" height="90" stroke="green" stroke-width="3"
+  fill="yellow" filter="url(#drop)" />    
   </svg> </div>
   <button id="btn1">Start animation</button>
 <svg 
