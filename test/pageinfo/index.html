@@ -8,6 +8,7 @@
 	<script>
 	$(document).ready(function() {
 		var url = require('url')
+		var path = require('path')
 		
 		var out = function(label, value) {
 			$(".main").append($("<p>").append($("<span>").text(label), $("<pre>").text(value)))
@@ -18,6 +19,13 @@
 		}
 		
 		console.log("Ready!")
+
+		out("path.normalize(process.cwd())", path.normalize(process.cwd()))
+		
+		out("process.cwd()", process.cwd())
+		out("process.env.APPDATA", process.env.APPDATA)
+		out("process.env.LOCALAPPDATA", process.env.LOCALAPPDATA)
+
 		var loc = window.location.href
 		out("window.location", loc)
 		
