@@ -3,6 +3,7 @@ var SvgHelper = function(window) {
 	var document = window.document
 	var svgNS = "http://www.w3.org/2000/svg"
 	var htmlNS = "http://www.w3.org/1999/xhtml"
+	var xlinkNS = "http://www.w3.org/1999/xlink"
 	return {
 		svg: function(dim, vbox, par) {
 			if(!dim) dim = {}				
@@ -26,6 +27,20 @@ var SvgHelper = function(window) {
 			bbe.setAttribute("height", bbox.height || 10);
 			bbe.setAttribute("fill", bbox.fill || "none");  
 			bbe.setAttribute("stroke", bbox.stroke || "black");  
+			return bbe;
+		},
+		image: function(bbox, embed) {
+			console.log("Embedding image: "+embed);
+			// TODO if embed, load SVG and create an inline SVG file
+			if(!bbox) bbox = {}				
+		    var bbe = document.createElementNS(svgNS, "image");
+			bbe.setAttribute("width", bbox.width || 100);         
+			bbe.setAttribute("height", bbox.height || 100);
+			bbe.setAttributeNS(xlinkNS, "href", bbox.src);  
+			// set additional attributes such as id, name, class...
+			for(var key in bbox) {
+				if(bbox[key] && key!="width" && key != "height" && key != "src") bbe.setAttribute(key, bbox[key])
+			}
 			return bbe;
 		},
 		mtext: function(text, options) {				

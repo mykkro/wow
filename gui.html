@@ -17,6 +17,7 @@
 		require("./js/widgets/textbox/textbox")(Widgetizer)
 		require("./js/widgets/text/text")(Widgetizer)
 		require("./js/widgets/viewport/viewport")(Widgetizer)
+		require("./js/widgets/image/image")(Widgetizer)
 
 		/* widgetize the entire page */
 		Widgetizer.widgetize()
@@ -39,13 +40,12 @@
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:wow="http://example.org/wow"
-    xmlns:xlink= "http://www.w3.org/1999/xlink"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
     unselectable="on" 
     style="-webkit-user-select: none;"
     id="svg"
 	tabindex='1'
     >
-<image xlink:href="icons/SVG/accessibility.svg" x="300" y="100" height="100" width="100"/>
 
  <defs>
     <pattern id="checkerPattern" width="80" height="80"
@@ -98,15 +98,6 @@
 	<wow:box width=150 height=140 fill="cyan"></wow:box>
 </wow:flow>
 
-    <wow:piechart name="bar" title="Sales by Region">
-      <wow:pieslice label="Python" value="1.23" color="blue"/>
-      <wow:pieslice label="Java" value="2.53" color="red"/>
-      <wow:pieslice label="C++" value="2" color="green"/>
-      <wow:pieslice label="C++" value="2" color="yellow"/>
-      <wow:pieslice label="C++" value="2" color="purple"/>
-      <wow:pieslice label="C++" value="2" color="salmon"/>
-    </wow:piechart>
-
 <wow:text width="100" height="100" class="mytext">
 Multiline text that needs wrapping
 </wow:text>
@@ -119,6 +110,8 @@ Multiline text that needs wrapping
 <rect x="20" y="20" width="60" height="60" fill="blue"></rect>
 <rect x="40" y="40" width="60" height="60" fill="red"></rect>
 </wow:viewport>
+	
+	<wow:image src="icons/SVG/accessibility.svg" class="fubar" name="foooo" embed="true"/>
 	
 	</wow:grid>
 
