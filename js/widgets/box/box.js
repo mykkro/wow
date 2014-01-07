@@ -14,7 +14,7 @@ module.exports = function(Widgetizer) {
 		var height = $e.attr("height") || 100
 		var fill = $e.attr("fill") || "gray"
 		var newElement = SVG.box({width:width,height:height,fill:fill})
-        var ww = Widgetizer.widget("box", newElement)
+        var ww = Widgetizer.widget(widgetname, newElement)
 		$e.moveChildren(ww.element)
 		return ww
 	}
