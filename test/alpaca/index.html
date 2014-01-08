@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 />
+	<title>Alpaca forms testing page</title>
+
+	<script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="../../js/alpaca/alpaca.min.js"></script>
+	<link type="text/css" href="../../js/alpaca/alpaca.min.css" rel="stylesheet"/>
+
+	<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+		
+	<script>
+	$(document).ready(function() {
+		console.log("Ready!")
+	})
+	</script>
+</head>
+<body>
+	<div id="form1"></div>
+	 
+	<script type="text/javascript">
+	$(function() {
+		$("#form1").alpaca({
+			"schema": {
+				"title": "User Feedback",
+				"description": "What do you think about Alpaca?",
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"title": "Name"
+					},
+					"ranking": {
+						"type": "string",
+						"title": "Ranking",
+						"enum": ['excellent', 'not too shabby', 'alpaca built my hotrod']
+					}
+				}
+			}
+		});
+	});
+	</script> 
+</body>
+</html>
