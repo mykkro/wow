@@ -10,7 +10,7 @@
   "license": "BSD-2-Clause",
   "window": {
     "toolbar": true,
-    "width": 900,
+    "width": 960,
     "height": 600,
     "kiosk": false
   },
