@@ -10,6 +10,7 @@
 		console.log("Ready!")
 
 		var ensureDir = function(dir, next) {
+			/*
 			fs.exists(dir, function(exists) {
 				if(!exists) {
 					fs.mkdir(dir, 0755, function() {
@@ -19,10 +20,12 @@
 					next()
 				}
 			})
+			*/
+			fs.mkdirs(dir, next)
 		}
 		
 		var dataPath = require('nw.gui').App.dataPath;
-		var fs = require('fs');
+		var fs = require('fs-extra');
 		var path = require("path");		
 		var Base = require("basejs")
 		var dbPath = path.join(dataPath, "tingodb")			
