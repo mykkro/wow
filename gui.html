@@ -66,30 +66,40 @@
     width="300"
     height="200"
     >
-<defs>
-    <filter id="dropShadow">
-    <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
-    <feOffset dx="2" dy="4" />
-    <feMerge>
-        <feMergeNode />
-        <feMergeNode in="SourceGraphic" />
-    </feMerge>
-  </filter>
-  <filter id="drop">
-            <feComponentTransfer result="offOut" in="SourceAlpha">
-                <feFuncA type="linear" />
-                <feFuncR type="discrete" tablevalues="0.5" />
-                <feFuncG type="discrete" tablevalues="1"/>
-                <feFuncB type="discrete" />
-            </feComponentTransfer>
-            <feOffset result="shadow" dx="2" dy="4" in="offOut" />
-            <feGaussianBlur stdDeviation="2" result="blurOut" in="shadow" />
-            <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-        </filter>
+  <defs>
+    <filter id="dropShadow1">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+      <feOffset dx="2" dy="4" />
+      <feMerge>
+          <feMergeNode />
+          <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="dropShadow2">
+      <feComponentTransfer result="offOut" in="SourceAlpha">
+          <feFuncA type="linear" />
+          <feFuncR type="discrete" tablevalues="0.5" />
+          <feFuncG type="discrete" tablevalues="1"/>
+          <feFuncB type="discrete" />
+      </feComponentTransfer>
+      <feOffset result="shadow" dx="2" dy="4" in="offOut" />
+      <feGaussianBlur stdDeviation="2" result="blurOut" in="shadow" />
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+    </filter>
+    <filter id="dropShadow3">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="5" dy="5" result="offsetblur"/>
+      <feFlood flood-color="gray"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
   <rect x="150" width="90" height="90" stroke="green" stroke-width="3"
-  fill="yellow" filter="url(#drop)" />    
-  </svg> </div>
+    fill="yellow" filter="url(#dropShadow3)" />    
+</svg> </div>
   <button id="btn1">Start animation</button>
 <svg 
     version="1.1"
