@@ -1,0 +1,18 @@
+<iframe nwdisable nwfaketop width="800" height="400" src="http://nodejs.org"></iframe>
+<button id="button1">Close</button>
+<script>
+$(document).ready(function() {
+
+	var gui = require('nw.gui');
+
+	// Print arguments
+	console.log(gui.App.argv);
+
+
+	$("#button1").click(function() {
+		// window.close() --> sometimes too weak
+		// Quit current app
+		gui.App.quit();			
+	})
+})
+</script>
