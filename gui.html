@@ -15,16 +15,21 @@
 		var pageData = {}
 	
 		function loadPage(pageName, data, next) {
+			var controllerName = pageName
+			if(typeof(pageName)=="object") {
+				controllerName = pageName.controller || pageName.view
+				pageName = pageName.view
+			}
 		   $.get("pages/"+pageName+".wow").done(function(response) {
 				$('#top-wrapper').html(response);
-				var page = require("./pages/"+pageName+".js")(window, $, SVG)
-				page.init(data, next)
+				var ctrl = require("./pages/"+controllerName+".js")(window, $, SVG)
+				ctrl.init(data, next)
 			}).fail(function(err) {
 				alert("Error loading view: "+pageName)
 			})
 		}
 	
-		loadPage(pageName, pageData, function(page) {
+		loadPage({view:"widgets", controller:"widgets"}, pageData, function(ctrl) {
 			console.log("Page loaded successfully!")
 		})
 			
