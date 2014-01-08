@@ -9,6 +9,21 @@
 	$(document).ready(function() {
 		console.log("Ready!")
 
+		var z = require("zip");
+		var FS = require("fs");
+		var data = FS.readFileSync("./test/nosql/testing.zip")
+		var reader = z.Reader(data);
+		console.log(reader.toObject('utf-8'));
+		reader.forEach(function (entry) {
+			console.log(entry.getName(), entry.lastModified(), entry.getMode());
+		});
+		
+		/* this works fine... */
+		var zip = new require('node-zip')();
+		zip.file('test.file', 'hello there');
+		var data = zip.generate({base64:false,compression:'DEFLATE'});
+		FS.writeFileSync('./test/nosql/testing2.zip', data, 'binary');
+		
 		var ensureDir = function(dir, next) {
 			/*
 			fs.exists(dir, function(exists) {
@@ -23,6 +38,20 @@
 			*/
 			fs.mkdirs(dir, next)
 		}
+		
+		var deleteFolderRecursive = function(path) {
+		  if( fs.existsSync(path) ) {
+			fs.readdirSync(path).forEach(function(file,index){
+			  var curPath = path + "/" + file;
+			  if(fs.statSync(curPath).isDirectory()) { // recurse
+				deleteFolderRecursive(curPath);
+			  } else { // delete file
+				fs.unlinkSync(curPath);
+			  }
+			});
+			fs.rmdirSync(path);
+		  }
+		};		
 		
 		var dataPath = require('nw.gui').App.dataPath;
 		var fs = require('fs-extra');
@@ -53,7 +82,7 @@
 			}
 		})
 		
-		var done = function() {
+		var done = function(err) {
 			console.log("Using local directory: "+dataPath)
 			println("Using local directory: "+dataPath)
 						
