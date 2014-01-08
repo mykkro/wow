@@ -2,14 +2,19 @@
 <html>
 <head>
 	<meta charset=utf-8 />
+	
 	<title>Alpaca forms testing page</title>
 
 	<script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
-	<script type="text/javascript" src="../../js/alpaca/alpaca.min.js"></script>
-	<link type="text/css" href="../../js/alpaca/alpaca.min.css" rel="stylesheet"/>
+	<script type="text/javascript" src="../../js/jquery.tmpl/jquery.tmpl.js"></script>
+	
+    <link href="../../js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../../js/bootstrap/js/bootstrap.min.js"></script>
 
-	<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
-		
+	<link type="text/css" href="../../js/alpaca/alpaca.css" rel="stylesheet"/>
+	<link type="text/css" href="../../js/alpaca/alpaca-bootstrap.css" rel="stylesheet" />	
+	<script type="text/javascript" src="../../js/alpaca/alpaca.min.js"></script>
+
 	<script>
 	$(document).ready(function() {
 		console.log("Ready!")
@@ -20,26 +25,115 @@
 	<div id="form1"></div>
 	 
 	<script type="text/javascript">
-	$(function() {
-		$("#form1").alpaca({
-			"schema": {
-				"title": "User Feedback",
-				"description": "What do you think about Alpaca?",
-				"type": "object",
-				"properties": {
-					"name": {
-						"type": "string",
-						"title": "Name"
-					},
-					"ranking": {
-						"type": "string",
-						"title": "Ranking",
-						"enum": ['excellent', 'not too shabby', 'alpaca built my hotrod']
-					}
-				}
-			}
-		});
-	});
-	</script> 
+$(document).ready(function() {
+
+//	Alpaca.logLevel = Alpaca.DEBUG;
+
+    /**
+     * Initial data
+     *
+     * Fill in the JSON data that should be populated into the form.  This can be any JSON data that you'd like
+     * provided that it fits the schema and options (if you provide those).
+     *
+     */
+    var data = {
+        "name": "Inigo Montoya",
+        "age": 29,
+        "phone": "414-111-2222",
+        "country": "usa"
+    };
+
+    /**
+     * JSON-schema for the form
+     *
+     * The form schema defines the data types, validation logic and other constraints that need to be satisfied in
+     * order for the form to be considered valid.
+     *
+     * This should follow the JSON-schema convention.
+     * @see http://json-schema.org
+     *
+     * Full schema settings are listed here:
+     * @see http://www.alpacajs.org
+     *
+     */
+    var schema = {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "age": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 50
+            },
+            "phone": {
+                "type": "string"
+            },
+            "country": {
+                "type": "string",
+                "required": true
+            }
+        }
+    };
+
+    /**
+     * Layout options for the form
+     *
+     * These options describe UI configuration for the controls that are rendered for the data and schema.  You can
+     * tweak the layout and presentation aspects of the form in this section.
+     *
+     * Full options settings are listed here:
+     * @see http://www.alpacajs.org
+     *
+     */
+    var options = {
+        "fields": {
+            "name": {
+                "type": "text",
+                "label": "Name"
+            },
+            "age": {
+                "type": "number",
+                "label": "Age"
+            },
+            "phone": {
+                "type": "phone",
+                "label": "Phone"
+            },
+            "country": {
+                "type": "country",
+                "label": "Country"
+            }
+        }
+    };
+
+    /**
+     * This is an optional post render callback that Alpaca will call once the form finishes rendering.  The form
+     * rendering itself is asynchronous as it may load templates or other resources for use in generating the UI.
+     *
+     * Once the render is completed, this callback is fired and the top-level Alpaca control is handed back.
+     *
+     * @param control
+     */
+    var postRenderCallback = function(control) {
+
+    };
+
+    /**
+     * Render the form.
+     *
+     * We call alpaca() with the data, schema and options to tell Alpaca to render into the selected dom element(s).
+     */
+    $("#form1").alpaca({
+        "data": data,
+        "schema": schema,
+        "options": options,
+        "postRender": postRenderCallback,
+        "ui": "bootstrap"
+    });
+});	
+
+</script> 
 </body>
 </html>
