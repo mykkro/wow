@@ -127,6 +127,14 @@ module.exports = function(window, $) {
 		  console.warn("Unknown widget type: "+type)
 		  return null
 		}
+	  },
+	  uses: function(widgets) {
+		var self = this
+		_.each(widgets, function(w){
+			/* load widgets... */
+			var widgetPath = "../js/widgets/"+w+"/"+w
+			require(widgetPath)(self)
+		})
 	  }
 	}
 
