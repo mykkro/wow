@@ -23,3 +23,7 @@ html {
 #output .error {
 	color: red;
 }
+
+html, svg {
+	-webkit-font-smoothing: antialiased;
+}

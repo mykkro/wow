@@ -1,0 +1,63 @@
+<div style="width:800px;height:200px;">
+<svg version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:wow="http://example.org/wow"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    unselectable="on" 
+    style="-webkit-user-select: none;"
+    id="svg1"
+    width="800"
+    height="200"
+    >
+  <defs>
+    <filter id="dropShadow1">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+      <feOffset dx="2" dy="4" />
+      <feMerge>
+          <feMergeNode />
+          <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="dropShadow2">
+      <feComponentTransfer result="offOut" in="SourceAlpha">
+          <feFuncA type="linear" />
+          <feFuncR type="discrete" tablevalues="0.5" />
+          <feFuncG type="discrete" tablevalues="1"/>
+          <feFuncB type="discrete" />
+      </feComponentTransfer>
+      <feOffset result="shadow" dx="2" dy="4" in="offOut" />
+      <feGaussianBlur stdDeviation="2" result="blurOut" in="shadow" />
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+    </filter>
+    <filter id="dropShadow3">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="5" dy="5" result="offsetblur"/>
+      <feFlood flood-color="gray"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="sepia">
+        <feColorMatrix type="matrix" values=".343 .669 .119 0 0 .249 .626 .130
+            0 0 .172 .334 .111 0 0 .000 .000 .000 1 0" />
+    </filter>
+    <filter id="edge">
+        <feColorMatrix type="luminanceToAlpha" />
+        <feConvolveMatrix order="3" kernelMatrix="-1 -2 -1 0 0 0 1 2 1" />
+        <feConvolveMatrix order="3" kernelMatrix="-1 -2 -1 0 0 0 1 2 1" />
+    </filter>
+    <filter id="wavy">
+        <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2"
+            result="turbulence_3" data-filterId="3" />
+        <feDisplacementMap xChannelSelector="R" yChannelSelector="G"
+            in="SourceGraphic" in2="turbulence_3" scale="40" />
+    </filter>    
+  </defs>
+  <rect x="150" width="90" height="90" stroke="green" stroke-width="3"
+    fill="yellow" filter="url(#dropShadow3)" />    
+  <rect x="250" width="90" height="90" stroke="green" stroke-width="3"
+    fill="yellow" filter="url(#sepia)" />    
+</svg> </div>
+  <button id="btn1">Start animation</button>

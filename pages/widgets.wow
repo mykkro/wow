@@ -1,0 +1,84 @@
+<svg 
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:wow="http://example.org/wow"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    unselectable="on" 
+    style="-webkit-user-select: none;"
+    id="svg"
+	tabindex='1'
+    >
+
+<wow:grid cols="3" rows="3" valign="center" halign="center" uniformColumns="false" uniformRows="true">
+    <wow:piechart name="foo" title="Sales by Region">
+      <wow:pieslice label="Northern Region" value="1.23" color="blue"/>
+      <wow:pieslice label="Eastern Region" value="2.53" color="red"/>
+      <wow:pieslice label="Southern Region" value="3.89" color="green"/>
+      <wow:pieslice label="Western Region" value="2.04" color="yellow"/>
+    </wow:piechart>
+<wow:textbox maxchars=30>Hello, SVG!</wow:textbox>
+
+    <wow:piechart name="bar" title="Sales by Region">
+      <wow:pieslice label="Python" value="1.23" color="blue"/>
+      <wow:pieslice label="Java" value="2.53" color="red"/>
+      <wow:pieslice label="C++" value="2" color="green"/>
+    </wow:piechart>
+	<wow:box width=300 height=60 fill="red"></wow:box>
+<wow:flow direction="right" anchor="top">
+	<wow:box width=200 height=200 fill="orange">
+
+<rect x="20" y="20" width="60" height="60" fill="blue">
+  <animateTransform attributeType="xml"
+                    attributeName="transform"
+                    type="rotate"
+                    from="0 50 50"
+                    to="360 50 50"
+                    dur="4s"
+                    repeatCount="indefinite"/>
+</rect>  
+
+	</wow:box>
+	<wow:box width=150 height=140 fill="cyan"></wow:box>
+</wow:flow>
+
+<wow:text width="100" height="100" class="mytext">
+Multiline text that needs wrapping
+</wow:text>
+
+<wow:viewport width="200" height="100">
+	<wow:box width=30 height=30 fill="cyan"></wow:box>
+</wow:viewport>
+
+<wow:viewport width="200" height="100" preserveAspectRatio="none">
+<rect x="20" y="20" width="60" height="60" fill="blue"></rect>
+<rect x="40" y="40" width="60" height="60" fill="red"></rect>
+</wow:viewport>
+	
+	<wow:image src="./icons/SVG/stackoverflow.svg" class="fubar" name="foooo" embed="true"/>
+	
+	</wow:grid>
+
+
+
+
+<g id="tempgroup" style="display:none;"></g>
+
+
+<!-- alas, transform attribute does not work well with foreignObject forms -->
+<!-- as well as wrapping it into svg element... -->
+<g>
+    <foreignObject x="350" y="50" width="200" height="150">
+        <body xmlns="http://www.w3.org/1999/xhtml">
+            <form>
+                <input id="inner1" type="text"/>
+                <input id="inner2" type="text"/>
+            </form>
+        </body>
+    </foreignObject>
+    <circle cx="360" cy="80" r="30" fill="#00ff00" fill-opacity="0.5"/>
+</g>
+
+
+
+</svg>
+
