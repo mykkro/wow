@@ -1,0 +1,95 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title>NoSQL testing page</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		console.log("Ready!")
+
+		var ensureDir = function(dir, next) {
+			fs.exists(dir, function(exists) {
+				if(!exists) {
+					fs.mkdir(dir, 0755, function() {
+						next()
+					})
+				} else {
+					next()
+				}
+			})
+		}
+		
+		var dataPath = require('nw.gui').App.dataPath;
+		var fs = require('fs');
+		var path = require("path");		
+		var Base = require("basejs")
+		var dbPath = path.join(dataPath, "tingodb")			
+		
+		ensureDir(dataPath, function() {
+			ensureDir(dbPath, done)
+		})
+		
+		/* CRUD operations */
+		var CRUD = Base.extend({
+			constructor: function(collection) {
+				this.coll = collection
+			},
+			create: function(data, next) {
+				this.coll.save(data, next)
+			},
+			update: function(data, next) {
+				this.coll.save(data, next)
+			},
+			remove: function(data, next) {
+				this.coll.remove({_id:data._id}, next)
+			},
+			get: function(_id, next) {
+				this.coll.findOne({_id:_id}, next)
+			}
+		})
+		
+		var done = function() {
+			console.log("Using local directory: "+dataPath)
+			println("Using local directory: "+dataPath)
+						
+			var Engine = require('tingodb')(),
+			assert = require('assert');
+
+			var db = new Engine.Db(dbPath, {});
+			var collection = db.collection("mydata.tingodb");
+			var crud = new CRUD(collection)
+			crud.create({hello:'world'}, function(err, result) {
+			  assert.equal(null, err);
+			  console.log("Object created!")
+			  console.log(JSON.stringify(result))
+			  var iid = result._id
+			  result.foo = "bar"
+			  result.hello = "nodejs"
+			  crud.update(result, function(err, result2) {
+				  assert.equal(null, err);
+				  console.log("Object updated!")
+				  crud.remove(result, function(err, result3) {
+					assert.equal(null, err);
+					console.log("Object deleted!")
+				  })
+			  })
+			});
+			
+		}
+		var print = function(txt) {
+			$("#out").append(txt)
+		}
+		var println = function(txt) {
+			print(txt+"\n")
+		}
+	})
+	</script>
+    </head>
+    <body>
+     <pre id="out"></pre>
+    </body>
+    </html>
+
+
