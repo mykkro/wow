@@ -25,7 +25,8 @@
     "request": "~2.30.0",
     "pouchdb": "~1.1.0",
     "querystring": "~0.2.0",
-    "jquery": "~2.1.0-beta3"
+    "jquery": "~2.1.0-beta3",
+    "fs-extra": "~0.8.1"
   },
   "repository": {
     "type": "git",
