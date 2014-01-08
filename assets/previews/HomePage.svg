@@ -15,7 +15,7 @@
    height="600"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.47 r22583"
    sodipodi:docname="HomePage.svg"
    enable-background="new">
   <sodipodi:namedview
@@ -36,8 +36,8 @@
      inkscape:snap-bbox="true"
      inkscape:window-width="1272"
      inkscape:window-height="815"
-     inkscape:window-x="1448"
-     inkscape:window-y="139"
+     inkscape:window-x="234"
+     inkscape:window-y="120"
      inkscape:window-maximized="0"
      inkscape:snap-center="false"
      inkscape:showpageshadow="false"
@@ -2656,7 +2656,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -2697,7 +2697,7 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Layer01"
-     style="display:inline;"
+     style="display:inline"
      sodipodi:insensitive="true">
     <path
        id="Calendar"
