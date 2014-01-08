@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<!-- third party libraries should be loaded here and then passed to the Widgetizer module... -->
-	<script type="text/javascript" src="js/jquery/jquery-2.0.3.min.js"></script>
+  <link href="fonts/SourceSanspro/fontface.css" media="all" rel="stylesheet" type="text/css" />
+  <!-- third party libraries should be loaded here and then passed to the Widgetizer module... -->
+  <script type="text/javascript" src="js/jquery/jquery-2.0.3.min.js"></script>
   <script type="text/javascript" src="js/svgjs/svg.min.js"></script>
   <script type="text/javascript" src="js/svgjs/svg.easing.min.js"></script>
   <script type="text/javascript" src="js/svgjs/svg.filter.js"></script>
@@ -44,6 +45,19 @@
     $("#btn1").click(function() {
       var anim = image.animate(1000, SVG.easing.bounce).move(100, 100)
     })
+	
+	 // create text
+        var text = draw.text("Multiline\ntext").move(500, 0)
+        text.font({
+          family: 'Source Sans Pro'
+		, weight: 300
+        , size: 30
+		, style: 'italic'
+        , anchor: 'middle'
+        , leading: '1em'
+        })
+	
+	
 	})
 	</script>
 	<style type="text/css">
@@ -55,7 +69,7 @@
 <body>
 
 <h1>My first SVG</h1>
-<div style="width:400px;height:200px;">
+<div style="width:800px;height:200px;">
 <svg version="1.1"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:wow="http://example.org/wow"
@@ -63,7 +77,7 @@
     unselectable="on" 
     style="-webkit-user-select: none;"
     id="svg1"
-    width="400"
+    width="800"
     height="200"
     >
   <defs>
