@@ -10,31 +10,67 @@
   <script type="text/javascript" src="js/svgjs/svg.easing.min.js"></script>
   <script type="text/javascript" src="js/svgjs/svg.filter.js"></script>
 	<script>
+	var DEBUG = true
 	$(document).ready(function() {
 	
-		var pageName = "widgets"
-		var pageData = {}
-	
-		function loadPage(pageName, data, next) {
-			var controllerName = pageName
-			if(typeof(pageName)=="object") {
-				controllerName = pageName.controller || pageName.view
-				pageName = pageName.view
-			}
-		   $.get("pages/"+pageName+".wow").done(function(response) {
-				$('#top-wrapper').html(response);
-				var ctrl = require("./pages/"+controllerName+".js")(window, $, SVG)
-				ctrl.init(data, next)
+		var mustache = require('mustache');
+		var url = require('url')
+		var path = require('path')
+
+		/* loads page view and script */
+		function loadPage(pageInfo, data, next) {
+			var scriptName = pageInfo.script || pageInfo.view
+			var pageName = pageInfo.view
+			var allData = $.extend(data, pageInfo)
+		   $.get("pages/"+pageName+".wow").done(function(response) {				
+				var html = mustache.to_html(response, allData);
+				$('#top-wrapper').html(html);
+				var scr = require("./pages/"+scriptName+".js")(window, $, SVG)
+				scr.init(allData, next)
 			}).fail(function(err) {
 				alert("Error loading view: "+pageName)
 			})
 		}
-	
-		loadPage({view:"welcome", controller:"widgets"}, pageData, function(ctrl) {
-		//loadPage({view:"frametest", controller:"simple"}, pageData, function(ctrl) {
+				
+		/* creates link to a page */
+		function getPageUrl(pageInfo) {
+			// assemble URL
+			return url.format({
+				protocol:parsedUrl.protocol, 
+				pathname:parsedUrl.pathname, 
+				query: pageInfo.query, 
+				hash: pageInfo.hash
+			})
+		}	
+		
+		var loc = window.location.href
+		var parsedUrl = url.parse(loc, true)
+		var query = parsedUrl.query
+		var hash = parsedUrl.hash
+
+		/* raw URL data */
+		var pageInfo = {
+			view:"welcome",
+			script:"widgets",
+			query: query,
+			hash: hash
+		}
+
+		console.log(getPageUrl(pageInfo))
+
+		var previews = ["BookCategoriesPage", "BooksPage", "ButtonsPage", "HomePage", "LoginPage", "RadioPage", "VideoPage", "YouTubePage"]		
+		/* Custom page data - eg. loaded from database */
+		var pageData = {
+			previewPage: query.preview || "HomePage"
+		}
+
+		/* Do it! */
+		loadPage(pageInfo, pageData, function(ctrl) {
 			console.log("Page loaded successfully!")
+			console.log(pageData)
 		})
-			
+		
+					
 	})
 	</script>
 </head>
