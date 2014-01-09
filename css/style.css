@@ -33,3 +33,9 @@ html, body , #top-wrapper, #top-wrapper > svg {
 	height: 100%;
 	overflow: hidden;
 }
+
+.meteo {
+	font-family: 'MeteoconsRegular';
+	font-size: 120px;
+}
+

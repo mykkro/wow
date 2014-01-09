@@ -3578,43 +3578,13 @@
            id="tspan5722"
            sodipodi:role="line">RADIO</tspan></text>
     </g>
-    <path
-       sodipodi:type="arc"
-       style="fill:url(#radialGradient6565);fill-opacity:1;stroke:none"
-       id="DiaryWeatherFigureSun"
-       sodipodi:cx="1060.4656"
-       sodipodi:cy="289.04449"
-       sodipodi:rx="41.818157"
-       sodipodi:ry="41.818157"
-       d="m 1102.2837,289.04449 a 41.818157,41.818157 0 1 1 -83.6363,0 41.818157,41.818157 0 1 1 83.6363,0 z"
-       transform="translate(-514.45597,60.601374)" />
-    <path
-       style="fill:url(#linearGradient6539);fill-opacity:1;stroke:none"
-       d="m 495.70276,328.81684 c -20.7279,0 -37.5313,14.07794 -37.5313,31.43062 0,4.40968 1.0724,8.60197 3.0313,12.41037 -9.4585,4.06987 -15.9063,12.50805 -15.9063,22.28471 0,13.7802 12.8508,24.8747 28.8125,24.8747 l 84.9062,0 c 15.9617,0 28.8126,-11.0945 28.8126,-24.8747 0,-12.67601 -10.8648,-23.10009 -25.0313,-24.68585 0.5075,-1.52115 0.7813,-3.125 0.7813,-4.77529 0,-10.1224 -10.1877,-18.34577 -22.75,-18.34577 -3.6097,0 -7.0309,0.68275 -10.0626,1.88853 -5.3927,-11.81649 -19.0524,-20.20732 -35.0624,-20.20732 z"
-       id="DiaryWeatherFigureCloud"
-       inkscape:connector-curvature="0" />
+	<text id="MeteoIcon" x="470" y="430" class="meteo">R</text>
     <text
-       xml:space="preserve"
-       style="font-size:100px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"
-       x="427.83191"
+       x="540"
        y="278.52701"
-       id="DiaryWeatherTemperatureNo"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6543"
-         x="427.83191"
-         y="278.52701">14</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:50px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:'Times New Roman,'"
-       x="550.72937"
-       y="244.81119"
-       id="DiaryWeatherLabelCelsius"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan6547"
-         x="550.72937"
-         y="244.81119">°C</tspan></text>
+       style="font-size:100px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;text-anchor:middle">
+<tspan id="MeteoTemperature">10</tspan>
+<tspan id="MeteoUnit" dx="-20" class="meteo" style="font-size:100px;">C</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:25px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#28166f;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"
