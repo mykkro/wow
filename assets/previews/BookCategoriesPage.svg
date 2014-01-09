@@ -1679,7 +1679,7 @@
 		  />
     </g>
     <g
-       id="ButtonBookCategory01" class="action-button button">
+       id="ButtonBookCategory01" class="book-button button">
       <rect
          width="250"
          height="250"
@@ -1742,7 +1742,7 @@
 		 stroke="none" />
     </g>
     <g
-       id="ButtonBookCategory03" class="action-button button">
+       id="ButtonBookCategory03" class="book-button button">
       <rect
          width="250"
          height="250"
@@ -1807,7 +1807,7 @@
 		  />
     </g>
     <g
-       id="ButtonBookCategory02" class="action-button button">
+       id="ButtonBookCategory02" class="book-button button">
       <rect
          width="250"
          height="250"
@@ -1870,7 +1870,7 @@
 		 stroke="none" />
     </g>
     <g
-       id="ButtonBookCategory04" class="action-button button">
+       id="ButtonBookCategory04" class="book-button button">
       <rect
          width="250"
          height="250"
