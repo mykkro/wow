@@ -6,6 +6,8 @@
   <link href="fonts/SourceSanspro/fontface.css" media="all" rel="stylesheet" type="text/css" />
   <!-- third party libraries should be loaded here and then passed to the Widgetizer module... -->
   <script type="text/javascript" src="js/jquery/jquery-2.0.3.min.js"></script>
+  <script type="text/javascript" src="js/jquery.svg/jquery.svg.min.js"></script>
+  <script type="text/javascript" src="js/jquery.svg/jquery.svgdom.min.js"></script>
   <script type="text/javascript" src="js/svgjs/svg.min.js"></script>
   <script type="text/javascript" src="js/svgjs/svg.easing.min.js"></script>
   <script type="text/javascript" src="js/svgjs/svg.filter.js"></script>
@@ -24,7 +26,7 @@
 			var allData = $.extend(data, pageInfo)
 		   $.get("pages/"+pageName+".wow").done(function(response) {				
 				var html = mustache.to_html(response, allData);
-				$('#top-wrapper').html(html);
+				$('#top-wrapper').html(html);			
 				var scr = require("./pages/"+scriptName+".js")(window, $, SVG)
 				scr.init(allData, next)
 			}).fail(function(err) {

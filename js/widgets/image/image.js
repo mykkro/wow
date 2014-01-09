@@ -30,7 +30,7 @@ module.exports = function(Widgetizer) {
 		return false;		
 	}
 		
-	var factory = function(element) {
+	var factory = function(element, done) {
         var $e = $(element)
 		var attrs = { width: 100, height: 100 }
 		getAttrs($e, attrs, { "width":"number", "height":"number", "src":"string", "class":"string", "name":"string"})
@@ -49,17 +49,19 @@ module.exports = function(Widgetizer) {
 				$svg.removeAttr('xml:space');
 				$svg.removeAttr('enable-background');
 				// remove fill attribute from svg subelements...
-				$svg.find('*').removeAttr("fill");
+				//////$svg.find('*').removeAttr("fill");
 
 				$svg.attr("width", attrs.width);         
 				$svg.attr("height", attrs.height);
 				console.log("SVG embedded!")
 				$(ww.element).find("image").replaceWith($svg)
+				if(done) done(ww)
 
 			}, 'xml');
 		
+		} else {
+			if(done) done(ww)
 		}
-
 		return ww
 	}
 	/***********************************************************************************************************/

@@ -10,7 +10,7 @@ module.exports = function(Widgetizer) {
 	/***********************************************************************************************************/
 	var widgetname = "textbox"
 		
-	var factory = function(element) {
+	var factory = function(element, done) {
 		var maxChars = $(element).attr("maxchars") || 20
 		var newElement = SvgHelper.group()
 		var newId = Widgetizer.newWidgetId("wow-textfield-")
@@ -32,7 +32,9 @@ module.exports = function(Widgetizer) {
 			allowedChars: "[a-zA-Z ]",
 			functionToCall: function(textboxId, value, changeType) { console.log(value); }
 		});
-		return Widgetizer.widget(widgetname, newElement)
+		var ww = Widgetizer.widget(widgetname, newElement)
+		if(done) done(ww)
+		return ww
 	}
 	/***********************************************************************************************************/
 

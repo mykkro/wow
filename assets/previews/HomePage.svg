@@ -2666,9 +2666,11 @@
     <path
        id="Calendar"
        d="m 797.13607,14.3793 87.00005,0 c 23.97323,0 43.49999,18.951671 43.49999,42.300739 l 0,186.123271 c 0,23.34907 -19.52676,42.30077 -43.49999,42.30077 l -87.00005,0 c -24.06996,0 -43.49996,-18.9517 -43.49996,-42.30077 l 0,-186.123271 c 0,-23.349068 19.43,-42.300739 43.49996,-42.300739 z"
-       style="fill:#ffffff;fill-rule:evenodd;stroke:#dd1379;stroke-width:6;stroke-miterlimit:4;stroke-dasharray:none"
-       inkscape:connector-curvature="0"
-       inkscape:label="#Calendar" />
+	   fill="#fff"
+ 	   fill-rule="evenodd"
+	   stroke="#dd1379"
+	   stroke-width="6"
+	   stroke-miterlimit="4" />
     <g
        id="NavigationPanel"
        transform="matrix(0.89366282,0,0,0.89040173,15106.127,-339.55231)"
@@ -3296,48 +3298,49 @@
            x="805.95398"
            id="tspan5573"
            sodipodi:role="line">11</tspan></text>
-      <g
-         id="Dial">
-        <path
-           sodipodi:type="arc"
-           style="fill:#000000;fill-opacity:1;stroke:none;display:inline"
-           id="CentralWheel02"
-           sodipodi:cx="1047.8087"
-           sodipodi:cy="455.07983"
-           sodipodi:rx="9.4868727"
-           sodipodi:ry="9.4868727"
-           d="m 1057.2956,455.07983 a 9.4868727,9.4868727 0 1 1 -18.9738,0 9.4868727,9.4868727 0 1 1 18.9738,0 z"
-           transform="matrix(0.84327051,0,0,0.84327051,-35.158016,75.212459)"
-           inkscape:label="#CentalWheel02" />
-        <rect
-           style="fill:#000000;fill-opacity:1;stroke:none;display:inline"
-           id="HourHand"
-           width="60"
-           height="8"
-           x="833.49207"
-           y="454.96875" />
-        <rect
-           style="fill:#000000;fill-opacity:1;stroke:none;display:inline"
-           id="MinuteHand"
-           width="75"
-           height="4"
-           x="260.45401"
-           y="922.46747"
-           inkscape:transform-center-x="-15.956735"
-           transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
-           inkscape:transform-center-y="-15.956744" />
-        <path
-           sodipodi:type="arc"
-           style="fill:#ffffff;fill-opacity:1;stroke:none;display:inline"
-           id="CentralWheel01"
-           sodipodi:cx="1005.771"
-           sodipodi:cy="463.97034"
-           sodipodi:rx="1.3258252"
-           sodipodi:ry="1.3258252"
-           d="m 1007.0968,463.97034 a 1.3258252,1.3258252 0 1 1 -2.6516,0 1.3258252,1.3258252 0 1 1 2.6516,0 z"
-           transform="matrix(0.75424723,0,0,0.75424723,89.825792,109.02041)" />
-      </g>
+<g
+       name="dial">
+    <g
+        transform="translate(850 458)">
+      <rect
+         transform="rotate(0)"
+         width="60"
+         height="8"
+         x="-10"
+         y="-4"
+         id="ClockHourHand"
+         style="fill:#000000;fill-opacity:1;stroke:none;display:inline" />
+      <rect
+         transform="rotate(0)"
+         width="75"
+         height="4"
+         x="-12"
+         y="-2"         
+         id="ClockMinuteHand"
+         style="fill:#000000;fill-opacity:1;stroke:none;display:inline" />
+      <rect
+         transform="rotate(0)"
+         width="75"
+         height="2"
+         x="-10"
+         y="-1"
+         id="ClockSecondHand"
+         style="fill:blue;fill-opacity:1;stroke:none;display:inline" />
+</g>
+      <path
+         d="m 1057.2956,455.07983 a 9.4868727,9.4868727 0 1 1 -18.9738,0 9.4868727,9.4868727 0 1 1 18.9738,0 z"
+         transform="matrix(0.84327051,0,0,0.84327051,-35.158016,75.212459)"
+         name="central-wheel-02"
+         style="fill:#000000;fill-opacity:1;stroke:none;display:inline" />
+      <path
+         d="m 1007.0968,463.97034 a 1.3258252,1.3258252 0 1 1 -2.6516,0 1.3258252,1.3258252 0 1 1 2.6516,0 z"
+         transform="matrix(0.75424723,0,0,0.75424723,89.825792,109.02041)"
+         name="central-wheel-01"
+         style="fill:#ffffff;fill-opacity:1;stroke:none;display:inline" />
     </g>
+
+
+	   </g>
     <g
        id="Button01">
       <path
@@ -3431,37 +3434,26 @@
     <text
        xml:space="preserve"
        style="font-size:22px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:'Times New Roman, Bold'"
-       x="762.9325"
+	   text-anchor="middle"
+       x="840"
        y="83.224487"
        id="CalendarTextDayName"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         x="762.9325"
-         y="83.224487"
-         id="tspan4105">DONNERSTAG</tspan></text>
+       ><tspan>DONNERSTAG</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:30px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:'Times New Roman, Bold'"
-       x="822.17175"
+	   text-anchor="middle"
+       x="840"
        y="128.81577"
        id="CalendarTextDayNo"
-       sodipodi:linespacing="125%"
-       inkscape:transform-center-y="-10.341797"><tspan
-         sodipodi:role="line"
-         id="tspan4111"
-         x="822.17175"
-         y="128.81577">26.</tspan></text>
+       ><tspan>26.</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="772.06335"
+	   text-anchor="middle"
+       x="840"
        y="154.66147"
-       id="CalendarTextMonthName"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4121"
-         x="772.06335"
-         y="154.66147"
+       id="CalendarTextMonthName"><tspan
          style="font-size:22px;font-weight:bold;font-family:Times New Roman;-inkscape-font-specification:Times New Roman">SEPTEMBER</tspan></text>
     <text
        xml:space="preserve"
@@ -3470,10 +3462,6 @@
        y="200.64989"
        id="CalendarLabelYear"
        sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4125"
-         x="784.46777"
-         y="200.64989"
          style="font-size:20px;font-family:Times New Roman;-inkscape-font-specification:Times New Roman">JAHR</tspan></text>
     <text
        xml:space="preserve"
@@ -3482,22 +3470,14 @@
        y="201.30663"
        id="CalendarTextYearNo"
        sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4129"
-         x="853.66187"
-         y="201.30663"
          style="font-size:22px;font-weight:bold;font-family:Times New Roman;-inkscape-font-specification:Times New Roman">2013</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:22px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:'Times New Roman, Bold'"
-       x="762.34167"
+       x="840"
        y="246.61195"
-       id="CalendarTextDaytime"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         x="762.34167"
-         y="246.61195"
-         id="tspan3324">NACHMITTAG</tspan></text>
+	   text-anchor="middle"
+       id="CalendarTextDaytime"><tspan>NACHMITTAG</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

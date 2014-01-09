@@ -8,7 +8,7 @@ module.exports = function(Widgetizer) {
 	/***********************************************************************************************************/
 	var widgetname = "grid"
 		
-	var factory = function(element) {
+	var factory = function(element, done) {
       // children are already widgetized...
       var uniformRows = ($(element).attr("uniformRows") == "true")
       var uniformColumns = ($(element).attr("uniformColumns") == "true")
@@ -87,7 +87,9 @@ module.exports = function(Widgetizer) {
 			return
 		}
       })
-      return Widgetizer.widget(widgetname, gg, {width: cols*maxwidth, height: rows*maxheight})
+      var ww = Widgetizer.widget(widgetname, gg, {width: cols*maxwidth, height: rows*maxheight})
+	  if(done) done(ww)
+	  return ww
 	}
 	/***********************************************************************************************************/
 

@@ -8,7 +8,7 @@ module.exports = function(Widgetizer) {
 	/***********************************************************************************************************/
 	var widgetname = "text"
 		
-	var factory = function(element) {
+	var factory = function(element, done) {
         var $e = $(element)
 		var width = parseFloat($e.attr("width") || 100)
 		var height = parseFloat($e.attr("height") || 100)
@@ -18,6 +18,7 @@ module.exports = function(Widgetizer) {
 		// TODO correct calculation of bounding box
 		var newElement = SvgHelper.mtext(text, {width:width,height:height,"class":klass})
         var ww = Widgetizer.widget(widgetname, newElement, {width:width, height:height})
+		if(done) done(ww)
 		return ww
 	}
 	/***********************************************************************************************************/
