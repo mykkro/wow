@@ -8,7 +8,7 @@ module.exports = function(Widgetizer) {
 	/***********************************************************************************************************/
 	var widgetname = "flow"
 		
-	var factory = function(element) {
+	var factory = function(element, done) {
       // children are already widgetized...
       var direction = $(element).attr("direction") || "right"
       var anchor = $(element).attr("anchor") || "middle"
@@ -86,7 +86,9 @@ module.exports = function(Widgetizer) {
         gg.appendChild(grp)
       })
       SvgHelper.transform(gg, "translate("+(-xmin)+","+(-ymin)+")")
-      return Widgetizer.widget(widgetname, gg, {width: xmax-xmin, height: ymax-ymin})
+      var ww = Widgetizer.widget(widgetname, gg, {width: xmax-xmin, height: ymax-ymin})
+	  if(done) done(ww)
+	  return ww
     }
 
 	/***********************************************************************************************************/

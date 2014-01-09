@@ -8,7 +8,7 @@ module.exports = function(Widgetizer) {
 	/***********************************************************************************************************/
 	var widgetname = "viewport"
 		
-	var factory = function(element) {
+	var factory = function(element, ww) {
         var $e = $(element)
 		var width = parseFloat($e.attr("width") || 100)
 		var height = parseFloat($e.attr("height") || 100)
@@ -36,6 +36,7 @@ module.exports = function(Widgetizer) {
 		if(vboxAttr) newElement.setAttribute("viewBox", vboxAttr)
         var ww = Widgetizer.widget(widgetname, newElement, dim)
 		$e.moveChildren(newElement)
+		if(done) done(ww)		
 		return ww
 	}
 	/***********************************************************************************************************/

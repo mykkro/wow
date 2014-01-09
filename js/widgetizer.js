@@ -90,13 +90,20 @@ module.exports = function(window, $) {
 		return this.widgets[id]
 	  },
 	  /* make widgets from node's descendants... */
-	  widgetize: function(node) {
+	  widgetize: function(node, done) {
 		var self = this
 		var node = node || document
 		var nodes = this.findWowNodes(node, [], true)
-		_.each(nodes, function(element) {
-			self.makeWidget(element)
-		})
+		var fun = function(ndx, next)  {
+			if(ndx>=nodes.length) {
+				if(done) done()
+			} else {
+				self.makeWidget(nodes[ndx], function() {				
+					fun(ndx+1, next)
+				})
+			}
+		}
+		fun(0, done)
 	  },
 	  findWidgetizedNodes: function(node, inNodes, childrenOnly) {
 		return Commons.findTopmostNodes(node, inNodes, childrenOnly, function(node) {
@@ -108,7 +115,7 @@ module.exports = function(window, $) {
 			return node.nodeName.startsWith("wow:")
 		})
 	  },
-	  makeWidget: function(element) {
+	  makeWidget: function(element, done) {
 		/* if the widget has subwidgets, create them... */
 		this.widgetize(element)
 		/* create the widget */
@@ -116,15 +123,15 @@ module.exports = function(window, $) {
 		var widgetizer = this.widgetizers[type]
 		if(widgetizer) {
 		  /* we can run widgetizer on an element... */
-		  var output = widgetizer(element)
-		  if(output) {        
+		  return widgetizer(element, function(w) {
 			// replace element with output
-			$(element).replaceWith(output.element)
+			$(element).replaceWith(w.element)
 			// console.log(output) -> this causes error under node=webkit on Windows
-			return output;
-		  }
+			if(done) done(w);
+		  })
 		} else {
 		  console.warn("Unknown widget type: "+type)
+		  if(done) done(null)
 		  return null
 		}
 	  },

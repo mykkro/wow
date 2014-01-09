@@ -12,7 +12,7 @@ module.exports = function(Widgetizer) {
 		
 	/* the factory method */
 	/* the actual implementation goes here... */
-	var factory = function(element) {
+	var factory = function(element, done) {
       /* pie chart has several slices */
       var slices = $(element).filterNode("wow:pieslice")
       slices = _.map(slices, function(s) {
@@ -23,7 +23,9 @@ module.exports = function(Widgetizer) {
       /* create pie chart */
       var newElement = PieChart(slices, 50, 50, 40, 110, 10)
 
-	  return Widgetizer.widget(widgetname, newElement)
+	  var ww = Widgetizer.widget(widgetname, newElement)
+	  if(done) done(ww)
+	  return ww
 	}
 	/***********************************************************************************************************/
 
