@@ -39,6 +39,7 @@ module.exports = function(window, $) {
 	widgets: {},
 	widgetizers: {},
 	widgetId: 1,
+	debug: false,
 	newWidgetId: function(prefix) {
 		return (prefix || "wow-widget-")+(this.widgetId++)
 	},
@@ -65,19 +66,21 @@ module.exports = function(window, $) {
 			height: bbox.y+bbox.height
 		}
 
-		// add text with size info and ID
-		var txt = SvgHelper.text(id+" ("+(dim.width).toFixed(1)+", "+(dim.height).toFixed(1)+")", {"x":dim.width, "y":10, "fill":"#333", "font-size":10, "font-family":"Verdana", "text-anchor":"end"})
-		group.appendChild(txt)
-		
-		// add widget bounding box...
-		var bbe = SvgHelper.box(bbox)
-		SvgHelper.attr(bbe, "stroke", "blue");
-		group.appendChild(bbe);   
+		if(this.debug) {
+			// add text with size info and ID
+			var txt = SvgHelper.text(id+" ("+(dim.width).toFixed(1)+", "+(dim.height).toFixed(1)+")", {"x":dim.width, "y":10, "fill":"#333", "font-size":10, "font-family":"Verdana", "text-anchor":"end"})
+			group.appendChild(txt)
+			
+			// add widget bounding box...
+			var bbe = SvgHelper.box(bbox)
+			SvgHelper.attr(bbe, "stroke", "blue");
+			group.appendChild(bbe);   
 
-		// add size box...
-		var bbe = SvgHelper.box(dim)
-		SvgHelper.attr(bbe, "stroke", "gray");
-		group.appendChild(bbe);   
+			// add size box...
+			var bbe = SvgHelper.box(dim)
+			SvgHelper.attr(bbe, "stroke", "gray");
+			group.appendChild(bbe);   
+		}
 
 		// return widget object
 		this.widgets[id] = {
