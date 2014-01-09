@@ -1,0 +1,32 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title>Mustache testing page</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		console.log("Ready!")
+		
+		var mustache = require('mustache');
+
+		var view = {
+		  title: "Joe",
+		  calc: function() {
+			return 2 + 4;
+		  }
+		};
+
+		var template = "{{title}} spends {{calc}}";
+
+		var html = mustache.to_html(template, view);
+		alert(html)
+		
+	})
+	</script>
+    </head>
+    <body>
+     
+    </body>
+    </html>
