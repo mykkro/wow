@@ -50,8 +50,8 @@
 
 		/* raw URL data */
 		var pageInfo = {
-			view:"welcome",
-			script:"widgets",
+			view: query.view || "homepage",
+			script: query.view || "homepage",
 			query: query,
 			hash: hash
 		}
@@ -61,7 +61,6 @@
 		var previews = ["BookCategoriesPage", "BooksPage", "ButtonsPage", "HomePage", "LoginPage", "RadioPage", "VideoPage", "YouTubePage"]		
 		/* Custom page data - eg. loaded from database */
 		var pageData = {
-			previewPage: query.preview || "HomePage"
 		}
 
 		/* Do it! */
