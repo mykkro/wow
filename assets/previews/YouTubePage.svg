@@ -2328,28 +2328,16 @@
      style="display:inline"
      sodipodi:insensitive="true">
     <g
-       id="RightSlideButton"
+       id="RightSlideButton" class="action-button button"
        transform="translate(-210.20086,53.36168)">
       <path
          transform="matrix(1.1772338,0,0,1.1772338,-266.89162,244.27031)"
          d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
-         sodipodi:ry="42.047722"
-         sodipodi:rx="42.047722"
-         sodipodi:cy="73.402351"
-         sodipodi:cx="1161.318"
-         id="path4247-0-4-0"
-         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.84944892;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline;filter:url(#filter4596)"
-         sodipodi:type="arc" />
-      <path
-         transform="matrix(1.1772338,0,0,1.1772338,-266.89162,244.27031)"
-         d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
-         sodipodi:ry="42.047722"
-         sodipodi:rx="42.047722"
-         sodipodi:cy="73.402351"
-         sodipodi:cx="1161.318"
-         id="path4247-2-0"
-         style="fill:#ffffff;fill-opacity:1;stroke:#00ff00;stroke-width:0.84944892;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
-         sodipodi:type="arc" />
+         class="background"
+         fill="#ffffff"
+		 stroke="#00ff00"
+		 stroke-width="0.84944892"
+         />
       <path
          style="fill:#f8f8f8;stroke:none;display:inline"
          d="m 1091.8522,322.31283 c 0,-2.75066 2.2356,-4.98609 4.9865,-4.98609 2.7509,0 4.9865,2.23543 4.9865,4.98609 l 0,2.49304 c 0,-2.75066 2.2357,-4.98609 4.9865,-4.98609 2.7509,0 4.9866,2.23543 4.9866,4.98609 l 0,2.49305 c 0,-2.75067 2.2356,-4.98609 4.9865,-4.98609 2.7509,0 4.9865,2.23542 4.9865,4.98609 l 0,29.91652 c 0,6.58163 -5.3855,11.96659 -11.9676,11.96659 -5.8509,0 -11.7017,0 -17.5526,0 -6.524,-0.63156 -6.9395,-5.47637 -10.3719,-10.90289 -5.1694,-8.17718 -8.4106,-11.67575 -15.3751,-18.15766 -1.1136,-0.91412 -1.8284,-2.30191 -1.8284,-3.8476 0,-2.75897 2.2356,-4.98609 4.9948,-4.98609 1.5126,0 2.8756,0.67312 3.7898,1.75344 l 8.4189,8.39325 0,-14.13556 0,0 0,-19.93604 c 0,-2.75897 2.2356,-4.98609 4.9865,-4.98609 2.7509,0 4.9865,2.22712 4.9865,4.98609 l 0,14.94995 z"
@@ -2413,30 +2401,25 @@
          id="path9881"
          style="fill:#00ff00;fill-opacity:1;stroke:#00ff00;stroke-width:27.98009109;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2;stroke-opacity:1;stroke-dasharray:none"
          sodipodi:type="star" />
+      <path
+         transform="matrix(1.1772338,0,0,1.1772338,-266.89162,244.27031)"
+         d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
+         class="overlay"
+         fill="none"
+		 stroke="none"
+         />
     </g>
     <g
-       id="LeftSlideButton"
+       id="LeftSlideButton" class="action-button button"
        transform="translate(265.37296,81.78399)">
       <path
          transform="matrix(1.1772338,0,0,1.1772338,-1562.5393,215.848)"
          d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
-         sodipodi:ry="42.047722"
-         sodipodi:rx="42.047722"
-         sodipodi:cy="73.402351"
-         sodipodi:cx="1161.318"
-         id="path4247-0-4-6-0"
-         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.84944892;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline;filter:url(#filter4592)"
-         sodipodi:type="arc" />
-      <path
-         transform="matrix(1.1772338,0,0,1.1772338,-1562.5393,215.848)"
-         d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
-         sodipodi:ry="42.047722"
-         sodipodi:rx="42.047722"
-         sodipodi:cy="73.402351"
-         sodipodi:cx="1161.318"
-         id="path4247-2-5-6"
-         style="fill:#ffffff;fill-opacity:1;stroke:#00ff00;stroke-width:0.84944892;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
-         sodipodi:type="arc" />
+         class="background"
+         fill="#ffffff"
+		 stroke="#00ff00"
+		 stroke-width="0.84944892"
+         />
       <path
          style="fill:#f8f8f8;stroke:none;display:inline"
          d="m -186.99768,293.88648 c 0,-2.7509 -2.2273,-4.98652 -4.9865,-4.98652 -2.7509,0 -4.9865,2.23562 -4.9865,4.98652 l 0,2.49326 c 0,-2.75091 -2.2274,-4.98653 -4.9866,-4.98653 -2.7509,0 -4.9865,2.23562 -4.9865,4.98653 l 0,2.49325 c 0,-2.75089 -2.2273,-4.98651 -4.9865,-4.98651 -2.7509,0 -4.9865,2.23562 -4.9865,4.98651 l 0,29.91907 c 0,6.5822 5.3854,11.96763 11.9676,11.96763 5.8509,0 11.7017,0 17.5526,0 6.5323,-0.63162 6.9395,-5.47685 10.3719,-10.90384 5.1694,-8.17788 8.4189,-11.67675 15.3751,-18.15921 1.1136,-0.9142 1.8284,-2.30211 1.8284,-3.85624 0,-2.75089 -2.2357,-4.98651 -4.9865,-4.98651 -1.5209,0 -2.8839,0.68149 -3.7981,1.75359 l -8.4189,8.40227 0,-14.13676 0,0 0,-19.94606 c 0,-2.75089 -2.2273,-4.98651 -4.9865,-4.98651 -2.7509,0 -4.9865,2.23562 -4.9865,4.98651 l 0,14.95955 z"
@@ -2505,31 +2488,25 @@
          id="path9881-3"
          style="fill:#00ff00;fill-opacity:1;stroke:#00ff00;stroke-width:27.98009109;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2;stroke-opacity:1;stroke-dasharray:none;display:inline"
          sodipodi:type="star" />
+      <path
+         transform="matrix(1.1772338,0,0,1.1772338,-1562.5393,215.848)"
+         d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
+         class="overlay"
+         fill="none"
+		 stroke="none"
+         />
     </g>
     <g
-       id="HomeButton"
-       inkscape:label="#HomeButton"
+       id="HomeButton" class="action-button button"
        transform="translate(-781.70053,-672.48921)">
       <path
          transform="matrix(1.1772338,0,0,1.1772338,-515.46581,656.02903)"
          d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
-         sodipodi:ry="42.047722"
-         sodipodi:rx="42.047722"
-         sodipodi:cy="73.402351"
-         sodipodi:cx="1161.318"
-         id="path4247-0-4-0-4"
-         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.84944892;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline;filter:url(#filter4596-1)"
-         sodipodi:type="arc" />
-      <path
-         transform="matrix(1.1772338,0,0,1.1772338,-515.46581,656.02903)"
-         d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
-         sodipodi:ry="42.047722"
-         sodipodi:rx="42.047722"
-         sodipodi:cy="73.402351"
-         sodipodi:cx="1161.318"
-         id="path4247-2-0-3"
-         style="fill:#ffffff;fill-opacity:1;stroke:#0000ff;stroke-width:0.84944892;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
-         sodipodi:type="arc" />
+         class="background"
+         fill="#ffffff"
+		 stroke="#0000ff"
+		 stroke-width="0.84944892"
+		/>
       <g
          transform="translate(232.40429,5.6727284)"
          id="g5056">
@@ -2580,6 +2557,13 @@
           </g>
         </g>
       </g>
+      <path
+         transform="matrix(1.1772338,0,0,1.1772338,-515.46581,656.02903)"
+         d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
+         class="overlay"
+         fill="none"
+		 stroke="none"
+		/>
     </g>
     <path
        inkscape:connector-curvature="0"
@@ -2627,27 +2611,16 @@
        transform="translate(0.05999651,0.18461399)"
        style="display:inline"
        id="QuitButton"
-       inkscape:label="#QuitButton">
+	   class="action-button button"
+       >
       <path
          transform="matrix(1.1772338,0,0,1.1772338,-477.15248,-16.400176)"
          d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
-         sodipodi:ry="42.047722"
-         sodipodi:rx="42.047722"
-         sodipodi:cy="73.402351"
-         sodipodi:cx="1161.318"
-         id="path4247-0"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ff0000;stroke-width:0.84944892;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline;filter:url(#filter4282-2)"
-         sodipodi:type="arc" />
-      <path
-         transform="matrix(1.1772338,0,0,1.1772338,-477.15248,-16.400176)"
-         d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
-         sodipodi:ry="42.047722"
-         sodipodi:rx="42.047722"
-         sodipodi:cy="73.402351"
-         sodipodi:cx="1161.318"
-         id="path4247"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ff0000;stroke-width:0.84944892;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         sodipodi:type="arc" />
+         class="background"
+         fill="#ffffff"
+		 stroke="#ff0000"
+		 stroke-width="0.84944892"
+          />
       <g
          transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,87.11834,808.84975)"
          id="g4454">
@@ -2687,17 +2660,26 @@
              style="fill:url(#linearGradient4476-0);fill-opacity:1;stroke:none;display:inline" />
         </g>
       </g>
+      <path
+         transform="matrix(1.1772338,0,0,1.1772338,-477.15248,-16.400176)"
+         d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
+         class="overlay"
+         fill="none"
+		 stroke="none"
+          />
     </g>
     <g
-       id="ButtonClip0101">
+       id="ButtonClip0101" class="clip-button button">
       <rect
          ry="35.139885"
          y="34.590805"
          x="158.12323"
          height="195"
          width="195"
-         id="ClipButtonFigure0101"
-         style="fill:#ffffff;fill-opacity:1;stroke:#330099;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         class="background"
+         fill="#ffffff"
+		 stroke="#330099"
+		 stroke-width="5" />
       <text
          sodipodi:linespacing="125%"
          id="LabelClip01"
@@ -2792,17 +2774,29 @@
              style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.99999976;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
         </g>
       </g>
+      <rect
+         ry="35.139885"
+         y="34.590805"
+         x="158.12323"
+         height="195"
+         width="195"
+         class="overlay"
+         fill="none"
+		 stroke="none"
+		  />
     </g>
     <g
-       id="ButtonClip0202">
+       id="ButtonClip0202" class="clip-button button">
       <rect
          ry="35.139885"
          y="34.590801"
          x="382.51541"
          height="195"
          width="195"
-         id="ClipButtonFigure0202"
-         style="fill:#ffffff;fill-opacity:1;stroke:#f8c300;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+         fill="#ffffff"
+		 stroke="#f8c300"
+		 stroke-width="5" />
       <text
          sodipodi:linespacing="125%"
          id="LabelClip02"
@@ -2903,17 +2897,29 @@
           </g>
         </g>
       </g>
+      <rect
+         ry="35.139885"
+         y="34.590801"
+         x="382.51541"
+         height="195"
+         width="195"
+         class="overlay"
+         fill="none"
+		 stroke="none"
+		  />
     </g>
     <g
-       id="ButtonClip0303">
+       id="ButtonClip0303" class="clip-button button">
       <rect
          ry="35.139885"
          y="34.590801"
          x="606.90759"
          height="195"
          width="195"
-         id="ClipButtonFigure0303"
-         style="fill:#ffffff;fill-opacity:1;stroke:#dd1379;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+         fill="#ffffff"
+		 stroke="#dd1379"
+		 stroke-width="5" />
       <text
          sodipodi:linespacing="125%"
          id="LabelClip03"
@@ -3013,17 +3019,29 @@
           </g>
         </g>
       </g>
+      <rect
+         ry="35.139885"
+         y="34.590801"
+         x="606.90759"
+         height="195"
+         width="195"
+         class="overlay"
+         fill="none"
+		 stroke="none"
+		  />
     </g>
     <g
-       id="ButtonClip0304">
+       id="ButtonClip0304" class="clip-button button">
       <rect
          ry="35.139885"
          y="259.09589"
          x="158.12323"
          height="195"
          width="195"
-         id="ClipButtonFigure0304"
-         style="fill:#ffffff;fill-opacity:1;stroke:#dd1379;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+         fill="#ffffff"
+		 stroke="#dd1379"
+		 stroke-width="5" />
       <text
          inkscape:label="#LabelBook04"
          sodipodi:linespacing="125%"
@@ -3124,17 +3142,29 @@
           </g>
         </g>
       </g>
+      <rect
+         ry="35.139885"
+         y="259.09589"
+         x="158.12323"
+         height="195"
+         width="195"
+         class="overlay"
+         fill="none"
+		 stroke="none"
+		  />
     </g>
     <g
-       id="ButtonClip0105">
+       id="ButtonClip0105" class="clip-button button">
       <rect
          ry="35.139885"
          y="259.09589"
          x="382.51541"
          height="195"
          width="195"
-         id="ClipButtonFigure0105"
-         style="fill:#ffffff;fill-opacity:1;stroke:#330099;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+         fill="#ffffff"
+		 stroke="#330099"
+		 stroke-width="5" />
       <text
          inkscape:label="#LabelClip05"
          sodipodi:linespacing="125%"
@@ -3236,17 +3266,29 @@
           </g>
         </g>
       </g>
+      <rect
+         ry="35.139885"
+         y="259.09589"
+         x="382.51541"
+         height="195"
+         width="195"
+         class="overlay"
+         fill="none"
+		 stroke="none"
+		  />
     </g>
     <g
-       id="ButtonClip0206">
+       id="ButtonClip0206" class="clip-button button">
       <rect
          ry="35.139885"
          y="259.09589"
          x="606.90759"
          height="195"
          width="195"
-         id="ClipButtonFigure0206"
-         style="fill:#ffffff;fill-opacity:1;stroke:#f8c300;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+         fill="#ffffff"
+		 stroke="#f8c300"
+		 stroke-width="5" />
       <text
          sodipodi:linespacing="125%"
          id="LabelClip06"
@@ -3347,6 +3389,16 @@
           </g>
         </g>
       </g>
+      <rect
+         ry="35.139885"
+         y="259.09589"
+         x="606.90759"
+         height="195"
+         width="195"
+         class="overlay"
+         fill="none"
+		 stroke="none"
+		  />
     </g>
     <g
        id="SearchClipButtonArea">

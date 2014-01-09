@@ -78,9 +78,22 @@ module.exports = function(window, $, SVG) {
       $("#ClockMinuteHand").attr("transform", "rotate("+mins+")")
       $("#ClockHourHand").attr("transform", "rotate("+hours+")")
     }
+
+	var baseUrl;
+	
+	function myBooksActivated() {
+		window.location = baseUrl + "?view=bookcategoriespage"
+	}
+	function gamesActivated() {
+		window.location = baseUrl + "?view=radiopage"
+	}
+	function entertainmentActivated() {
+		window.location = baseUrl + "?view=youtubepage"
+	}
 	
 	var page = {
 		init: function(data, next) {
+			baseUrl = data.baseUrl
 			var Widgetizer = require("../js/widgetizer")(window, $)
 			/* load basic widgets used by this page... */
 			Widgetizer.uses(["piechart", "box", "grid", "flow", "textbox", "viewport", "image", "text"])
@@ -95,6 +108,11 @@ module.exports = function(window, $, SVG) {
 				window.setInterval(updateCalendar, 60*1000)
 				window.setInterval(updateClock, 1000)
 				window.setInterval(updateWeatherInfo, 10*60*1000)
+
+				$("#Button01 .overlay").click(myBooksActivated)
+				$("#Button02 .overlay").click(gamesActivated)
+				$("#Button03 .overlay").click(entertainmentActivated)
+
 				/* continue when finished */
 				if(next) next(page)
 			})

@@ -56,7 +56,8 @@
 			view: query.view || "homepage",
 			script: query.view || "homepage",
 			query: query,
-			hash: hash
+			hash: hash,
+			baseUrl: getPageUrl({})
 		}
 
 		console.log(getPageUrl(pageInfo))

@@ -5,11 +5,16 @@ module.exports = function(window, $, SVG) {
 			/* load basic widgets used by this page... */
 			Widgetizer.uses(["piechart", "box", "grid", "flow", "textbox", "viewport", "image", "text"])
 			/* transform wow:markup to SVG and widgets */
-			Widgetizer.widgetize()
-			/* use data to modify page */
-			// ...
-			/* continue when finished */
-			if(next) next(page)
+			Widgetizer.widgetize(window.document, function() {
+				/* widgetization complete! */
+				$("#QuitButton .overlay").click(function() {
+					// move back to previous page...
+					window.history.go(-1)
+				})
+
+				/* continue when finished */
+				if(next) next(page)
+			})
 		}
 	}
 	return page
