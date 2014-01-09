@@ -1628,17 +1628,15 @@
      id="layer3"
      style="display:inline">
     <g
-       id="QuitButton">
+       id="QuitButton" class="action-button button">
       <path
          d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
          transform="matrix(1.1772338,0,0,1.1772338,-477.15248,-16.400176)"
-         id="path4247-0"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ff0000;stroke-width:0.84944892;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline;filter:url(#filter4282)" />
-      <path
-         d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
-         transform="matrix(1.1772338,0,0,1.1772338,-477.15248,-16.400176)"
-         id="path4247"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ff0000;stroke-width:0.84944892;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         class="background"
+		 fill="#ffffff"
+		 stroke="#ff0000"
+		 stroke-width="0.84944892"
+		  />
       <g
          transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,87.11834,808.84975)"
          id="g4454">
@@ -1672,17 +1670,27 @@
              style="fill:url(#linearGradient4476);fill-opacity:1;stroke:none;display:inline" />
         </g>
       </g>
+      <path
+         d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
+         transform="matrix(1.1772338,0,0,1.1772338,-477.15248,-16.400176)"
+         class="overlay"
+		 fill="none"
+		 stroke="none"
+		  />
     </g>
     <g
-       id="ButtonBook0101">
+       id="ButtonBook0101" class="book-button button">
       <rect
          width="195"
          height="195"
          ry="35.139885"
          x="102.53645"
          y="102.51155"
-         id="BookButtonFigure0101"
-         style="fill:#ffffff;fill-opacity:1;stroke:#330099;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         class="background"
+		 fill="white"
+		 stroke="#330099"
+		 stroke-width="5"
+		 />
       <g
          transform="matrix(0.78,0,0,0.78,176.83514,-579.26194)"
          id="IconBook0101">
@@ -1724,17 +1732,30 @@
            x="148.98383"
            y="208.27908"
            id="tspan3324-3-2">BUCH 01</tspan></text>
+      <rect
+         width="195"
+         height="195"
+         ry="35.139885"
+         x="102.53645"
+         y="102.51155"
+         class="overlay"
+		 fill="none"
+		 stroke="none"
+		 />
     </g>
     <g
-       id="ButtonBook0202">
+       id="ButtonBook0202" class="book-button button">
       <rect
          width="195"
          height="195"
          ry="35.139885"
          x="347.47385"
          y="102.57405"
-         id="BookButtonFigure0202"
-         style="fill:#ffffff;fill-opacity:1;stroke:#f8c300;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+		 fill="white"
+		 stroke="#f8c300"
+		 stroke-width="5"
+		 />
       <g
          transform="matrix(0.78,0,0,0.78,280.77774,-516.9407)"
          id="IconBook0202">
@@ -1777,17 +1798,30 @@
            y="207.79813"
            id="tspan3324-3-2-5"
            style="font-size:23.39999962px">BUCH 02</tspan></text>
+      <rect
+         width="195"
+         height="195"
+         ry="35.139885"
+         x="347.47385"
+         y="102.57405"
+         class="overlay"
+		 fill="none"
+		 stroke="none"
+		 />
     </g>
     <g
-       id="ButtonBook0303">
+       id="ButtonBook0303" class="book-button button">
       <rect
          width="195"
          height="195"
          ry="35.139885"
          x="594.89862"
          y="102.57405"
-         id="BookButtonFigure0303"
-         style="fill:#ffffff;fill-opacity:1;stroke:#dd1379;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+		 fill="white"
+		 stroke="#dd1379"
+		 stroke-width="5"
+		 />
       <g
          transform="matrix(0.78000001,0,0,0.78000001,470.97343,-604.04984)"
          id="IconBook0303"
@@ -1830,6 +1864,16 @@
            x="643.14948"
            y="207.98953"
            id="tspan3324-3-2-8-5">BUCH 03</tspan></text>
+      <rect
+         width="195"
+         height="195"
+         ry="35.139885"
+         x="594.89862"
+         y="102.57405"
+         class="overlay"
+		 fill="none"
+		 stroke="none"
+		 />
     </g>
     <flowRoot
        id="flowRoot4266"
@@ -1862,15 +1906,18 @@
            y="858.59906"
            id="rect4286" /></flowRegion><flowPara
          id="flowPara4288" /></flowRoot>    <g
-       id="ButtonBook0304">
+       id="ButtonBook0304" class="book-button button">
       <rect
          width="195"
          height="195"
          ry="35.139885"
          x="102.54907"
          y="350.01337"
-         id="BookButtonFigure0304"
-         style="fill:#ffffff;fill-opacity:1;stroke:#dd1379;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+		 fill="white"
+		 stroke="#dd1379"
+		 stroke-width="5"
+		 />
       <g
          transform="matrix(0.78000001,0,0,0.78000001,-21.376108,-356.61053)"
          id="IconBook0304"
@@ -1913,17 +1960,30 @@
            x="150.79993"
            y="455.42883"
            id="tspan3324-3-2-8-5-4">BUCH 04</tspan></text>
+      <rect
+         width="195"
+         height="195"
+         ry="35.139885"
+         x="102.54907"
+         y="350.01337"
+         class="overlay"
+		 fill="none"
+		 stroke="none"
+		 />
     </g>
     <g
-       id="ButtonBook0105">
+       id="ButtonBook0105" class="book-button button">
       <rect
          width="195"
          height="195"
          ry="35.139885"
          x="347.47385"
          y="350.07587"
-         id="BookButtonFigure0105"
-         style="fill:#ffffff;fill-opacity:1;stroke:#330099;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+		 fill="white"
+		 stroke="#330099"
+		 stroke-width="5"
+		 />
       <g
          transform="matrix(0.78,0,0,0.78,421.77254,-331.69762)"
          id="IconBook0105"
@@ -1966,17 +2026,30 @@
            x="393.92123"
            y="455.84338"
            id="tspan3324-3-2-1">BUCH 05</tspan></text>
+      <rect
+         width="195"
+         height="195"
+         ry="35.139885"
+         x="347.47385"
+         y="350.07587"
+         class="overlay"
+		 fill="none"
+		 stroke="none"
+		 />
     </g>
     <g
-       id="ButtonBook0206">
+       id="ButtonBook0206" class="book-button button">
       <rect
          width="195"
          height="195"
          ry="35.139885"
          x="594.89862"
          y="350.07587"
-         id="BookButtonFigure0206"
-         style="fill:#ffffff;fill-opacity:1;stroke:#f8c300;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+		 fill="white"
+		 stroke="#f8c300"
+		 stroke-width="5"
+		 />
       <g
          transform="matrix(0.78,0,0,0.78,528.20251,-269.43889)"
          id="IconBook0206"
@@ -2020,6 +2093,16 @@
            y="455.29993"
            id="tspan3324-3-2-5-3"
            style="font-size:23.39999962px">BUCH 06</tspan></text>
+      <rect
+         width="195"
+         height="195"
+         ry="35.139885"
+         x="594.89862"
+         y="350.07587"
+         class="overlay"
+		 fill="none"
+		 stroke="none"
+		 />
     </g>
   </g>
 </svg>
