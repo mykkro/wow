@@ -39,3 +39,17 @@ html, body , #top-wrapper, #top-wrapper > svg {
 	font-size: 120px;
 }
 
+.button.disabled {
+	fill-opacity: 0.5;
+}
+.button .disabled .background {
+	fill: lightgray;
+}
+
+.button:hover {
+	fill-opacity: 0.8;	
+}
+.button:hover  .overlay {
+	fill: salmon;
+	fill-opacity: 0.2;
+}

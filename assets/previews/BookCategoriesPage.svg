@@ -1628,17 +1628,15 @@
      id="layer3"
      style="display:inline">
     <g
-       id="QuitButton">
+       id="QuitButton" class="action-button button">
       <path
          d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
          transform="matrix(1.1772338,0,0,1.1772338,-477.15248,-16.400176)"
-         id="path4247-0"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ff0000;stroke-width:0.84944892;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline;filter:url(#filter4282)" />
-      <path
-         d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
-         transform="matrix(1.1772338,0,0,1.1772338,-477.15248,-16.400176)"
-         id="path4247"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ff0000;stroke-width:0.84944892;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         class="background"
+		 fill="#ffffff"
+		 stroke="#ff0000"
+		 stroke-width="0.84944892"
+		  />
       <g
          transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,87.11834,808.84975)"
          id="g4454">
@@ -1672,17 +1670,26 @@
              style="fill:url(#linearGradient4476);fill-opacity:1;stroke:none;display:inline" />
         </g>
       </g>
+      <path
+         d="m 1203.3657,73.402351 a 42.047722,42.047722 0 1 1 -84.0954,0 42.047722,42.047722 0 1 1 84.0954,0 z"
+         transform="matrix(1.1772338,0,0,1.1772338,-477.15248,-16.400176)"
+         class="overlay"
+		 fill="none"
+		 stroke="none"
+		  />
     </g>
     <g
-       id="ButtonBookCategory01">
+       id="ButtonBookCategory01" class="action-button button">
       <rect
          width="250"
          height="250"
          ry="45.051132"
          x="210.00232"
          y="29.997639"
-         id="CategoryButtonFigure01"
-         style="fill:#ffffff;fill-opacity:1;stroke:#330099;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         class="background"
+		 fill="white"
+		 stroke="#330099"
+		 stroke-width="5" />
       <g
          transform="translate(305.25712,-844.06895)"
          id="IconBook01">
@@ -1724,17 +1731,28 @@
            x="269.50528"
            y="165.13423"
            id="tspan3324-3-2">FAMILIE</tspan></text>
+      <rect
+         width="250"
+         height="250"
+         ry="45.051132"
+         x="210.00232"
+         y="29.997639"
+         class="overlay"
+		 fill="none"
+		 stroke="none" />
     </g>
     <g
-       id="ButtonBookCategory03">
+       id="ButtonBookCategory03" class="action-button button">
       <rect
          width="250"
          height="250"
          ry="45.051132"
          x="207.51338"
          y="322.49765"
-         id="CategoryButtonFigure03"
-         style="fill:#ffffff;fill-opacity:1;stroke:#f8c300;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+		 fill="white"
+		 stroke="#f8c300"
+		 stroke-width="5" />
       <g
          transform="translate(125.17366,-471.82239)"
          id="IconBook03">
@@ -1777,17 +1795,29 @@
            y="460.12216"
            id="tspan3324-3-2-5"
            style="font-size:30px">AUSFLÜGE</tspan></text>
+      <rect
+         width="250"
+         height="250"
+         ry="45.051132"
+         x="207.51338"
+         y="322.49765"
+         class="overlay"
+		 fill="none"
+		 stroke="none"
+		  />
     </g>
     <g
-       id="ButtonBookCategory02">
+       id="ButtonBookCategory02" class="action-button button">
       <rect
          width="250"
          height="250"
          ry="45.051132"
          x="500.01337"
          y="29.997639"
-         id="CategoryButtonFigure02"
-         style="fill:#ffffff;fill-opacity:1;stroke:#84c223;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+		 fill="#ffffff"
+		 stroke="#84c223"
+		 stroke-width="5" />
       <g
          transform="translate(466.30745,-937.78454)"
          id="IconBook02">
@@ -1829,17 +1859,28 @@
            x="577.7879"
            y="164.91873"
            id="tspan3324-3-2-1">FESTE</tspan></text>
+      <rect
+         width="250"
+         height="250"
+         ry="45.051132"
+         x="500.01337"
+         y="29.997639"
+         class="overlay"
+		 fill="none"
+		 stroke="none" />
     </g>
     <g
-       id="ButtonBookCategory04">
+       id="ButtonBookCategory04" class="action-button button">
       <rect
          width="250"
          height="250"
          ry="45.051132"
          x="500.01337"
          y="319.99765"
-         id="rect3428-1-4"
-         style="fill:#ffffff;fill-opacity:1;stroke:#dd1379;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+		 fill="#ffffff"
+		 stroke="#dd1379"
+		 stroke-width="5" />
       <g
          transform="translate(341.13496,-585.93043)"
          id="IconBook04">
@@ -1881,6 +1922,16 @@
            x="519.94794"
            y="457.63293"
            id="tspan3324-3-2-8">LIEBHABEREI</tspan></text>
+      <rect
+         width="250"
+         height="250"
+         ry="45.051132"
+         x="500.01337"
+         y="319.99765"
+         class="overlay"
+		 fill="none"
+		 stroke="none"
+		/>
     </g>
   </g>
 </svg>

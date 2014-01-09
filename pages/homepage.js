@@ -74,7 +74,6 @@ module.exports = function(window, $, SVG) {
 		hours = -90+360*(data[2].numeric/12.0), 
 		mins = -90+360*(data[1].numeric/60.0),
 		secs = -90+360*(data[0].numeric/60.0)
-	console.log(data, hours, mins, secs)
       $("#ClockSecondHand").attr("transform", "rotate("+secs+")")
       $("#ClockMinuteHand").attr("transform", "rotate("+mins+")")
       $("#ClockHourHand").attr("transform", "rotate("+hours+")")

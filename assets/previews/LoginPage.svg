@@ -1623,16 +1623,17 @@
      style="display:inline"
      sodipodi:insensitive="true">
     <g
-       id="LoginButton0201">
+       id="LoginButton0201" class="login-button button">
       <rect
-         inkscape:label="#LoginButtonFigure0201"
          ry="34.958595"
          y="49.603188"
          x="233.07857"
          height="200"
          width="150"
-         id="LoginButtonFigure0201"
-         style="fill:#ffffff;fill-opacity:1;stroke:#00c800;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+		 fill="#ffffff"
+		 stroke="#00c800"
+		 stroke-width="5" />
       <text
          sodipodi:linespacing="125%"
          id="LabelUserName01"
@@ -1690,9 +1691,19 @@
            sodipodi:start="6.2514898"
            sodipodi:end="9.4844776" />
       </g>
+      <rect
+         ry="34.958595"
+         y="49.603188"
+         x="233.07857"
+         height="200"
+         width="150"
+         class="overlay"
+		 fill="none"
+		 stroke="none"
+		  />
     </g>
     <g
-       id="LoginButton01"
+       id="LoginButton01" class="login-button button"
        transform="translate(-202,0)">
       <rect
          ry="34.958595"
@@ -1700,8 +1711,10 @@
          x="245.07857"
          height="200"
          width="150"
-         id="LoginButtonFigure02"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ffd940;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         class="background"
+		 fill="#ffffff"
+		 stroke="#ffd940"
+		 stroke-width="5" />
       <text
          sodipodi:linespacing="125%"
          id="LabelDayCareCentreName01"
@@ -1807,9 +1820,19 @@
            d="m 586.36861,-332.44107 a 106.92604,93.129128 0 1 1 -213.85208,0 106.92604,93.129128 0 1 1 213.85208,0 z"
            transform="matrix(-0.13716382,0.14119767,-0.03951704,-0.03615413,388.73382,20.866054)" />
       </g>
+      <rect
+         ry="34.958595"
+         y="49.603188"
+         x="245.07857"
+         height="200"
+         width="150"
+         class="overlay"
+		 fill="none"
+		 stroke="none"
+		  />
     </g>
     <g
-       id="LoginButtonAdmin01"
+       id="LoginButtonAdmin01" class="login-button button admin"
        transform="matrix(0.72959289,0,0,0.72959289,831.5651,622.41986)">
       <rect
          ry="34.958595"
@@ -1817,8 +1840,10 @@
          x="-32.459534"
          height="200"
          width="150"
-         id="LoginButtonFigure03"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ff0000;stroke-width:6.85313654;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+         fill="#fff"
+		 stroke="#ff0000"
+		 stroke-width="6.85313654" />
       <text
          sodipodi:linespacing="125%"
          id="LabelAdminName01"
@@ -1876,18 +1901,29 @@
            sodipodi:start="6.2514898"
            sodipodi:end="9.4844776" />
       </g>
+      <rect
+         ry="34.958595"
+         y="-280.67505"
+         x="-32.459534"
+         height="200"
+         width="150"
+         class="overlay"
+         fill="none"
+		 stroke="none"
+		  />
     </g>
     <g
-       id="LoginButton0202">
+       id="LoginButton0202" class="login-button button">
       <rect
-         inkscape:label="#LoginButtonFigure0202"
          ry="34.958595"
          y="49.603188"
          x="421.07858"
          height="200"
          width="150"
-         id="LoginButtonFigure0202"
-         style="fill:#ffffff;fill-opacity:1;stroke:#00c800;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+         fill="#ffffff"
+		 stroke="#00c800"
+		 stroke-width="5" />
       <text
          inkscape:label="#LabelUserName02"
          sodipodi:linespacing="125%"
@@ -1946,17 +1982,29 @@
            sodipodi:start="6.2514898"
            sodipodi:end="9.4844776" />
       </g>
+      <rect
+         ry="34.958595"
+         y="49.603188"
+         x="421.07858"
+         height="200"
+         width="150"
+         class="overlay"
+         fill="none"
+		 stroke="none"
+		  />
     </g>
     <g
-       id="LoginButton0203">
+       id="LoginButton0203" class="login-button button">
       <rect
          ry="34.958595"
          y="289.60318"
          x="43.078568"
          height="200"
          width="150"
-         id="LoginButtonFigure0203"
-         style="fill:#ffffff;fill-opacity:1;stroke:#00c800;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
+         class="background"
+		 fill="#ffffff"
+		 stroke="#00c800"
+		 stroke-width="5" />
       <text
          sodipodi:linespacing="125%"
          id="LabelUserName03"
@@ -2014,6 +2062,16 @@
            sodipodi:start="6.2514898"
            sodipodi:end="9.4844776" />
       </g>
+      <rect
+         ry="34.958595"
+         y="289.60318"
+         x="43.078568"
+         height="200"
+         width="150"
+         class="overlay"
+		 fill="none"
+		 stroke="none"
+		 />
     </g>
   </g>
 </svg>

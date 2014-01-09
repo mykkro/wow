@@ -3342,12 +3342,15 @@
 
 	   </g>
     <g
-       id="Button01">
+       id="Button01" class="button nav-button">
       <path
-         inkscape:connector-curvature="0"
-         id="ButtonFigure01"
+         class="background"
          d="m 34.862509,42.980004 237.979431,0 c 10.22428,0 18.50949,8.399911 18.50949,18.749809 l 0,112.498807 c 0,10.349 -8.28521,18.74982 -18.50949,18.74982 l -237.979431,0 c -10.136172,0 -18.509515,-8.40082 -18.509515,-18.74982 l 0,-112.498807 c 0,-10.349898 8.373343,-18.749809 18.509515,-18.749809 z"
-         style="fill:#99c918;fill-opacity:1;stroke:#4f8c0d;stroke-width:5.00156641;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         fill="#99c918"
+		 stroke="#4f8c0d"
+		 stroke-width="5.00156641"
+		 stroke-miterlimit="4"
+		  />
       <path
          sodipodi:nodetypes="ccccc"
          inkscape:connector-curvature="0"
@@ -3356,7 +3359,7 @@
          style="fill:#ffffff;stroke:none;filter:url(#filter4051)" />
       <text
          sodipodi:linespacing="125%"
-         id="ButtonLabelText01"
+         class="label"
          y="137.23553"
          x="60.911114"
          style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -3366,14 +3369,22 @@
            x="60.911114"
            id="tspan3287"
            sodipodi:role="line">MEINE BÜCHER</tspan></text>
+      <path
+         class="overlay"
+         d="m 34.862509,42.980004 237.979431,0 c 10.22428,0 18.50949,8.399911 18.50949,18.749809 l 0,112.498807 c 0,10.349 -8.28521,18.74982 -18.50949,18.74982 l -237.979431,0 c -10.136172,0 -18.509515,-8.40082 -18.509515,-18.74982 l 0,-112.498807 c 0,-10.349898 8.373343,-18.749809 18.509515,-18.749809 z"
+         fill="none"
+		 stroke="none"/>
     </g>
     <g
-       id="Button02">
+       id="Button02" class="button nav-button">
       <path
-         inkscape:connector-curvature="0"
+         class="background"
          id="ButtonFigure02"
          d="m 34.862509,223.89338 237.979431,0 c 10.22428,0 18.50949,8.39991 18.50949,18.7498 l 0,112.49882 c 0,10.34899 -8.28521,18.74982 -18.50949,18.74982 l -237.979431,0 c -10.136172,0 -18.509515,-8.40083 -18.509515,-18.74982 l 0,-112.49882 c 0,-10.34989 8.373343,-18.7498 18.509515,-18.7498 z"
-         style="fill:#e77815;stroke:#ba5205;stroke-width:5.00156641;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         fill="#e77815"
+		 stroke="#ba5205"
+		 stroke-width="5.00156641"
+		 stroke-miterlimit="4" />
       <path
          inkscape:label="#ButtonLabelField02"
          sodipodi:nodetypes="ccccc"
@@ -3383,7 +3394,7 @@
          style="fill:#ffffff;stroke:none;filter:url(#filter4061)" />
       <text
          sodipodi:linespacing="125%"
-         id="ButtonLabelText02"
+         class="label"
          y="316.18878"
          x="113.19383"
          style="font-size:25px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"
@@ -3392,14 +3403,23 @@
            x="113.19383"
            id="tspan3303"
            sodipodi:role="line">SPIELE</tspan></text>
+      <path
+         class="overlay"
+         d="m 34.862509,223.89338 237.979431,0 c 10.22428,0 18.50949,8.39991 18.50949,18.7498 l 0,112.49882 c 0,10.34899 -8.28521,18.74982 -18.50949,18.74982 l -237.979431,0 c -10.136172,0 -18.509515,-8.40083 -18.509515,-18.74982 l 0,-112.49882 c 0,-10.34989 8.373343,-18.7498 18.509515,-18.7498 z"
+         fill="none"
+		 stroke="none"/>
     </g>
     <g
-       id="Button03">
+       id="Button03" class="button nav-button">
       <path
+         class="background"
          inkscape:connector-curvature="0"
          id="ButtonFigure03"
          d="m 34.874645,404.83764 237.955165,0 c 10.22322,0 18.50759,8.3984 18.50759,18.74551 l 0,112.47846 c 0,10.34802 -8.28437,18.74641 -18.50759,18.74641 l -237.955165,0 c -10.135139,0 -18.507627,-8.39839 -18.507627,-18.74641 l 0,-112.47846 c 0,-10.34711 8.372488,-18.74551 18.507627,-18.74551 z"
-         style="fill:#9900ff;fill-opacity:1;stroke:#70126b;stroke-width:5.03000021;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         fill="#9900ff"
+		 stroke="#70126b"
+		 stroke-width="5.00156641"
+		 stroke-miterlimit="4" />
       <path
          sodipodi:nodetypes="ccccc"
          inkscape:connector-curvature="0"
@@ -3408,7 +3428,7 @@
          style="fill:#ffffff;stroke:none;filter:url(#filter4071)" />
       <text
          sodipodi:linespacing="125%"
-         id="ButtonLabelText03"
+         class="label"
          y="497.09604"
          x="52.683006"
          style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -3418,6 +3438,11 @@
            x="52.683006"
            id="tspan3315"
            sodipodi:role="line">UNTERHALTUNG</tspan></text>
+      <path
+         class="overlay"
+         d="m 34.874645,404.83764 237.955165,0 c 10.22322,0 18.50759,8.3984 18.50759,18.74551 l 0,112.47846 c 0,10.34802 -8.28437,18.74641 -18.50759,18.74641 l -237.955165,0 c -10.135139,0 -18.507627,-8.39839 -18.507627,-18.74641 l 0,-112.47846 c 0,-10.34711 8.372488,-18.74551 18.507627,-18.74551 z"
+         fill="none"
+		 stroke="none"/>
     </g>
     <text
        xml:space="preserve"
@@ -3550,34 +3575,6 @@
      inkscape:label="Layer03"
      style="display:inline"
      sodipodi:insensitive="true">
-    <g
-       id="Button02-Layer03">
-      <path
-         inkscape:connector-curvature="0"
-         id="ButtonFigure02-Layer03"
-         d="m 34.862509,223.89338 237.979431,0 c 10.22428,0 18.50949,8.39991 18.50949,18.7498 l 0,112.49882 c 0,10.34899 -8.28521,18.74982 -18.50949,18.74982 l -237.979431,0 c -10.136172,0 -18.509515,-8.40083 -18.509515,-18.74982 l 0,-112.49882 c 0,-10.34989 8.373343,-18.7498 18.509515,-18.7498 z"
-         style="fill:#e77815;stroke:#ba5205;stroke-width:5.00156641;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         inkscape:label="#ButtonFigure02-Layer03" />
-      <path
-         inkscape:label="#ButtonLabelField02-Layer03"
-         sodipodi:nodetypes="ccccc"
-         inkscape:connector-curvature="0"
-         id="ButtonLabelField02-Layer03"
-         d="m 31.469638,286.62849 244.765152,0 0,42.56785 -244.765152,0 z"
-         style="fill:#ffffff;stroke:none;filter:url(#filter4061)"
-         transform="translate(-1.9999999e-6,0)" />
-      <text
-         sodipodi:linespacing="125%"
-         id="ButtonLabelText02-Layer03"
-         y="316.18878"
-         x="114.50285"
-         style="font-size:25px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"
-         xml:space="preserve"><tspan
-           y="316.18878"
-           x="114.50285"
-           id="tspan5722"
-           sodipodi:role="line">RADIO</tspan></text>
-    </g>
 	<text id="MeteoIcon" x="470" y="430" class="meteo">R</text>
     <text
        x="540"
