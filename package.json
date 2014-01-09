@@ -38,6 +38,7 @@
     "url": "git@github.com:mykkro/wow.git"
   },
   "devDependencies": {
-    "grunt": "~0.4.2"
+    "grunt": "~0.4.2",
+    "grunt-node-webkit-builder": "~0.1.14"
   }
 }
