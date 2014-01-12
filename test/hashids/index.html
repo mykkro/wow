@@ -1,0 +1,26 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title>Page Info</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		var Hashids = require('hashids'),
+		hashids = new Hashids('this is my salt', 8);
+
+		var hash = hashids.encrypt(12345);
+		console.log(hash)
+		
+		var numbers = hashids.decrypt('B0NkK9A5');
+		console.log(numbers)
+	})
+	</script>
+    </head>
+    <body>
+     <h1>Unique hash creating test</h1>
+	 <div class="main">
+	 </div>
+    </body>
+    </html>
