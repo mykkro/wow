@@ -33,7 +33,8 @@
     "mustache": "~0.8.1",
     "moment": "~2.5.0",
     "temp": "~0.6.0",
-    "hashids": "~0.3.3"
+    "hashids": "~0.3.3",
+    "unzip": "~0.1.9"
   },
   "repository": {
     "type": "git",

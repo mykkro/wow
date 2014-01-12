@@ -1,0 +1,30 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title>Page Info</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		var fs = require("fs")
+		var unzip = require("unzip")
+		var archivePath = "C:/Users/Mykkro/Downloads/second.zip"
+		var targetDir = "C:/Users/Mykkro/Downloads/Unpacked"
+
+		// if something is amiss, throws exception...
+		fs.createReadStream(archivePath)
+			.pipe(unzip.Extract({ path: targetDir }))
+			.on("close", function(err) {
+				if(err) console.err(err)
+				else console.log("Successfully unpacked!")
+			})
+	})
+	</script>
+    </head>
+    <body>
+     <h1>Unzip test</h1>
+	 <div class="main">
+	 </div>
+    </body>
+    </html>
