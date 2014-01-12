@@ -31,7 +31,8 @@
     "zip": "~1.1.1",
     "node-zip": "~1.0.1",
     "mustache": "~0.8.1",
-    "moment": "~2.5.0"
+    "moment": "~2.5.0",
+    "temp": "~0.6.0"
   },
   "repository": {
     "type": "git",
