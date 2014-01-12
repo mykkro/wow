@@ -1,0 +1,32 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title>Page Info</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		var url = require('url')
+		var path = require('path')
+		var temp = require("temp")
+		var fs = require("fs")
+		
+		var myData = "foo\nbar\nfoo\nbaz";
+		temp.mkdir('pdfcreator', function(err, dirPath) {
+		  var inputPath = path.join(dirPath, 'input.tex')
+		  fs.writeFile(inputPath, myData, function(err) {
+			if (err) throw err;
+			console.log(dirPath)
+		  });
+		});		
+		
+	})
+	</script>
+    </head>
+    <body>
+     <h1>Temporary Files Handling Test</h1>
+	 <div class="main">
+	 </div>
+    </body>
+    </html>
