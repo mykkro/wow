@@ -99,7 +99,12 @@ function getExtension(filename) {
 			var newPath = path.join(Storage.importDir, newName)
 			fs.rename(dirPath, newPath, function(err) {
 				if(!err) {
-					console.log("Directory successfully moved.")
+					res.importName = newName
+					// update entry in database...
+					crud.update(res, function(err, res2) {
+						console.log("Import completed successfully.")
+						console.log(res)
+					})
 				}
 			})
 		}
