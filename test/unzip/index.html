@@ -8,32 +8,123 @@
 	<script>
 	$(document).ready(function() {
 		var fs = require("fs")
+		var path = require("path")
 		var unzip = require("unzip")
-		var archivePath = "C:/Users/Mykkro/Downloads/second.zip"
-		var targetDir = "C:/Users/Mykkro/Downloads/Unpacked"
-		var manifestPath = "C:/Users/Mykkro/Downloads/manifest.json"
-		
-		// if something is amiss, throws exception...
-		fs.createReadStream(archivePath)
-			.pipe(unzip.Extract({ path: targetDir }))
-			.on("close", function(err) {
-				if(err) console.err(err)
-				else console.log("Successfully unpacked!")
-			})
-
-
+		var temp = require("temp")
 		var Manifest =  require("../../lib/manifest")
+		var Storage = require("../../lib/storage")
+		var Hashids = require('hashids'),
+		hashids = new Hashids('this is my salt', 8);
 		
-		Manifest.loadFromArchive(archivePath, function(err, res) {
-			console.error(err)
-			console.log(res)
+		// ensure that some directories exist...
+		Storage.init()
+		
+function getExtension(filename) {
+    var ext = path.extname(filename||'').split('.');
+    return ext[ext.length - 1];
+}
+	var fileSelected = function(path) {
+		if(getExtension(path) != "zip") {
+			/* not archive ... */
+			console.log("Must be a .zip archive")
+			return
+		}
+		Manifest.loadFromArchive(path, function(err, res) {
+			if(err) {
+				/* manifest missing or invalid */
+				console.log("Failed to load manifest file")
+				console.error(err)
+				// TODO show prompt with "are you sure?" and a form with default manifest 
+				/* create default manifest and continue importing... */
+				importArchive(path, defaultManifest)
+			} else {
+				/* manifest ok */
+				console.log("Manifest loaded successfully.")
+				console.log(res)
+				importArchive(path, res)
+			}
 		})
+	}
+								
+	var defaultManifest = {
+		apptype: "basic", // default value
+		title: "Imported Application",
+		description: "",
+		author: "",
+		version: "",
+		uri: ""		
+	}
+				  
+	var unpackArchive = function(path, dirPath, next) {
+			fs.createReadStream(path)
+				.pipe(unzip.Extract({ path: dirPath }))
+				.on("close", next)
+	}
+				  
+	var importArchive = function(path, m) {
+		console.log("Importing archive from "+path)
+		console.log("With manifest: ", m)
+		temp.mkdir('wowimport', function(err, dirPath) {
+			console.log("Created temporary directory "+dirPath)
+			unpackArchive(path, dirPath, function(err) {
+				if(err) {
+					console.log("Archive unpacking failed")
+					console.error(err)
+					// TODO remove temporary directory
+					// must set tracking for temp dir
+					temp.cleanup()
+				} else {
+					console.log("Archive unpacked successfully!")
+					finalizeImport(dirPath, m)
+				}
+			})
+		});				
+	}
+	
+	// when doing imports adfter the first, crud.create returns sometimes with empty ID
+	// until fixed, the page should be refreshed after each import
+	// or.. do not reuse the import form
+	var finalizeImport = function(dirPath, m) {
+		console.log("App is unpacked and ready at "+dirPath)
+		console.log("Preparing to import...")
+		console.log("Manifest:", m)
+		var crud = Storage.crud("imports")
+		var data = m
+		crud.create(data, function(err, res) {
+		if(!err) {
+			console.log("Data inserted! ID="+res._id)
+			console.log(res)
+			var newName = hashids.encrypt(res._id.id)
+			console.log(newName)
+			var newPath = path.join(Storage.importDir, newName)
+			fs.rename(dirPath, newPath, function(err) {
+				if(!err) {
+					console.log("Directory successfully moved.")
+				}
+			})
+		}
+		})
+	}
+				  
+				  
+	  $("#fileDialog").change(function() {
+			fileSelected($(this).val())
+	  })
+	  
+	  $("#importBtn").click(function() {
+			  $('#fileDialog').click()		
+		})	  
+
 	})
 	</script>
     </head>
     <body>
      <h1>Unzip test</h1>
+	 
 	 <div class="main">
+		<input style="display:none;" id="fileDialog" type="file" />
+		<button id="importBtn">Import</button>
 	 </div>
+	 
     </body>
     </html>
