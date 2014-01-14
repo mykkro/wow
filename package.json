@@ -35,7 +35,8 @@
     "temp": "~0.6.0",
     "hashids": "~0.3.3",
     "unzip": "~0.1.9",
-    "memorystream": "~0.2.0"
+    "memorystream": "~0.2.0",
+    "youtube-feeds": "~2.2.1"
   },
   "repository": {
     "type": "git",
@@ -44,5 +45,8 @@
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-node-webkit-builder": "~0.1.14"
+  },
+  "webkit": {
+    "plugin": true
   }
 }
