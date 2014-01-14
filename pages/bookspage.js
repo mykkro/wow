@@ -7,7 +7,7 @@ module.exports = function(window, $, SVG) {
 			/* transform wow:markup to SVG and widgets */
 			Widgetizer.widgetize(window.document, function() {
 				/* widgetization complete! */
-				$("#QuitButton .overlay").click(function() {
+				$("g[name=quitButton]").click(function() {
 					// move back to previous page...
 					window.history.go(-1)
 				})

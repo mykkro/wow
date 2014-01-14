@@ -3,6 +3,7 @@ module.exports = function(window, $) {
   var document = window.document
   var Commons = require("./commons")
   var SvgHelper = require("./svghelper")(window)
+  var Widget = require("./widget")($)
   var _ = require("underscore")
 
 	/* Finds all nodes with nodeName == name */
@@ -47,7 +48,8 @@ module.exports = function(window, $) {
 		var id = this.newWidgetId()
 		var group = SvgHelper.attrs(SvgHelper.group(), {
 		  "data-wow": type,
-		  "id": id
+		  "id": id,
+		  "class": "wow-widget "+type
 		})
 		if(element.length) {
 		  // it is an array of elements!
@@ -83,13 +85,13 @@ module.exports = function(window, $) {
 		}
 
 		// return widget object
-		this.widgets[id] = {
+		this.widgets[id] = new Widget({
 		  element: group,
 		  type: type,
 		  id: id,
 		  bounds: {x:bbox.x, y:bbox.y, width:bbox.width,height:bbox.height},
 		  dim: dim
-		}
+		})
 		return this.widgets[id]
 	  },
 	  /* make widgets from node's descendants... */
@@ -117,6 +119,24 @@ module.exports = function(window, $) {
 		return Commons.findTopmostNodes(node, inNodes, childrenOnly, function(node) {
 			return node.nodeName.startsWith("wow:")
 		})
+	  },
+	  findWidgetByName: function(node, name) {
+	  	var id = $(node).find("g[name="+name+"]").attr("id")
+	  	return this.widgets[id]
+	  },
+	  findWidgetById: function(node, name) {
+	  	return this.widgets[id]
+	  },
+	  get: function(node, name) {
+	  	if(!name) {
+	  		name=node
+	  		node=document
+	  	}
+	  	if(name.startsWith("#")) {
+	  		return this.findWidgetById(node, name.substr(1))
+	  	} else {
+	  		return this.findWidgetByName(node, name)
+	  	}
 	  },
 	  makeWidget: function(element, done) {
 		/* if the widget has subwidgets, create them... */

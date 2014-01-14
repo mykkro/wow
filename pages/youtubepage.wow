@@ -14,5 +14,23 @@
     >
     <wow:image src="assets/backgrounds/default.svg" width="960" height="600"></wow:image>
 	<wow:image src="assets/previews/YouTubePage.svg" width="960" height="600" embed="true"></wow:image>
+    <g transform="translate(840, 20)">
+        <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
+    </g>
+    <g transform="translate(20, 20)">
+        <wow:iconbutton id="homeButton" name="homeButton" src="home"></wow:iconbutton>
+    </g>
+    <g transform="translate(20, 334)">
+        <wow:iconbutton id="leftButton" name="leftButton" src="lefthand"></wow:iconbutton>
+    </g>
+    <g transform="translate(840, 334)">
+        <wow:iconbutton id="rightButton" name="rightButton" src="righthand"></wow:iconbutton>
+    </g>
+    <g transform="translate(768, 472)">
+        <wow:iconbutton id="searchButton" name="searchButton" src="search"></wow:iconbutton>
+    </g>
+    <g transform="translate(284, 533)">
+        <wow:textbox name="searchTextbox" maxchars=50 width="394" height="30"></wow:textbox>
+    </g>
 	<g id="tempgroup" style="display:none;"></g>
 </svg>
