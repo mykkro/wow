@@ -64,15 +64,16 @@
 	 
 	 <div class="main">
 
-		<div id="ytplayer"></div>
+    <script type="text/javascript" src="https://www.youtube.com/player_api"></script>
 
 		<script>
+		/*
 		  // Load the IFrame Player API code asynchronously.
 		  var tag = document.createElement('script');
 		  tag.src = "https://www.youtube.com/player_api";
 		  var firstScriptTag = document.getElementsByTagName('script')[0];
 		  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
+*/
 		  // Replace the 'ytplayer' element with an <iframe> and
 		  // YouTube player after the API code downloads.
 		  var player;
@@ -83,8 +84,9 @@
 		      videoId: 'M7lc1UVf-VE',
 		      playerVars: {
 		      	autoplay: 0,
-		      	controls: 1,
+		      	controls: 0,
 		      	enablejsapi: 1,
+		      	showinfo: 0,
 		      	fs: 1
 		      },
 			events: {
@@ -96,7 +98,7 @@
 			var done = false
 			function onPlayerReady(evt) {
 				// do something...
-			    // evt.target.playVideo();
+			    //evt.target.playVideo();
 			}
 			function onPlayerStateChange(evt) {
 				/*
@@ -118,14 +120,20 @@
 	    }	
 	    */	  
 		</script>
-
-	 	<p>Search YouTube videos:</p>
-	 	<p>
-	 	<input type="text" id="searchField"></input>
-	 	<button id="searchBtn">Search</button>
-	 	</p>
-
-
+		<div>
+			<div id="ytplayer"></div>
+		</div>
+		<div>
+			<!-- <iframe id="ytplayer2" type="text/html" width="640" height="360"
+src="https://www.youtube.com/embed/M7lc1UVf-VE?controls=0&enablejsapi=1&showinfo=0&theme=light"
+frameborder="0" allowfullscreen></iframe> -->
+		</div>
+		 	<p>Search YouTube videos:</p>
+		 	<p>
+		 	<input type="text" id="searchField"></input>
+		 	<button id="searchBtn">Search</button>
+		 	</p>
+		 </div>
 	 </div>
 	 
     </body>
