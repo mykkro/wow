@@ -1,27 +1,35 @@
 module.exports = function(window, $, SVG) {
 	var page = {
 		init: function(data, next) {
-			var Widgetizer = require("../js/widgetizer")(window, $)
+			var W = require("../js/widgetizer")(window, $)
 			/* load basic widgets used by this page... */
-			Widgetizer.useCommonWidgets()
+			W.useCommonWidgets()
 			/* transform wow:markup to SVG and widgets */
-			Widgetizer.widgetize(window.document, function() {
+			W.widgetize(window.document, function() {
 				/* use data to modify page */
-				var quitBtn = Widgetizer.get("quitButton")
+				var quitBtn = W.get("quitButton")
 				quitBtn.click(function() {
 					// move back to previous page...
 					window.history.go(-1)
 				})
-				Widgetizer.get("playButton").click(function() {
+				W.get("playButton").click(function() {
 					window.player.playVideo()
+					W.get("playButton").disable()
+					W.get("pauseButton").enable()
+					W.get("stopButton").enable()
 				})
-				Widgetizer.get("pauseButton").click(function() {
+				W.get("pauseButton").click(function() {
 					window.player.pauseVideo()
+					W.get("playButton").enable()
+					W.get("pauseButton").disable()
+					W.get("stopButton").enable()
 				})
-				Widgetizer.get("stopButton").click(function() {
+				W.get("stopButton").click(function() {
 					window.player.seekTo(0)
 					window.player.stopVideo()
-					// TODO rewind video to start
+					W.get("playButton").enable()
+					W.get("pauseButton").disable()
+					W.get("stopButton").disable()
 				})
 				/* continue when finished */
 				if(next) next(page)
