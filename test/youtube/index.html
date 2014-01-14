@@ -1,0 +1,132 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title>Youtube test</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		var youtube = require('youtube-feeds')
+
+		$("#searchBtn").click(function() {
+			searchYouTubeVideos({q:$("#searchField").val(), 'max-results':5, 'start-index':1}, showSearchResults)
+		})
+
+		var showSearchResults = function(err, data) {
+			console.log("Showing search results...")
+			if(err) console.error(err)
+			else {
+				var total = data.totalItems
+				var start = data.startIndex
+				var pagesize = data.itemsPerPage
+				var items = data.items
+				console.log("Showing results "+start+"-"+(start+items.length-1)+" from "+total+" total")			
+				console.log(data)
+				for(var i=0; i<items.length; i++) {
+					showItem(items[i])
+				}
+			}
+		}
+
+		var showItem = function(data) {
+			console.log("category: "+data.category)
+			console.log("id: "+data.id)
+			console.log("title: "+data.title)
+			var thumbUrl = data.thumbnail.sqDefault
+			// var thumbUrl = "http://img.youtube.com/vi/"+data.id+"/default.jpg"
+			var thumb = $("<img>").attr("src", thumbUrl)
+			var out = $("<div>")
+				.append($("<h3>").text(data.title))
+				.append(thumb)
+			$("div.main").append(out)
+			/*
+			var preview = $("<img>").attr("src", "http://img.youtube.com/vi/"+data.id+"/0.jpg")
+			$("div.main").append(preview)
+			*/
+
+		}
+
+		var searchYouTubeVideos = function(data, next) {
+			console.log("Searching for YouTube videos")
+			console.log(data)
+			if(data.q) {
+				youtube.feeds.videos(data, next)
+			} else {
+				next("No search criteria given")
+			}
+		}
+	})
+	</script>
+    </head>
+    <body>
+     <h1>Youtube test</h1>
+	 
+	 <div class="main">
+
+		<div id="ytplayer"></div>
+
+		<script>
+		  // Load the IFrame Player API code asynchronously.
+		  var tag = document.createElement('script');
+		  tag.src = "https://www.youtube.com/player_api";
+		  var firstScriptTag = document.getElementsByTagName('script')[0];
+		  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+		  // Replace the 'ytplayer' element with an <iframe> and
+		  // YouTube player after the API code downloads.
+		  var player;
+		  function onYouTubePlayerAPIReady() {
+		    player = new YT.Player('ytplayer', {
+		      height: '390',
+		      width: '640',
+		      videoId: 'M7lc1UVf-VE',
+		      playerVars: {
+		      	autoplay: 0,
+		      	controls: 1,
+		      	enablejsapi: 1,
+		      	fs: 1
+		      },
+			events: {
+		        'onReady': onPlayerReady,
+		        'onStateChange': onPlayerStateChange
+		      }
+		    });
+		  }
+			var done = false
+			function onPlayerReady(evt) {
+				// do something...
+			    // evt.target.playVideo();
+			}
+			function onPlayerStateChange(evt) {
+				/*
+			    if (evt.data == YT.PlayerState.PLAYING && !done) {
+			        setTimeout(stopVideo, 6000);
+			        done = true;
+			    }
+			    */
+			}
+			function stopVideo() {
+			    player.stopVideo();
+			}
+		  /* this does not run on node-webkit... */
+		  /* the embedding code must be on a server */
+		  /*
+		function onYouTubePlayerReady(playerId) {
+	      var ytplayer = document.getElementById("myytplayer");
+	      console.log("YouTube player created")
+	    }	
+	    */	  
+		</script>
+
+	 	<p>Search YouTube videos:</p>
+	 	<p>
+	 	<input type="text" id="searchField"></input>
+	 	<button id="searchBtn">Search</button>
+	 	</p>
+
+
+	 </div>
+	 
+    </body>
+    </html>
