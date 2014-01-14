@@ -1,0 +1,35 @@
+<svg xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" viewBox="0 0 100 100">
+    <defs>
+        <linearGradient xlink:href="#q" id="C" gradientUnits="userSpaceOnUse" gradientTransform="matrix(.928 0 0 .899 4.384 57.637)" x1="-61.24" y1="1156.202" x2="-59.076" y2="1144.529"/>
+        <linearGradient id="q">
+            <stop offset="0" stop-color="#ff0202"/>
+            <stop offset="1" stop-color="#ff0202" stop-opacity="0"/>
+        </linearGradient>
+        <radialGradient xlink:href="#r" id="D" gradientUnits="userSpaceOnUse" gradientTransform="matrix(.412 -.456 .947 .856 598.095 503.271)" cx="1090.313" cy="45.438" fx="1090.313" fy="45.438" r="29.5"/>
+        <linearGradient id="r">
+            <stop offset="0" stop-color="#f00"/>
+            <stop offset="1" stop-color="#f00" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient xlink:href="#s" id="E" gradientUnits="userSpaceOnUse" gradientTransform="matrix(.823 0 0 .823 142.549 -34.009)" x1="1178.117" y1="104.384" x2="1147.515" y2="97.073"/>
+        <linearGradient id="s">
+            <stop offset="0" stop-color="#ff0202"/>
+            <stop offset="1" stop-color="#ff0202" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient xlink:href="#t" id="F" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-.823 0 0 -.823 2039.138 124.348)" x1="1173.555" y1="104.384" x2="1171.9" y2="89.813"/>
+        <linearGradient id="t">
+            <stop offset="0" stop-color="#ff0202"/>
+            <stop offset="1" stop-color="#ff0202" stop-opacity="0"/>
+        </linearGradient>
+    </defs>
+    <g transform="translate(-840, -20)">
+        <path transform="matrix(1.177 0 0 1.177 -477.092 -16.215)" d="M1203.366 73.402a42.048 42.048 0 1 1-84.095 0 42.048 42.048 0 1 1 84.095 0z" class="background" fill="#fff" stroke="#f00" stroke-width=".849"/>
+        <g transform="matrix(.707 -.707 .707 .707 87.089 809.035)">
+            <path d="M1090.313 15.938c-3.878 0-7 3.122-7 7v15.5h-15.5c-3.878 0-7 3.122-7 7s3.122 7 7 7h15.5v15.5c0 3.878 3.122 7 7 7s7-3.122 7-7v-15.5h15.5c3.878 0 7-3.122 7-7s-3.122-7-7-7h-15.5v-15.5c0-3.878-3.122-7-7-7z" fill="#fff" stroke="#f00"/>
+            <rect transform="rotate(-90)" width="54.743" height="12.589" x="-72.938" y="1084.473" ry="6.295" fill="url(#C)"/>
+            <path d="M1090.313 15.938c-3.878 0-7 3.122-7 7v15.5h-15.5c-3.878 0-7 3.122-7 7s3.122 7 7 7h15.5v15.5c0 3.878 3.122 7 7 7s7-3.122 7-7v-15.5h15.5c3.878 0 7-3.122 7-7s-3.122-7-7-7h-15.5v-15.5c0-3.878-3.122-7-7-7z" fill="url(#D)"/>
+            <path d="M1113.66 40.378c2.624.699 5.761 2.569 5.761 5.761s-2.57 5.761-5.761 5.761h-37.036c14.106-2.723 23.364-14.467 37.036-11.522z" fill="url(#E)"/>
+            <path d="M1068.026 49.96c-2.624-.699-5.761-2.569-5.761-5.761s2.57-5.761 5.761-5.761h37.036c-14.106 2.723-23.364 14.467-37.036 11.522z" fill="url(#F)"/>
+        </g>
+        <path transform="matrix(1.177 0 0 1.177 -477.092 -16.215)" d="M1203.366 73.402a42.048 42.048 0 1 1-84.095 0 42.048 42.048 0 1 1 84.095 0z" class="overlay" fill="none"/>
+    </g>
+</svg>
