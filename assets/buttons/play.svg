@@ -1,0 +1,7 @@
+<svg xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" viewBox="0 0 100 100">
+    <g transform="translate(50, 50) scale(1.666) translate(-570 -541)" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+        <path transform="matrix(.507 0 0 .507 -4.932 472.14)" d="M1190.814 135.74a57.18 57.18 0 1 1-114.36 0 57.18 57.18 0 1 1 114.36 0z" fill="#fff"/>
+        <path transform="matrix(.42 0 0 .42 94.124 484.01)" d="M1190.814 135.74a57.18 57.18 0 1 1-114.36 0 57.18 57.18 0 1 1 114.36 0z" fill="#fff" />
+        <path d="M562.58 527.008c7.36.161 22.189 9.682 22.203 13.976.014 4.117-14.843 13.913-22.203 14.024-3.684 0-6.649-2.965-6.649-6.649v-14.702c0-3.684 2.966-6.73 6.649-6.649z"/>
+    </g>
+</svg>
