@@ -482,6 +482,11 @@ textbox.prototype.specialCharacters = function(evt) {
 					}
 				}
 				this.changed = true;
+				//fire function if text changed
+				if (this.changed) {
+					this.timer.setTimeout("fireFunction",this.timerMs);
+				}
+				
 			}
 		}
 		//the two enter keys

@@ -11,10 +11,11 @@ module.exports = function(Widgetizer) {
 	var widgetname = "textbox"
 		
 	var factory = function(element, done) {
-		var maxChars = $(element).attr("maxchars") || 20
+		var $e = $(element)
+		var maxChars = $e.attr("maxchars") || 20
 		var newElement = SvgHelper.group()
 		var newId = Widgetizer.newWidgetId("wow-textfield-")
-		var text = $(element).text() || $(element).attr("value") || ""
+		var text = $e.text() || $e.attr("value") || ""
 		var tb = new textbox({
 			id: newId,
 			parentNode: newElement,
@@ -22,17 +23,23 @@ module.exports = function(Widgetizer) {
 			maxChars: maxChars,
 			x: 0,
 			y: 0,
-			boxWidth: parseInt($(element).attr("width") || 200),
-			boxHeight: parseInt($(element).attr("height") || 30),
+			boxWidth: parseInt($e.attr("width") || 200),
+			boxHeight: parseInt($e.attr("height") || 30),
 			textYOffset: 22,
 			textStyles: {"font-family":"Arial,Helvetica","font-size":15,"fill":"dimgray"},
 			boxStyles: {"fill":"white","stroke":"dimgray","stroke-width":1.5},
 			cursorStyles: {"stroke":"red","stroke-width":1.5},
 			selBoxStyles: {"fill":"blue","opacity":0.5},
 			allowedChars: "[a-zA-Z ]",
-			functionToCall: function(textboxId, value, changeType) { console.log(value); }
+			functionToCall: function(textboxId, value, changeType) { 
+				ww._setValue(value)
+			}
 		});
-		var ww = Widgetizer.widget(widgetname, newElement)
+		var ww = Widgetizer.inputWidget(widgetname, newElement, tb.getValue())
+		ww.setValue = function(value) {
+			tb.setValue(value)
+		}
+        if($e.attr("name")) SvgHelper.attr(ww.element, "name", $e.attr("name"))
 		if(done) done(ww)
 		return ww
 	}

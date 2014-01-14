@@ -18,6 +18,7 @@ module.exports = function(Widgetizer) {
 		var newElement = SvgHelper.image(attrs) 
         var ww = Widgetizer.widget(widgetname, newElement, {width:attrs.width,height:attrs.height})
         if($e.attr("name")) SvgHelper.attr(ww.element, "name", $e.attr("name"))
+        // TODO addClass 
         if($e.attr("class")) SvgHelper.attr(ww.element, "class", $e.attr("class"))
 		Widgetizer.loadSvg(attrs, function($svg) {
 			console.log("SVG embedded!")

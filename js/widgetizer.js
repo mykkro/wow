@@ -4,6 +4,7 @@ module.exports = function(window, $) {
   var Commons = require("./commons")
   var SvgHelper = require("./svghelper")(window)
   var Widget = require("./widget")($)
+  var InputWidget = require("./inputwidget")($)
   var _ = require("underscore")
 
 	/* Finds all nodes with nodeName == name */
@@ -44,7 +45,7 @@ module.exports = function(window, $) {
 	newWidgetId: function(prefix) {
 		return (prefix || "wow-widget-")+(this.widgetId++)
 	},
-	widget: function(type, element, dim) {
+	prepareWidgetData: function(type, element, dim) {
 		var id = this.newWidgetId()
 		var group = SvgHelper.attrs(SvgHelper.group(), {
 		  "data-wow": type,
@@ -84,15 +85,26 @@ module.exports = function(window, $) {
 			group.appendChild(bbe);   
 		}
 
-		// return widget object
-		this.widgets[id] = new Widget({
+		return {
 		  element: group,
 		  type: type,
 		  id: id,
 		  bounds: {x:bbox.x, y:bbox.y, width:bbox.width,height:bbox.height},
 		  dim: dim
-		})
-		return this.widgets[id]
+		}
+	  },
+	  widget: function(type, element, dim) {
+	  	var data = this.prepareWidgetData(type, element, dim)
+	  	var w = new Widget(data)
+	  	this.widgets[data.id] = w
+	  	return w
+	  },
+	  inputWidget: function(type, element, value, dim) {
+	  	var data = this.prepareWidgetData(type, element, dim)
+	  	data.value = value
+	  	var w = new InputWidget(data)
+	  	this.widgets[data.id] = w
+	  	return w
 	  },
 	  /* make widgets from node's descendants... */
 	  widgetize: function(node, done) {

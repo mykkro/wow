@@ -75,5 +75,8 @@ Timer.getNew = function(){
     return i;
 }
 
+// must be in the global scope...
+window.Timer = Timer
+
 return Timer
 }
