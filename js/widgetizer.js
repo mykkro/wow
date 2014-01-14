@@ -179,7 +179,28 @@ module.exports = function(window, $) {
 			var attr = e.attr(attrName)
 			if(attr=="true" || attr=="yes") return true;
 			return false;		
+		},
+		// attrs = {width: height: src: }
+		loadSvg: function(attrs, done) {
+			$.get(attrs.src, function(data) {
+				// TODO this does not work here!
+				console.log("Loading image for embedding...")
+				// Get the SVG tag, ignore the rest
+				var $svg = $(data).find('svg');
+				// Remove any invalid XML tags as per http://validator.w3.org
+				$svg.removeAttr('xmlns:a');
+				$svg.removeAttr('xml:space');
+				$svg.removeAttr('enable-background');
+				// remove fill attribute from svg subelements...
+				//////$svg.find('*').removeAttr("fill");
+
+				$svg.attr("width", attrs.width);         
+				$svg.attr("height", attrs.height);
+				done($svg)
+
+			}, 'xml');
 		}
+
 
 	}
 
