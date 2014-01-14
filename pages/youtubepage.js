@@ -5,15 +5,21 @@ module.exports = function(window, $, SVG) {
 			/* load basic widgets used by this page... */
 			Widgetizer.useCommonWidgets()
 			/* transform wow:markup to SVG and widgets */
-			Widgetizer.widgetize(window.document, function() {
+			var node = window.document
+			Widgetizer.widgetize(node, function() {
 				/* widgetization complete! */
-				$("#QuitButton .overlay").click(function() {
+
+				var quitBtn = Widgetizer.get("quitButton")
+				quitBtn.click(function() {
 					// move back to previous page...
 					window.history.go(-1)
 				})
-				$("#HomeButton .overlay").click(function() {
+				Widgetizer.get("homeButton").click(function() {
 					// move back to main page
 					window.location = "gui.html"
+				})
+				Widgetizer.get("searchButton").click(function() {
+					window.alert("Searching!")
 				})
 
 				/* continue when finished */

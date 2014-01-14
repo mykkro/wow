@@ -14,7 +14,7 @@ module.exports = function(Widgetizer) {
 		var maxChars = $(element).attr("maxchars") || 20
 		var newElement = SvgHelper.group()
 		var newId = Widgetizer.newWidgetId("wow-textfield-")
-		var text = $(element).text() || $(element).attr("value")
+		var text = $(element).text() || $(element).attr("value") || ""
 		var tb = new textbox({
 			id: newId,
 			parentNode: newElement,
@@ -22,8 +22,8 @@ module.exports = function(Widgetizer) {
 			maxChars: maxChars,
 			x: 0,
 			y: 0,
-			boxWidth: 200,
-			boxHeight: 30,
+			boxWidth: parseInt($(element).attr("width") || 200),
+			boxHeight: parseInt($(element).attr("height") || 30),
 			textYOffset: 22,
 			textStyles: {"font-family":"Arial,Helvetica","font-size":15,"fill":"dimgray"},
 			boxStyles: {"fill":"white","stroke":"dimgray","stroke-width":1.5},

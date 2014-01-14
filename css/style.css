@@ -48,9 +48,23 @@ html, body , #top-wrapper, #top-wrapper > svg {
 
 .button:hover {
 	fill-opacity: 0.8;	
-	filter: url(#grayscale);
+	filter: url(assets/filters/filters.svg#grayscale);
 }
 .button:hover  .overlay {
 	fill: salmon;
 	fill-opacity: 0.2;
+}
+
+.wow-widget.iconbutton.disabled .button {
+	opacity: 0.3;
+}
+.wow-widget.iconbutton.disabled .button:hover {
+	opacity: 0.3;
+	fill-opacity: 1;
+	filter: none;
+}
+
+.wow-widget.iconbutton.disabled .button:hover .overlay {
+	fill: none;
+	fil-opacity: 1;
 }
