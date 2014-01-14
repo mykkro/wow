@@ -7,7 +7,7 @@
         <linearGradient xlink:href="#k" id="z" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 .655 -10.386 259.621)" x1="663.081" y1="779.103" x2="713.735" y2="806.687"/>
 
     </defs>
-    <g transform="translate(-20, -20)">
+    <g transform="translate(-20, -20)" class="button">
         <path transform="matrix(1.177 0 0 1.177 -1297.167 -16.46)" d="M1203.366 73.402a42.048 42.048 0 1 1-84.095 0 42.048 42.048 0 1 1 84.095 0z" class="background" fill="#fff" stroke="#00f" stroke-width=".849"/>
         <g stroke="#00f" stroke-linecap="round" stroke-linejoin="round" transform="translate(-604.382 -692.04)">
             <rect width="58" height="38" x="645.348" y="750.14" ry=".185" fill="url(#z)"/>
