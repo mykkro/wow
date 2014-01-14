@@ -3,7 +3,7 @@ module.exports = function(window, $, SVG) {
 		init: function(data, next) {
 			var Widgetizer = require("../js/widgetizer")(window, $)
 			/* load basic widgets used by this page... */
-			Widgetizer.uses(["piechart", "box", "grid", "flow", "textbox", "viewport", "image", "text"])
+			Widgetizer.useCommonWidgets()
 			/* transform wow:markup to SVG and widgets */
 			Widgetizer.widgetize(window.document, function() {
 				/* widgetization complete! */

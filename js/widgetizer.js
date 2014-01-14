@@ -145,7 +145,42 @@ module.exports = function(window, $) {
 			var widgetPath = "../js/widgets/"+w+"/"+w
 			require(widgetPath)(self)
 		})
-	  }
+	  },
+	  useCommonWidgets: function() {
+	  	this.uses([
+	  		"piechart", 
+	  		"box", 
+	  		"grid", 
+	  		"flow", 
+	  		"textbox", 
+	  		"viewport", 
+	  		"image", 
+	  		"text", 
+	  		"iconbutton"
+	  	])	  	
+	  },
+	  /* some utility methods */
+	  	/* copy non null attributes to an object... */
+		getAttrs: function(e, obj, attrmap) {
+			for(var key in attrmap) {
+				var type = attrmap[key] || "string"
+				var val = e.attr(key)
+				if(val) {
+					/* type check... */
+					if(type == "number") {
+						val = parseFloat(val)
+					}
+					obj[key] = val
+				}
+			}
+			return obj
+		},
+		isTrueAttr: function(e, attrName) {
+			var attr = e.attr(attrName)
+			if(attr=="true" || attr=="yes") return true;
+			return false;		
+		}
+
 	}
 
 	return Widgetizer 
