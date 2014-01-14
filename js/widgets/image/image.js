@@ -7,34 +7,12 @@ module.exports = function(Widgetizer) {
 
 	/***********************************************************************************************************/
 	var widgetname = "image"
-		
-	/* copy non null attributes to an object... */
-	var getAttrs = function(e, obj, attrmap) {
-		for(var key in attrmap) {
-			var type = attrmap[key] || "string"
-			var val = e.attr(key)
-			if(val) {
-				/* type check... */
-				if(type == "number") {
-					val = parseFloat(val)
-				}
-				obj[key] = val
-			}
-		}
-		return obj
-	}
-	
-	isTrueAttr = function(e, attrName) {
-		var attr = e.attr(attrName)
-		if(attr=="true" || attr=="yes") return true;
-		return false;		
-	}
-		
+				
 	var factory = function(element, done) {
         var $e = $(element)
 		var attrs = { width: 100, height: 100 }
-		getAttrs($e, attrs, { "width":"number", "height":"number", "src":"string", "class":"string", "name":"string"})
-		var embed = isTrueAttr($e, "embed")
+		Widgetizer.getAttrs($e, attrs, { "width":"number", "height":"number", "src":"string", "class":"string", "name":"string"})
+		var embed = Widgetizer.isTrueAttr($e, "embed")
 		var newElement = SvgHelper.image(attrs) 
         var ww = Widgetizer.widget(widgetname, newElement, {width:attrs.width,height:attrs.height})
 		if(embed) {

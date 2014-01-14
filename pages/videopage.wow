@@ -13,6 +13,78 @@
 	preserveAspectRatio="none"
     >
     <wow:image src="assets/backgrounds/default.svg" width="960" height="600"></wow:image>
-	<wow:image src="assets/previews/VideoPage.svg" width="960" height="600" embed="true"></wow:image>
-	<g id="tempgroup" style="display:none;"></g>
+    <g transform="translate(840, 20)">
+        <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
+    </g>
+    <g transform="translate(360, 510)">
+        <wow:iconbutton id="playButton" name="playButton" src="play" width="60" height="60"></wow:iconbutton>
+    </g>
+    <g transform="translate(450, 510)">
+        <wow:iconbutton id="pauseButton" name="pauseButton" src="pause" width="60" height="60"></wow:iconbutton>
+    </g>
+    <g transform="translate(540, 510)">
+        <wow:iconbutton id="stopButton" name="stopButton" src="stop" width="60" height="60"></wow:iconbutton>
+    </g>
+
+    <!-- here comes the video... -->
+    <foreignObject x="160" y="80" width="640" height="390">
+        <script>
+        // Load the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/player_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Replace the 'ytplayer' element with an <iframe> and
+        // YouTube player after the API code downloads.
+        ////var player; -> we make player a global...
+        function onYouTubePlayerAPIReady() {
+        player = new YT.Player('ytplayer', {
+          height: '390',
+          width: '640',
+          videoId: 'M7lc1UVf-VE',
+          allowfullscreen: true,
+          playerVars: {
+            autoplay: 0,
+            controls: 1, // controls=0 -> cannot control volume via API or go fullscreen!
+            enablejsapi: 1,
+            showinfo: 0,
+            fs: 1
+          },
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+        }
+        function onPlayerReady(evt) {
+            // do something...
+            evt.target.playVideo();
+        }
+        function onPlayerStateChange(evt) {
+            switch(evt.data) {
+                case 1: 
+                    console.log("Started playing!")
+                    // play button will be disabled
+                    // pause and stop will be enabled
+                    break;
+                case 2:
+                    console.log("Paused!")
+                    // pause button will be disabled
+                    // play and stop button will be enabled
+                    break;
+                case 5:
+                    console.log("Stopped!")
+                    // play button will be enabled
+                    // pause and stop buttons will be disabled
+                    break;
+            }
+        }
+        </script>
+        <div>
+            <div id="ytplayer"></div>
+        </div>
+    </foreignObject>    
+
+	<g id="tempgroup" style="display:none;"></g>    
 </svg>
