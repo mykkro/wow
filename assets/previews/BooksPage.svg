@@ -1599,32 +1599,6 @@
        gradientTransform="matrix(-0.82302245,0,0,-0.82302245,2039.1379,124.3477)" />
   </defs>
   <g
-     transform="translate(0,-452.36217)"
-     id="layer1"
-     style="display:inline">
-    <g
-       transform="translate(-4.529381,1.0838374)"
-       id="Background">
-      <rect
-         width="959.95386"
-         height="599.97217"
-         rx="0"
-         ry="0"
-         x="4.5658364"
-         y="451.28989"
-         id="rect5416"
-         style="fill:url(#linearGradient5508);fill-opacity:1;stroke:none" />
-      <path
-         d="M 4.5658352,775.72713 C 379.39548,699.80802 377.37025,897.08886 649.83464,840.96693 754.75749,819.35503 772.6784,777.77377 964.51969,775.72713 l 0,275.53497 -959.9538548,0 z"
-         id="rect5418"
-         style="fill:url(#linearGradient5505);fill-opacity:1;stroke:none" />
-      <path
-         d="m 649.83464,840.96693 c 104.92285,-21.6119 122.84376,-63.19316 314.68505,-65.2398 l 0,275.53497 -479.97692,0 c -183.42662,-10e-5 44.623,-183.49925 165.29187,-210.29517 z"
-         id="path5456"
-         style="fill:url(#linearGradient5502);fill-opacity:1;stroke:none" />
-    </g>
-  </g>
-  <g
      id="layer3"
      style="display:inline">
     <g
