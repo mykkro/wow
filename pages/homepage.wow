@@ -12,6 +12,7 @@
 	height="100%"
 	preserveAspectRatio="none"
     >
+    <wow:image src="assets/backgrounds/default.svg" width="960" height="600"></wow:image>
 	<wow:image src="assets/previews/HomePage.svg" width="960" height="600" embed="true"></wow:image>
 	<g id="tempgroup" style="display:none;"></g>
 
