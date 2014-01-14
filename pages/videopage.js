@@ -7,17 +7,21 @@ module.exports = function(window, $, SVG) {
 			/* transform wow:markup to SVG and widgets */
 			Widgetizer.widgetize(window.document, function() {
 				/* use data to modify page */
-				$("g[name=quitButton]").click(function() {
-					window.alert("Click!")
+				var quitBtn = Widgetizer.get("quitButton")
+				quitBtn.click(function() {
+					// move back to previous page...
+					window.history.go(-1)
 				})
-				$("g[name=playButton]").click(function() {
+				Widgetizer.get("playButton").click(function() {
 					window.player.playVideo()
 				})
-				$("g[name=pauseButton]").click(function() {
+				Widgetizer.get("pauseButton").click(function() {
 					window.player.pauseVideo()
 				})
-				$("g[name=stopButton]").click(function() {
+				Widgetizer.get("stopButton").click(function() {
+					window.player.seekTo(0)
 					window.player.stopVideo()
+					// TODO rewind video to start
 				})
 				/* continue when finished */
 				if(next) next(page)
