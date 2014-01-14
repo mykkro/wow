@@ -48,6 +48,7 @@ html, body , #top-wrapper, #top-wrapper > svg {
 
 .button:hover {
 	fill-opacity: 0.8;	
+	filter: url(#grayscale);
 }
 .button:hover  .overlay {
 	fill: salmon;
