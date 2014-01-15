@@ -10,16 +10,27 @@ module.exports = function($) {
 			this.bounds = data.bounds
 			this.dim = data.dim
 		},
-		click: function(cb) {
-			if(!$(this.element).hasClass("disabled"))
-				$(this.element).click(cb)
+		click: function(cb) {	
+			var self = this
+			$(this.element).click(function() {
+				if(self.isEnabled()) cb()
+			})			
 		},
 		disable: function() {
 			$(this.element).addClass("disabled")
-			// TODO set attribute disabled
 		},
 		enable: function() {
 			$(this.element).removeClass("disabled")
+		},
+		setEnabled: function(flag) {
+			if(flag) {
+				this.enable() 
+			} else {
+				this.disable()
+			}
+		},
+		isEnabled: function() {
+			return !$(this.element).hasClass("disabled")
 		}
 	})
 
