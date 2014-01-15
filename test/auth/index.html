@@ -1,0 +1,33 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title>Auth test</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		var Auth = require("../../lib/auth")(window)
+		console.log(Auth.getLoggedUser())
+		Auth.login("mykkro","pass", function(err) {
+			if(!err) {
+				console.log("Login successful!")
+				console.log(Auth.getLoggedUser())
+				Auth.logout(function() {
+					console.log("Logged out!")
+					console.log(Auth.getLoggedUser())
+				})
+			}
+		})
+
+	})
+	</script>
+    </head>
+    <body>
+     <h1>Auth test</h1>
+	 
+	 <div class="main">
+	 </div>
+	 
+    </body>
+    </html>
