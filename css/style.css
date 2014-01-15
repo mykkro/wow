@@ -68,3 +68,8 @@ html, body , #top-wrapper, #top-wrapper > svg {
 	fill: none;
 	fil-opacity: 1;
 }
+
+.youtube-result.disabled {
+	fill-opacity: 0.2;
+	stroke-opacity: 0.2;
+}

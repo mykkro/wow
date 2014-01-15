@@ -39,10 +39,13 @@
         // YouTube player after the API code downloads.
         ////var player; -> we make player a global...
         function onYouTubePlayerAPIReady() {
+
+        var url = require("url")
+        var parsedUrl = url.parse(window.location.href, true)
         player = new YT.Player('ytplayer', {
           height: '390',
           width: '640',
-          videoId: 'M7lc1UVf-VE',
+          videoId: parsedUrl.query.id,
           allowfullscreen: true,
           playerVars: {
             autoplay: 0,
