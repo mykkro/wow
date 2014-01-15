@@ -5,6 +5,42 @@
     <title>Modal Dialog test</title>
     <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
     <script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<style>
+		.modal_dialog {
+			width: 480px;
+			height: 210px;
+			background-color: #def;
+			font-family: "Trebuchet MS", Helvetica, sans-serif;
+			-webkit-border-radius: 20px;
+		}
+		.modal_dialog .header {
+			font-size: 30px;
+			padding: 12px;
+			background-color: #bce;
+			-webkit-border-radius: 20px 20px 0px 0px;
+		}
+		.modal_dialog .content {
+			padding: 20px;
+			font-size: 22px;
+		}
+		.modal_dialog .footer {
+			padding: 20px;
+		}
+		.modal_dialog .button {
+			float: right;
+			text-align: center;
+			width: 100px;
+			display: inline-block;
+			padding: 10px;
+			margin-left: 20px;
+			background-color: #bbb;
+			-webkit-border-radius: 10px;
+		}
+		.modal_dialog .button a:link {
+			text-decoration: none;
+			font-weight: bold;
+		}
+	</style>
 	<script>
 	$(document).ready(function() {
 		var Dialog = require('modal-dialog');
@@ -20,11 +56,15 @@
 		    button: 'button',
 		};
 		var d = new Dialog(window.jQuery);
-		d.title = '<b>Title of my window</b>';
-		d.content = 'Lorem lipsum dolor sit amet...';
-		d.info = 'Info in footer';
-		d.addButton('OK', function() {
-		    alert('OK button was clicked');
+		d.title = '<b>Exit</b>';
+		d.content = 'Are you sure?';
+		d.info = '';
+		d.addButton('Yes', function() {
+		    alert('Yes button was clicked');
+		    d.hide();
+		});
+		d.addButton('No', function() {
+		    alert('No button was clicked');
 		    d.hide();
 		});
 		$("#btn1").click(function() {
