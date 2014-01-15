@@ -260,6 +260,7 @@ textbox.prototype.removeTextbox = function() {
 
 //event handler functions
 textbox.prototype.handleEvent = function(evt) {
+	this.enterPressed = false 
 	if (evt.type == "mousedown") {
 		//this case is when the user mousedowns outside the textbox; in this case the textbox should behave like the user
 		//pressed the enter key
@@ -491,6 +492,7 @@ textbox.prototype.specialCharacters = function(evt) {
 		}
 		//the two enter keys
  		else if (keyCode == 10 || keyCode == 13) { // press return (enter)
+ 			this.enterPressed = true
 			this.release();
 		}
 		//end key
@@ -714,6 +716,8 @@ textbox.prototype.setCursorPos = function() {
 }
 
 textbox.prototype.fireFunction = function() {
+	var ep = this.enterPressed
+	this.enterPressed = false
 	var changeType = "change";
 	if (this.textboxStatus == 0) {
 		changeType = "release";
@@ -723,10 +727,10 @@ textbox.prototype.fireFunction = function() {
 		changeType = "set";
 	}
 	if (typeof(this.functionToCall) == "function") {
-		this.functionToCall(this.id,this.textVal,changeType);
+		this.functionToCall(this.id,this.textVal,changeType, ep);
 	}
 	if (typeof(this.functionToCall) == "object") {
-		this.functionToCall.textboxChanged(this.id,this.textVal,changeType);	
+		this.functionToCall.textboxChanged(this.id,this.textVal,changeType, ep);	
 	}
 	if (typeof(this.functionToCall) == undefined) {
 		return;

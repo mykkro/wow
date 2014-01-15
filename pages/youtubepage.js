@@ -1,57 +1,63 @@
 module.exports = function(window, $, SVG) {
 
 
-		var youtube = require('youtube-feeds')
-
-		var showSearchResults = function(err, data) {
-			console.log("Showing search results...")
-			if(err) console.error(err)
-			else {
-				var total = data.totalItems
-				var start = data.startIndex
-				var pagesize = data.itemsPerPage
-				var items = data.items
-				console.log("Showing results "+start+"-"+(start+items.length-1)+" from "+total+" total")			
-				console.log(data)
-				for(var i=0; i<items.length; i++) {
-					showItem(items[i])
-				}
-			}
-		}
-
-		var showItem = function(data) {
-			console.log("category: "+data.category)
-			console.log("id: "+data.id)
-			console.log("title: "+data.title)
-			/*
-			var thumbUrl = data.thumbnail.sqDefault
-			// var thumbUrl = "http://img.youtube.com/vi/"+data.id+"/default.jpg"
-			var thumb = $("<img>").attr("src", thumbUrl)
-			var out = $("<div>")
-				.append($("<h3>").text(data.title))
-				.append(thumb)
-			$("div.main").append(out)
-
-
-			var preview = $("<img>").attr("src", "http://img.youtube.com/vi/"+data.id+"/0.jpg")
-			$("div.main").append(preview)
-			*/
-
-		}
-
-		var searchYouTubeVideos = function(data, next) {
-			console.log("Searching for YouTube videos")
-			console.log(data)
-			if(data.q) {
-				youtube.feeds.videos(data, next)
-			} else {
-				next("No search criteria given")
-			}
-		}
-
 	var page = {
 		init: function(data, next) {
+			var document = window.document
 			var Widgetizer = require("../js/widgetizer")(window, $)
+			var SvgHelper = Widgetizer.SvgHelper
+			var youtube = require('youtube-feeds')
+			var truncate = require('html-truncate');
+			var svgsvg = document.getElementById("svg")
+
+			var showSearchResults = function(err, data) {
+				console.log("Showing search results...")
+				if(err) console.error(err)
+				else {
+					var total = data.totalItems
+					var start = data.startIndex
+					var pagesize = data.itemsPerPage
+					var items = data.items
+					console.log("Showing results "+start+"-"+(start+items.length-1)+" from "+total+" total")			
+					console.log(data)
+					for(var i=0; i<items.length; i++) {
+						showItem(items[i], i)
+					}
+				}
+			}
+
+			var colors = ["#330099", "#f8c300", "#dd1379", "#dd1379", "#330099", "#f8c300"]
+
+			var showItem = function(data, index) {
+				var column = index%3
+				var row = Math.floor(index/3)	
+				var tx = 160 + column*223
+				var ty = 36 + row*223			
+				var label = truncate(data.title, 20)
+				var thumbUrl = data.thumbnail.sqDefault
+				var thumb = SvgHelper.image({x:7, y:20, width:180, height:120, src:thumbUrl})
+				var rect = SvgHelper.rect({ry: 35, rx:35, height:195, width:195, fill:"#fff", stroke:colors[index], "stroke-width":5})
+				var txt = SvgHelper.text(label, {x:97, y: 170, "text-anchor":"middle"})
+				var grp = SvgHelper.group({"class":"youtube-results", transform: "translate("+tx+", "+ty+")"}, [rect, thumb, txt])
+				svgsvg.appendChild(grp)
+			}
+
+			var searchYouTubeVideos = function(data, next) {
+				console.log("Searching for YouTube videos")
+				console.log(data)
+				if(data.q) {
+					youtube.feeds.videos(data, next)
+				} else {
+					next("No search criteria given")
+				}
+			}
+
+			var searchIt = function(page) {
+				var query = Widgetizer.get("searchTextbox").val()
+				// TODO get page info from querystring
+				searchYouTubeVideos({q:query, 'max-results':6, 'start-index':1+(page-1)*6}, showSearchResults)				
+			}
+
 			/* load basic widgets used by this page... */
 			Widgetizer.useCommonWidgets()
 			/* transform wow:markup to SVG and widgets */
@@ -72,12 +78,13 @@ module.exports = function(window, $, SVG) {
 				var page = parseInt(data.query.page || 1)
 				if(query) {
 					Widgetizer.get("searchTextbox").val(query)				
-					searchYouTubeVideos({q:query, 'max-results':6, 'start-index':1+(page-1)*6}, showSearchResults)
+					searchIt(page)
+				}
+				Widgetizer.get("searchTextbox").onEnterPressed = function() {
+					searchIt(page)
 				}
 				Widgetizer.get("searchButton").click(function() {
-					var query = Widgetizer.get("searchTextbox").val()
-					// TODO get page info from querystring
-					searchYouTubeVideos({q:query, 'max-results':6, 'start-index':1+(page-1)*6}, showSearchResults)
+					searchIt(page)
 				})
 
 				/* continue when finished */
