@@ -16,6 +16,12 @@
     <g transform="translate(840, 20)">
         <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
     </g>
+    <g transform="translate(20, 20)">
+        <wow:iconbutton name="favButton" src="favorite"></wow:iconbutton>
+    </g>
+    <g transform="translate(20, 140)">
+        <wow:iconbutton name="unfavButton" src="unfavorite"></wow:iconbutton>
+    </g>
     <g transform="translate(360, 510)">
         <wow:iconbutton id="playButton" name="playButton" src="play" width="60" height="60"></wow:iconbutton>
     </g>

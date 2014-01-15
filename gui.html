@@ -19,6 +19,9 @@
 		var mustache = require('mustache');
 		var url = require('url')
 		var path = require('path')
+		var gui = require('nw.gui');
+
+		window.gui = gui
 
 		/* loads page view and script */
 		function loadPage(pageInfo, data, next) {

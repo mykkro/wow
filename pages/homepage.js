@@ -30,7 +30,7 @@ module.exports = function(window, $, SVG) {
 	}
 	
 	var timeinfo = require("../js/timeinfo")
-	var moment = require('moment');
+	var moment = require('moment');	
 	moment.lang('de')
 	
 	function updateWeatherInfo() {
@@ -91,6 +91,39 @@ module.exports = function(window, $, SVG) {
 		window.location = baseUrl + "?view=youtubepage"
 	}
 	
+	function showQuitDialog() {
+		var Dialog = require('modal-dialog');
+		Dialog.styles = false
+		Dialog.classes = {
+		    container: 'modal_dialog',
+		    title: 'title',
+		    header: 'header',
+		    content: 'content',
+		    footer: 'footer',
+		    info: 'info',
+		    buttons: 'buttons',
+		    button: 'button',
+		};
+		var d = new Dialog(window.jQuery);
+		d.title = '<b>Exit</b>';
+		d.content = 'Are you sure?';
+		d.info = '';
+		d.addButton('Yes', function() {
+		    // alert('Yes button was clicked');
+			// Quit current app
+			gui.App.quit();
+
+		    d.hide();
+		});
+		d.addButton('No', function() {
+		    // alert('No button was clicked');
+		    d.hide();
+		});
+		$("#btn1").click(function() {
+			d.show();
+		})
+	}
+
 	var page = {
 		init: function(data, next) {
 			baseUrl = data.baseUrl

@@ -8,6 +8,27 @@ module.exports = function(window, $, SVG) {
 			W.widgetize(window.document, function() {
 				/* use data to modify page */
 				var quitBtn = W.get("quitButton")
+				var favButton = W.get("favButton")
+				var unfavButton = W.get("unfavButton")
+				function setFavState(flag) {
+					if(flag) {
+						favButton.disable()
+						unfavButton.enable()
+					} else {
+						favButton.enable()
+						unfavButton.disable()
+					}
+				}
+				var favState = false // current video is not in favorites
+				setFavState(favState)
+				favButton.click(function() {
+					// TODO change data in the DB
+					setFavState(true)
+				})
+				unfavButton.click(function() {
+					// TODO change data in the DB
+					setFavState(false)
+				})
 				quitBtn.click(function() {
 					// move back to previous page...
 					window.history.go(-1)
