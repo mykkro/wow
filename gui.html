@@ -70,6 +70,13 @@
 		var pageData = {
 		}
 
+
+		var Auth = require("./lib/auth")(window)
+		Auth.login("mykkro", "pass", function(err, user) {
+			if(err) console.error(err)
+			if(user) console.log(user)
+		})
+
 		/* Do it! */
 		loadPage(pageInfo, pageData, function(ctrl) {
 			console.log("Page loaded successfully!")
