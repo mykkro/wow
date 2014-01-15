@@ -31,8 +31,10 @@ module.exports = function(Widgetizer) {
 			cursorStyles: {"stroke":"red","stroke-width":1.5},
 			selBoxStyles: {"fill":"blue","opacity":0.5},
 			allowedChars: "[a-zA-Z ]",
-			functionToCall: function(textboxId, value, changeType) { 
+			functionToCall: function(textboxId, value, changeType, enterPressed) { 
 				ww._setValue(value)
+				// HACK -> we need to catch ENTER press event to trigger searching
+				if(enterPressed && ww.onEnterPressed) ww.onEnterPressed()
 			}
 		});
 		var ww = Widgetizer.inputWidget(widgetname, newElement, tb.getValue())

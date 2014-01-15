@@ -40,6 +40,12 @@ var SvgHelper = function(window) {
 			}
 			return bbe;
 		},
+		rect: function(bbox) {
+			if(!bbox) bbox = {}				
+		    var bbe = document.createElementNS(svgNS, "rect");
+			this.attrs(bbe, bbox)
+			return bbe;
+		},
 		mtext: function(text, options) {				
 		    var bbe = this.foreignObject(options)
 			if(options) this.attrs(bbe, options)
@@ -48,11 +54,16 @@ var SvgHelper = function(window) {
 			bbe.appendChild(p)
 			return bbe;
 		},
-		group: function(options) {
+		group: function(options, children) {
 			var grp = document.createElementNS(svgNS, "g");
 			if(options) this.attrs(grp, options)
+			if(children) {
+				for(var i=0; i<children.length; i++) {
+					grp.appendChild(children[i])
+				}
+			}
 			return grp
-		},
+		},		
 		text: function(text, options) {
 			var txt = document.createElementNS(svgNS, "text")
 			txt.textContent = text

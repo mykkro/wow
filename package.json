@@ -36,7 +36,8 @@
     "hashids": "~0.3.3",
     "unzip": "~0.1.9",
     "memorystream": "~0.2.0",
-    "youtube-feeds": "~2.2.1"
+    "youtube-feeds": "~2.2.1",
+    "html-truncate": "~1.0.3"
   },
   "repository": {
     "type": "git",
