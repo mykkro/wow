@@ -1,0 +1,44 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title>Modal Dialog test</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		var Dialog = require('modal-dialog');
+		Dialog.styles = false
+		Dialog.classes = {
+		    container: 'modal_dialog',
+		    title: 'title',
+		    header: 'header',
+		    content: 'content',
+		    footer: 'footer',
+		    info: 'info',
+		    buttons: 'buttons',
+		    button: 'button',
+		};
+		var d = new Dialog(window.jQuery);
+		d.title = '<b>Title of my window</b>';
+		d.content = 'Lorem lipsum dolor sit amet...';
+		d.info = 'Info in footer';
+		d.addButton('OK', function() {
+		    alert('OK button was clicked');
+		    d.hide();
+		});
+		$("#btn1").click(function() {
+			d.show();
+		})
+	})
+	</script>
+    </head>
+    <body>
+     <h1>Modal Dialog test</h1>
+	 
+	 <div class="main">
+	 	<button id="btn1">Open Dialog</button>
+	 </div>
+	 
+    </body>
+    </html>
