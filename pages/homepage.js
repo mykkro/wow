@@ -8,6 +8,7 @@ module.exports = function(window, $, SVG) {
 
 	var weatherUri = "https://api.forecast.io/forecast/936df2f9a7b50fa0bd9006b85fdb9ece/48.14,16.20"
 	
+	var gui = window.gui
 	
 	var fah2cel = function(temp) {
 		return (temp -32) * 5 / 9;
@@ -94,6 +95,7 @@ module.exports = function(window, $, SVG) {
 		window.location = baseUrl + "?view=youtubepage"
 	}
 	
+	// not visible - probably hidden under SVG?
 	function showQuitDialog() {
 		var Dialog = require('modal-dialog');
 		Dialog.styles = false
@@ -148,6 +150,11 @@ module.exports = function(window, $, SVG) {
 				$("#Button01 .overlay").click(myBooksActivated)
 				$("#Button02 .overlay").click(gamesActivated)
 				$("#Button03 .overlay").click(entertainmentActivated)
+
+				$(".hiddenQuitButton").click(function() {
+					var state = window.confirm("This will quit the application. Are you sure?")
+					if(state) gui.App.quit()
+				})
 
 				/* continue when finished */
 				if(next) next(page)
