@@ -1,3 +1,4 @@
 node_modules/
+webkitbuilds/
 *.log
 logs
