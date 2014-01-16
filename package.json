@@ -1,6 +1,6 @@
 {
   "name": "wow",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "description": "",
   "main": "gui.html",
   "scripts": {
@@ -9,10 +9,10 @@
   "author": "",
   "license": "BSD-2-Clause",
   "window": {
-    "toolbar": false,
+    "toolbar": true,
     "width": 960,
     "height": 600,
-    "kiosk": true
+    "kiosk": false
   },
   "dependencies": {
     "markdown": "0.5.0",
@@ -38,7 +38,8 @@
     "memorystream": "~0.2.0",
     "youtube-feeds": "~2.2.1",
     "html-truncate": "~1.0.3",
-    "modal-dialog": "~1.6.2"
+    "modal-dialog": "~1.6.2",
+    "i18n-2": "~0.4.5"
   },
   "repository": {
     "type": "git",

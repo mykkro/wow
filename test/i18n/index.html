@@ -1,0 +1,34 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title>I18n test</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
+	<style>
+	</style>
+	<script>
+	$(document).ready(function() {
+
+				// Load Module and Instantiate
+		var i18n = new (require('i18n-2'))({
+		    // setup some locales - other locales default to the first locale
+		    locales: ['en', 'de', 'cz'],
+		    defaultLocale: 'en'
+		});
+
+		i18n.setLocale('de')
+		// Use it however you wish
+		console.log( i18n.__("Hello!") );
+
+	})
+	</script>
+    </head>
+    <body>
+     <h1>I18n test</h1>
+	 
+	 <div class="main">
+	 </div>
+	 
+    </body>
+    </html>
