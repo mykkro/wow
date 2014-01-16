@@ -1,9 +1,19 @@
 module.exports = function(window, $, SVG) {
+
+	var Auth  = require("../lib/auth")(window)
+	var FavVids = require("../lib/dao/favoritevideos")
+
 	var page = {
 		init: function(data, next) {
 			var W = require("../js/widgetizer")(window, $)
 			/* load basic widgets used by this page... */
 			W.useCommonWidgets()
+
+			var url = require("url")
+        	var parsedUrl = url.parse(window.location.href, true)
+          	var videoId = parsedUrl.query.id
+			var userId = Auth.getLoggedUser().id
+
 			/* transform wow:markup to SVG and widgets */
 			W.widgetize(window.document, function() {
 				/* use data to modify page */
@@ -19,15 +29,18 @@ module.exports = function(window, $, SVG) {
 						unfavButton.disable()
 					}
 				}
-				var favState = false // current video is not in favorites
-				setFavState(favState)
+				FavVids.starred(userId, videoId, function(err, data) {
+					setFavState(!err && data)
+				})
 				favButton.click(function() {
-					// TODO change data in the DB
-					setFavState(true)
+					FavVids.star(userId, videoId, function(err, data) {
+						if(!err) setFavState(true)
+					})					
 				})
 				unfavButton.click(function() {
-					// TODO change data in the DB
-					setFavState(false)
+					FavVids.unstar(userId, videoId, function(err, data) {
+						if(!err) setFavState(false)
+					})					
 				})
 				quitBtn.click(function() {
 					// move back to previous page...
