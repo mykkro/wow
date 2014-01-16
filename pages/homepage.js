@@ -49,13 +49,16 @@ module.exports = function(window, $, SVG) {
 	function updateCalendar() {
 		console.log("Updating calendar...")
 		var now = moment()
+		var hour = now.hour()
 		var currentLangData = moment.langData()
+		var dayPartName = (now.format("A")=="AM") ? "VORMITTAG" : "NACHMITTAG"
+		if(hour>=11 && hour<13) dayPartName="MITTAG"
 		var calendar = {
 			dayName: currentLangData.weekdays(now).toUpperCase(),
 			day: now.format("D"),
 			monthName: now.format("MMMM").toUpperCase(),
 			year: now.format("YYYY"),
-			dayPartName: (now.format("A")=="AM") ? "VORMITTAG" : "NACHMITTAG"
+			dayPartName: dayPartName
 		}
 		$("#CalendarTextYearNo tspan").text(calendar.year)
 		$("#CalendarTextMonthName tspan").text(calendar.monthName)
