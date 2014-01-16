@@ -14,6 +14,7 @@
   <script type="text/javascript" src="js/svgjs/svg.filter.js"></script>
 	<script>
 	var DEBUG = true
+	
 	$(document).ready(function() {
 	
 		var mustache = require('mustache');
@@ -81,6 +82,24 @@
 		loadPage(pageInfo, pageData, function(ctrl) {
 			console.log("Page loaded successfully!")
 			console.log(pageData)
+			
+			// FIX to prevent backspace key from doing "go back to previous page"
+			// from: http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back
+			
+			/*
+			 * this swallows backspace keys on any non-input element.
+			 * stops backspace -> back
+			 */
+			var rx = /INPUT|SELECT|TEXTAREA/i;
+
+			$(window.document).bind("keydown keypress", function(e){
+				if( e.which == 8 ){ // 8 == backspace
+					if(!rx.test(e.target.tagName) || e.target.disabled || e.target.readOnly ){
+						e.preventDefault();
+					}
+				}
+			});
+			
 		})
 		
 					
