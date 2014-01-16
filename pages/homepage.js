@@ -1,4 +1,4 @@
-module.exports = function(window, $, SVG) {
+module.exports = function(window, $, SVG, i18n) {
 	
 	// CalendarTextDaytime
 	// CalendarTextYearNo
@@ -52,8 +52,8 @@ module.exports = function(window, $, SVG) {
 		var now = moment()
 		var hour = now.hour()
 		var currentLangData = moment.langData()
-		var dayPartName = (now.format("A")=="AM") ? "VORMITTAG" : "NACHMITTAG"
-		if(hour>=11 && hour<13) dayPartName="MITTAG"
+		var dayPartName = (now.format("A")=="AM") ? i18n.__("morning") : i18n.__("afternoon")
+		if(hour>=11 && hour<13) dayPartName=i18n.__("midday")
 		var calendar = {
 			dayName: currentLangData.weekdays(now).toUpperCase(),
 			day: now.format("D"),
@@ -65,7 +65,7 @@ module.exports = function(window, $, SVG) {
 		$("#CalendarTextMonthName tspan").text(calendar.monthName)
 		$("#CalendarTextDayNo tspan").text(calendar.day)
 		$("#CalendarTextDayName tspan").text(calendar.dayName)
-		$("#CalendarTextDaytime tspan").text(calendar.dayPartName)
+		$("#CalendarTextDaytime tspan").text(calendar.dayPartName.toUpperCase())
 	}
 	
 	function getDayPart() {
@@ -110,17 +110,17 @@ module.exports = function(window, $, SVG) {
 		    button: 'button',
 		};
 		var d = new Dialog(window.jQuery);
-		d.title = '<b>Exit</b>';
-		d.content = 'Are you sure?';
+		d.title = '<b>'+i18n.__('Exit')+'</b>';
+		d.content = i18n.__('Are you sure?');
 		d.info = '';
-		d.addButton('Yes', function() {
+		d.addButton(i18n.__('Yes'), function() {
 		    // alert('Yes button was clicked');
 			// Quit current app
 			gui.App.quit();
 
 		    d.hide();
 		});
-		d.addButton('No', function() {
+		d.addButton(i18n.__('No'), function() {
 		    // alert('No button was clicked');
 		    d.hide();
 		});
@@ -152,7 +152,7 @@ module.exports = function(window, $, SVG) {
 				$("#Button03 .overlay").click(entertainmentActivated)
 
 				$(".hiddenQuitButton").click(function() {
-					var state = window.confirm("This will quit the application. Are you sure?")
+					var state = window.confirm(i18n.__("This will quit the application. Are you sure?"))
 					if(state) gui.App.quit()
 				})
 
