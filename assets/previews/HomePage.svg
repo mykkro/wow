@@ -3318,7 +3318,7 @@
          x="-10"
          y="-1"
          id="ClockSecondHand"
-         style="fill:blue;fill-opacity:1;stroke:none;display:inline" />
+         style="fill:red;fill-opacity:1;stroke:none;display:inline" />
 </g>
       <path
          d="m 1057.2956,455.07983 a 9.4868727,9.4868727 0 1 1 -18.9738,0 9.4868727,9.4868727 0 1 1 18.9738,0 z"
