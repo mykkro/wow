@@ -1,4 +1,4 @@
-module.exports = function(window, $, SVG) {
+module.exports = function(window, $, SVG, i18n) {
 	var url = require('url');	
 
 	var page = {

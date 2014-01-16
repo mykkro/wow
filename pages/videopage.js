@@ -1,4 +1,4 @@
-module.exports = function(window, $, SVG) {
+module.exports = function(window, $, SVG, i18n) {
 
 	var Auth  = require("../lib/auth")(window)
 	var FavVids = require("../lib/dao/favoritevideos")

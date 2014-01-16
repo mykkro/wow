@@ -22,6 +22,16 @@
 		var path = require('path')
 		var gui = require('nw.gui');
 
+
+		var i18n = new (require('i18n-2'))({
+		    locales: ['en', 'de', 'cz'],
+		    defaultLocale: 'en'
+		});
+
+		i18n.setLocale('de')
+
+		console.log( i18n.__("Hello!") );
+
 		window.gui = gui
 
 		/* loads page view and script */
@@ -32,7 +42,7 @@
 		   $.get("pages/"+pageName+".wow").done(function(response) {				
 				var html = mustache.to_html(response, allData);
 				$('#top-wrapper').html(html);			
-				var scr = require("./pages/"+scriptName+".js")(window, $, SVG)
+				var scr = require("./pages/"+scriptName+".js")(window, $, SVG, i18n)
 				scr.init(allData, next)
 			}).fail(function(err) {
 				alert("Error loading view: "+pageName)
