@@ -65,9 +65,9 @@
                 <path d="M565.745 378.776c-3.811-17.811-21.58-4.302-39.987-1.499l20.644-37.112c6.447 0 16.088-4.875 19.342 0v38.611z" fill="#dd1379" stroke="#fff"/>
                 <path d="M565.745 378.776c3.811-17.811 21.58-4.302 39.986-1.499l-20.644-37.112c-6.447 0-16.088-4.875-19.342 0v38.611z" fill="#dd1379" stroke="#fff"/>
             </g>
-            <text x="519.948" y="457.633" style="line-height:125%;-inkscape-font-specification:'Times New Roman, Bold'" font-size="30" font-weight="bold" letter-spacing="0" word-spacing="0" font-family="Times New Roman">
-                <tspan x="519.948" y="457.633">
-                    LIEBHABEREI
+            <text x="619.948" y="457.633" style="line-height:125%;-inkscape-font-specification:'Times New Roman, Bold'" font-size="30" font-weight="bold" letter-spacing="0" word-spacing="0" font-family="Times New Roman">
+                <tspan text-anchor="middle">
+                    HOBBY
                 </tspan>
             </text>
             <rect width="250" height="250" ry="45.051" x="500.013" y="319.998" class="overlay" fill="none"/>
