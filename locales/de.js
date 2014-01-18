@@ -3,5 +3,6 @@
 	"afternoon": "nachmittag",
 	"midday": "mittag",
 	"This will quit the application. Are you sure?": "Beenden?",
-	"morning": "vormittag"
+	"morning": "vormittag",
+	"dynamic string": "dynamic string"
 }

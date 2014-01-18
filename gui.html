@@ -42,6 +42,7 @@
 			var scriptName = pageInfo.script || pageInfo.view
 			var pageName = pageInfo.view
 			var allData = $.extend(data, pageInfo)
+			console.log(allData)
 		   $.get("pages/"+pageName+".wow").done(function(response) {				
 				var html = mustache.to_html(response, allData);
 				$('#top-wrapper').html(html);			
