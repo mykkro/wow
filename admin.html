@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="css/normalize.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="css/style.css" media="all" rel="stylesheet" type="text/css" />
+
+  <link rel="stylesheet/less" href="css/style.less" type="text/css" /> 
+
+  <link href="fonts/SourceSansPro/fontface.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="fonts/Meteocons/stylesheet.css" media="all" rel="stylesheet" type="text/css" />
+  <!-- third party libraries should be loaded here and then passed to the Widgetizer module... -->
+  <script type="text/javascript" src="js/less/less-1.6.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery/jquery-2.0.3.min.js"></script>
+  <script type="text/javascript" src="js/jquery.svg/jquery.svg.min.js"></script>
+  <script type="text/javascript" src="js/jquery.svg/jquery.svgdom.min.js"></script>
+  <script type="text/javascript" src="js/svgjs/svg.min.js"></script>
+  <script type="text/javascript" src="js/svgjs/svg.easing.min.js"></script>
+  <script type="text/javascript" src="js/svgjs/svg.filter.js"></script>
+	<script>
+	var DEBUG = true
+	
+	// access main module...
+	////process.mainModule.exports.hello()
+
+	$(document).ready(function() {
+	
+		var mustache = require('mustache');
+		var url = require('url')
+		var path = require('path')
+		var gui = require('nw.gui');
+		var Auth  = require("./lib/auth")(window)
+		var Imports = require("./lib/dao/imports")
+
+		var url = require("url")
+    	var parsedUrl = url.parse(window.location.href, true)
+      	var page = parsedUrl.query.page || 1
+		var userId = Auth.getLoggedUser().id
+		var adminId = 123
+
+
+		var i18n = new (require('i18n-2'))({
+		    locales: ['en', 'de', 'cz'],
+		    defaultLocale: 'en'
+		});
+
+		i18n.setLocale('de')
+
+		var getImports = function(cb) {
+			Imports.list(adminId, 10*(page-1), 10, cb)
+		}
+
+		var showImports = function(data) {
+			console.log(data)
+			$("#import-list")
+				.empty()
+				.text(JSON.stringify(data))
+		}
+
+
+
+		var fs = require("fs")
+		var unzip = require("unzip")
+		var temp = require("temp")
+		var Manifest =  require("./lib/manifest")
+		var Storage = require("./lib/storage")
+		var Hashids = require('hashids'),
+		hashids = new Hashids('this is my salt', 8);
+		
+		// ensure that some directories exist...
+		Storage.init()
+		
+function getExtension(filename) {
+    var ext = path.extname(filename||'').split('.');
+    return ext[ext.length - 1];
+}
+	var fileSelected = function(path, next) {
+		if(getExtension(path) != "zip") {
+			/* not archive ... */
+			console.log("Must be a .zip archive")
+			return
+		}
+		Manifest.loadFromArchive(path, function(err, res) {
+			if(err) {
+				/* manifest missing or invalid */
+				console.log("Failed to load manifest file")
+				console.error(err)
+				// TODO show prompt with "are you sure?" and a form with default manifest 
+				/* create default manifest and continue importing... */
+				next(path, {})
+			} else {
+				/* manifest ok */
+				console.log("Manifest loaded successfully.")
+				console.log(res)
+				next(path, res)
+			}
+		})
+	}
+												  
+	var unpackArchive = function(path, dirPath, next) {
+			fs.createReadStream(path)
+				.pipe(unzip.Extract({ path: dirPath }))
+				.on("close", next)
+	}
+				  
+	var importArchive = function(path, m) {
+		console.log("Importing archive from "+path)
+		console.log("With manifest: ", m)
+		temp.mkdir('wowimport', function(err, dirPath) {
+			console.log("Created temporary directory "+dirPath)
+			unpackArchive(path, dirPath, function(err) {
+				if(err) {
+					console.log("Archive unpacking failed")
+					console.error(err)
+					// TODO remove temporary directory
+					// must set tracking for temp dir
+					temp.cleanup()
+				} else {
+					console.log("Archive unpacked successfully!")
+					finalizeImport(dirPath, m)
+				}
+			})
+		});				
+	}
+	
+	// when doing imports after the first, crud.create returns sometimes with empty ID
+	// until fixed, the page should be refreshed after each import
+	// or.. do not reuse the import form
+	var finalizeImport = function(dirPath, m) {
+		console.log("App is unpacked and ready at "+dirPath)
+		console.log("Preparing to import...")
+		console.log("Manifest:", m)
+		var data = m
+		Imports.create(adminId, data, function(err, res) {
+		if(!err) {
+			console.log("Data inserted! ID="+res._id)
+			console.log(res)
+			var newName = hashids.encrypt(res._id.id)
+			console.log(newName)
+			var newPath = path.join(Storage.importDir, newName)
+			fs.rename(dirPath, newPath, function(err) {
+				if(!err) {
+					res.importName = newName
+					// update entry in database...
+					Imports.update(res, function(err, res2) {
+						console.log("Import completed successfully.")
+						console.log(res)						
+					})
+				}
+			})
+		}
+		})
+	}
+
+
+		var importPathAdded = function(path) {
+			// get manifest from file...
+			fileSelected(path, function(path, manifest) {
+				console.log("Import path added: "+path)
+				console.log("With manifest:",manifest)
+				
+				manifest.adminId = adminId
+				importArchive(path, manifest)
+			})
+		}
+					
+		// initialization
+		getImports(function(err, data) {
+			showImports(data)
+		})					
+
+		  var chooser = $('#fileDialog')
+		  chooser.change(function(evt) {
+		      importPathAdded($(this).val());
+		  });
+
+		  $("#add-import-btn").click(function() {
+		  	chooser.trigger("click")
+		  })
+	})
+	</script>
+</head>
+<body>
+
+<input style="display:none;" id="fileDialog" type="file" accept=".zip,application/zip" />
+
+	<h1>Admin Page</h1>
+	<div>
+		<div>
+			<h2>Imported Apps</h2>
+			<ul id="import-list">
+			</ul>
+		</div>
+		<div>
+			<h2>Import App</h2>
+			<div>
+				<button id="add-import-btn">Add import path</button>
+			</div>
+			<div>
+				<button>Import</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
