@@ -139,7 +139,7 @@ module.exports = function(window, $, SVG, i18n) {
 				})
 				Widgetizer.get("homeButton").click(function() {
 					// move back to main page
-					window.location = "gui.html"
+					window.location = "gui.html?view=homepage"
 				})
 				var query = data.query.query
 				var page = parseInt(data.query.page || 1)
