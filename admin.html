@@ -15,7 +15,15 @@
   <script type="text/javascript" src="js/jquery.svg/jquery.svgdom.min.js"></script>
   <script type="text/javascript" src="js/svgjs/svg.min.js"></script>
   <script type="text/javascript" src="js/svgjs/svg.easing.min.js"></script>
-  <script type="text/javascript" src="js/svgjs/svg.filter.js"></script>
+  <script type="text/javascript" src="js/svgjs/svg.filter.js">
+  </script>
+  
+  <style>
+	html, body {
+		overflow: auto;
+	}
+  </style>
+  
 	<script>
 	var DEBUG = true
 	
@@ -51,14 +59,57 @@
 
 		var showImports = function(data) {
 			console.log(data)
-			$("#import-list")
-				.empty()
-				.text(JSON.stringify(data))
+			var root = $("#import-list").empty()
+			if(data) {
+				for(var i=0; i<data.length; i++) {
+					root.append(showItem(data[i]))
+				}
+			}
 		}
 
+		var showItem = function(item) {
+			var previewUri = "assets/misc/nopreview.svg"
+			if(item.preview) {
+				var appBaseUri = "file://" + path.join(Storage.importDir, item.importName)			
+				previewUri = appBaseUri + "/" + item.preview
+			}
+			return $("<div>").append(
+				$("<h3>").text(item.title),
+				$("<div>").text("Created: "+item.created),
+				$("<img>").attr({
+					"width":100,
+					"height":100,
+					"src": previewUri
+				}),
+				$("<button>").text("Remove").click(function() {
+				// TODO confirm prompt
+					removeItem(item._id.id, item.importName)
+				})
+			)
+		}
+		
+		var removeItem = function(id, importName) {
+			// remove record from database...
+			Imports.remove(id, function(err, res) {
+				if(err) console.error(err);
+				else {
+					console.log("Removing directory...")
+					var dir = path.join(Storage.importDir, importName)
+					// remove dir with its contents...
+					fs.remove(dir, function(err) {
+						if(err) console.error(err);
+						else {
+							console.log("Deleted successfully!")
+							// TODO flash message
+							refreshImportsView()
+						}
+						
+					})
+				}
+			})
+		}
 
-
-		var fs = require("fs")
+		var fs = require("fs-extra")
 		var unzip = require("unzip")
 		var temp = require("temp")
 		var Manifest =  require("./lib/manifest")
@@ -143,7 +194,9 @@ function getExtension(filename) {
 					// update entry in database...
 					Imports.update(res, function(err, res2) {
 						console.log("Import completed successfully.")
-						console.log(res)						
+						console.log(res)		
+							refreshImportsView()
+							/* signal that import finished OK */
 					})
 				}
 			})
@@ -151,6 +204,11 @@ function getExtension(filename) {
 		})
 	}
 
+	var refreshImportsView = function() {
+		getImports(function(err, data) {
+			showImports(data)
+		})					
+	}
 
 		var importPathAdded = function(path) {
 			// get manifest from file...
@@ -159,14 +217,12 @@ function getExtension(filename) {
 				console.log("With manifest:",manifest)
 				
 				manifest.adminId = adminId
+				manifest.originalPath = path
 				importArchive(path, manifest)
 			})
 		}
 					
 		// initialization
-		getImports(function(err, data) {
-			showImports(data)
-		})					
 
 		  var chooser = $('#fileDialog')
 		  chooser.change(function(evt) {
@@ -176,6 +232,8 @@ function getExtension(filename) {
 		  $("#add-import-btn").click(function() {
 		  	chooser.trigger("click")
 		  })
+		  
+		  refreshImportsView()
 	})
 	</script>
 </head>
