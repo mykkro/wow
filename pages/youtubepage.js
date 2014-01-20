@@ -126,7 +126,6 @@ module.exports = function(window, $, SVG, i18n) {
 				rightBtn = Widgetizer.get("rightButton")	
 				textBox = Widgetizer.get("searchTextbox")
 
-				// TODO buttons work even when they are disabled... why?
 				leftBtn.click(goToPreviousPage)
 				rightBtn.click(goToNextPage)
 

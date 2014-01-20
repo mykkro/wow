@@ -109,7 +109,7 @@ module.exports = function(window, $, SVG, i18n) {
 		    buttons: 'buttons',
 		    button: 'button',
 		};
-		var d = new Dialog(window.jQuery);
+		var d = new Dialog($);
 		d.title = '<b>'+i18n.__('Exit')+'</b>';
 		d.content = i18n.__('Are you sure?');
 		d.info = '';
@@ -124,9 +124,7 @@ module.exports = function(window, $, SVG, i18n) {
 		    // alert('No button was clicked');
 		    d.hide();
 		});
-		$("#btn1").click(function() {
-			d.show();
-		})
+		d.show();
 	}
 
 	var page = {
@@ -152,8 +150,9 @@ module.exports = function(window, $, SVG, i18n) {
 				$("#Button03 .overlay").click(entertainmentActivated)
 
 				$(".hiddenQuitButton").click(function() {
-					var state = window.confirm(i18n.__("This will quit the application. Are you sure?"))
-					if(state) gui.App.quit()
+					showQuitDialog()
+					//var state = window.confirm(i18n.__("This will quit the application. Are you sure?"))
+					//if(state) gui.App.quit()
 				})
 
 				/* continue when finished */
