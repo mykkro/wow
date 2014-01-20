@@ -85,7 +85,9 @@
 				// TODO confirm prompt
 					removeItem(item._id.id, item.importName)
 				})
-			)
+			).click(function() {
+				window.location.href= "gui.html?view=apppage&importname="+item.importName
+			})
 		}
 		
 		var removeItem = function(id, importName) {
@@ -251,10 +253,7 @@ function getExtension(filename) {
 		<div>
 			<h2>Import App</h2>
 			<div>
-				<button id="add-import-btn">Add import path</button>
-			</div>
-			<div>
-				<button>Import</button>
+				<button id="add-import-btn">Import</button>
 			</div>
 		</div>
 	</div>
