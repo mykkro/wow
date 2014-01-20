@@ -7,6 +7,7 @@ module.exports = function(window, $, SVG, i18n) {
 
 	function adminLogin() {
 		//window.alert("Admin!")
+		window.location = "admin.html"
 	}
 	var baseUrl;
 	var page = {
