@@ -7,5 +7,7 @@
 	"Exit": "Exit",
 	"Are you sure?": "Are you sure?",
 	"Yes": "Yes",
-	"No": "No"
+	"No": "No",
+	"Remove": "Remove",
+	"Remove this item?": "Remove this item?"	
 }
