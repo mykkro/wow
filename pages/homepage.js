@@ -94,37 +94,13 @@ module.exports = function(window, $, SVG, i18n) {
 	function entertainmentActivated() {
 		window.location = baseUrl + "?view=youtubepage"
 	}
-	
-	// not visible - probably hidden under SVG?
-	function showQuitDialog() {
-		var Dialog = require('modal-dialog');
-		Dialog.styles = false
-		Dialog.classes = {
-		    container: 'modal_dialog',
-		    title: 'title',
-		    header: 'header',
-		    content: 'content',
-		    footer: 'footer',
-		    info: 'info',
-		    buttons: 'buttons',
-		    button: 'button',
-		};
-		var d = new Dialog($);
-		d.title = '<b>'+i18n.__('Exit')+'</b>';
-		d.content = i18n.__('Are you sure?');
-		d.info = '';
-		d.addButton(i18n.__('Yes'), function() {
-		    // alert('Yes button was clicked');
-			// Quit current app
-			gui.App.quit();
 
-		    d.hide();
-		});
-		d.addButton(i18n.__('No'), function() {
-		    // alert('No button was clicked');
-		    d.hide();
-		});
-		d.show();
+	var dialogs = require("../lib/dialogs")($, i18n)
+	
+	function showQuitDialog() {
+		dialogs.quitDialog(function(reallyQuit) {
+			if(reallyQuit) gui.App.quit()
+		})
 	}
 
 	var page = {
