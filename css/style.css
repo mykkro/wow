@@ -74,38 +74,3 @@ html, body , #top-wrapper, #top-wrapper > svg {
 	stroke-opacity: 0.2;
 }
 
-		.modal_dialog {
-			width: 480px;
-			height: 210px;
-			background-color: #def;
-			font-family: "Trebuchet MS", Helvetica, sans-serif;
-			-webkit-border-radius: 20px;
-		}
-		.modal_dialog .header {
-			font-size: 30px;
-			padding: 12px;
-			background-color: #bce;
-			-webkit-border-radius: 20px 20px 0px 0px;
-		}
-		.modal_dialog .content {
-			padding: 20px;
-			font-size: 22px;
-		}
-		.modal_dialog .footer {
-			padding: 20px;
-		}
-		.modal_dialog .button {
-			float: right;
-			text-align: center;
-			width: 100px;
-			display: inline-block;
-			padding: 10px;
-			margin-left: 20px;
-			background-color: #bbb;
-			-webkit-border-radius: 10px;
-			text-decoration: none;
-			font-weight: bold;
-		}
-		.modal_dialog .button:hover {
-			background-color: #ccc;
-		}
