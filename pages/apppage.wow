@@ -23,9 +23,5 @@
         <wow:iconbutton name="unfavButton" src="unfavorite"></wow:iconbutton>
     </g>
 
-    <!-- here comes the video... -->
-    <foreignObject id="iframe-wrapper" x="160" y="80" width="642" height="410">
-    </foreignObject>    
-
 	<g id="tempgroup" style="display:none;"></g>    
 </svg>

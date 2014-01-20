@@ -27,10 +27,11 @@ module.exports = function(window, $, SVG, i18n) {
 				})
 				var importName = parsedUrl.query.importname || "notfound"
 				var src = path.join(Storage.importDir, importName, "index.html")			
+				// TODO automatic iframe resizing... 
 				$("#iframe-wrapper").html(
 					$("<iframe nwfaketop nwdisable>").attr({
-						width: 640,
-						height: 390,
+						width: "100%",
+						height: "100%",
 						src: src,
 						frameborder: 0
 					})

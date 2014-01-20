@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>eScrapBook</title>
+<link href="images/favicon.ico" type="image/x-icon" rel="icon">
+<link href="images/favicon.ico" type="image/x-icon" rel="shortcut icon">
+<link rel="stylesheet" type="text/css" href="css/viewer.css">
+<link rel="stylesheet" type="text/css" href="css/styles.css">
+<script>
+    var LocaleStrings = {};
+</script>
+<script type="text/javascript" src="js/libs-viewer.js"></script>
+<script type="text/javascript" src="js/mykkro-viewer.js"></script></head>
+<script type="text/javascript" src="connector.js"></script>
+<script type="text/javascript" src="logging.js"></script>
+</head>
+<body>
+<script>
+$(document).ready(function() {
+
+    bookman_log({"message":"Logging enabled."})
+
+    var book = {"type":"book","options":[],"slots":[{"type":"clock","options":{"width":100,"height":100,"size":100,"fillColor":"white","strokeColor":"black","pinColor":"gray","hourHandColor":"black","minuteHandColor":"black","secondHandColor":"black"}},{"type":"ref-decorator","options":{"label":null,"source":""},"slots":{"content":{"type":"imager","options":{"url":"images\/29\/Tulips_original.jpg","repeat":"no-repeat","position":"center center","color":"white","size":"cover"}}}},{"type":"grid-layout","options":{"rows":3,"columns":1,"gap":2},"slots":[{"type":"ref-decorator","options":{"label":null,"source":""},"slots":{"content":{"type":"video-thing","options":{"uri":"videos\/4\/small_original.ogv","ogg":"videos\/4\/small_original.ogv","mp4":"","webm":"","autoplay":false,"loop":false,"volume":50}}}},{"type":"ref-decorator","options":{"label":null,"source":""},"slots":{"content":{"type":"imager","options":{"url":"images\/18\/smiley_face_original.jpg","repeat":"no-repeat","position":"center center","color":"","size":"contain"}}}},{"type":"text-thing","options":{"html":"hello","css":"","h-align":"center","v-align":"center","font-size":"20px","font-family":"Georgia, serif"}}]}]};
+    var bookView = new ExportBookViewer({data:book, fullscreen:true, logger: bookman_log, url:"https://nit.felk.cvut.cz/~myrousz/escrapbook-v3/books/view/34"});
+    bookView.init();
+});
+</script>
+<div id="fullscreen" style="width: 100%; height: 100%;">
+</div>
+</body>
+</html>

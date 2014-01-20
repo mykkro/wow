@@ -1,0 +1,1 @@
+var bookman_connector = {}
