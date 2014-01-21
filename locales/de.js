@@ -8,5 +8,7 @@
 	"Exit": "Beenden",
 	"Are you sure?": "Sind Sie sicher?",
 	"Yes": "Ja",
-	"No": "Nein"
+	"No": "Nein",
+	"Remove": "Löschen",
+	"Remove this item?": "Löschen?"
 }
