@@ -1,0 +1,18 @@
+<script>
+/* opens new window... */
+var gui = require('nw.gui');
+
+var win = gui.Window.get(
+	gui.Window.open('https://github.com', {
+	  position: 'center',
+	  width: 900,
+	  height: 300,
+	  //kiosk: true, // kiosk mode
+	  //frame: false // frameless mode
+	})
+)
+// maximizes the old window, not the GitHub one!
+// win.enterFullscreen()
+</script>
+
+Hello, NodeWebkit!
