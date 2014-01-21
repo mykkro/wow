@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   width="100"
+   height="100"
+   id="svg2">
+  <defs
+     id="defs3">
+    <linearGradient
+       id="linearGradient2817">
+      <stop
+         id="stop2819"
+         style="stop-color:#0000ff;stop-opacity:1"
+         offset="0" />
+      <stop
+         id="stop2821"
+         style="stop-color:#08174f;stop-opacity:0.34090909"
+         offset="1" />
+    </linearGradient>
+    <radialGradient
+       cx="21.232056"
+       cy="5.9512639"
+       r="49.244938"
+       fx="21.232056"
+       fy="5.9512639"
+       id="radialGradient2825"
+       xlink:href="#linearGradient2817"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.6102564,-0.02307693,0.01427019,0.99733378,14.213343,46.067251)" />
+  </defs>
+  <g
+     transform="translate(0,-952.36218)"
+     id="layer1">
+    <rect
+       width="95.459419"
+       height="95.206879"
+       rx="30"
+       ry="30"
+       x="2.5253813"
+       y="2.5202792"
+       transform="translate(0,952.36218)"
+       id="rect2833"
+       style="fill:#cccccc;fill-opacity:1;stroke:none" />
+    <text
+       x="48.174282"
+       y="1056.4453"
+       transform="scale(1.0625383,0.94114254)"
+       id="text2827"
+       xml:space="preserve"
+       style="font-size:21.85122299px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#808080;fill-opacity:1;stroke:none;font-family:'Shipped Goods 2 (Personal Use)';-inkscape-font-specification:'Shipped Goods 2 (Personal Use)'"><tspan
+         x="48.174282"
+         y="1056.4453"
+         id="tspan2829"
+         style="fill:#808080;font-family:Trebuchet MS;-inkscape-font-specification:Trebuchet MS">No</tspan><tspan
+         x="48.174282"
+         y="1083.7594"
+         id="tspan2831"
+         style="fill:#808080;font-family:Trebuchet MS;-inkscape-font-specification:Trebuchet MS">Preview</tspan></text>
+  </g>
+</svg>
