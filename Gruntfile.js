@@ -2,7 +2,7 @@ module.exports = function (grunt) {
 grunt.initConfig({
   nodewebkit: {
     options: {
-        build_dir: 'webkitbuilds', // Where the build version of my node-webkit app is saved
+        build_dir: '../webkitbuilds', // Where the build version of my node-webkit app is saved
         mac: false, 
         win: true, // We want to build it for win
         linux32: false, // We don't need linux32
