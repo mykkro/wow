@@ -14,6 +14,11 @@ module.exports = function(window, $, SVG, i18n) {
 			var rightBtn
 			var textBox
 
+			var updateBrowserQuery = function(page, query) {
+				var newQuery = "?view=youtubepage&page="+page+"&query="+encodeURIComponent(query)
+				window.History.replaceState({}, "", newQuery)
+			}
+
 			/* update GUI with search results */
 			/* also update left/right button status */
 			var showSearchResults = function(err, data) {
@@ -110,6 +115,7 @@ module.exports = function(window, $, SVG, i18n) {
 
 			var searchIt = function(page) {
 				var query = Widgetizer.get("searchTextbox").val()
+				updateBrowserQuery(page, query)
 				// TODO get page info from querystring
 				searchYouTubeVideos({q:query, 'max-results':6, 'start-index':1+(page-1)*6}, showSearchResults)				
 			}
