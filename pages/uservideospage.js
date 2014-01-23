@@ -44,7 +44,7 @@ module.exports = function(window, $, SVG, i18n) {
 						if(i<items.length) item = items[i]
 						resultGrp.appendChild(showItem(item, i))
 					}
-					var leftEnabled = (start>1)
+					var leftEnabled = (page>1)
 					var rightEnabled = (start-1+items.length<total)
 					leftBtn.setEnabled(leftEnabled)
 					rightBtn.setEnabled(rightEnabled)
