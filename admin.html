@@ -356,6 +356,10 @@ function getExtension(filename) {
 		      importFromDirectory($(this).val());
 		  });
 
+		  $("#add-import-btn").click(function() {
+		  	chooser.trigger("click")
+		  })
+		  
 		  $("#add-import-dir-btn").click(function() {
 		  	chooser2.trigger("click")
 		  })
@@ -373,6 +377,9 @@ function getExtension(filename) {
 <input style="display:none;" id="dirDialog"  type="file" nwdirectory />
 	
 	<h1>Admin Page</h1>
+	<div class="admin-nav">
+		<a href="gui.html">Back to login page</a>
+	</div>
 	<div class="admin-body">
 		<div class="importapp panel">
 			<h2>Import App</h2>
