@@ -78,7 +78,7 @@
 		var showVideos = function(data) {
 			console.log(data)
 			var root = $("#video-list").empty()
-			if(data) {
+			if(data && data.items) {
 				for(var i=0; i<data.items.length; i++) {
 					root.append(showVideoItem(data.items[i]))
 				}
