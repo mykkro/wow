@@ -38,6 +38,7 @@
 		var gui = require('nw.gui');
 		var Auth  = require("./lib/auth")(window)
 		var Imports = require("./lib/dao/imports")
+		var UserVideos = require("./lib/dao/uservideos")
 
 		var url = require("url")
     	var parsedUrl = url.parse(window.location.href, true)
@@ -57,12 +58,28 @@
 			Imports.listNewest(adminId, 10*(page-1), 10, cb)
 		}
 
+		var getVideos = function(cb) {
+			UserVideos.listNewest(adminId, 10*(page-1), 10, cb)
+		}
+
+
+
 		var showImports = function(data) {
 			console.log(data)
 			var root = $("#import-list").empty()
 			if(data) {
 				for(var i=0; i<data.length; i++) {
 					root.append(showItem(data[i]))
+				}
+			}
+		}
+
+		var showVideos = function(data) {
+			console.log(data)
+			var root = $("#video-list").empty()
+			if(data) {
+				for(var i=0; i<data.length; i++) {
+					root.append(showVideoItem(data[i]))
 				}
 			}
 		}
@@ -92,6 +109,28 @@
 			)
 			return out
 		}
+
+		var showVideoItem = function(item) {			
+			var previewUri = "http://img.youtube.com/vi/"+item.videoId+"/default.jpg"
+			var out = $("<div>").append(
+				$("<h3>").text(item.title || item.videoId),
+				$("<div>").text("Created: "+item.created),
+				$("<img>").attr({
+					"width":120,
+					"height":90,
+					"src": previewUri
+				}).click(function() {
+					window.location.href= "gui.html?view=videopage&id="+item.videoId
+				}),
+				$("<button>").text("Remove").click(function() {
+					showRemoveDialog(function() {
+						// confirmed...
+						removeVideoItem(item.userId, item.videoId, out)
+					})
+				})
+			)
+			return out
+		}
 		
 		var removeItem = function(id, importName, div) {
 			// remove record from database...
@@ -111,6 +150,17 @@
 						}
 						
 					})
+				}
+			})
+		}
+
+		var removeVideoItem = function(userId, videoId, div) {
+			// remove record from database...
+			UserVideos.remove(adminId, userId, videoId, function(err, res) {
+				if(err) console.error(err);
+				else {
+					console.log("Removing directory...")
+					div.fadeOut("slow")
 				}
 			})
 		}
@@ -209,6 +259,36 @@ function getExtension(filename) {
 		}
 		})
 	}
+
+	var youtube = require('youtube-feeds')
+
+	var getVideoMetadata = function(videoId, cb) {
+		youtube.video(videoId, function(err, data) {
+			if(!err) {
+				cb(data)
+			} else {
+				// data not found
+				cb(null)
+			}
+		})
+
+	}
+
+	var addUserVideo = function() {
+		var userId = $("#videouser-textfield").val()
+		var videoId = $("#videoid-textfield").val()
+		if(userId && videoId) {
+			/* get metadata for video ID... */
+			getVideoMetadata(videoId, function(data) {
+				if(data) {
+					UserVideos.add(adminId, userId, videoId, data.title, function(err, res) {
+						console.log(res)
+						refreshVideosView()
+					})
+				}				
+			})
+		}
+	}
 	
 		var dialogs = require("./lib/dialogs")($, i18n)
 	
@@ -222,6 +302,12 @@ function getExtension(filename) {
 	var refreshImportsView = function() {
 		getImports(function(err, data) {
 			showImports(data)
+		})					
+	}
+
+	var refreshVideosView = function() {
+		getVideos(function(err, data) {
+			showVideos(data)
 		})					
 	}
 
@@ -248,8 +334,11 @@ function getExtension(filename) {
 		  $("#add-import-btn").click(function() {
 		  	chooser.trigger("click")
 		  })
+
+		  $("#add-video-btn").click(addUserVideo)
 		  
 		  refreshImportsView()
+		  refreshVideosView()
 	})
 	</script>
 </head>
@@ -268,6 +357,23 @@ function getExtension(filename) {
 		<div>
 			<h2>Imported Apps</h2>
 			<ul id="import-list">
+			</ul>
+		</div>
+		<div>
+			<h2>Add YouTube Video</h2>
+			<div>
+				<div>
+					<label>VideoID: <input type="text" id="videoid-textfield"/></label>
+				</div>
+				<div>
+					<label>UserID: <input type="text" id="videouser-textfield" value="555"/></label>
+				</div>
+				<button id="add-video-btn">Add</button>
+			</div>
+		</div>
+		<div>
+			<h2>User Videos</h2>
+			<ul id="video-list">
 			</ul>
 		</div>
 	</div>
