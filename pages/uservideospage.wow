@@ -26,5 +26,10 @@
     <g transform="translate(840, 334)">
         <wow:iconbutton name="rightButton" src="righthand"></wow:iconbutton>
     </g>
+
+	<a xlink:href="gui.html?view=youtubepage">
+		<text class="text" x="20" y="150" text-anchor="start">Youtube Search</text>
+	</a>
+
 	<g id="tempgroup" style="display:none;"></g>
 </svg>

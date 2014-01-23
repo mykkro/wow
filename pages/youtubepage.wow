@@ -32,5 +32,10 @@
     <g transform="translate(284, 533)">
         <wow:textbox name="searchTextbox" maxchars=50 width="394" height="30"></wow:textbox>
     </g>
+	
+	<a xlink:href="gui.html?view=uservideospage">
+		<text class="text" x="20" y="150" text-anchor="start">User Videos</text>
+	</a>
+	
 	<g id="tempgroup" style="display:none;"></g>
 </svg>
