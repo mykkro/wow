@@ -55,11 +55,11 @@
 		i18n.setLocale('de')
 
 		var getImports = function(cb) {
-			Imports.listNewest(adminId, 10*(page-1), 10, cb)
+			Imports.listNewest({adminId:adminId}, 10*(page-1), 10, cb)
 		}
 
 		var getVideos = function(cb) {
-			UserVideos.listNewest(adminId, 10*(page-1), 10, cb)
+			UserVideos.listNewest({adminId:adminId}, 10*(page-1), 10, cb)
 		}
 
 
@@ -78,8 +78,8 @@
 			console.log(data)
 			var root = $("#video-list").empty()
 			if(data) {
-				for(var i=0; i<data.length; i++) {
-					root.append(showVideoItem(data[i]))
+				for(var i=0; i<data.items.length; i++) {
+					root.append(showVideoItem(data.items[i]))
 				}
 			}
 		}
@@ -110,11 +110,12 @@
 			return out
 		}
 
-		var showVideoItem = function(item) {			
-			var previewUri = "http://img.youtube.com/vi/"+item.videoId+"/default.jpg"
+		var showVideoItem = function(item) {	
+			var previewUri = "http://img.youtube.com/vi/"+item.id+"/default.jpg"
+			/* strangely, this does not seem to work... */
+			//var previewUri = item.thumbnail.sqDefault
 			var out = $("<div>").append(
-				$("<h3>").text(item.title || item.videoId),
-				$("<div>").text("Created: "+item.created),
+				$("<h3>").text(item.title || item.id),
 				$("<img>").attr({
 					"width":120,
 					"height":90,
@@ -125,7 +126,7 @@
 				$("<button>").text("Remove").click(function() {
 					showRemoveDialog(function() {
 						// confirmed...
-						removeVideoItem(item.userId, item.videoId, out)
+						removeVideoItem(userId, item.id, out)
 					})
 				})
 			)
