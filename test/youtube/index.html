@@ -67,6 +67,10 @@
     <script type="text/javascript" src="https://www.youtube.com/player_api"></script>
 
 		<script>
+		
+			var url = require("url")
+			var parsedUrl = url.parse(window.location.href, true)
+			var videoId = parsedUrl.query.video
 		/*
 		  // Load the IFrame Player API code asynchronously.
 		  var tag = document.createElement('script');
@@ -81,7 +85,7 @@
 		    player = new YT.Player('ytplayer', {
 		      height: '390',
 		      width: '640',
-		      videoId: 'M7lc1UVf-VE',
+		      videoId: videoId || 'Fy7FzXLin7o',
 		      playerVars: {
 		      	autoplay: 0,
 		      	controls: 0,

@@ -1,6 +1,8 @@
 wow - An experimental SVG GUI framework for node-webkit
 =======================================================
 
+Version: 0.2.1
+
 Requires:
 
 * [node-webkit](https://github.com/rogerwang/node-webkit)
