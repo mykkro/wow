@@ -1,21 +1,10 @@
 <html>
     <script>
 
-	var port = 9999
+    var WowServer = require("./server")
+    WowServer.start()
 
-	var express = require('express');
-	var routescan = require('express-routescan');	
-	var app = express();
-	var path = require("path")
-	var currentDir = process.cwd() // __dirname does not work in node-webkit
-
-	routescan(app)
-	app.use(express.static(currentDir + '/public'));
-
-	app.listen(port);
-	console.log('Listening on port '+port);
-
-    var baseURL = "http://localhost:" + port + "/";
+    var baseURL = "http://localhost:" + WowServer.port + "/";
     window.location.href = baseURL
 
     </script>
