@@ -2,7 +2,7 @@
   "name": "wow",
   "version": "0.1.1",
   "description": "",
-  "main": "gui.html",
+  "main": "index.html",
   "node-main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -44,7 +44,9 @@
     "i18n-2": "~0.4.5",
     "netutil": "0.0.1",
     "connect": "~2.12.0",
-    "dateformat": "~1.0.7-1.2.3"
+    "dateformat": "~1.0.7-1.2.3",
+    "express": "~3.4.8",
+    "express-routescan": "~0.1.9"
   },
   "repository": {
     "type": "git",

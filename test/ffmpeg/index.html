@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Window title goes here</title>
+ <link href="../../css/style.css" media="all" rel="stylesheet" type="text/css" />
+   </head>
+  <body>
+
+        <button id="open"><img src="../../img/16x16/file.png"/>Open</button>
+		<input style="display:none;" id="openFile" type="file" />
+
+		<button id="vidconv">Video Convert</button>
+
+<div id="imagerwrap"><img id="imager" src="../../userdata/thumb.png"></img></div>
+<div><textarea id="textinput"></textarea></div>
+<button id="run">Run</button>
+<pre id="output"></pre>
+
+  	<script src="../../js/jquery/jquery-2.0.3.min.js"></script>
+  	<script src="../../js/d3/d3.v3.min.js"></script>
+    <script src="../../js/pixastic/pixastic.custom.js"></script>
+    <script src="../../js/imagesloaded/imagesloaded.pkgd.js"></script>
+
+  	<script>
+
+var ffmpeg = require('fluent-ffmpeg');
+
+$('#vidconv').click(function() {
+   var proc = new ffmpeg({ source: '../../test/fluent-ffmpeg/media/test.mp4' })
+   .withSize('640x360')
+   .keepPixelAspect(true)
+   .saveToFile('../../userdata/converted.webm', function(stdout, stderr) {
+        alert('file has been converted succesfully');
+    });
+
+})
+
+// from: http://aboutcode.net/2013/01/09/load-images-with-jquery-deferred.html
+$.loadImage = function(url) {
+  // Define a "worker" function that should eventually resolve or reject the deferred object.
+  var loadImage = function(deferred) {
+    var image = new Image();
+     
+    // Set up event handlers to know when the image has loaded
+    // or fails to load due to an error or abort.
+    image.onload = loaded;
+    image.onerror = errored; // URL returns 404, etc
+    image.onabort = errored; // IE may call this if user clicks "Stop"
+     
+    // Setting the src property begins loading the image.
+    image.src = url;
+     
+    function loaded() {
+      unbindEvents();
+      // Calling resolve means the image loaded sucessfully and is ready to use.
+      deferred.resolve(image);
+    }
+    function errored() {
+      unbindEvents();
+      // Calling reject means we failed to load the image (e.g. 404, server offline, etc).
+      deferred.reject(image);
+    }
+    function unbindEvents() {
+      // Ensures the event callbacks only get called once.
+      image.onload = null;
+      image.onerror = null;
+      image.onabort = null;
+    }
+  };
+   
+  // Create the deferred object that will contain the loaded image.
+  // We don't want callers to have access to the resolve() and reject() methods, 
+  // so convert to "read-only" by calling `promise()`.
+  return $.Deferred(loadImage).promise();
+};
+
+
+
+// ??? jak udelat aby se filtr aplikoval vzdy po zmene image?
+
+function updateImage() {
+var src = "../../userdata/thumb.png#" + new Date().getTime()
+  $("#imagerwrap").empty().append($("<img>").attr("id", "imager").attr("src", src), $("<img>").attr("id", "imager2").attr("src", src))
+$.loadImage(src)
+.done(function(image) {
+  //alert("Loaded image: " + image.width + "x" + image.height);
+  $("#imager2")
+    .pixastic("blurfast", {amount:0.2})
+    .pixastic("emboss", {direction:"topleft", rect:{left:50,top:50,width:150,height:150}});
+})
+.fail(function(image) {
+  alert("Failed to load image");
+});
+}
+
+updateImage()
+
+$("#run").click(function() {
+  var src = $("#textinput").val()
+  try {
+  var out = eval(src)
+  $("#output").prepend($("<p>").addClass("source").text(src), $("<p>").addClass("result").text(out))
+  $("#textinput").val("")
+}
+catch(e) {
+  $("#output").prepend($("<p>").addClass("source").text(src), $("<p>").addClass("error").text(e))
+}
+})
+
+
+var gui = require("nw.gui")
+var fs = require("fs")
+var path = require('path')
+
+var Thumbbot = require('../../js/my-thumbbot')
+
+
+
+function handleOpenButton() {
+    $("#openFile").trigger("click")
+}
+
+var onChosenFileToOpen = function(theFileEntry) {
+  //setFile(theFileEntry, false);
+  readFileIntoEditor(theFileEntry);
+};
+
+function readFileIntoEditor(theFileEntry) {
+  fs.readFile(theFileEntry, function (err, data) {
+    if (err) {
+      console.log("Read failed: " + err);
+    }
+    var ext = path.extname(theFileEntry).toLowerCase()
+    // TODO check if extension is supported...
+    console.log(ext)
+    
+    var newFileName = "../../userdata/pokus" + ext
+    var thumbFileName = '../../userdata/thumb.png'
+
+	fs.writeFile(newFileName, data, function (err) {
+    	if (err) {
+      	console.log("Write failed: " + err);
+      	return;
+    	}
+
+    	console.log("Write completed.");
+      var bot = new Thumbbot(newFileName, thumbFileName)
+      bot.set({width: 300, height: 300, method:'resize'})
+      bot.snap(function(err) {
+        if (err) {
+          console.log("Resize failed: " + err);
+          return;
+        }
+console.log("Resize completed.");
+
+updateImage()
+
+var Magician = require('magician');
+var img = new Magician(thumbFileName)
+img.getDimensions(function(err, data) {
+  console.log(data);
+})
+      })
+
+  	});
+
+  });
+}
+
+$("#open").on("click", handleOpenButton);
+
+$("#openFile").change(function(evt) {
+	onChosenFileToOpen($(this).val());
+});
+
+
+
+var googleImages = require('google-images');
+
+//// googleImages.search("liquido", function(err, images) { console.log(images) })
+// Warning: this causes an exception under node-webkit in Windows...
+// even under node shell in Windows
+
+// in node-webklit console: Uncaught ReferenceError: require is not defined
+/*
+SyntaxError: Unexpected token u
+    at Object.parse (native)
+    at Request._callback (C:\Users\Mykkro\Documents\GitHub\wow\node_modules\goog
+le-images\lib\google-images.js:25:20)
+    at self.callback (C:\Users\Mykkro\Documents\GitHub\wow\node_modules\google-i
+mages\node_modules\request\request.js:123:22)
+    at Request.EventEmitter.emit (events.js:95:17)
+    at ClientRequest.self.clientErrorHandler (C:\Users\Mykkro\Documents\GitHub\w
+ow\node_modules\google-images\node_modules\request\request.js:232:10)
+    at ClientRequest.EventEmitter.emit (events.js:95:17)
+    at Socket.socketErrorListener (http.js:1547:9)
+    at Socket.EventEmitter.emit (events.js:95:17)
+    at net.js:830:16
+    at process._tickCallback (node.js:415:13)
+*/
+  	</script>
+  </body>
+</html>

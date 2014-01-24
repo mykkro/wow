@@ -99,7 +99,7 @@
 					"height":100,
 					"src": previewUri
 				}).click(function() {
-					window.location.href= "gui.html?view=apppage&importname="+item.importName
+					window.location.href= "index.html?view=apppage&importname="+item.importName
 				}),
 				$("<button>").text("Remove").click(function() {
 					showRemoveDialog(function() {
@@ -122,7 +122,7 @@
 					"height":90,
 					"src": previewUri
 				}).click(function() {
-					window.location.href= "gui.html?view=videopage&id="+item.videoId
+					window.location.href= "index.html?view=videopage&id="+item.videoId
 				}),
 				$("<button>").text("Remove").click(function() {
 					showRemoveDialog(function() {
@@ -378,7 +378,7 @@ function getExtension(filename) {
 	
 	<h1>Admin Page</h1>
 	<div class="admin-nav">
-		<a href="gui.html">Back to login page</a>
+		<a href="index.html">Back to login page</a>
 	</div>
 	<div class="admin-body">
 		<div class="importapp panel">

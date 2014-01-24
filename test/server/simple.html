@@ -1,12 +1,35 @@
 <html>
-<body>
-<script>
-  var http = require('http');
+    <script>
+	var http = require('http');
 
-  http.createServer(function (req, res) {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end('hello');
-  }).listen(10086);
-</script>
-</body>
+	var server = function(port) {
+	    http.createServer(function(request, response) {
+	        if (request.url === '/favicon.ico') {
+	            response.writeHead(404);
+	            response.end();
+	            return;
+	        }
+
+	        response.writeHead(200, {
+	            'content-type': 'text/html; charset=UTF-8'
+	        });
+	        response.end("<b>hello</b>");
+	    }).listen(port);
+	};
+
+/*
+	process.on('uncaughtException', function(err) {
+	    console.error(err.stack);
+	});
+
+*/
+	var port = 9999
+//    var netutil = require("netutil");
+//
+//    netutil.findFreePort(20000, 40000, "localhost", function(err, port) {
+        server(port);
+        location.href = "http://localhost:" + port;
+//    });
+
+    </script>
 </html>
