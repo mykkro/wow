@@ -24,55 +24,44 @@
   //process.mainModule.exports.hello()
 
 
+    // >>> SERVER CODE
     var i18n = new (require('i18n-2'))({
         locales: ['en', 'de', 'cz'],
         defaultLocale: 'en'
     });
 
     i18n.setLocale('de')
+    // <<< SERVER CODE
 
-    var PageLoader = require("./js/pageloader")(window, $, SVG, i18n)
 
   $(document).ready(function() {
   
-    var url = require('url')
-    var path = require('path')
+    // >>> SERVER CODE
+    // TODO gui and i18n module need client stub
     var gui = require('nw.gui');
-    var loc = window.location.href
-    var parsedUrl = url.parse(loc, true)
-    var query = parsedUrl.query
-    var hash = parsedUrl.hash
-
-    window.gui = gui
-
-    /* raw URL data */
-    var pageInfo = {
-      view: query.view || "loginpage",
-      script: query.view || "loginpage",
-      query: query,
-      hash: hash,
-      baseUrl: url.format({
-        protocol:parsedUrl.protocol, 
-        pathname:parsedUrl.pathname
-      })
-    }
-
-    /* Custom page data - eg. loaded from database */
-    var pageData = {
-    }
-
+    window.gui = gui 
     // TODO do login only from login page (login as user/login as admin)
     var Auth = require("./lib/auth")(window)
     Auth.login("mykkro", "pass", function(err, user) {
       if(err) console.error(err)
       if(user) console.log(user)
     })
+    // <<< SERVER CODE
+
+
+    /* raw URL data */
+    var pageInfo = require("./js/pageinfo")(window)
+
+    /* Custom page data - eg. loaded from database */
+    var pageData = {
+    }
+
+    var PageLoader = require("./js/pageloader")(window, $, SVG, i18n)
 
     /* Do it! */
     PageLoader.loadPage(pageInfo, pageData, function(ctrl) {
       console.log("Page loaded successfully!")
-      console.log(pageData)
-      PageLoader.fixBackspace()      
+      console.log(pageData)      
     })
     
           
