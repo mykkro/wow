@@ -23,13 +23,6 @@
   // access main module...
   //process.mainModule.exports.hello()
 
-  $(document).ready(function() {
-  
-    var mustache = require('mustache');
-    var url = require('url')
-    var path = require('path')
-    var gui = require('nw.gui');
-
 
     var i18n = new (require('i18n-2'))({
         locales: ['en', 'de', 'cz'],
@@ -38,41 +31,19 @@
 
     i18n.setLocale('de')
 
-    console.log( i18n.__("Hello!") );
+    var PageLoader = require("./lib/pageloader")(window, $, SVG, i18n)
 
-    window.gui = gui
-
-    /* loads page view and script */
-    function loadPage(pageInfo, data, next) {
-      var scriptName = pageInfo.script || pageInfo.view
-      var pageName = pageInfo.view
-      var allData = $.extend(data, pageInfo)
-      console.log(allData)
-       $.get("pages/"+pageName+".wow").done(function(response) {        
-        var html = mustache.to_html(response, allData);
-        $('#top-wrapper').html(html);     
-        var scr = require("./pages/"+scriptName+".js")(window, $, SVG, i18n)
-        scr.init(allData, next)
-      }).fail(function(err) {
-        alert("Error loading view: "+pageName)
-      })
-    }
-        
-    /* creates link to a page */
-    function getPageUrl(pageInfo) {
-      // assemble URL
-      return url.format({
-        protocol:parsedUrl.protocol, 
-        pathname:parsedUrl.pathname, 
-        query: pageInfo.query, 
-        hash: pageInfo.hash
-      })
-    } 
-    
+  $(document).ready(function() {
+  
+    var url = require('url')
+    var path = require('path')
+    var gui = require('nw.gui');
     var loc = window.location.href
     var parsedUrl = url.parse(loc, true)
     var query = parsedUrl.query
     var hash = parsedUrl.hash
+
+    window.gui = gui
 
     /* raw URL data */
     var pageInfo = {
@@ -80,12 +51,12 @@
       script: query.view || "loginpage",
       query: query,
       hash: hash,
-      baseUrl: getPageUrl({})
+      baseUrl: url.format({
+        protocol:parsedUrl.protocol, 
+        pathname:parsedUrl.pathname
+      })
     }
 
-    console.log(getPageUrl(pageInfo))
-
-    var previews = ["BookCategoriesPage", "BooksPage", "ButtonsPage", "HomePage", "LoginPage", "RadioPage", "VideoPage", "YouTubePage"]   
     /* Custom page data - eg. loaded from database */
     var pageData = {
     }
@@ -98,7 +69,7 @@
     })
 
     /* Do it! */
-    loadPage(pageInfo, pageData, function(ctrl) {
+    PageLoader.loadPage(pageInfo, pageData, function(ctrl) {
       console.log("Page loaded successfully!")
       console.log(pageData)
       
