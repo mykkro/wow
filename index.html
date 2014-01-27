@@ -61,7 +61,7 @@
     var pageData = {
     }
 
-
+    // TODO do login only from login page (login as user/login as admin)
     var Auth = require("./lib/auth")(window)
     Auth.login("mykkro", "pass", function(err, user) {
       if(err) console.error(err)
