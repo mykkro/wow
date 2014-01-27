@@ -27,7 +27,7 @@
         <wow:iconbutton name="rightButton" src="righthand"></wow:iconbutton>
     </g>
 
-	<a xlink:href="gui.html?view=youtubepage">
+	<a xlink:href="index.html?view=youtubepage">
 		<text class="text" x="20" y="150" text-anchor="start">Youtube Search</text>
 	</a>
 

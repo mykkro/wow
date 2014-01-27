@@ -2,9 +2,8 @@ module.exports = function(window, $, SVG, i18n) {
 	var url = require('url');	
 
 	var page = {
-		init: function(data, next) {
+		init: function(Widgetizer, data, next) {
 			var document = window.document
-			var Widgetizer = require("../js/widgetizer")(window, $)
 			var SvgHelper = Widgetizer.SvgHelper
 			var UserVideos = require('../lib/dao/uservideos')
 			var truncate = require('html-truncate');
@@ -100,7 +99,7 @@ module.exports = function(window, $, SVG, i18n) {
 			}
 
 			var goToVideoPage = function(ytId) {
-				window.location.href = "gui.html?view=videopage&id="+ytId
+				window.location.href = "index.html?view=videopage&id="+ytId
 			}
 
 			var searchIt = function(page) {
@@ -108,39 +107,32 @@ module.exports = function(window, $, SVG, i18n) {
 				UserVideos.listNewest({/*userId:userId*/}, (page-1)*6, 6, showSearchResults) 
 			}
 
-			/* load basic widgets used by this page... */
-			Widgetizer.useCommonWidgets()
-			/* transform wow:markup to SVG and widgets */
-			var node = window.document
-			Widgetizer.widgetize(node, function() {
-				/* widgetization complete! */
-				resultGrp = SvgHelper.group({"class":"youtube-results"})
-				svgsvg.appendChild(resultGrp)
-				leftBtn = Widgetizer.get("leftButton")
-				rightBtn = Widgetizer.get("rightButton")	
-				textBox = Widgetizer.get("searchTextbox")
+			resultGrp = SvgHelper.group({"class":"youtube-results"})
+			svgsvg.appendChild(resultGrp)
+			leftBtn = Widgetizer.get("leftButton")
+			rightBtn = Widgetizer.get("rightButton")	
+			textBox = Widgetizer.get("searchTextbox")
 
-				leftBtn.click(goToPreviousPage)
-				rightBtn.click(goToNextPage)
+			leftBtn.click(goToPreviousPage)
+			rightBtn.click(goToNextPage)
 
-				showSearchResults()
+			showSearchResults()
 
-				/* bind events... */
-				var quitBtn = Widgetizer.get("quitButton")
-				quitBtn.click(function() {
-					// move back to previous page...
-					window.history.go(-1)
-				})
-				Widgetizer.get("homeButton").click(function() {
-					// move back to main page
-					window.location = "gui.html?view=homepage"
-				})
-				var page = parseInt(data.query.page || 1)
-				searchIt(page)
-
-				/* continue when finished */
-				if(next) next(page)
+			/* bind events... */
+			var quitBtn = Widgetizer.get("quitButton")
+			quitBtn.click(function() {
+				// move back to previous page...
+				window.history.go(-1)
 			})
+			Widgetizer.get("homeButton").click(function() {
+				// move back to main page
+				window.location = "index.html?view=homepage"
+			})
+			var page = parseInt(data.query.page || 1)
+			searchIt(page)
+
+			/* continue when finished */
+			if(next) next(page)
 		}
 	}
 	return page
