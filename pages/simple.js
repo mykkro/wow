@@ -1,10 +1,9 @@
 module.exports = function(window, $, SVG, i18n) {
-	var page = {
-		init: function(data, next) {
+	return {
+		init: function(Widgetizer, data, next) {
 			// do something...
-			if(next) next(page)
+			if(next) next(this)
 		}
 	}
-	return page
 
 }

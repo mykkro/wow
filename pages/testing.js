@@ -1,6 +1,6 @@
 module.exports = function(window, $, SVG, i18n) {
 	var page = {
-		init: function(data, next) {
+		init: function(Widgetizer, data, next) {
 			var draw = SVG('svg1')
 
 			// create image

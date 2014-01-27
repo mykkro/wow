@@ -1,14 +1,13 @@
 module.exports = function(window, $, SVG, i18n) {
 	var url = require('url');	
+	var document = window.document
+	var svgsvg = document.getElementById("svg")
 
 	var page = {
-		init: function(data, next) {
-			var document = window.document
-			var Widgetizer = require("../js/widgetizer")(window, $)
+		init: function(Widgetizer, data, next) {
 			var SvgHelper = Widgetizer.SvgHelper
 			var youtube = require('youtube-feeds')
 			var truncate = require('html-truncate');
-			var svgsvg = document.getElementById("svg")
 			var resultGrp
 			var leftBtn
 			var rightBtn
@@ -100,7 +99,7 @@ module.exports = function(window, $, SVG, i18n) {
 			}
 
 			var goToVideoPage = function(ytId) {
-				window.location.href = "gui.html?view=videopage&id="+ytId
+				window.location.href = "index.html?view=videopage&id="+ytId
 			}
 
 			var searchYouTubeVideos = function(data, next) {
@@ -119,49 +118,43 @@ module.exports = function(window, $, SVG, i18n) {
 				searchYouTubeVideos({q:query, 'max-results':6, 'start-index':1+(page-1)*6}, showSearchResults)				
 			}
 
-			/* load basic widgets used by this page... */
-			Widgetizer.useCommonWidgets()
-			/* transform wow:markup to SVG and widgets */
-			var node = window.document
-			Widgetizer.widgetize(node, function() {
-				/* widgetization complete! */
-				resultGrp = SvgHelper.group({"class":"youtube-results"})
-				svgsvg.appendChild(resultGrp)
-				leftBtn = Widgetizer.get("leftButton")
-				rightBtn = Widgetizer.get("rightButton")	
-				textBox = Widgetizer.get("searchTextbox")
+			/* widgetization complete! */
+			resultGrp = SvgHelper.group({"class":"youtube-results"})
+			svgsvg.appendChild(resultGrp)
+			leftBtn = Widgetizer.get("leftButton")
+			rightBtn = Widgetizer.get("rightButton")	
+			textBox = Widgetizer.get("searchTextbox")
 
-				leftBtn.click(goToPreviousPage)
-				rightBtn.click(goToNextPage)
+			leftBtn.click(goToPreviousPage)
+			rightBtn.click(goToNextPage)
 
-				showSearchResults()
+			showSearchResults()
 
-				/* bind events... */
-				var quitBtn = Widgetizer.get("quitButton")
-				quitBtn.click(function() {
-					// move back to previous page...
-					window.history.go(-1)
-				})
-				Widgetizer.get("homeButton").click(function() {
-					// move back to main page
-					window.location = "gui.html?view=homepage"
-				})
-				var query = data.query.query
-				var page = parseInt(data.query.page || 1)
-				if(query) {
-					textBox.val(query)				
-					searchIt(page)
-				}
-				textBox.onEnterPressed = function() {
-					searchIt(page)
-				}
-				Widgetizer.get("searchButton").click(function() {
-					searchIt(page)
-				})
-
-				/* continue when finished */
-				if(next) next(page)
+			/* bind events... */
+			var quitBtn = Widgetizer.get("quitButton")
+			quitBtn.click(function() {
+				// move back to previous page...
+				window.history.go(-1)
 			})
+			Widgetizer.get("homeButton").click(function() {
+				// move back to main page
+				window.location = "index.html?view=homepage"
+			})
+			var query = data.query.query
+			var page = parseInt(data.query.page || 1)
+			if(query) {
+				textBox.val(query)				
+				searchIt(page)
+			}
+			textBox.onEnterPressed = function() {
+				searchIt(page)
+			}
+			Widgetizer.get("searchButton").click(function() {
+				searchIt(page)
+			})
+
+			/* continue when finished */
+			if(next) next(page)
 		}
 	}
 	return page

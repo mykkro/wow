@@ -103,41 +103,32 @@ module.exports = function(window, $, SVG, i18n) {
 		})
 	}
 
-	var page = {
-		init: function(data, next) {
+	return {
+		init: function(Widgetizer, data, next) {
 			baseUrl = data.baseUrl
-			var Widgetizer = require("../js/widgetizer")(window, $)
-			/* load basic widgets used by this page... */
-			Widgetizer.useCommonWidgets()
-			/* transform wow:markup to SVG and widgets */
-			Widgetizer.widgetize(window.document, function() {
-				/* widgetization complete! */
-				/* use data to modify page */				
-				updateCalendar()
-				updateClock()
-				updateWeatherInfo()
-				// update calendar each minute...
-				window.setInterval(updateCalendar, 60*1000)
-				window.setInterval(updateClock, 1000)
-				window.setInterval(updateWeatherInfo, 10*60*1000)
+			/* use data to modify page */				
+			updateCalendar()
+			updateClock()
+			updateWeatherInfo()
+			// update calendar each minute...
+			window.setInterval(updateCalendar, 60*1000)
+			window.setInterval(updateClock, 1000)
+			window.setInterval(updateWeatherInfo, 10*60*1000)
 
-				$("#Button01 .overlay").click(myBooksActivated)
-				$("#Button02 .overlay").click(gamesActivated)
-				$("#Button03 .overlay").click(entertainmentActivated)
+			$("#Button01 .overlay").click(myBooksActivated)
+			$("#Button02 .overlay").click(gamesActivated)
+			$("#Button03 .overlay").click(entertainmentActivated)
 
-				$(".hiddenQuitButton").click(function() {
-					showQuitDialog()
-					//var state = window.confirm(i18n.__("This will quit the application. Are you sure?"))
-					//if(state) gui.App.quit()
-				})
-
-				/* continue when finished */
-				if(next) next(page)
+			$(".hiddenQuitButton").click(function() {
+				showQuitDialog()
+				//var state = window.confirm(i18n.__("This will quit the application. Are you sure?"))
+				//if(state) gui.App.quit()
 			})
-			
+
+			/* continue when finished */
+			if(next) next(this)
 			
 		}
 	}
-	return page
 
 }
