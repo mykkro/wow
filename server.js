@@ -1,10 +1,10 @@
 /* wow server */
 
 var express = require('express');
-//var jsonrpc = require('node-express-json-rpc2')
 var routescan = require('express-routescan');	
 var path = require("path")
 var storage = require("./lib/storage")
+var rpcMethods = require('./lib/rpc/methods');
 
 var WowServer = {
 	port: 9999,
@@ -14,39 +14,78 @@ var WowServer = {
 
 
         app.configure(function(){
-            //app.use( express.jsonrpc() );
-    		routescan(app)
+            app.use(express.bodyParser());
+            app.use(express.methodOverride());
+            app.use( app.router );
+    		routescan(app) // this must be AFTER bodyparser/etc. to make RPC work
 	        app.use("/imports", express.static(storage.importDir))
 	        app.use(express.static(currentDir + '/public'));
-            app.use( app.router );
         });
-/*
-        app.post('/rpc', function(req, res, next){
-            // notification (no response expected)
-            res.rpc('notification_method', function (params) {
-                // do processing here
-            });
 
-            // non-notification (response expected)
-            res.rpc('method_name', function(params, respond){
-                // do processing here
-
-                // if everything is OK return result object:
-                respond({ result: 666 });
-
-                // if something is wrong, return an error code:
-                respond(jsonrpc.INVALID_PARAMS)
-                // OR an extended error object:
-                respond({
-                    error: {
-                        code: jsonrpc.INVALID_PARAMS,
-                        message: 'You gave me invalid parameters!',
-                        data: []
-                    }
-                });
-            });
+        app.configure('development', function(){
+          app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
         });
-*/
+         
+        app.configure('production', function(){
+          app.use(express.errorHandler()); 
+        });
+
+        app.post('/rpc', function(req, res) {
+          res.header('Content-Type', 'application/json');
+          var data = req.body, err = null, rpcMethod;
+          if (!err && data.jsonrpc !== '2.0') {
+            onError({
+              code: -32600,
+              message: 'Bad Request. JSON RPC version is invalid or missing',
+              data: null
+            }, 400);
+            return;
+          }
+         
+          if (!err && !(rpcMethod = rpcMethods[data.method])) {
+            onError({
+              code: -32601,
+              message: 'Method not found : ' + data.method
+            }, 404);
+            return;
+          }
+         
+          try {
+            rpcMethod(data.params, {
+              onSuccess: function(result) {
+                res.send(JSON.stringify({
+                  jsonrpc: '2.0',
+                  result: result,
+                  error : null,
+                  id: data.id
+                }), 200);
+              },
+              onFailure: function(error) {
+                onError({
+                  code: -32603,
+                  message: 'Failed',
+                  data: error
+                }, 500);
+              }
+            });
+          } catch (e) {
+            onError({
+              code: -32603,
+              message: 'Excaption at method call',
+              data: e
+            }, 500);
+          }
+          return;
+         
+          function onError(err, statusCode) {
+            res.send(JSON.stringify({
+              jsonrpc: '2.0',
+              error: err,
+              id: data.id
+            }), statusCode);
+          }
+        });
+
 		app.listen(this.port);
 		console.log('Listening on port '+this.port);
 	}
