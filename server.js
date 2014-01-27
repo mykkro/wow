@@ -51,22 +51,22 @@ var WowServer = {
           }
          
           try {
-            rpcMethod(data.params, {
-              onSuccess: function(result) {
-                res.send(JSON.stringify({
-                  jsonrpc: '2.0',
-                  result: result,
-                  error : null,
-                  id: data.id
-                }), 200);
-              },
-              onFailure: function(error) {
-                onError({
-                  code: -32603,
-                  message: 'Failed',
-                  data: error
-                }, 500);
-              }
+            rpcMethod(data.params, 
+              function(error, result) {
+                if(!error) {
+                    res.send(JSON.stringify({
+                      jsonrpc: '2.0',
+                      result: result,
+                      error : null,
+                      id: data.id
+                    }), 200)
+                } else {
+                    onError({
+                      code: -32603,
+                      message: 'Failed',
+                      data: error
+                    }, 500)            
+                }
             });
           } catch (e) {
             onError({
