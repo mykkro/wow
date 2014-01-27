@@ -1,7 +1,8 @@
 module.exports = function(window, $, SVG, i18n) {
 
 	var Auth  = require("../lib/auth")(window)
-	var FavVids = require("../lib/dao/favoritevideos")
+
+	var server = require("./lib/videopage.js")
 
 	var page = {
 		init: function(Widgetizer, data, next) {
@@ -25,16 +26,16 @@ module.exports = function(window, $, SVG, i18n) {
 					unfavButton.disable()
 				}
 			}
-			FavVids.starred(userId, videoId, function(err, data) {
+			server.isStarred(userId, videoId, function(err, data) {
 				setFavState(!err && data)
 			})
 			favButton.click(function() {
-				FavVids.star(userId, videoId, function(err, data) {
+				server.star(userId, videoId, function(err, data) {
 					if(!err) setFavState(true)
 				})					
 			})
 			unfavButton.click(function() {
-				FavVids.unstar(userId, videoId, function(err, data) {
+				server.unstar(userId, videoId, function(err, data) {
 					if(!err) setFavState(false)
 				})					
 			})
