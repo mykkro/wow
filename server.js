@@ -20,6 +20,7 @@ var WowServer = {
             app.use( app.router );
     		routescan(app) // this must be AFTER bodyparser/etc. to make RPC work
 	        app.use("/imports", express.static(storage.importDir))
+          app.use("/locales", express.static(currentDir+"/locales"))
 	        app.use(express.static(currentDir + '/public'));
         });
 

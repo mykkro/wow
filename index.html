@@ -25,17 +25,16 @@
 
 
     // >>> SERVER CODE
+    /*
     var i18n = new (require('i18n-2'))({
         locales: ['en', 'de', 'cz'],
         defaultLocale: 'en'
     });
 
     i18n.setLocale('de')
+    */
     // <<< SERVER CODE
 
-
-  $(document).ready(function() {
-  
     // >>> SERVER CODE
     // TODO gui and i18n module need client stub
     var gui = require('nw.gui');
@@ -48,6 +47,16 @@
     })
     // <<< SERVER CODE
 
+  $(document).ready(function() {
+  
+
+
+    /* client version of i18n */
+    var i18n = new(require("./js/i18n"))({
+        locales: ['en', 'de', 'cz'],
+        defaultLocale: 'en'
+    })
+    i18n.setLocale('de')
 
     /* raw URL data */
     var pageInfo = require("./js/pageinfo")(window)
