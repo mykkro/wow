@@ -40,7 +40,12 @@
     // >>> SERVER CODE
     // TODO gui and i18n module need client stub
     var gui = require('nw.gui');
-    window.gui = gui 
+    window.gui = {
+      App: {
+        quit: gui.App.quit
+      }
+    }
+
     // TODO do login only from login page (login as user/login as admin)
     var Auth = require("./lib/auth")(window)
     Auth.login("mykkro", "pass", function(err, user) {

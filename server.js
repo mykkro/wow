@@ -32,6 +32,14 @@ var WowServer = {
           app.use(express.errorHandler()); 
         });
 
+        app.get('/pages/:name', function(req, res) {
+          var name = req.params.name
+          res.writeHead(200, {
+            'content-type': 'text/html; charset=UTF-8'
+          });
+          res.end("Showing view "+name);
+        })
+
         app.post('/rpc', function(req, res) {
           res.header('Content-Type', 'application/json');
           var data = req.body, err = null, rpcMethod;
