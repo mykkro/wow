@@ -179,6 +179,7 @@ module.exports = function(window, $) {
 		})
 	  },
 	  useCommonWidgets: function() {
+	  	/*
 	  	this.uses([
 	  		"piechart", 
 	  		"box", 
@@ -189,7 +190,19 @@ module.exports = function(window, $) {
 	  		"image", 
 	  		"text", 
 	  		"iconbutton"
-	  	])	  	
+	  	])
+	  	*/	  	
+	  	// browserify does not like dynamic requires...
+		var self = this
+		require("./widgets/piechart/piechart")(self)
+		require("./widgets/box/box")(self)
+		require("./widgets/grid/grid")(self)
+		require("./widgets/flow/flow")(self)
+		require("./widgets/textbox/textbox")(self)
+		require("./widgets/viewport/viewport")(self)
+		require("./widgets/image/image")(self)
+		require("./widgets/text/text")(self)
+		require("./widgets/iconbutton/iconbutton")(self)
 	  },
 	  /* some utility methods */
 	  	/* copy non null attributes to an object... */

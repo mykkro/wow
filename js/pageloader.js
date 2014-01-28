@@ -18,6 +18,7 @@ module.exports = function(window, $, SVG, i18n) {
             var node = window.document
             Widgetizer.widgetize(node, function() {
               /* widgetization complete! */
+              // TODO get rid of dynamic require - browserify does not like it
               var scr = require("../pages/"+scriptName+".js")(window, $, SVG, i18n)
               scr.init(Widgetizer, allData, function(pg) {
                 PageLoader.fixBackspace()      
