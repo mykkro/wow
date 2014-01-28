@@ -26,16 +26,16 @@ module.exports = function(window, $, SVG, i18n) {
 					unfavButton.disable()
 				}
 			}
-			server.isStarred(userId, videoId, function(err, data) {
+			server.isStarred({userId:userId, videoId:videoId}, function(err, data) {
 				setFavState(!err && data)
 			})
 			favButton.click(function() {
-				server.star(userId, videoId, function(err, data) {
+				server.star({userId:userId, videoId:videoId}, function(err, data) {
 					if(!err) setFavState(true)
 				})					
 			})
 			unfavButton.click(function() {
-				server.unstar(userId, videoId, function(err, data) {
+				server.unstar({userId:userId, videoId:videoId}, function(err, data) {
 					if(!err) setFavState(false)
 				})					
 			})
