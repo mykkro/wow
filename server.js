@@ -40,6 +40,9 @@ var WowServer = {
           res.end("Showing view "+name);
         })
 
+        /* example testing:
+          curl -X POST -d '{"jsonrpc":"2.0", "method":"hello", "params":{"name":"abc"}}' -H "Content-Type: application/json" localhost:9999/rpc 
+        */
         app.post('/rpc', function(req, res) {
           res.header('Content-Type', 'application/json');
           var data = req.body, err = null, rpcMethod;
