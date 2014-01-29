@@ -7,7 +7,7 @@ module.exports = function(window, $, SVG, i18n) {
 			})
 			$(".book-button .overlay").click(function() {
 				// show book page...
-				window.location = "index.html?view=bookspage"
+				window.location = "/pages/books"
 			})
 
 			/* continue when finished */

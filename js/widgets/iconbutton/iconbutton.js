@@ -13,7 +13,7 @@ module.exports = function(Widgetizer) {
 		var attrs = { width: 100, height: 100 }
 		Widgetizer.getAttrs($e, attrs, { "width":"number", "height":"number", "src":"string"})
 		if(!attrs.src.startsWith(".")) {
-			attrs.src = "assets/buttons/"+attrs.src+".svg"
+			attrs.src = "/assets/buttons/"+attrs.src+".svg"
 		}
 		var newElement = SvgHelper.image(attrs) 
         var ww = Widgetizer.widget(widgetname, newElement, {width:attrs.width,height:attrs.height})

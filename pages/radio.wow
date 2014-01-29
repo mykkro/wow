@@ -12,7 +12,10 @@
 	height="100%"
 	preserveAspectRatio="none"
     >
-    <wow:image src="assets/backgrounds/default.svg" width="960" height="600"></wow:image>
-	<wow:image src="assets/previews/LoginPage.svg" width="960" height="600" embed="true"></wow:image>
+    <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
+	<wow:image src="/assets/previews/RadioPage.svg" width="960" height="600" embed="true"></wow:image>
+    <g transform="translate(840, 20)">
+        <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
+    </g>
 	<g id="tempgroup" style="display:none;"></g>
 </svg>

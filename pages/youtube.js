@@ -15,7 +15,7 @@ module.exports = function(window, $, SVG, i18n) {
 			var textBox
 
 			var updateBrowserQuery = function(page, query) {
-				var newQuery = "?view=youtubepage&page="+page+"&query="+encodeURIComponent(query)
+				var newQuery = "?page="+page+"&query="+encodeURIComponent(query)
 				window.History.replaceState({}, "", newQuery)
 			}
 
@@ -100,7 +100,7 @@ module.exports = function(window, $, SVG, i18n) {
 			}
 
 			var goToVideoPage = function(ytId) {
-				window.location.href = "index.html?view=videopage&id="+ytId
+				window.location.href = "/pages/video?id="+ytId
 			}
 
 			var searchYouTubeVideos = function(data, next) {
@@ -139,7 +139,7 @@ module.exports = function(window, $, SVG, i18n) {
 			})
 			Widgetizer.get("homeButton").click(function() {
 				// move back to main page
-				window.location = "index.html?view=homepage"
+				window.location = "/pages/home"
 			})
 			var query = data.query.query
 			var page = parseInt(data.query.page || 1)

@@ -2,18 +2,17 @@ module.exports = function(window, $, SVG, i18n) {
 
 	function tzLogin() {
 		//window.alert("TZ!")
-		window.location = baseUrl + "?view=homepage"
+		window.location = "/pages/home"
 	}
 
 	function adminLogin() {
 		//window.alert("Admin!")
-		window.location = "admin.html"
+		window.location = "/admin"
 	}
 	var baseUrl;
 	
 	var page = {
 		init: function(Widgetizer, data, next) {
-			baseUrl = data.baseUrl
 			/* do something... */
 			$("[name=tzlogin] .overlay").click(tzLogin)
 			$("[name=adminlogin] .overlay").click(adminLogin)
