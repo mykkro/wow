@@ -8,8 +8,6 @@ module.exports = function(window) {
     var hash = parsedUrl.hash
 
     return {
-      view: query.view || "loginpage",
-      script: query.view || "loginpage",
       query: query,
       hash: hash,
       baseUrl: url.format({

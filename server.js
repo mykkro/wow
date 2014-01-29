@@ -6,6 +6,8 @@ var path = require("path")
 var storage = require("./lib/storage")
 var rpcMethods = require('./lib/rpc/methods');
 var http = require('http');
+var fs = require('fs')
+var mustache = require('mustache')
 
 var WowServer = {
 	port: 9999,
@@ -15,12 +17,14 @@ var WowServer = {
 
 
         app.configure(function(){
-            app.use(express.bodyParser());
-            app.use(express.methodOverride());
-            app.use( app.router );
-    		routescan(app) // this must be AFTER bodyparser/etc. to make RPC work
+          app.use(express.bodyParser());
+          app.use(express.methodOverride());
+          app.use( app.router );
+    		  routescan(app) // this must be AFTER bodyparser/etc. to make RPC work
 	        app.use("/imports", express.static(storage.importDir))
           app.use("/locales", express.static(currentDir+"/locales"))
+          app.use("/assets", express.static(currentDir+"/assets"))
+          app.use("/fonts", express.static(currentDir+"/fonts"))
 	        app.use(express.static(currentDir + '/public'));
         });
 
@@ -34,10 +38,31 @@ var WowServer = {
 
         app.get('/pages/:name', function(req, res) {
           var name = req.params.name
-          res.writeHead(200, {
-            'content-type': 'text/html; charset=UTF-8'
-          });
-          res.end("Showing view "+name);
+/*
+
+          var scriptName = pageInfo.script || pageInfo.view
+          var pageName = pageInfo.view
+          var allData = $.extend(data, pageInfo)
+          $.get("pages/"+pageName+".wow").done(function(response) {        
+            var html = mustache.to_html(response, allData);
+            $('#top-wrapper').html(html);  
+            Widgetizer.useCommonWidgets()
+            var node = window.document
+            Widgetizer.widgetize(node, function() {
+              // TODO get rid of dynamic require - browserify does not like it
+              var scr = require("../pages/"+scriptName+".js")(window, $, SVG, i18n)
+              scr.init(Widgetizer, allData, function(pg) {
+                PageLoader.fixBackspace()      
+                if(next) next(pg)
+              })
+*/
+          var view = fs.readFileSync("pages/"+name+".wow", "utf8")
+          var viewData = {query:req.query}
+          var viewHtml = mustache.to_html(view, viewData)
+          var page = fs.readFileSync("templates/master.html", "utf8")
+          var data = {query:req.query, "name":name, "content":viewHtml}
+          var html = mustache.to_html(page, data); 
+          res.send(html)
         })
 
         /* example testing:

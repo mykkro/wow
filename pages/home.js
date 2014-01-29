@@ -86,13 +86,13 @@ module.exports = function(window, $, SVG, i18n) {
 	var baseUrl;
 	
 	function myBooksActivated() {
-		window.location = baseUrl + "?view=bookcategoriespage"
+		window.location = "/pages/bookcategories"
 	}
 	function gamesActivated() {
-		window.location = baseUrl + "?view=radiopage"
+		window.location = "/pages/radio"
 	}
 	function entertainmentActivated() {
-		window.location = baseUrl + "?view=youtubepage"
+		window.location = "/pages/youtube"
 	}
 
 	var dialogs = require("../lib/dialogs")($, i18n)

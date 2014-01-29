@@ -1,0 +1,76 @@
+html {
+	
+}
+
+#textinput {
+	width: 500px;
+	height: 200px;
+}
+
+#output p {
+	margin: 0;
+}
+
+#output .source {
+	color: gray;
+	margin-top: 10px;
+}
+
+#output .result {
+	color: black;
+}
+
+#output .error {
+	color: red;
+}
+
+html, svg {
+	-webkit-font-smoothing: antialiased;
+}
+
+html, body , #top-wrapper, #top-wrapper > svg {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.meteo {
+	font-family: 'MeteoconsRegular';
+	font-size: 120px;
+}
+
+.button.disabled {
+	fill-opacity: 0.5;
+}
+.button .disabled .background {
+	fill: lightgray;
+}
+
+.button:hover {
+	fill-opacity: 0.8;	
+	filter: url(assets/filters/filters.svg#grayscale);
+}
+.button:hover  .overlay {
+	fill: salmon;
+	fill-opacity: 0.2;
+}
+
+.wow-widget.iconbutton.disabled .button {
+	opacity: 0.3;
+}
+.wow-widget.iconbutton.disabled .button:hover {
+	opacity: 0.3;
+	fill-opacity: 1;
+	filter: none;
+}
+
+.wow-widget.iconbutton.disabled .button:hover .overlay {
+	fill: none;
+	fil-opacity: 1;
+}
+
+.youtube-result.disabled {
+	fill-opacity: 0.2;
+	stroke-opacity: 0.2;
+}
+

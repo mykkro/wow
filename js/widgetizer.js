@@ -1,3 +1,5 @@
+// create a browserified version of widgetizer:
+//  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
 module.exports = function(window, $) {
   console.log("Widgetizer script loading...")
   var document = window.document

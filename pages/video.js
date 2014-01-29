@@ -1,17 +1,30 @@
+
 module.exports = function(window, $, SVG, i18n) {
+	var Auth  = {}//require("../lib/auth")(window)
 
-	var Auth  = require("../lib/auth")(window)
+	// TODO move to a package...
+	var server = function(method, params, cb) {
+        $.ajax({
+            type:"POST",
+            url: "http://localhost:9999/rpc",
+            data:{"jsonrpc":"2.0", "method":method, "params":params},
+            success: function (response){
+                cb(null, response)
 
-	var server = require("./lib/videopage.js")
+            },
+            fail: function(err) {
+                cb(err)
+            }
+        });
+    }
+
 
 	var page = {
 		init: function(Widgetizer, data, next) {
 			var W = Widgetizer
 
-			var url = require("url")
-        	var parsedUrl = url.parse(window.location.href, true)
-          	var videoId = parsedUrl.query.id
-			var userId = Auth.getLoggedUser().id
+          	var videoId = data.query.id
+			var userId = 555 //Auth.getLoggedUser().id
 
 			/* use data to modify page */
 			var quitBtn = W.get("quitButton")
@@ -26,16 +39,16 @@ module.exports = function(window, $, SVG, i18n) {
 					unfavButton.disable()
 				}
 			}
-			server.isStarred({userId:userId, videoId:videoId}, function(err, data) {
-				setFavState(!err && data)
+			server("videoIsStarred", {userId:userId, videoId:videoId}, function(err, data) {
+				setFavState(!err && data.result)
 			})
 			favButton.click(function() {
-				server.star({userId:userId, videoId:videoId}, function(err, data) {
+				server("videoStar", {userId:userId, videoId:videoId}, function(err, data) {
 					if(!err) setFavState(true)
 				})					
 			})
 			unfavButton.click(function() {
-				server.unstar({userId:userId, videoId:videoId}, function(err, data) {
+				server("videoUnstar", {userId:userId, videoId:videoId}, function(err, data) {
 					if(!err) setFavState(false)
 				})					
 			})

@@ -12,8 +12,8 @@
 	height="100%"
 	preserveAspectRatio="none"
     >
-    <wow:image src="assets/backgrounds/default.svg" width="960" height="600"></wow:image>
-	<wow:image src="assets/previews/YouTubePage.svg" width="960" height="600" embed="true"></wow:image>
+    <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
+	<wow:image src="/assets/previews/YouTubePage.svg" width="960" height="600" embed="true"></wow:image>
     <g transform="translate(840, 20)">
         <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
     </g>
@@ -33,7 +33,7 @@
         <wow:textbox name="searchTextbox" maxchars=50 width="394" height="30"></wow:textbox>
     </g>
 	
-	<a xlink:href="index.html?view=uservideospage">
+	<a xlink:href="/pages/uservideopage">
 		<text class="text" x="20" y="150" text-anchor="start">User Videos</text>
 	</a>
 	
