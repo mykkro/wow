@@ -1,0 +1,33 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title>RPC testing page</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		console.log("Ready!")
+
+		// 	curl -X POST -d '{"jsonrpc":"2.0", "method":"videoUnstar", "params":{"videoId":10, "userId":555}}' -H "Content-Type: application/json" localhost:9999/rpc
+
+		$.ajax({
+            type:"POST",
+            url: "http://localhost:9999/rpc",
+            data:{"jsonrpc":"2.0", "method":"videoStar", "params":{"videoId":10, "userId":555}},
+            success: function (response){
+                console.log(response)
+
+            },
+            fail: function(err) {
+                
+            }
+        });
+		
+	})
+	</script>
+    </head>
+    <body>
+     
+    </body>
+    </html>
