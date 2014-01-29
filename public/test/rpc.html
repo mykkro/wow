@@ -11,23 +11,46 @@
 
 		// 	curl -X POST -d '{"jsonrpc":"2.0", "method":"videoUnstar", "params":{"videoId":10, "userId":555}}' -H "Content-Type: application/json" localhost:9999/rpc
 
-		$.ajax({
-            type:"POST",
-            url: "http://localhost:9999/rpc",
-            data:{"jsonrpc":"2.0", "method":"videoStar", "params":{"videoId":10, "userId":555}},
-            success: function (response){
-                console.log(response)
 
-            },
-            fail: function(err) {
-                
-            }
-        });
-		
+
+        $("#callbutton").click(function() {
+            var videoID = $("#videoidfield").val()
+            var userID = $("#useridfield").val()
+            var method = $("#methodselect").val()
+            //console.log("VideoID="+videoID+" UserID="+userID+" method="+method)
+            callRpcMethod(method, {videoId:videoID, userId:userID}, function(err, res) {
+                    if(!err) {
+                        $("#output").text(JSON.stringify(res))
+                    }
+                })
+        })
+
+        var callRpcMethod = function(method, params, cb) {
+            $.ajax({
+                type:"POST",
+                url: "http://localhost:9999/rpc",
+                data:{"jsonrpc":"2.0", "method":method, "params":{"videoId":10, "userId":555}},
+                success: function (response){
+                    cb(null, response)
+
+                },
+                fail: function(err) {
+                    cb(err)
+                }
+            });
+        }
 	})
 	</script>
     </head>
     <body>
+
+        <div>VideoID: <input type="text" id="videoidfield" value="10"></input></div>
+        <div>UserID: <input type="text" id="useridfield" value="555"></input></div>
+        <div>Method: <select id="methodselect"><option>videoStar</option><option>videoUnstar</option><option>videoIsStarred</option></select>
+        <div><button id="callbutton">Go!</button></div>
+        <div>
+            <pre id="output"></pre>
+        </div>
      
     </body>
     </html>
