@@ -9,15 +9,73 @@ var http = require('http');
 var fs = require('fs')
 var mustache = require('mustache')
 
+var passport = require("passport");
+var LocalStrategy = require('passport-local').Strategy;
+
 var WowServer = {
 	port: 9999,
 	start: function() {
-		var app = express()
-		var currentDir = process.cwd() // __dirname does not work in node-webkit
+    		var app = express()
+    		var currentDir = process.cwd() // __dirname does not work in node-webkit
+
+        // see: http://danialk.github.io/blog/2013/02/23/authentication-using-passportjs/
+        // https://github.com/DanialK/PassportJS-Authentication
+        passport.use(new LocalStrategy({
+          usernameField: 'email',
+          passwordField: 'password'
+        },function(username, password,done) {
+          done(null, {name:username, id:1})
+          /*
+            Users.findOne({ username : username},function(err,user){
+                if(err) { return done(err); }
+                if(!user){
+                    return done(null, false, { message: 'Incorrect username.' });
+                }
+
+                hash( password, user.salt, function (err, hash) {
+                    if (err) { return done(err); }
+                    if (hash == user.hash) return done(null, user);
+                    done(null, false, { message: 'Incorrect password.' });
+                });
+            });
+        */
+        }));
+        passport.serializeUser(function(user, done) {
+            done(null, user.id);
+        });
 
 
+        passport.deserializeUser(function(id, done) {
+          done(null, { id:id, name:"Dummy User #"+id })
+          /*
+            FbUsers.findById(id,function(err,user){
+                if(err) done(err);
+                if(user){
+                    done(null,user);
+                }else{
+                    Users.findById(id, function(err,user){
+                        if(err) done(err);
+                        done(null,user);
+                    });
+                }
+            });
+        */
+        });
         app.configure(function(){
+
+          app.set('views', __dirname+'/views/jade');
+
+          // Set our default template engine to "jade"
+          // which prevents the need for extensions
+          // (although you can still mix and match)
+          app.set('view engine', 'jade');
+
+          app.use(express.favicon());
+          app.use(express.cookieParser());
           app.use(express.bodyParser());
+          app.use(express.session({ secret: 'SECRET' }));
+          app.use(passport.initialize());
+          app.use(passport.session());
           app.use(express.methodOverride());
           app.use( app.router );
     		  routescan(app) // this must be AFTER bodyparser/etc. to make RPC work
@@ -39,24 +97,6 @@ var WowServer = {
 
         app.get('/pages/:name', function(req, res) {
           var name = req.params.name
-/*
-
-          var scriptName = pageInfo.script || pageInfo.view
-          var pageName = pageInfo.view
-          var allData = $.extend(data, pageInfo)
-          $.get("pages/"+pageName+".wow").done(function(response) {        
-            var html = mustache.to_html(response, allData);
-            $('#top-wrapper').html(html);  
-            Widgetizer.useCommonWidgets()
-            var node = window.document
-            Widgetizer.widgetize(node, function() {
-              // TODO get rid of dynamic require - browserify does not like it
-              var scr = require("../pages/"+scriptName+".js")(window, $, SVG, i18n)
-              scr.init(Widgetizer, allData, function(pg) {
-                PageLoader.fixBackspace()      
-                if(next) next(pg)
-              })
-*/
           var view = fs.readFileSync("pages/"+name+".wow", "utf8")
           var viewData = {query:req.query}
           var viewHtml = mustache.to_html(view, viewData)
@@ -65,6 +105,62 @@ var WowServer = {
           var html = mustache.to_html(page, data); 
           res.send(html)
         })
+/*
+  app.get("/", function(req, res){ 
+    if(req.isAuthenticated()){
+      res.render("home", { user : req.user}); 
+    }else{
+      res.render("home", { user : null});
+    }
+  });
+*/
+  app.get("/login", function(req, res){ 
+    res.render("login");
+  });
+
+  app.post("/login" 
+    ,passport.authenticate('local',{
+      successRedirect : "/",
+      failureRedirect : "/login",
+    })
+  );
+/*
+  app.get("/signup", function (req, res) {
+    res.render("signup");
+  });
+
+  app.post("/signup", Auth.userExist, function (req, res, next) {
+    User.signup(req.body.email, req.body.password, function(err, user){
+      if(err) throw err;
+      req.login(user, function(err){
+        if(err) return next(err);
+        return res.redirect("profile");
+      });
+    });
+  });
+
+
+  app.get("/profile", Auth.isAuthenticated , function(req, res){ 
+    res.render("profile", { user : req.user});
+  });
+*/
+  app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/login');
+  });
+
+
+        app.get('/admin', function(req, res) {
+          var view = fs.readFileSync("templates/admin.html", "utf8")
+          var viewData = {}
+
+          var viewHtml = mustache.to_html(view, viewData)
+          var page = fs.readFileSync("templates/master.html", "utf8")
+          var data = {query:req.query, content:viewHtml}
+          var html = mustache.to_html(page, data); 
+          res.send(html)
+        })
+
 
         /* example testing:
           curl -X POST -d '{"jsonrpc":"2.0", "method":"hello", "params":{"name":"abc"}}' -H "Content-Type: application/json" localhost:9999/rpc 
