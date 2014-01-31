@@ -13,6 +13,8 @@ var passport = require("passport");
 var LocalStrategy = require('passport-local').Strategy;
 var Auth = require('./lib/middlewares/authorization.js');
 
+// use this: https://npmjs.org/package/express-restify-mongoose
+
 var WowServer = {
 	port: 9999,
 	start: function() {

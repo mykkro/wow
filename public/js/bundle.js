@@ -1015,8 +1015,8 @@ var Commons = {
 
 module.exports = Commons
 },{}],"i18n":[function(require,module,exports){
-module.exports=require('rq9WIT');
-},{}],"rq9WIT":[function(require,module,exports){
+module.exports=require('I3YOIq');
+},{}],"I3YOIq":[function(require,module,exports){
 // to be used as constructor
 var i18n = function(data) {	
 	this.locales = data.locales
@@ -1065,7 +1065,7 @@ module.exports = function($) {
 	return InputWidget
 }
 
-},{"./widget":11}],"OzAdbj":[function(require,module,exports){
+},{"./widget":11}],"PXFwPH":[function(require,module,exports){
 var url = require('url')
 var path = require('path')
 
@@ -1086,7 +1086,7 @@ module.exports = function(window) {
 
 }
 },{"path":25,"url":27}],"pageinfo":[function(require,module,exports){
-module.exports=require('OzAdbj');
+module.exports=require('PXFwPH');
 },{}],9:[function(require,module,exports){
 module.exports = function(window) {
 	var document = window.document
@@ -1339,9 +1339,7 @@ module.exports = function($) {
 	return Widget
 }
 
-},{"basejs":23}],"widgetizer":[function(require,module,exports){
-module.exports=require('BnNKMX');
-},{}],"BnNKMX":[function(require,module,exports){
+},{"basejs":23}],"s+mHhy":[function(require,module,exports){
 // create a browserified version of widgetizer:
 //  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
 module.exports = function(window, $) {
@@ -1610,7 +1608,9 @@ module.exports = function(window, $) {
 
 	return Widgetizer 
 }
-},{"./commons":3,"./inputwidget":6,"./svghelper":10,"./widget":11,"./widgets/box/box":14,"./widgets/flow/flow":15,"./widgets/grid/grid":16,"./widgets/iconbutton/iconbutton":17,"./widgets/image/image":18,"./widgets/piechart/piechart":19,"./widgets/text/text":20,"./widgets/textbox/textbox":21,"./widgets/viewport/viewport":22,"underscore":31}],14:[function(require,module,exports){
+},{"./commons":3,"./inputwidget":6,"./svghelper":10,"./widget":11,"./widgets/box/box":14,"./widgets/flow/flow":15,"./widgets/grid/grid":16,"./widgets/iconbutton/iconbutton":17,"./widgets/image/image":18,"./widgets/piechart/piechart":19,"./widgets/text/text":20,"./widgets/textbox/textbox":21,"./widgets/viewport/viewport":22,"underscore":31}],"widgetizer":[function(require,module,exports){
+module.exports=require('s+mHhy');
+},{}],14:[function(require,module,exports){
 module.exports = function(Widgetizer) {
 	/* common fields... */
 	var window = Widgetizer.window
@@ -2301,7 +2301,7 @@ process.chdir = function (dir) {
 };
 
 },{}],25:[function(require,module,exports){
-var process=require("__browserify_process");// Copyright Joyent, Inc. and other Node contributors.
+(function (process){// Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -2525,9 +2525,9 @@ var substr = 'ab'.substr(-1) === 'b'
         return str.substr(start, len);
     }
 ;
-
-},{"__browserify_process":24}],26:[function(require,module,exports){
-var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};/*! http://mths.be/punycode v1.2.3 by @mathias */
+}).call(this,require("C:\\Users\\Mykkro\\Documents\\GitHub\\wow\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js"))
+},{"C:\\Users\\Mykkro\\Documents\\GitHub\\wow\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js":24}],26:[function(require,module,exports){
+(function (global){/*! http://mths.be/punycode v1.2.3 by @mathias */
 ;(function(root) {
 
 	/** Detect free variables */
@@ -3035,7 +3035,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 	}
 
 }(this));
-
+}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],27:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
@@ -5101,4 +5101,4 @@ exports.encode = exports.stringify = require('./encode');
 
 }).call(this);
 
-},{}]},{},["BnNKMX","rq9WIT","OzAdbj"])
+},{}]},{},["s+mHhy","I3YOIq","PXFwPH"])
