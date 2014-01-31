@@ -3,10 +3,10 @@ module.exports = function(window, $, SVG, i18n) {
 	var document = window.document
 	var svgsvg = document.getElementById("svg")
 
-	var server = require("./lib/youtubepage.js")
 	
 	var page = {
 		init: function(Widgetizer, data, next) {
+			var server = Widgetizer.rpc
 			var SvgHelper = Widgetizer.SvgHelper
 			var truncate = require('html-truncate');
 			var resultGrp
@@ -107,7 +107,10 @@ module.exports = function(window, $, SVG, i18n) {
 				console.log("Searching for YouTube videos")
 				console.log(data)
 				if(data.q) {
-					server.search(data, next)
+					server("youTubeSearch", data, function(err, res) {
+						if(err) next(err);
+						else next(null, res.result)
+					})
 				} else {
 					next("No search criteria given")
 				}

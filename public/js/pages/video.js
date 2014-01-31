@@ -3,27 +3,12 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 module.exports = function(window, $, SVG, i18n) {
 	var Auth  = {}//require("../lib/auth")(window)
 
-	// TODO move to a package...
-	var server = function(method, params, cb) {
-        $.ajax({
-            type:"POST",
-            url: "http://localhost:9999/rpc",
-            data:{"jsonrpc":"2.0", "method":method, "params":params},
-            success: function (response){
-                cb(null, response)
-
-            },
-            fail: function(err) {
-                cb(err)
-            }
-        });
-    }
 
 
 	var page = {
 		init: function(Widgetizer, data, next) {
 			var W = Widgetizer
-
+			var server = Widgetizer.rpc
           	var videoId = data.query.id
 			var userId = 555 //Auth.getLoggedUser().id
 
