@@ -76,9 +76,17 @@ module.exports = function (grunt) {
             "public/css/bundle.min.css": "css/style.less"
           }
         }
+      },
+      execute: {
+          target: {
+              src: ['runserver.js']
+          }
       }
     })
 	  grunt.loadNpmTasks('grunt-node-webkit-builder');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-execute');
+
+    grunt.registerTask('default', ['browserify', 'less']);
 }
