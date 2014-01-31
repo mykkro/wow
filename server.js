@@ -11,6 +11,7 @@ var mustache = require('mustache')
 
 var passport = require("passport");
 var LocalStrategy = require('passport-local').Strategy;
+var Auth = require('./lib/middlewares/authorization.js');
 
 var WowServer = {
 	port: 9999,
@@ -124,11 +125,12 @@ var WowServer = {
       failureRedirect : "/login",
     })
   );
-/*
+
   app.get("/signup", function (req, res) {
     res.render("signup");
   });
 
+/*
   app.post("/signup", Auth.userExist, function (req, res, next) {
     User.signup(req.body.email, req.body.password, function(err, user){
       if(err) throw err;
@@ -138,12 +140,11 @@ var WowServer = {
       });
     });
   });
-
-
+*/
   app.get("/profile", Auth.isAuthenticated , function(req, res){ 
     res.render("profile", { user : req.user});
   });
-*/
+
   app.get('/logout', function(req, res){
     req.logout();
     res.redirect('/login');
