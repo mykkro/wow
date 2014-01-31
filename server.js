@@ -25,6 +25,7 @@ var WowServer = {
           app.use("/locales", express.static(currentDir+"/locales"))
           app.use("/assets", express.static(currentDir+"/assets"))
           app.use("/fonts", express.static(currentDir+"/fonts"))
+          app.use("/userdata", express.static(currentDir+"/userdata"))
 	        app.use(express.static(currentDir + '/public'));
         });
 
@@ -123,6 +124,30 @@ var WowServer = {
             }), statusCode);
           }
         });
+
+
+    app.post('/imageupload', function(req, res) {
+     
+        var serverPath = 'userdata/' + req.files.userPhoto.name;
+        var fs = require('fs-extra')
+        fs.copy(
+          req.files.userPhoto.path,
+          serverPath,
+          function(error) {
+            if(error) {
+              res.send({
+                error: 'Ah crap! Something bad happened',
+                data: error
+              });
+            } else {
+              // TODO delete original file...
+              res.send({
+                path: serverPath
+              });
+            }
+          }
+        );
+    });
 
 		app.listen(this.port);
 		console.log('Listening on port '+this.port);
