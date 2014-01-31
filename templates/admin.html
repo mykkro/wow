@@ -1,0 +1,46 @@
+<div class="admin">
+<input style="display:none;" id="fileDialog" type="file" accept=".zip,application/zip" />
+<input style="display:none;" id="dirDialog"  type="file" nwdirectory />
+	
+	<h1>Admin Page</h1>
+	<div class="admin-nav">
+		<a href="index.html">Back to login page</a>
+	</div>
+	<div class="admin-body">
+		<div class="importapp panel">
+			<h2>Import App</h2>
+			<div class="panel-body">
+				<div>
+					<label>Import app packaged in .zip archive: <button id="add-import-btn">Import</button></label>
+				</div>
+				<div>
+					<label>Import app from directory: <button id="add-import-dir-btn">Import</button></label>
+				</div>
+			</div>
+		</div>
+		<div class="importedapps panel">
+			<h2>Imported Apps</h2>
+			<ul class="panel-body" id="import-list">
+			</ul>
+		</div>
+		<div class="addvideo panel">
+			<h2>Add YouTube Video</h2>
+			<div class="panel-body">
+				<div>
+					<label><span>YouTube VideoID: </span><input type="text" id="videoid-textfield"/></label>
+				</div>
+				<div>
+					<label><span>UserID: </span><input type="text" disabled id="videouser-textfield" value="555"/></label>
+				</div>
+				<div class="buttons">
+					<button id="add-video-btn">Add to list</button>
+				</div>
+			</div>
+		</div>
+		<div class="uservideos panel">
+			<h2>User Videos</h2>
+			<ul class="panel-body" id="video-list">
+			</ul>
+		</div>
+	</div>
+	</div>

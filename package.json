@@ -45,7 +45,10 @@
     "dateformat": "~1.0.7-1.2.3",
     "express": "~3.4.8",
     "express-routescan": "~0.1.9",
-    "browserify": "~3.24.1"
+    "browserify": "~3.24.1",
+    "passport": "~0.2.0",
+    "passport-local": "~0.1.6",
+    "jade": "~1.1.5"
   },
   "repository": {
     "type": "git",
