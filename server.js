@@ -142,7 +142,7 @@ var WowServer = {
             } else {
               // TODO delete original file...
               res.send({
-                path: serverPath
+                url: '/'+serverPath
               });
             }
           }
