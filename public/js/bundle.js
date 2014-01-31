@@ -1339,9 +1339,7 @@ module.exports = function($) {
 	return Widget
 }
 
-},{"basejs":23}],"widgetizer":[function(require,module,exports){
-module.exports=require('BnNKMX');
-},{}],"BnNKMX":[function(require,module,exports){
+},{"basejs":23}],"BnNKMX":[function(require,module,exports){
 // create a browserified version of widgetizer:
 //  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
 module.exports = function(window, $) {
@@ -1590,14 +1588,29 @@ module.exports = function(window, $) {
 				done($svg)
 
 			}, 'xml');
-		}
+		},
+		rpc: function(method, params, cb) {
+	        $.ajax({
+	            type:"POST",
+	            url: "http://localhost:9999/rpc",
+	            data:{"jsonrpc":"2.0", "method":method, "params":params},
+	            success: function (response){
+	                cb(null, response)
 
+	            },
+	            fail: function(err) {
+	                cb(err)
+	            }
+	        });
+	    }
 
 	}
 
 	return Widgetizer 
 }
-},{"./commons":3,"./inputwidget":6,"./svghelper":10,"./widget":11,"./widgets/box/box":14,"./widgets/flow/flow":15,"./widgets/grid/grid":16,"./widgets/iconbutton/iconbutton":17,"./widgets/image/image":18,"./widgets/piechart/piechart":19,"./widgets/text/text":20,"./widgets/textbox/textbox":21,"./widgets/viewport/viewport":22,"underscore":31}],14:[function(require,module,exports){
+},{"./commons":3,"./inputwidget":6,"./svghelper":10,"./widget":11,"./widgets/box/box":14,"./widgets/flow/flow":15,"./widgets/grid/grid":16,"./widgets/iconbutton/iconbutton":17,"./widgets/image/image":18,"./widgets/piechart/piechart":19,"./widgets/text/text":20,"./widgets/textbox/textbox":21,"./widgets/viewport/viewport":22,"underscore":31}],"widgetizer":[function(require,module,exports){
+module.exports=require('BnNKMX');
+},{}],14:[function(require,module,exports){
 module.exports = function(Widgetizer) {
 	/* common fields... */
 	var window = Widgetizer.window

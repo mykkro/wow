@@ -57,8 +57,28 @@ module.exports = function (grunt) {
             dest: 'public/js/pages/video.js',
             options: { alias: [ './pages/video.js:pagescript' ]}
           }
+      },
+      less: {
+        development: {
+          options: {
+            paths: ["./css"]
+          },
+          files: {
+            "public/css/bundle.css": "css/style.less"
+          }
+        },
+        production: {
+          options: {
+            paths: ["./css"],
+            cleancss: true
+          },
+          files: {
+            "public/css/bundle.min.css": "css/style.less"
+          }
+        }
       }
     })
-	grunt.loadNpmTasks('grunt-node-webkit-builder');
+	  grunt.loadNpmTasks('grunt-node-webkit-builder');
     grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-contrib-less');
 }

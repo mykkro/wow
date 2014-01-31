@@ -34,18 +34,6 @@ module.exports = function(window, $, SVG, i18n) {
 	var moment = require('moment');	
 	moment.lang('de')
 	
-	function updateWeatherInfo() {
-		// get weather info...
-		$.getJSON(weatherUri).done(function(data) {
-		console.log(data)
-			var temp = Math.round(fah2cel(data.currently.temperature))
-			var icon = data.currently.icon
-			$("#MeteoIcon").text(icon2char(icon))
-			$("#MeteoTemperature").text(temp)
-			$("#MeteoUnit").text('*')
-		})
-
-	}
 	
 	function updateCalendar() {
 		console.log("Updating calendar...")
@@ -105,6 +93,21 @@ module.exports = function(window, $, SVG, i18n) {
 
 	return {
 		init: function(Widgetizer, data, next) {
+			var server = Widgetizer.rpc
+			var updateWeatherInfo = function() {
+				// get weather info...
+				server("weatherInfo", {}, function(err, resp) {
+					var data = resp.result
+					/**/console.log(data)
+					var temp = Math.round(fah2cel(data.currently.temperature))
+					var icon = data.currently.icon
+					$("#MeteoIcon").text(icon2char(icon))
+					$("#MeteoTemperature").text(temp)
+					$("#MeteoUnit").text('*')
+				})
+
+			}
+
 			baseUrl = data.baseUrl
 			/* use data to modify page */				
 			updateCalendar()

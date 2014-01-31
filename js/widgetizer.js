@@ -246,8 +246,21 @@ module.exports = function(window, $) {
 				done($svg)
 
 			}, 'xml');
-		}
+		},
+		rpc: function(method, params, cb) {
+	        $.ajax({
+	            type:"POST",
+	            url: "http://localhost:9999/rpc",
+	            data:{"jsonrpc":"2.0", "method":method, "params":params},
+	            success: function (response){
+	                cb(null, response)
 
+	            },
+	            fail: function(err) {
+	                cb(err)
+	            }
+	        });
+	    }
 
 	}
 
