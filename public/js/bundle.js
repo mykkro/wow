@@ -1065,9 +1065,7 @@ module.exports = function($) {
 	return InputWidget
 }
 
-},{"./widget":11}],"pageinfo":[function(require,module,exports){
-module.exports=require('OzAdbj');
-},{}],"OzAdbj":[function(require,module,exports){
+},{"./widget":11}],"OzAdbj":[function(require,module,exports){
 var url = require('url')
 var path = require('path')
 
@@ -1087,7 +1085,9 @@ module.exports = function(window) {
     }
 
 }
-},{"path":25,"url":27}],9:[function(require,module,exports){
+},{"path":25,"url":27}],"pageinfo":[function(require,module,exports){
+module.exports=require('OzAdbj');
+},{}],9:[function(require,module,exports){
 module.exports = function(window) {
 	var document = window.document
 
