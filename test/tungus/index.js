@@ -1,6 +1,9 @@
+var express = require('express');
 var tungus = require('tungus');
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
+var restify = require('express-restify-mongoose')
+var http = require("http")
 
 console.log('Running mongoose version %s', mongoose.version);
 
@@ -38,7 +41,8 @@ mongoose.connect('tingodb://'+__dirname+'/data', function (err) {
 
   // we connected ok
   createData();
-})
+ 
+ })
 
 /**
  * Data generation
@@ -82,7 +86,22 @@ function example () {
       , ocinara.consoles[0].name
       , ocinara.released.toLocaleDateString());
 
-    done();
+ 
+ // restify + mongoose
+ // access later with: http://localhost:3000/api/v1/Consoles/
+	var app = express();
+	app.configure(function(){
+		app.use(express.bodyParser());
+		app.use(express.methodOverride());
+		restify.serve(app, Game);
+		restify.serve(app, Console);
+	});
+
+	http.createServer(app).listen(3000, function() {
+		console.log("Express server listening on port 3000");
+	});
+ 
+ //done();
   })
 }
 
