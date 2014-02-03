@@ -83,7 +83,7 @@ module.exports = function(window, $, SVG, i18n) {
 		window.location = "/pages/youtube"
 	}
 
-	var dialogs = require("../lib/dialogs")($, i18n)
+	var dialogs = require("../js/dialogs")($, i18n)
 	
 	function showQuitDialog() {
 		dialogs.quitDialog(function(reallyQuit) {

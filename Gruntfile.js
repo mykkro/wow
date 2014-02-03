@@ -15,13 +15,18 @@ module.exports = function (grunt) {
       },
       browserify: {
         basic: {
-            src: ['./js/widgetizer.js', './js/i18n.js', './js/pageinfo.js'],
+            src: ['./js/widgetizer.js', './js/i18n.js', './js/pageinfo.js', './js/dialogs.js'],
             dest: 'public/js/bundle.js',
             options: {
-              alias: ['./js/widgetizer.js:widgetizer', './js/i18n.js:i18n', './js/pageinfo.js:pageinfo']
+              alias: ['./js/widgetizer.js:widgetizer', './js/i18n.js:i18n', './js/pageinfo.js:pageinfo', './js/dialogs.js:dialogs']
             }
           },
           // TODO do automatic scanning or regular expression...
+          pg_admin: {
+            src: ['./js/admin.js'],
+            dest: 'public/js/pages/admin.js',
+            options: { alias: [ ] }
+          },
           pg_login: {
             src: ['./pages/login.js'],
             dest: 'public/js/pages/login.js',
