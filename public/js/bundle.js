@@ -1015,8 +1015,8 @@ var Commons = {
 
 module.exports = Commons
 },{}],"dialogs":[function(require,module,exports){
-module.exports=require('NmY8hc');
-},{}],"NmY8hc":[function(require,module,exports){
+module.exports=require('zT2nDu');
+},{}],"zT2nDu":[function(require,module,exports){
 var Dialog = require('modal-dialog');
 
 Dialog.styles = false
@@ -1057,7 +1057,7 @@ module.exports = function($, i18n) {
 	}
 
 }
-},{"modal-dialog":32}],"I3YOIq":[function(require,module,exports){
+},{"modal-dialog":32}],"rq9WIT":[function(require,module,exports){
 // to be used as constructor
 var i18n = function(data) {	
 	this.locales = data.locales
@@ -1071,7 +1071,7 @@ var i18n = function(data) {
 }
 module.exports = i18n
 },{}],"i18n":[function(require,module,exports){
-module.exports=require('I3YOIq');
+module.exports=require('rq9WIT');
 },{}],8:[function(require,module,exports){
 
 module.exports = function($) {
@@ -1108,7 +1108,9 @@ module.exports = function($) {
 	return InputWidget
 }
 
-},{"./widget":13}],"PXFwPH":[function(require,module,exports){
+},{"./widget":13}],"pageinfo":[function(require,module,exports){
+module.exports=require('OzAdbj');
+},{}],"OzAdbj":[function(require,module,exports){
 var url = require('url')
 var path = require('path')
 
@@ -1128,9 +1130,7 @@ module.exports = function(window) {
     }
 
 }
-},{"path":28,"url":30}],"pageinfo":[function(require,module,exports){
-module.exports=require('PXFwPH');
-},{}],11:[function(require,module,exports){
+},{"path":28,"url":30}],11:[function(require,module,exports){
 module.exports = function(window) {
 	var document = window.document
 
@@ -1382,9 +1382,7 @@ module.exports = function($) {
 	return Widget
 }
 
-},{"basejs":25}],"widgetizer":[function(require,module,exports){
-module.exports=require('s+mHhy');
-},{}],"s+mHhy":[function(require,module,exports){
+},{"basejs":25}],"BnNKMX":[function(require,module,exports){
 // create a browserified version of widgetizer:
 //  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
 module.exports = function(window, $) {
@@ -1653,7 +1651,9 @@ module.exports = function(window, $) {
 
 	return Widgetizer 
 }
-},{"./commons":3,"./inputwidget":8,"./svghelper":12,"./widget":13,"./widgets/box/box":16,"./widgets/flow/flow":17,"./widgets/grid/grid":18,"./widgets/iconbutton/iconbutton":19,"./widgets/image/image":20,"./widgets/piechart/piechart":21,"./widgets/text/text":22,"./widgets/textbox/textbox":23,"./widgets/viewport/viewport":24,"underscore":41}],16:[function(require,module,exports){
+},{"./commons":3,"./inputwidget":8,"./svghelper":12,"./widget":13,"./widgets/box/box":16,"./widgets/flow/flow":17,"./widgets/grid/grid":18,"./widgets/iconbutton/iconbutton":19,"./widgets/image/image":20,"./widgets/piechart/piechart":21,"./widgets/text/text":22,"./widgets/textbox/textbox":23,"./widgets/viewport/viewport":24,"underscore":41}],"widgetizer":[function(require,module,exports){
+module.exports=require('BnNKMX');
+},{}],16:[function(require,module,exports){
 module.exports = function(Widgetizer) {
 	/* common fields... */
 	var window = Widgetizer.window
@@ -2646,7 +2646,7 @@ process.chdir = function (dir) {
 };
 
 },{}],28:[function(require,module,exports){
-(function (process){// Copyright Joyent, Inc. and other Node contributors.
+var process=require("__browserify_process");// Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -2870,9 +2870,9 @@ var substr = 'ab'.substr(-1) === 'b'
         return str.substr(start, len);
     }
 ;
-}).call(this,require("C:\\Users\\Mykkro\\Documents\\GitHub\\wow\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js"))
-},{"C:\\Users\\Mykkro\\Documents\\GitHub\\wow\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js":27}],29:[function(require,module,exports){
-(function (global){/*! http://mths.be/punycode v1.2.3 by @mathias */
+
+},{"__browserify_process":27}],29:[function(require,module,exports){
+var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};/*! http://mths.be/punycode v1.2.3 by @mathias */
 ;(function(root) {
 
 	/** Detect free variables */
@@ -3380,7 +3380,7 @@ var substr = 'ab'.substr(-1) === 'b'
 	}
 
 }(this));
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
 },{}],30:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
@@ -13617,7 +13617,7 @@ return jQuery;
 }).call(this);
 
 },{"jquery":31,"q":34}],34:[function(require,module,exports){
-(function (process){// vim:ts=4:sts=4:sw=4:
+var process=require("__browserify_process");// vim:ts=4:sts=4:sw=4:
 /*!
  *
  * Copyright 2009-2012 Kris Kowal under the terms of the MIT
@@ -15552,8 +15552,8 @@ var qEndingLine = captureLine();
 return Q;
 
 });
-}).call(this,require("C:\\Users\\Mykkro\\Documents\\GitHub\\wow\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js"))
-},{"C:\\Users\\Mykkro\\Documents\\GitHub\\wow\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js":27}],35:[function(require,module,exports){
+
+},{"__browserify_process":27}],35:[function(require,module,exports){
 // Generated by CoffeeScript 1.6.3
 (function() {
   var $, EventEmitter, Overlay, Q, _ref,
@@ -15694,7 +15694,7 @@ return Q;
 }).call(this);
 
 },{"events":26,"jquery":31,"q":36}],36:[function(require,module,exports){
-(function (process){// vim:ts=4:sts=4:sw=4:
+var process=require("__browserify_process");// vim:ts=4:sts=4:sw=4:
 /*!
  *
  * Copyright 2009-2012 Kris Kowal under the terms of the MIT
@@ -17445,9 +17445,9 @@ var qEndingLine = captureLine();
 return Q;
 
 });
-}).call(this,require("C:\\Users\\Mykkro\\Documents\\GitHub\\wow\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js"))
-},{"C:\\Users\\Mykkro\\Documents\\GitHub\\wow\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js":27}],37:[function(require,module,exports){
-(function (process){// vim:ts=4:sts=4:sw=4:
+
+},{"__browserify_process":27}],37:[function(require,module,exports){
+var process=require("__browserify_process");// vim:ts=4:sts=4:sw=4:
 /*!
  *
  * Copyright 2009-2012 Kris Kowal under the terms of the MIT
@@ -19384,8 +19384,8 @@ var qEndingLine = captureLine();
 return Q;
 
 });
-}).call(this,require("C:\\Users\\Mykkro\\Documents\\GitHub\\wow\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js"))
-},{"C:\\Users\\Mykkro\\Documents\\GitHub\\wow\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js":27}],38:[function(require,module,exports){
+
+},{"__browserify_process":27}],38:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -20817,4 +20817,4 @@ exports.encode = exports.stringify = require('./encode');
 
 }).call(this);
 
-},{}]},{},["s+mHhy","I3YOIq","PXFwPH","NmY8hc"])
+},{}]},{},["BnNKMX","rq9WIT","OzAdbj","zT2nDu"])
