@@ -39,9 +39,6 @@
     <g transform="translate(284, 533)">
         <wow:textbox name="searchTextbox" maxchars=50 width="394" height="30"></wow:textbox>
     </g>
-	
-		<text class="text" x="20" y="150" text-anchor="start">User Videos</text>
-        <text class="text" x="20" y="180" text-anchor="start">Favorite Videos</text>
-	
+		
 	<g id="tempgroup" style="display:none;"></g>
 </svg>

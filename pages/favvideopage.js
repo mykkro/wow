@@ -1,6 +1,6 @@
 module.exports = function(window, $, SVG, i18n) {
 	var url = require('url');	
-	var userId = 555
+	var userId = '555'
 
 	var page = {
 		init: function(Widgetizer, data, next) {
@@ -25,9 +25,10 @@ module.exports = function(window, $, SVG, i18n) {
 				console.log("Showing search results...")
 				if(err) console.error(err);
 				else {
+					if(data) data = data.result
 					if(!data || !data.items) {
 						// show empty set...
-						data = {totalItems:0, startIndex:1, itemsPertPage:6, items:[]}
+						data = {totalItems:0, startIndex:1, itemsPerPage:6, items:[]}
 					}				
 					var total = data.totalItems
 					var start = data.startIndex
@@ -53,7 +54,6 @@ module.exports = function(window, $, SVG, i18n) {
 
 			var getQueryString = function(dpage) {
 				var parsedUrl = url.parse(window.location.href, true)
-				parsedUrl.query.query = textBox.val()
 				var pg = parseInt(parsedUrl.query.page || 1)
 				if(dpage) pg += dpage
 				if(pg<1) pg=1

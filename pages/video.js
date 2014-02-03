@@ -9,7 +9,7 @@ module.exports = function(window, $, SVG, i18n) {
 			var W = Widgetizer
 			var server = Widgetizer.rpc
           	var videoId = data.query.id
-			var userId = 555 //Auth.getLoggedUser().id
+			var userId = "555" //Auth.getLoggedUser().id
 
 			/* use data to modify page */
 			var quitBtn = W.get("quitButton")
