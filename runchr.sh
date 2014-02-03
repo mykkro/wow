@@ -1,6 +1,6 @@
 #!/bin/bash
 
 node runserver.js &
-chromium-browser --url http://localhost:9999
+chromium-browser --kiosk --window-size=960,600 --url http://localhost:9999 --no-proxy-server
 wait
 
