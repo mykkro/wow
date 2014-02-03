@@ -1,11 +1,12 @@
 module.exports = function(window, $, SVG, i18n) {
 	var url = require('url');	
+	var userId = 555
 
 	var page = {
 		init: function(Widgetizer, data, next) {
+			var server = Widgetizer.rpc
 			var document = window.document
 			var SvgHelper = Widgetizer.SvgHelper
-			var FavVideos = require('../lib/dao/favoritevideos')
 			var truncate = require('html-truncate');
 			var svgsvg = document.getElementById("svg")
 			var resultGrp
@@ -14,7 +15,7 @@ module.exports = function(window, $, SVG, i18n) {
 			var textBox
 
 			var updateBrowserQuery = function(page, query) {
-				var newQuery = "?view=favvideospage&page="+page
+				var newQuery = "?page="+page
 				window.History.replaceState({}, "", newQuery)
 			}
 
@@ -99,12 +100,12 @@ module.exports = function(window, $, SVG, i18n) {
 			}
 
 			var goToVideoPage = function(ytId) {
-				window.location.href = "index.html?view=videopage&id="+ytId
+				window.location.href = "/pages/video?id="+ytId
 			}
 
 			var searchIt = function(page) {
 				updateBrowserQuery(page)
-				FavVideos.listNewest({/*userId:userId*/}, (page-1)*6, 6, showSearchResults) 
+				server("favVideosList", {userId:userId, page:page}, showSearchResults) 
 			}
 
 			/* widgetization complete! */
@@ -120,14 +121,9 @@ module.exports = function(window, $, SVG, i18n) {
 			showSearchResults()
 
 			/* bind events... */
-			var quitBtn = Widgetizer.get("quitButton")
-			quitBtn.click(function() {
-				// move back to previous page...
-				window.history.go(-1)
-			})
 			Widgetizer.get("homeButton").click(function() {
 				// move back to main page
-				window.location = "index.html?view=homepage"
+				window.location = "/pages/home"
 			})
 			var page = parseInt(data.query.page || 1)
 			searchIt(page)

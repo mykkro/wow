@@ -12,11 +12,18 @@
 	height="100%"
 	preserveAspectRatio="none"
     >
-    <wow:image src="assets/backgrounds/default.svg" width="960" height="600"></wow:image>
-	<wow:image src="assets/previews/UserYouTubePage.svg" width="960" height="600" embed="true"></wow:image>
+    <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
+	<wow:image src="/assets/previews/UserYouTubePage.svg" width="960" height="600" embed="true"></wow:image>
+    <a xlink:href="/pages/favvideopage">
     <g transform="translate(840, 20)">
-        <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
+        <wow:iconbutton id="favVidButton" name="favVidButton" src="favoritevideos"></wow:iconbutton>
     </g>
+    </a>
+    <a xlink:href="/pages/youtube">
+    <g transform="translate(840, 144)">
+        <wow:iconbutton id="searchVidButton" name="searchVidButton" src="searchvideos"></wow:iconbutton>
+    </g>
+    </a>
     <g transform="translate(20, 20)">
         <wow:iconbutton name="homeButton" src="home"></wow:iconbutton>
     </g>
@@ -26,10 +33,6 @@
     <g transform="translate(840, 334)">
         <wow:iconbutton name="rightButton" src="righthand"></wow:iconbutton>
     </g>
-
-	<a xlink:href="index.html?view=youtubepage">
-		<text class="text" x="20" y="150" text-anchor="start">Youtube Search</text>
-	</a>
 
 	<g id="tempgroup" style="display:none;"></g>
 </svg>

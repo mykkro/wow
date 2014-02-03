@@ -12,11 +12,18 @@
 	height="100%"
 	preserveAspectRatio="none"
     >
-    <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
+    <wow:image src="/assets/backgrounds/waves.svg" width="960" height="600"></wow:image>
 	<wow:image src="/assets/previews/YouTubePage.svg" width="960" height="600" embed="true"></wow:image>
+    <a xlink:href="/pages/favvideopage">
     <g transform="translate(840, 20)">
-        <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
+        <wow:iconbutton id="favVidButton" name="favVidButton" src="favoritevideos"></wow:iconbutton>
     </g>
+    </a>
+    <a xlink:href="/pages/uservideopage">
+    <g transform="translate(840, 144)">
+        <wow:iconbutton id="userVidButton" name="userVidButton" src="uservideos"></wow:iconbutton>
+    </g>
+    </a>
     <g transform="translate(20, 20)">
         <wow:iconbutton name="homeButton" src="home"></wow:iconbutton>
     </g>
@@ -33,9 +40,8 @@
         <wow:textbox name="searchTextbox" maxchars=50 width="394" height="30"></wow:textbox>
     </g>
 	
-	<a xlink:href="/pages/uservideopage">
 		<text class="text" x="20" y="150" text-anchor="start">User Videos</text>
-	</a>
+        <text class="text" x="20" y="180" text-anchor="start">Favorite Videos</text>
 	
 	<g id="tempgroup" style="display:none;"></g>
 </svg>

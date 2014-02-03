@@ -135,11 +135,6 @@ module.exports = function(window, $, SVG, i18n) {
 			showSearchResults()
 
 			/* bind events... */
-			var quitBtn = Widgetizer.get("quitButton")
-			quitBtn.click(function() {
-				// move back to previous page...
-				window.history.go(-1)
-			})
 			Widgetizer.get("homeButton").click(function() {
 				// move back to main page
 				window.location = "/pages/home"
