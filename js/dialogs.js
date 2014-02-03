@@ -9,7 +9,7 @@ Dialog.classes = {
     footer: 'footer',
     info: 'info',
     buttons: 'buttons',
-    button: 'button',
+    button: 'button'
 };
 
 module.exports = function($, i18n) {
