@@ -1,5 +1,5 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};/*! http://mths.be/punycode v1.2.3 by @mathias */
+(function (global){/*! http://mths.be/punycode v1.2.3 by @mathias */
 ;(function(root) {
 
 	/** Detect free variables */
@@ -507,7 +507,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 	}
 
 }(this));
-
+}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
@@ -1467,7 +1467,7 @@ module.exports = function(obj, sep, eq, name) {
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":4,"./encode":5}],"IcDZO3":[function(require,module,exports){
+},{"./decode":4,"./encode":5}],"i7U3p+":[function(require,module,exports){
 module.exports = function(window, $, SVG, i18n) {
 	var url = require('url');	
 	var document = window.document
@@ -1635,5 +1635,5 @@ module.exports = function(window, $, SVG, i18n) {
 
 }
 },{"html-truncate":3,"url":2}],"pagescript":[function(require,module,exports){
-module.exports=require('IcDZO3');
-},{}]},{},["IcDZO3"])
+module.exports=require('i7U3p+');
+},{}]},{},["i7U3p+"])
