@@ -57,6 +57,16 @@ module.exports = function (grunt) {
             dest: 'public/js/pages/youtube.js',
             options: { alias: [ './pages/youtube.js:pagescript' ]}
           },
+          pg_uservideos: {
+            src: ['./pages/uservideopage.js'],
+            dest: 'public/js/pages/uservideopage.js',
+            options: { alias: [ './pages/uservideopage.js:pagescript' ]}
+          },
+          pg_favvideos: {
+            src: ['./pages/favvideospage.js'],
+            dest: 'public/js/pages/favvideopage.js',
+            options: { alias: [ './pages/favvideopage.js:pagescript' ]}
+          },
           pg_video: {
             src: ['./pages/video.js'],
             dest: 'public/js/pages/video.js',
