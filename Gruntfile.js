@@ -71,6 +71,16 @@ module.exports = function (grunt) {
             src: ['./pages/video.js'],
             dest: 'public/js/pages/video.js',
             options: { alias: [ './pages/video.js:pagescript' ]}
+          },
+          pg_app: {
+            src: ['./pages/app.js'],
+            dest: 'public/js/pages/app.js',
+            options: { alias: [ './pages/app.js:pagescript' ]}
+          },
+          pg_enter: {
+            src: ['./pages/entertainment.js'],
+            dest: 'public/js/pages/entertainment.js',
+            options: { alias: [ './pages/entertainment.js:pagescript' ]}
           }
       },
       less: {

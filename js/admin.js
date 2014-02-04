@@ -25,8 +25,8 @@
       	var page = parsedUrl.query.page || 1
 		var userId = Auth.getLoggedUser().id
 		*/
-		var userId = 555
-		var adminId = 123
+		var userId = "555"
+		var adminId = "123"
 		var page = 1
 
 		var VideoPanel = Base.extend({
@@ -103,47 +103,63 @@
 				})					
 			}
 		})
-/*
-		var getImports = function(cb) {
-			Imports.listNewest({adminId:adminId}, 10*(page-1), 10, cb)
-		}
 
-		var showImports = function(data) {
-			console.log(data)
-			var root = $("#import-list").empty()
-			if(data) {
-				for(var i=0; i<data.length; i++) {
-					root.append(showItem(data[i]))
+		var ImportPanel = Base.extend({
+			constructor: function() {
+				this.refreshImportsView()
+			},
+			refreshImportsView: function() {
+				var self = this
+				self.getImports(function(err, data) {
+					self.showImports(data)
+				})					
+			},
+			getImports: function(cb) {
+				var self = this
+				server("importsList", {/*adminId:adminId, */page:page}, function(err, data) {
+					if(!err) self.showImports(data.result)
+				})
+			},
+			showImports: function(data) {
+				console.log(data)
+				var root = $("#import-list").empty()
+				if(data) {
+					for(var i=0; i<data.length; i++) {
+						root.append(this.showItem(data[i]))
+					}
 				}
+			},
+			showItem: function(item) {
+				// TODO use mustache
+				var self = this
+				var previewUri = "/assets/misc/nopreview.svg"
+				if(item.preview) {
+					previewUri = "/imports/" +item.importName + "/"  + item.preview
+				}
+				var out = $("<div>").append(
+					$("<h3>").text(item.title),
+					$("<div>").text("Created: "+item.created),
+					$("<img>").attr({
+						"width":100,
+						"height":100,
+						"src": previewUri
+					}).click(function() {
+						window.location.href= "/pages/app?importname="+item.importName
+					}),
+					$("<button>").text("Remove").click(function() {
+						self.showRemoveDialog(function() {
+							// confirmed...
+							self.removeItem(item._id.id, item.importName, out)
+						})
+					})
+				)
+				return out
 			}
-		}
+		})
+
+/*
 */
 /*
-		var showItem = function(item) {
-			var previewUri = "assets/misc/nopreview.svg"
-			if(item.preview) {
-				var appBaseUri = "file://" + path.join(Storage.importDir, item.importName)			
-				previewUri = appBaseUri + "/" + item.preview
-			}
-			var out = $("<div>").append(
-				$("<h3>").text(item.title),
-				$("<div>").text("Created: "+item.created),
-				$("<img>").attr({
-					"width":100,
-					"height":100,
-					"src": previewUri
-				}).click(function() {
-					window.location.href= "index.html?view=apppage&importname="+item.importName
-				}),
-				$("<button>").text("Remove").click(function() {
-					showRemoveDialog(function() {
-						// confirmed...
-						removeItem(item._id.id, item.importName, out)
-					})
-				})
-			)
-			return out
-		}
 */
 /*		
 		var removeItem = function(id, importName, div) {
@@ -281,17 +297,6 @@ function getExtension(filename) {
 			window.alert("Index.html not found!")
 		}
 	}
-*/	
-
-
-/*
-	var refreshImportsView = function() {
-		getImports(function(err, data) {
-			showImports(data)
-		})					
-	}
-*/
-/*
 		var importPathAdded = function(p) {
 			// get manifest from file...
 			fileSelected(p, function(p, manifest) {
@@ -323,7 +328,7 @@ function getExtension(filename) {
 		  $("#add-import-dir-btn").click(function() {
 		  	chooser2.trigger("click")
 		  })
-		  refreshImportsView()
 */
 		var vp = new VideoPanel()  
+		var ip = new ImportPanel()
 	})
