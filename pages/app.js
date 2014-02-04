@@ -1,23 +1,19 @@
 module.exports = function(window, $, SVG, i18n) {
 
 	var path = require("path")
-	var Auth  = require("../lib/auth")(window)
-	var FavApps = require("../lib/dao/favoriteapps")
-	var Storage = require("../lib/storage")
 	var url = require("url")
 	var parsedUrl = url.parse(window.location.href, true)
 	
-	// ensure that some directories exist...
-	Storage.init()
 
 	var page = {
 		init: function(Widgetizer, data, next) {
 			var W = Widgetizer
+			var server = W.rpc
 			var url = require("url")
         	var parsedUrl = url.parse(window.location.href, true)
           	var appName = parsedUrl.query.importname
 			var appId = appName
-			var userId = Auth.getLoggedUser().id			
+			var userId = "555"		
 			
 			/* use data to modify page */
 			var quitBtn = W.get("quitButton")
@@ -32,6 +28,7 @@ module.exports = function(window, $, SVG, i18n) {
 					unfavButton.disable()
 				}
 			}
+			/*
 			FavApps.starred(userId, appId, function(err, data) {
 				setFavState(!err && data)
 			})
@@ -45,12 +42,13 @@ module.exports = function(window, $, SVG, i18n) {
 					if(!err) setFavState(false)
 				})					
 			})
+*/
 			quitBtn.click(function() {
 				// move back to previous page...
 				window.history.go(-1)
 			})
 			var importName = parsedUrl.query.importname || "notfound"
-			var src = path.join(Storage.importDir, importName, "index.html")			
+			var src = "/imports/"+ importName+ "/index.html"
 			//window.alert(src)
 			// TODO automatic iframe resizing... 
 			// ERROR: sometimes the application will not show, page refresh necessary
