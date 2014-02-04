@@ -1,40 +1,71 @@
-<svg 
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:wow="http://example.org/wow"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    unselectable="on" 
-    style="-webkit-user-select: none;"
-    id="svg"
-	tabindex='1'
-	viewBox="0 0 960 600"
-	width="100%"
-	height="100%"
-	preserveAspectRatio="none"
-    >
-    <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
-    <g transform="translate(840, 20)">
-        <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
-    </g>
-    <g transform="translate(20, 20)">
-        <wow:iconbutton name="favButton" src="favorite"></wow:iconbutton>
-    </g>
-    <g transform="translate(20, 140)">
-        <wow:iconbutton name="unfavButton" src="unfavorite"></wow:iconbutton>
-    </g>
-    <g transform="translate(360, 510)">
-        <wow:iconbutton id="playButton" name="playButton" src="play" width="60" height="60"></wow:iconbutton>
-    </g>
-    <g transform="translate(450, 510)">
-        <wow:iconbutton id="pauseButton" name="pauseButton" src="pause" width="60" height="60"></wow:iconbutton>
-    </g>
-    <g transform="translate(540, 510)">
-        <wow:iconbutton id="stopButton" name="stopButton" src="stop" width="60" height="60"></wow:iconbutton>
-    </g>
+<div>
+    <svg 
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:wow="http://example.org/wow"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        unselectable="on" 
+        style="-webkit-user-select: none;"
+        id="svg"
+    	tabindex='1'
+    	viewBox="0 0 960 600"
+    	width="100%"
+    	height="100%"
+    	preserveAspectRatio="none"
+        >
+        <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
+        <g transform="translate(840, 20)">
+            <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
+        </g>
+        <g transform="translate(20, 20)">
+            <wow:iconbutton name="favButton" src="favorite"></wow:iconbutton>
+        </g>
+        <g transform="translate(20, 140)">
+            <wow:iconbutton name="unfavButton" src="unfavorite"></wow:iconbutton>
+        </g>
+        <g transform="translate(360, 510)">
+            <wow:iconbutton id="playButton" name="playButton" src="play" width="60" height="60"></wow:iconbutton>
+        </g>
+        <g transform="translate(450, 510)">
+            <wow:iconbutton id="pauseButton" name="pauseButton" src="pause" width="60" height="60"></wow:iconbutton>
+        </g>
+        <g transform="translate(540, 510)">
+            <wow:iconbutton id="stopButton" name="stopButton" src="stop" width="60" height="60"></wow:iconbutton>
+        </g>
 
-    <!-- here comes the video... -->
-    <foreignObject x="160" y="80" width="640" height="390">
-        <script>
+    	<g id="tempgroup" style="display:none;"></g>    
+    </svg>
+    <div class="video-wrapper">
+        <div class="video-container">
+            <div id="ytplayer"></div>
+        </div>
+    </div>
+    <style>
+    .video-wrapper {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 70%;
+        height: 80%;
+        padding: 10% 15%;
+    }
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        padding-top: 30px; height: 0; overflow: hidden;
+    }
+     
+    .video-container iframe,
+    .video-container object,
+    .video-container embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    </style>
+    <script>
         // Load the IFrame Player API code asynchronously.
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/player_api";
@@ -87,11 +118,6 @@
                     break;
             }
         }
-        </script>
-        <div>
-            <div id="ytplayer"></div>
-        </div>
-    </foreignObject>    
+    </script>
 
-	<g id="tempgroup" style="display:none;"></g>    
-</svg>
+</div>
