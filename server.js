@@ -17,9 +17,10 @@ var Auth = require('./lib/middlewares/authorization.js');
 
 var WowServer = {
 	port: 9999,
-	start: function() {
-    		var app = express()
-    		var currentDir = process.cwd() // __dirname does not work in node-webkit
+	start: function(afterInit) {
+		var self = this
+		var app = express()
+		var currentDir = process.cwd() // __dirname does not work in node-webkit
 
         // see: http://danialk.github.io/blog/2013/02/23/authentication-using-passportjs/
         // https://github.com/DanialK/PassportJS-Authentication
@@ -247,9 +248,11 @@ var WowServer = {
           }
         );
     });
-
-		app.listen(this.port);
-		console.log('Listening on port '+this.port);
+	
+		app.listen(this.port, function() {
+			console.log('Listening on port '+self.port);
+			if(afterInit) afterInit(self)
+		});
 
 	}
 
