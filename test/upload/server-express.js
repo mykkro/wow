@@ -1,5 +1,3 @@
-// TODO POST not working...
-
 'use strict';
 
 var express = require('express');
@@ -25,7 +23,16 @@ var app = express()
 
 app.configure(function() {
   app.set("view options", {layout: false});
-  app.use('/fileupload', upload.fileHandler());
+  app.use('/fileupload', function(req, res, next) {
+    upload.fileHandler()(req, res, next)
+  });
+  /* shows list of files in the upload directory */
+  app.get('/filelist', function (req, res, next) {
+      upload.fileManager().getFiles(function (files) {
+          res.json(files);
+      });
+  });  
+
   // express bodyparser must be AFTER the fileupload middleware!
   // or, more exactly, fileupload must be BEFORE the other middlewares 
   app.use(express.bodyParser());
@@ -35,7 +42,7 @@ app.configure(function() {
   app.use("/uploads", express.static("./public/files"))
   app.get('/', function(req, res) {
     res.sendfile('index-express.html');
-  });
+  });  
   app.listen(9999)
 })
 
