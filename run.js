@@ -11,12 +11,12 @@ WowServer.start(function(srv) {
 			: "chromium-browser" // linux
 
 	var args = [
-		'--app='+baseURL,
 		'--force-app-mode',
 		'--kiosk',
 		'--app-window-size=960,600',
 		'--enable-crxless-web-apps',
-		'--user-data-dir=' + __dirname+"/cache"
+		'--user-data-dir=' + __dirname+"/cache",
+		baseURL
 	];
 
 	var chrome = spawn(runtime, args);
