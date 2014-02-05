@@ -14,8 +14,8 @@ WowServer.start(function(srv) {
 		'--app='+baseURL,
 		'--force-app-mode',
 		'--kiosk',
-		//'--app-window-size=960,600',
-		//'--enable-crxless-web-apps',
+		'--app-window-size=960,600',
+		'--enable-crxless-web-apps',
 		'--user-data-dir=' + __dirname+"/cache"
 	];
 
