@@ -7,7 +7,7 @@ var nc = require('node-chrome');
 var opts = {
   runtime: "chromium-browser",
   files: "./ui",
-  port: 8080,
+  port: 7777,
   index: "/index.html",
   width: 1024,
   height: 760
