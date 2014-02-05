@@ -20,6 +20,13 @@ WowServer.start(function(srv) {
 	];
 
 	var chrome = spawn(runtime, args);
+	chrome.on('close', function (code) {
+  		console.log('child process exited with code ' + code);
+  		// also stop server...
+  		srv.stop(function() {
+  			console.log("Server stopped")
+  		})
+	});
 	
 })
 

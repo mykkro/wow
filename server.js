@@ -249,12 +249,15 @@ var WowServer = {
         );
     });
 	
-		app.listen(this.port, function() {
+		this.server = app.listen(this.port, function() {
 			console.log('Listening on port '+self.port);
 			if(afterInit) afterInit(self)
 		});
 
-	}
+	},
+  stop: function(cb) {
+    this.server.close(cb)
+  }
 
 }
 
