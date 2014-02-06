@@ -265,6 +265,18 @@ var WowServer = {
     });
 	
 
+function examineDirectory(dir, cb) {
+  fs.readdir(dir, function(err, files) {
+    if(err) cb(err)
+    console.log(files)
+    if(files.length==1 && fs.lstatSync(path.join(dir, files[0])).isDirectory()) {
+      cb(null, {dirPath:path.join(dir, files[0])})
+    } else {
+      cb(null, {dirPath:dir})
+    }
+  })
+}
+
 app.post('/fileupload', function(req, res) {
     // file is in the temporary directory...
     var archivePath = req.files.archive.path
@@ -289,34 +301,45 @@ app.post('/fileupload', function(req, res) {
             // let's find manifest if exists
             // or book.json
             console.log("App is unpacked and ready at "+dirPath)
-            console.log("Preparing to import...")
-            var m = {} // empty manifest
-            console.log("Manifest:", m)
-            var data = m
-            Imports.create(adminId, data, function(err, res2) {
-            if(!err) {
-              console.log("Data inserted! ID="+res2._id)
-              console.log(res2)
-              var newName = hashids.encrypt(res2._id.id)
-              console.log(newName)
-              var newPath = path.join(storage.importDir, newName)
-              fs.rename(dirPath, newPath, function(err) {
-                if(!err) {
-                  res2.importName = newName
-                  // update entry in database...
-                  Imports.update(res2, function(err, res3) {
-                    console.log("Import completed successfully.")
-                    console.log(res2)    
-                    /* signal that import finished OK */
-                    res.redirect("/admin");
+            examineDirectory(dirPath, function(err, ddd) {
+              if(!err) {
+                // we look for wow.json or book.json
+                console.log("Preparing to import...")
+                var m = {
+                  // title is archive name without extension...
+                  title: archiveName.replace(/\.[^/.]+$/, "")
+                } // empty manifest
+                console.log("Manifest:", m)
+                var data = m
+                Imports.create(adminId, data, function(err, res2) {
+                  if(!err) {
+                    console.log("Data inserted! ID="+res2._id)
+                    console.log(res2)
+                    var newName = hashids.encrypt(res2._id.id)
+                    console.log(newName)
+                    var newPath = path.join(storage.importDir, newName)
+                    fs.rename(ddd.dirPath, newPath, function(err) {
+                      if(!err) {
+                        res2.importName = newName
+                        // update entry in database...
+                        Imports.update(res2, function(err, res3) {
+                          console.log("Import completed successfully.")
+                          console.log(res2)    
+                          /* signal that import finished OK */
+                          res.redirect("/admin");
+                          res.end();
+                        })
+                      } else {
+                        res.redirect("/uploaderror");
+                        res.end();
+                      }
+                    }); // fs.rename
+                  } else {
+                    res.redirect("/uploaderror");
                     res.end();
-                  })
-                } else {
-                  res.redirect("/uploaderror");
-                  res.end();
-                }
-              });
-            } else {
+                  }
+              })
+           } else {
               res.redirect("/uploaderror");
               res.end();
             }
