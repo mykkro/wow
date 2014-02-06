@@ -69,7 +69,8 @@
     "browserify-shim": "~3.2.2",
     "grunt-browserify": "~1.3.0",
     "grunt-contrib-less": "~0.9.0",
-    "grunt-execute": "~0.1.5"
+    "grunt-execute": "~0.1.5",
+    "grunt-contrib-compress": "~0.6.0"
   },
   "webkit": {
     "plugin": true

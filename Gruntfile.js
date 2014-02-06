@@ -111,12 +111,36 @@ module.exports = function (grunt) {
           target: {
               src: ['runserver.js']
           }
-      }
+      },
+      compress: {
+        main: {
+          options: {
+            archive: 'dist/wow.zip'
+          },
+          files: [
+            {src: ['assets/**', 'css/**', 'fonts/**', 'js/**', 'lib/**', 'locales/**', 'media/**', 'pages/**', 'public/**', 'routes/**', 'templates/**', 'views/**']},
+            {src: ['run.bat', 'run.js', 'server.js', 'package.json', 'main.js']},
+            {src: ['node_modules/**', 
+              '!node_modules/browserify/**',
+              '!node_modules/browserify-shim/**',
+              '!node_modules/grunt/**',
+              '!node_modules/grunt-browserify/**',
+              '!node_modules/grunt-contrib-compress/**',
+              '!node_modules/grunt-contrib-less/**',
+              '!node_modules/grunt-execute/**',
+              '!node_modules/grunt-node-webkit-builder/**',
+              '!node_modules/node-chrome/**',
+              '!node_modules/pouchdb/**',
+              ]}
+          ]
+        }
+      }      
     })
 	  grunt.loadNpmTasks('grunt-node-webkit-builder');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-execute');
+    grunt.loadNpmTasks('grunt-contrib-compress');
 
     grunt.registerTask('default', ['browserify', 'less']);
 }
