@@ -18237,7 +18237,7 @@ module.exports = function(window, $, SVG, i18n) {
 		window.location = "/pages/bookcategories"
 	}
 	function gamesActivated() {
-		window.location = "/pages/radio"
+		window.location = "/pages/userapps"
 	}
 	function entertainmentActivated() {
 		window.location = "/pages/youtube"
