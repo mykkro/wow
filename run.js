@@ -27,6 +27,8 @@ WowServer.start(function(srv) {
   			console.log("Server stopped")
   		})
 	});
+
+	WowServer.chrome = chrome
 	
 })
 

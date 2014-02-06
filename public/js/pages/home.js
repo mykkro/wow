@@ -18247,7 +18247,9 @@ module.exports = function(window, $, SVG, i18n) {
 	
 	function showQuitDialog() {
 		dialogs.quitDialog(function(reallyQuit) {
-			if(reallyQuit) gui.App.quit()
+			if(reallyQuit) {
+				$.post("/shutdown")
+			}
 		})
 	}
 

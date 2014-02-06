@@ -28,6 +28,7 @@ var adminId = "123"
 
 var WowServer = {
 	port: 9999,
+  chrome: null,
 	start: function(afterInit) {
 		var self = this
 		var app = express()
@@ -236,6 +237,9 @@ var WowServer = {
           }
         });
 
+  app.post("/shutdown", function(req, res) {
+    WowServer.chrome.kill()
+  })
 
     app.post('/imageupload', function(req, res) {
      
