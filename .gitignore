@@ -2,5 +2,6 @@ node_modules/
 webkitbuilds/
 cache/
 tmp/
+dist/
 *.log
 logs
