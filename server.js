@@ -6,14 +6,25 @@ var path = require("path")
 var storage = require("./lib/storage")
 var rpcMethods = require('./lib/rpc/methods');
 var http = require('http');
-var fs = require('fs')
 var mustache = require('mustache')
+var fs = require("fs-extra")
+var unzip = require("unzip")
+var temp = require("temp")
 
 var passport = require("passport");
 var LocalStrategy = require('passport-local').Strategy;
 var Auth = require('./lib/middlewares/authorization.js');
+var Imports = require("./lib/dao/imports")
+var 
+  Hashids = require('hashids'),
+  hashids = new Hashids('this is my salt', 8);
+    
+    // ensure that some directories exist...
+    storage.init()
 
 // use this: https://npmjs.org/package/express-restify-mongoose
+
+var adminId = "123"
 
 var WowServer = {
 	port: 9999,
@@ -249,6 +260,70 @@ var WowServer = {
         );
     });
 	
+
+app.post('/fileupload', function(req, res) {
+    // file is in the temporary directory...
+    var archivePath = req.files.archive.path
+    // archive filename
+    var archiveName = req.files.archive.name
+
+    temp.mkdir('wowimport', function(err, dirPath) {
+      console.log("Created temporary directory "+dirPath)
+      // unpack archive...
+      fs.createReadStream(archivePath)
+        .pipe(unzip.Extract({ path: dirPath }))
+        .on("close", function(err) {
+          if(err) {
+            console.log("Error while unpacking...")
+             // TODO remove temporary directory
+            // must set tracking for temp dir
+            temp.cleanup()
+            res.redirect("/uploaderror");
+            res.end();
+          } else {
+            // unpacked OK!
+            // let's find manifest if exists
+            // or book.json
+            console.log("App is unpacked and ready at "+dirPath)
+            console.log("Preparing to import...")
+            var m = {} // empty manifest
+            console.log("Manifest:", m)
+            var data = m
+            Imports.create(adminId, data, function(err, res2) {
+            if(!err) {
+              console.log("Data inserted! ID="+res2._id)
+              console.log(res2)
+              var newName = hashids.encrypt(res2._id.id)
+              console.log(newName)
+              var newPath = path.join(storage.importDir, newName)
+              fs.rename(dirPath, newPath, function(err) {
+                if(!err) {
+                  res2.importName = newName
+                  // update entry in database...
+                  Imports.update(res2, function(err, res3) {
+                    console.log("Import completed successfully.")
+                    console.log(res2)    
+                    /* signal that import finished OK */
+                    res.redirect("/admin");
+                    res.end();
+                  })
+                } else {
+                  res.redirect("/uploaderror");
+                  res.end();
+                }
+              });
+            } else {
+              res.redirect("/uploaderror");
+              res.end();
+            }
+          })
+        }
+
+      })      
+    });       
+});
+
+
 		this.server = app.listen(this.port, function() {
 			console.log('Listening on port '+self.port);
 			if(afterInit) afterInit(self)
