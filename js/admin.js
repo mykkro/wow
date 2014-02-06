@@ -13,6 +13,7 @@
 		var dialogs = require("./dialogs")($, i18n)
 
 		var server = Widgetizer.rpc
+
 /*	
 		var fs = require('fs');
 		var gui = require('nw.gui');
@@ -130,6 +131,7 @@
 				}
 			},
 			showItem: function(item) {
+				console.log(item)
 				// TODO use mustache
 				var self = this
 				var previewUri = "/assets/misc/nopreview.svg"
@@ -149,41 +151,30 @@
 					$("<button>").text("Remove").click(function() {
 						self.showRemoveDialog(function() {
 							// confirmed...
-							self.removeItem(item._id.id, item.importName, out)
+							self.removeItem(item._id, out)
 						})
 					})
 				)
 				return out
+			},
+			removeItem: function(id, div) {
+				// remove record from database...
+				console.log("Removing item: "+id)
+				server("importRemove", {id:id}, function(err, res) {
+					if(err) console.error(err);
+					else {
+						div.fadeOut("slow")
+					}
+				})
+			},
+			showRemoveDialog: function(cb) {
+				dialogs.removeDialog(function(reallyRemove) {
+					if(reallyRemove) cb()
+				})
 			}
+
 		})
 
-/*
-*/
-/*
-*/
-/*		
-		var removeItem = function(id, importName, div) {
-			// remove record from database...
-			Imports.remove(id, function(err, res) {
-				if(err) console.error(err);
-				else {
-					console.log("Removing directory...")
-					var dir = path.join(Storage.importDir, importName)
-					// remove dir with its contents...
-					fs.remove(dir, function(err) {
-						if(err) console.error(err);
-						else {
-							console.log("Deleted successfully!")
-							// TODO flash message
-							//refreshImportsView()
-							div.fadeOut("slow")
-						}
-						
-					})
-				}
-			})
-		}
-*/
 /*
 		var fs = require("fs-extra")
 		var unzip = require("unzip")

@@ -17,7 +17,11 @@
 			<h2>Import App</h2>
 			<div class="panel-body">
 				<div>
-					<label>Import app packaged in .zip archive: <button id="add-import-btn">Import</button></label>
+					<form method='post' action='/fileupload' enctype='multipart/form-data'>
+						<label>Import app packaged in .zip archive:</label>
+						<input type='file' name='archive'/>
+						<input type='submit' />
+					</form>
 				</div>
 			</div>
 		</div>
