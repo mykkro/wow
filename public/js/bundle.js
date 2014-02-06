@@ -1382,7 +1382,9 @@ module.exports = function($) {
 	return Widget
 }
 
-},{"basejs":25}],"BnNKMX":[function(require,module,exports){
+},{"basejs":25}],"widgetizer":[function(require,module,exports){
+module.exports=require('BnNKMX');
+},{}],"BnNKMX":[function(require,module,exports){
 // create a browserified version of widgetizer:
 //  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
 module.exports = function(window, $) {
@@ -1651,9 +1653,7 @@ module.exports = function(window, $) {
 
 	return Widgetizer 
 }
-},{"./commons":3,"./inputwidget":8,"./svghelper":12,"./widget":13,"./widgets/box/box":16,"./widgets/flow/flow":17,"./widgets/grid/grid":18,"./widgets/iconbutton/iconbutton":19,"./widgets/image/image":20,"./widgets/piechart/piechart":21,"./widgets/text/text":22,"./widgets/textbox/textbox":23,"./widgets/viewport/viewport":24,"underscore":41}],"widgetizer":[function(require,module,exports){
-module.exports=require('BnNKMX');
-},{}],16:[function(require,module,exports){
+},{"./commons":3,"./inputwidget":8,"./svghelper":12,"./widget":13,"./widgets/box/box":16,"./widgets/flow/flow":17,"./widgets/grid/grid":18,"./widgets/iconbutton/iconbutton":19,"./widgets/image/image":20,"./widgets/piechart/piechart":21,"./widgets/text/text":22,"./widgets/textbox/textbox":23,"./widgets/viewport/viewport":24,"underscore":41}],16:[function(require,module,exports){
 module.exports = function(Widgetizer) {
 	/* common fields... */
 	var window = Widgetizer.window
