@@ -1014,6 +1014,8 @@ var Commons = {
 }
 
 module.exports = Commons
+},{}],"dialogs":[function(require,module,exports){
+module.exports=require('zT2nDu');
 },{}],"zT2nDu":[function(require,module,exports){
 var Dialog = require('modal-dialog');
 
@@ -1055,8 +1057,8 @@ module.exports = function($, i18n) {
 	}
 
 }
-},{"modal-dialog":32}],"dialogs":[function(require,module,exports){
-module.exports=require('zT2nDu');
+},{"modal-dialog":32}],"i18n":[function(require,module,exports){
+module.exports=require('rq9WIT');
 },{}],"rq9WIT":[function(require,module,exports){
 // to be used as constructor
 var i18n = function(data) {	
@@ -1070,8 +1072,6 @@ var i18n = function(data) {
 	}
 }
 module.exports = i18n
-},{}],"i18n":[function(require,module,exports){
-module.exports=require('rq9WIT');
 },{}],8:[function(require,module,exports){
 
 module.exports = function($) {
