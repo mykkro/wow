@@ -94,7 +94,7 @@ module.exports = function (grunt) {
             paths: ["./css"]
           },
           files: {
-            "public/css/bundle.css": "css/style.less"
+            "public/css/bundle.css": "less/style.less"
           }
         },
         production: {
@@ -103,7 +103,7 @@ module.exports = function (grunt) {
             cleancss: true
           },
           files: {
-            "public/css/bundle.min.css": "css/style.less"
+            "public/css/bundle.min.css": "less/style.less"
           }
         }
       },
