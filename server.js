@@ -97,7 +97,6 @@ var WowServer = {
     		  routescan(app) // this must be AFTER bodyparser/etc. to make RPC work
 	        app.use("/imports", express.static(storage.importDir))
           app.use("/locales", express.static(currentDir+"/locales"))
-          app.use("/assets", express.static(currentDir+"/assets"))
           app.use("/userdata", express.static(currentDir+"/userdata"))
 	        app.use(express.static(currentDir + '/public'));
         });
@@ -112,7 +111,7 @@ var WowServer = {
 
         app.get('/pages/:name', function(req, res) {
           var name = req.params.name
-          var view = fs.readFileSync("pages/"+name+".wow", "utf8")
+          var view = fs.readFileSync("pages/"+name+"/index.wow", "utf8")
           var viewData = {query:req.query}
           var viewHtml = mustache.to_html(view, viewData)
           var page = fs.readFileSync("templates/master.html", "utf8")

@@ -14,12 +14,12 @@
     >
     <wow:image src="/assets/backgrounds/night.svg" width="960" height="600"></wow:image>
 	<wow:image src="/assets/previews/UserYouTubePage.svg" width="960" height="600" embed="true"></wow:image>
-    <a xlink:href="/pages/uservideopage">
+    <a xlink:href="/pages/uservideos">
     <g transform="translate(840, 20)">
         <wow:iconbutton id="userVidButton" name="userVidButton" src="uservideos"></wow:iconbutton>
     </g>
     </a>
-    <a xlink:href="/pages/youtube">
+    <a xlink:href="/pages/searchvideos">
     <g transform="translate(840, 144)">
         <wow:iconbutton id="searchVidButton" name="searchVidButton" src="searchvideos"></wow:iconbutton>
     </g>

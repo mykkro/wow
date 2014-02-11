@@ -28,64 +28,74 @@ module.exports = function (grunt) {
             options: { alias: [ ] }
           },
           pg_login: {
-            src: ['./pages/login.js'],
+            src: ['./pages/login/main.js'],
             dest: 'public/js/pages/login.js',
-            options: { alias: [ './pages/login.js:pagescript' ]}
+            options: { alias: [ './pages/login/main.js:pagescript' ]}
           },
           pg_home: {
-            src: ['./pages/home.js'],
+            src: ['./pages/home/main.js'],
             dest: 'public/js/pages/home.js',
-            options: { alias: [ './pages/home.js:pagescript' ]}
+            options: { alias: [ './pages/home/main.js:pagescript' ]}
           },
           pg_books: {
-            src: ['./pages/books.js'],
+            src: ['./pages/books/main.js'],
             dest: 'public/js/pages/books.js',
-            options: { alias: [ './pages/books.js:pagescript' ]}
+            options: { alias: [ './pages/books/main.js:pagescript' ]}
           },
           pg_bookcategories: {
-            src: ['./pages/bookcategories.js'],
+            src: ['./pages/bookcategories/main.js'],
             dest: 'public/js/pages/bookcategories.js',
-            options: { alias: [ './pages/bookcategories.js:pagescript' ]}
+            options: { alias: [ './pages/bookcategories/main.js:pagescript' ]}
           },
           pg_radio: {
-            src: ['./pages/radio.js'],
+            src: ['./pages/radio/main.js'],
             dest: 'public/js/pages/radio.js',
-            options: { alias: [ './pages/radio.js:pagescript' ]}
+            options: { alias: [ './pages/radio/main.js:pagescript' ]}
           },
           pg_youtube: {
-            src: ['./pages/youtube.js'],
-            dest: 'public/js/pages/youtube.js',
-            options: { alias: [ './pages/youtube.js:pagescript' ]}
+            src: ['./pages/searchvideos/main.js'],
+            dest: 'public/js/pages/searchvideos.js',
+            options: { alias: [ './pages/searchvideos/main.js:pagescript' ]}
           },
           pg_uservideos: {
-            src: ['./pages/uservideopage.js'],
-            dest: 'public/js/pages/uservideopage.js',
-            options: { alias: [ './pages/uservideopage.js:pagescript' ]}
+            src: ['./pages/uservideos/main.js'],
+            dest: 'public/js/pages/uservideos.js',
+            options: { alias: [ './pages/uservideos/main.js:pagescript' ]}
           },
           pg_userapps: {
-            src: ['./pages/userapps.js'],
+            src: ['./pages/userapps/main.js'],
             dest: 'public/js/pages/userapps.js',
-            options: { alias: [ './pages/userapps.js:pagescript' ]}
+            options: { alias: [ './pages/userapps/main.js:pagescript' ]}
           },
           pg_favvideos: {
-            src: ['./pages/favvideospage.js'],
-            dest: 'public/js/pages/favvideopage.js',
-            options: { alias: [ './pages/favvideopage.js:pagescript' ]}
+            src: ['./pages/favvideos/main.js'],
+            dest: 'public/js/pages/favvideos.js',
+            options: { alias: [ './pages/favvideos/main.js:pagescript' ]}
           },
           pg_video: {
-            src: ['./pages/video.js'],
+            src: ['./pages/video/main.js'],
             dest: 'public/js/pages/video.js',
-            options: { alias: [ './pages/video.js:pagescript' ]}
+            options: { alias: [ './pages/video/main.js:pagescript' ]}
           },
           pg_app: {
-            src: ['./pages/app.js'],
+            src: ['./pages/app/main.js'],
             dest: 'public/js/pages/app.js',
-            options: { alias: [ './pages/app.js:pagescript' ]}
+            options: { alias: [ './pages/app/main.js:pagescript' ]}
           },
           pg_enter: {
-            src: ['./pages/entertainment.js'],
+            src: ['./pages/entertainment/main.js'],
             dest: 'public/js/pages/entertainment.js',
-            options: { alias: [ './pages/entertainment.js:pagescript' ]}
+            options: { alias: [ './pages/entertainment/main.js:pagescript' ]}
+          },
+          pg_testing: {
+            src: ['./pages/testing/main.js'],
+            dest: 'public/js/pages/testing.js',
+            options: { alias: [ './pages/testing/main.js:pagescript' ]}
+          },
+          pg_widgets: {
+            src: ['./pages/widgets/main.js'],
+            dest: 'public/js/pages/widgets.js',
+            options: { alias: [ './pages/widgets/main.js:pagescript' ]}
           }
       },
       less: {
