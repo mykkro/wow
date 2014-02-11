@@ -58,7 +58,7 @@ Multiline text that needs wrapping
 <rect x="40" y="40" width="60" height="60" fill="red"></rect>
 </wow:viewport>
 	
-	<wow:image src="./icons/SVG/stackoverflow.svg" class="fubar" name="foooo" embed="true"/>
+	<wow:image src="/icons/SVG/stackoverflow.svg" class="fubar" name="foooo" embed="true"/>
 	
 	</wow:grid>
 

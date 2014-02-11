@@ -30,7 +30,7 @@ module.exports = function(window, $, SVG, i18n) {
 		return map[icon] || "A"
 	}
 	
-	var timeinfo = require("../js/timeinfo")
+	var timeinfo = require("../../js/timeinfo")
 	var moment = require('moment');	
 	moment.lang('de')
 	
@@ -80,10 +80,10 @@ module.exports = function(window, $, SVG, i18n) {
 		window.location = "/pages/userapps"
 	}
 	function entertainmentActivated() {
-		window.location = "/pages/youtube"
+		window.location = "/pages/searchvideos"
 	}
 
-	var dialogs = require("../js/dialogs")($, i18n)
+	var dialogs = require("../../js/dialogs")($, i18n)
 	
 	function showQuitDialog() {
 		dialogs.quitDialog(function(reallyQuit) {

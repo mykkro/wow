@@ -4,7 +4,7 @@ module.exports = function(window, $, SVG, i18n) {
 			var draw = SVG('svg1')
 
 			// create image
-			var image = draw.image('icons/SVG/air.svg')		
+			var image = draw.image('/icons/SVG/air.svg')		
 			$("#btn1").click(function() {
 			  var anim = image.animate(1000, SVG.easing.bounce).move(100, 100)
 			})

@@ -18156,8 +18156,8 @@ return Q;
 }).call(this);
 
 },{}],"pagescript":[function(require,module,exports){
-module.exports=require('VhUiRS');
-},{}],"VhUiRS":[function(require,module,exports){
+module.exports=require('nS4jL7');
+},{}],"nS4jL7":[function(require,module,exports){
 module.exports = function(window, $, SVG, i18n) {
 	
 	// CalendarTextDaytime
@@ -18190,7 +18190,7 @@ module.exports = function(window, $, SVG, i18n) {
 		return map[icon] || "A"
 	}
 	
-	var timeinfo = require("../js/timeinfo")
+	var timeinfo = require("../../js/timeinfo")
 	var moment = require('moment');	
 	moment.lang('de')
 	
@@ -18240,10 +18240,10 @@ module.exports = function(window, $, SVG, i18n) {
 		window.location = "/pages/userapps"
 	}
 	function entertainmentActivated() {
-		window.location = "/pages/youtube"
+		window.location = "/pages/searchvideos"
 	}
 
-	var dialogs = require("../js/dialogs")($, i18n)
+	var dialogs = require("../../js/dialogs")($, i18n)
 	
 	function showQuitDialog() {
 		dialogs.quitDialog(function(reallyQuit) {
@@ -18297,4 +18297,4 @@ module.exports = function(window, $, SVG, i18n) {
 	}
 
 }
-},{"../js/dialogs":1,"../js/timeinfo":2,"moment":12}]},{},["VhUiRS"])
+},{"../../js/dialogs":1,"../../js/timeinfo":2,"moment":12}]},{},["nS4jL7"])
