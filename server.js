@@ -99,6 +99,12 @@ var WowServer = {
           app.use("/locales", express.static(currentDir+"/locales"))
           app.use("/userdata", express.static(currentDir+"/userdata"))
 	        app.use(express.static(currentDir + '/public'));
+
+          // this will make public resources of individual pages accessible
+          var dirs = fs.readdirSync(currentDir + "/pages")
+          dirs.forEach(function(dir) {
+            app.use("/pages/"+dir, express.static(currentDir+"/pages/"+dir+"/public"))
+          })
         });
 
         app.configure('development', function(){
