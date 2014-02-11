@@ -60,6 +60,12 @@ module.exports = function(window, $, SVG, i18n) {
 				W.get("pauseButton").disable()
 				W.get("stopButton").disable()
 			})
+
+			$(window).unload(function(){
+			  console.log("Bye.")
+			  window.player.stopVideo()
+			});
+
 			/* continue when finished */
 			if(next) next(page)
 		}

@@ -98,7 +98,6 @@ var WowServer = {
 	        app.use("/imports", express.static(storage.importDir))
           app.use("/locales", express.static(currentDir+"/locales"))
           app.use("/assets", express.static(currentDir+"/assets"))
-          app.use("/fonts", express.static(currentDir+"/fonts"))
           app.use("/userdata", express.static(currentDir+"/userdata"))
 	        app.use(express.static(currentDir + '/public'));
         });

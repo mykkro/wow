@@ -18155,8 +18155,6 @@ return Q;
     }
 }).call(this);
 
-},{}],"pagescript":[function(require,module,exports){
-module.exports=require('VhUiRS');
 },{}],"VhUiRS":[function(require,module,exports){
 module.exports = function(window, $, SVG, i18n) {
 	
@@ -18297,4 +18295,6 @@ module.exports = function(window, $, SVG, i18n) {
 	}
 
 }
-},{"../js/dialogs":1,"../js/timeinfo":2,"moment":12}]},{},["VhUiRS"])
+},{"../js/dialogs":1,"../js/timeinfo":2,"moment":12}],"pagescript":[function(require,module,exports){
+module.exports=require('VhUiRS');
+},{}]},{},["VhUiRS"])
