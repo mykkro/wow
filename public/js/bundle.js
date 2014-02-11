@@ -1014,8 +1014,6 @@ var Commons = {
 }
 
 module.exports = Commons
-},{}],"dialogs":[function(require,module,exports){
-module.exports=require('zT2nDu');
 },{}],"zT2nDu":[function(require,module,exports){
 var Dialog = require('modal-dialog');
 
@@ -1057,7 +1055,9 @@ module.exports = function($, i18n) {
 	}
 
 }
-},{"modal-dialog":32}],"i18n":[function(require,module,exports){
+},{"modal-dialog":32}],"dialogs":[function(require,module,exports){
+module.exports=require('zT2nDu');
+},{}],"i18n":[function(require,module,exports){
 module.exports=require('rq9WIT');
 },{}],"rq9WIT":[function(require,module,exports){
 // to be used as constructor
@@ -1108,9 +1108,7 @@ module.exports = function($) {
 	return InputWidget
 }
 
-},{"./widget":13}],"pageinfo":[function(require,module,exports){
-module.exports=require('OzAdbj');
-},{}],"OzAdbj":[function(require,module,exports){
+},{"./widget":13}],"OzAdbj":[function(require,module,exports){
 var url = require('url')
 var path = require('path')
 
@@ -1130,7 +1128,9 @@ module.exports = function(window) {
     }
 
 }
-},{"path":28,"url":30}],11:[function(require,module,exports){
+},{"path":28,"url":30}],"pageinfo":[function(require,module,exports){
+module.exports=require('OzAdbj');
+},{}],11:[function(require,module,exports){
 module.exports = function(window) {
 	var document = window.document
 

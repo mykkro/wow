@@ -242,7 +242,8 @@ var WowServer = {
         });
 
   app.post("/shutdown", function(req, res) {
-    WowServer.chrome.kill()
+    // if started with browser, kill it...
+    if(WowServer.chrome) WowServer.chrome.kill()
   })
 
     app.post('/imageupload', function(req, res) {
