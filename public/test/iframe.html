@@ -7,10 +7,38 @@
 				height: 100%;
 			}
 		</style>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script>
+
+	// test code for postMessage
+	window.addEventListener("message", receiveMessage, false);
+
+	function receiveMessage(event)
+	{
+	  	console.log("Incoming message from: " + event.origin)
+	  if (event.origin !== "http://localhost:9999")
+	    return;
+
+	  	console.log("Parent window received a message: ", event.data)
+	}
+
+    $(document).ready(function() {
+    	console.log("Document ready.")
+
+    	$('#embedded').bind('load', function() { 
+    	//$("#embedded").ready(function() {
+    		console.log("Iframe content ready.")
+    		var ifr = document.getElementById("embedded")
+
+    		// !!!! send event after the client page is fully ready..
+    		ifr.contentWindow.postMessage("Sample message from embedding page", "http://localhost:9999")
+    	})
+    })
+    </script>
 	</head>
   <body>
 
-		<iframe width="100%" height="100%" src="http://localhost:9999/imports/yLA6m0oM/"></iframe>
+		<iframe id="embedded" width="100%" height="100%" src="http://localhost:9999/test/book/index.html"></iframe>
 
 	</body>
 </html>

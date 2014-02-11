@@ -1,8 +1,18 @@
+#!/usr/bin/env node
+
 var spawn = require('child_process').spawn;
 var WowServer = require("./server")
+var argv = require('yargs').argv;
 
+/**
+ *  Available options:
+ *  --serveronly - does not run Chrome/Chromium browser
+ *  --windowed   - runs in window mode (in contrast to kiosk mode)
+ */
 WowServer.start(function(srv) {
 	console.log("wow server is running!")
+	if(argv.serveronly) return;
+
 	var baseURL = "http://localhost:" + WowServer.port + "/";
 
 	var runtime = 
@@ -12,7 +22,8 @@ WowServer.start(function(srv) {
 
 	var args = [
 		'--force-app-mode',
-		'--kiosk',
+		argv.windowed ? '' : '--kiosk',
+		'--window-size=960,600',
 		'--app-window-size=960,600',
 		'--enable-crxless-web-apps',
 		'--user-data-dir=' + __dirname+"/cache",
