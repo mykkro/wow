@@ -4,3 +4,6 @@
 {"k":"0000000078","o":"0000000216","v":"001"}
 {"_id":5,"_uid":5,"_dt":1391180780489,"_s":"a051f6cf73312904879f1ce8259ec53e"}
 {"name":"Legend of Zelda: Ocarina of Time","developer":"Nintendo","released":{"$wrap":"$date","v":911602800000,"h":"1998-11-20T23:00:00.000Z"},"_id":{"$wrap":"$oid","v":5},"consoles":[{"$wrap":"$oid","v":5}],"__v":0}
+{"k":"0000000078","o":"0000000216","v":"001"}
+{"_id":6,"_uid":6,"_dt":1392370927002,"_s":"5cf0746ef845c44b27348d91da676332"}
+{"name":"Legend of Zelda: Ocarina of Time","developer":"Nintendo","released":{"$wrap":"$date","v":911602800000,"h":"1998-11-20T23:00:00.000Z"},"_id":{"$wrap":"$oid","v":6},"consoles":[{"$wrap":"$oid","v":6}],"__v":0}
