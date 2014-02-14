@@ -1,0 +1,6 @@
+{"k":"0000000078","o":"0000000229","v":"001"}
+{"_id":2,"_uid":2,"_dt":1392368583667,"_s":"d0343ce114dac13f4792cd56c605883d"}
+{"name":"MyApplication","title":"My Application","description":"Some description comes here...","version":"1.0.0","imported":{"$wrap":"$date","v":1392368583624,"h":"2014-02-14T09:03:03.624Z"},"_id":{"$wrap":"$oid","v":2},"__v":0}
+{"k":"0000000078","o":"0000000229","v":"001"}
+{"_id":3,"_uid":3,"_dt":1392368631780,"_s":"cd2272824dc82b34e89a6bb2309f1607"}
+{"name":"MyApplication","title":"My Application","description":"Some description comes here...","version":"1.0.0","imported":{"$wrap":"$date","v":1392368631770,"h":"2014-02-14T09:03:51.770Z"},"_id":{"$wrap":"$oid","v":3},"__v":0}
