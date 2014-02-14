@@ -1,3 +1,38 @@
+<div>
+<style>
+    svg.main, #iframe-wrapper {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+    }
+    svg.controls {
+        pointer-events: none;
+    }
+    svg.controls > g {
+        pointer-events: all;
+    }
+</style>
+<svg 
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:wow="http://example.org/wow"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    unselectable="on" 
+    style="-webkit-user-select: none;"
+	tabindex='1'
+	viewBox="0 0 960 600"
+	width="100%"
+	height="100%"
+    class="main"
+	preserveAspectRatio="none"
+    >
+    <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
+	<g id="tempgroup" style="display:none;"></g>    
+</svg>
+<div id="iframe-wrapper">
+</div>
 <svg 
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -6,22 +41,21 @@
     unselectable="on" 
     style="-webkit-user-select: none;"
     id="svg"
-	tabindex='1'
-	viewBox="0 0 960 600"
-	width="100%"
-	height="100%"
-	preserveAspectRatio="none"
+    tabindex='1'
+    viewBox="0 0 960 600"
+    width="100%"
+    height="100%"
+    class="main controls"
+    preserveAspectRatio="none"
     >
-    <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
-    <g transform="translate(840, 20)">
+    <g transform="translate(906, 4) scale(0.5)">
         <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
     </g>
-    <g transform="translate(20, 20)">
+    <g transform="translate(4, 4) scale(0.5)">
         <wow:iconbutton name="favButton" src="favorite"></wow:iconbutton>
     </g>
-    <g transform="translate(20, 140)">
+    <g transform="translate(4, 60) scale(0.5)">
         <wow:iconbutton name="unfavButton" src="unfavorite"></wow:iconbutton>
     </g>
-
-	<g id="tempgroup" style="display:none;"></g>    
 </svg>
+</div>
