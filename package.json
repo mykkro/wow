@@ -59,7 +59,9 @@
     "jquery-file-upload-middleware": "0.1.1",
     "node-chrome": "0.0.3-1",
     "yargs": "1.0.15",
-    "gently": "~0.9.2"
+    "gently": "~0.9.2",
+    "mongoose-relationship": "0.0.2",
+    "mongoose-timestamp": "~0.2.0"
   },
   "repository": {
     "type": "git",
