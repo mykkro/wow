@@ -30,7 +30,7 @@
           defaultLocale: 'en'
         })
         i18n.setLocale('de')
-        var Widgetizer = require("widgetizer")(window, $)
+        var Widgetizer = require("widgetizer")(window, $, SVG)
         var pagescript = require("pagescript")(window, $, SVG, i18n)
         var allData = pageInfo
         Widgetizer.useCommonWidgets()

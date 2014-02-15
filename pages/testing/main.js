@@ -1,7 +1,7 @@
 module.exports = function(window, $, SVG, i18n) {
 	var page = {
 		init: function(Widgetizer, data, next) {
-			var draw = SVG('svg1')
+			var draw = Widgetizer.SVGDoc
 
 			// create image
 			var image = draw.image('/icons/SVG/air.svg')		

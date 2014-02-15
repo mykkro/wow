@@ -1,6 +1,6 @@
 // create a browserified version of widgetizer:
 //  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
-module.exports = function(window, $) {
+module.exports = function(window, $, SVG) {
   console.log("Widgetizer script loading...")
   var document = window.document
   var Commons = require("./commons")
@@ -38,6 +38,8 @@ module.exports = function(window, $) {
 	svgNS: "http://www.w3.org/2000/svg",
 	window: window,
 	SvgHelper: SvgHelper,
+	SVG: SVG,
+	SVGDoc: SVG('svg'),
     $: $,
 	_: _,
 	widgets: {},
