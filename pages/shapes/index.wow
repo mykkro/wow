@@ -4,6 +4,7 @@
     xmlns:wow="http://example.org/wow"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     unselectable="on" 
+    id="svg"
     style="-webkit-user-select: none;"
 	tabindex='1'
 	width="400"
