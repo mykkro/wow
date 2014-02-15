@@ -64,14 +64,37 @@ mongoose.connect('tingodb://'+__dirname+'/data', function (err) {
   }
 
 
-  /* this works - straight away, without id... */
-  /* changing file also works... */
-  var Sample = new SampleModel()
-  Sample.set("attachment.file", uploadedFile)
-  Sample.save(function(err, data) {
-    if(err) throw err;
-    console.log(data)
+    /* there seems to be some problems with updating fields, possibly with Tungus... */
+    /* better alternative: create own plugin for uploading or fix this one... */
 
+    /* this works - straight away, without id... */
+    /*
+    var Sample = new SampleModel()
+    Sample.save(function(err, data) {
+      if(err) throw err;
+      console.log(data)
+    })
+    */
+
+    /* retrieve file info... */
+    /**/
+    SampleModel.findById(3, function(err, data) {
+      if(err) throw err;
+      console.log(data)
+      // change it - it will upload the file, but the attachment field is not saved... */
+      /**/
+      data.set("attachment.file", uploadedFile)
+      data.markModified("attachment")
+      data.save(function(err, data2) {
+        if(err) throw err
+        console.log(data2) // data2 is shown correctly, but it is not saved into DB
+      })
+/**/
+    })
+    /**/
+
+
+/*
     fs.writeFileSync(tmpFilePath, "Another file.\n")
     var uploadedFile = {
       size: fs.statSync(tmpFilePath)['size'],
@@ -81,22 +104,21 @@ mongoose.connect('tingodb://'+__dirname+'/data', function (err) {
       hash: false,
       lastModifiedDate: uploadedDate
     }
-    // this will change the uploaded file - but the attachment is unchanged */
+    // this will change the uploaded file - but the attachment is unchanged 
     data.set("attachment.file", uploadedFile)
     data.save(function(err, data2) {
       if(err) throw(err);
       console.log(data2);
       // you can't remove file like this...
       // TODO change the plugin to support file removal
-      /*
       data2.set("attachment.file", {})
       data2.save(function(err, data3) {
         if(err) throw(err);
         console.log(data3);
       })
-      */
     })
-  })
+      */
+  
 
 /* this will upload the file, but not change/populate the attachment field */
 /*
