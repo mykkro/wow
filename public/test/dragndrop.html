@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Draggabilly testing page</title>
+<script type="text/javascript" src="/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="/js/draggabilly.pkgd.min.js"></script>
+<script>
+$(document).ready(function() {
+	console.log("Ready!")
+	var elem = document.querySelector('#draggable');
+	var draggie = new Draggabilly( elem, {
+	  // options...
+	  containment: '#container'
+	});
+
+	var elemSvg = document.querySelector('#draggableSvg');
+	var draggieSvg = new Draggabilly( elemSvg, {
+	  // options...
+	});
+})
+</script>
+</head>
+<body>
+<style>
+#draggable {
+	width: 100px;
+	height: 100px;
+	background-color: blue;
+}
+#container {
+	width: 300px;
+	height: 240px;
+	background-color: #ccc;
+}
+</style>
+<h2><a href="http://draggabilly.desandro.com/">Draggabilly</a> testing page</h2>
+<h3>HTML - fine</h3>
+<div id="container">
+	<div id="draggable"></div>
+</div>
+ <h3>SVG - does not work well</h3>
+ <svg id="containerSvg" width="300" height="240" style="background-color:#cde;">
+ 	<rect id="draggableSvg" width="100" height="100" fill="#01f"></rect>
+ </svg>
+</body>
+</html>
