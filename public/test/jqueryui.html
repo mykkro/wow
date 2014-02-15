@@ -1,0 +1,87 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset=utf-8 />
+    <title>jQuery UI testing page</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/jquery-ui.min.css" />
+    <script type="text/javascript" src="../js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+    <style>
+    #origin
+{
+  background-color: lightgreen;
+}
+
+#origin img, #drop img {
+  margin-top: 3px;
+  margin-left: 5px;
+}
+
+#drop
+{
+  background-color: red;
+  min-height: 120px;
+}
+.over {
+  border: solid 5px purple;
+}
+.draggable
+{
+  border: solid 2px gray;
+}
+    </style>
+	<script>
+	$(document).ready(function() {
+		console.log("Ready!")
+
+$(".draggable").draggable({ cursor: "crosshair", revert: "invalid"});
+$("#drop").droppable({ accept: ".draggable", 
+           drop: function(event, ui) {
+                    console.log("drop");
+                   $(this).removeClass("border").removeClass("over");
+             var dropped = ui.draggable;
+            var droppedOn = $(this);
+            $(dropped).detach().css({top: 0,left: 0}).appendTo(droppedOn);      
+             
+             
+                }, 
+          over: function(event, elem) {
+                  $(this).addClass("over");
+                   console.log("over");
+          }
+                ,
+                  out: function(event, elem) {
+                    $(this).removeClass("over");
+                  }
+                     });
+$("#drop").sortable();
+
+$("#origin").droppable({ accept: ".draggable", drop: function(event, ui) {
+                    console.log("drop");
+                   $(this).removeClass("border").removeClass("over");
+             var dropped = ui.draggable;
+            var droppedOn = $(this);
+            $(dropped).detach().css({top: 0,left: 0}).appendTo(droppedOn);      
+             
+             
+                }});
+	})
+	</script>
+    </head>
+    <body>
+        <h2>Draggable demo</h2>
+        <p>Original example from: <a href="http://jsfiddle.net/39khs/82/">http://jsfiddle.net/39khs/82/</a></p>
+
+<div id="wrapper">
+    <div id="origin" class="fbox">
+        <img src="http://placehold.it/140x100" id="one" title="one" class="draggable" />
+        <img src="http://placehold.it/150x100" id="two" title="two" class="draggable" />
+        <img src="http://placehold.it/160x100" id="three" title="three" />
+    </div>
+  <p>test</p>
+    <div id="drop" class="fbox">
+   
+    </div>
+</div>     
+    </body>
+    </html>
