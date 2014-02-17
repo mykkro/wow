@@ -20,5 +20,31 @@
 		</form>
 	</div>
 
+	<div id="myId" class="dropzone-previews"></div>
+	<style>
+	#myId {
+		width: 500px;
+		height: 300px;
+		background-color: #eee;
+	}
+	</style>
+	<script>
+	var myDropzone = new Dropzone("div#myId", { 
+		url: "/fileupload",
+		addRemoveLinks: true,
+		init: function() {
+    		this.on("addedfile", function(file) { 
+    			console.log("Added file."); 
+    		});
+    		this.on("removedfile", function(file) { 
+    			console.log("Removed file."); 
+    		});
+    		this.on("success", function(file, response) { 
+    			console.log("Uploaded successfully.");
+    		});
+  		}
+	});
+	</script>
+
     </body>
     </html>
