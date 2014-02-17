@@ -34,6 +34,7 @@ var uploads = path.join(uploads_base, "u");
   NodeSchema.plugin(timestamps)
 
 var SampleSchema = new Schema({
+  title: String
 });
 SampleSchema.plugin(filePlugin, {
     name: "attachment",
@@ -52,12 +53,12 @@ mongoose.connect('tingodb://'+__dirname+'/data', function (err) {
 
   var tmpFilePath = path.join(__dirname, 'tmp/mongoose-file-test')
   var uploadedDate = new Date()
-  fs.writeFileSync(tmpFilePath, "Dummy content here.\n")
+  fs.writeFileSync(tmpFilePath, "Yet another file.\n")
 
   var uploadedFile = {
     size: fs.statSync(tmpFilePath)['size'],
     path: tmpFilePath,
-    name: 'dummy.txt',
+    name: 'dummy2.txt',
     type: 'text/plain',
     hash: false,
     lastModifiedDate: uploadedDate
@@ -78,16 +79,18 @@ mongoose.connect('tingodb://'+__dirname+'/data', function (err) {
 
     /* retrieve file info... */
     /**/
-    SampleModel.findById(3, function(err, data) {
+    SampleModel.findById(4, function(err, data) {
       if(err) throw err;
       console.log(data)
       // change it - it will upload the file, but the attachment field is not saved... */
       /**/
-      data.set("attachment.file", uploadedFile)
-      data.markModified("attachment")
+      data.set("attachment", {})
+      data.set("attachment.file", uploadedFile) // this will not propagate...
+      data.set("title","Aargh!") // this will save correctly
       data.save(function(err, data2) {
         if(err) throw err
         console.log(data2) // data2 is shown correctly, but it is not saved into DB
+
       })
 /**/
     })
