@@ -8,6 +8,7 @@ var path = require("path")
 app.configure(function () {
   app.use(express.bodyParser());
   app.use("/dropzone", express.static(path.join(__dirname, 'dropzone')));
+  app.use("/media", express.static(path.join(__dirname, 'media')));
 });
 
 
@@ -19,7 +20,14 @@ app.get("/", function(req, res) {
 /// Post files
 app.post('/fileupload', function(req, res) {
 
+	if(!req.files.file) {
+		// nothing to upload...
+		res.redirect("/");
+		return
+	}
+
 	fs.readFile(req.files.file.path, function (err, data) {
+
 
 		var imageName = req.files.file.name
 
