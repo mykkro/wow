@@ -5,7 +5,8 @@
 
 $.playable('swf/');
 $(function(){
-	$('a[href$=".mp3"]').playable();
+	//$('a[href$=".mp3"]').playable();
+	$("#radiolinks a").playable()
 })
 /*
     soundManager.setup({
@@ -24,5 +25,17 @@ $(function(){
     })
 */
 </script>
-<div>
+<div id="radiolinks">
+<p>
+jquery.playable:
 <a href="http://broadcast.infomaniak.ch/radiojazz-high.mp3">Play</a>
+</p>
+<p>
+jquery.playable:
+<a href="http://pub5.rockradio.com:80/rr_beatlestribute">Another</a>
+</p>
+<p>
+HTML5 audio control: 
+<audio controls src="http://pub5.rockradio.com:80/rr_beatlestribute"></audio>
+</p>
+</div>
