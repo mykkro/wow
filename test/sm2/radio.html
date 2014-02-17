@@ -1,0 +1,28 @@
+<script src="../../js/jquery/jquery-2.0.3.min.js"></script>
+<script src="js/soundmanager2.js"></script>
+<script src="js/jquery.playable.js"></script>
+<script>
+
+$.playable('swf/');
+$(function(){
+	$('a[href$=".mp3"]').playable();
+})
+/*
+    soundManager.setup({
+      url: 'swf/',
+      onready: function() {
+        var mySound = soundManager.createSound({
+          id: 'aSound',
+          url: "http://broadcast.infomaniak.ch/radiojazz-high.mp3"
+        });
+        mySound.play();
+      },
+      ontimeout: function() {
+        // Hrmm, SM2 could not start. Missing SWF? Flash blocked? Show an error, etc.?
+        console.log("Timeout!")
+      }
+    })
+*/
+</script>
+<div>
+<a href="http://broadcast.infomaniak.ch/radiojazz-high.mp3">Play</a>
