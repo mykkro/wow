@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <style type="text/css">
+            .dropzone {
+                border: 2px dashed #ccc;
+                width: 300px;
+                height: 200px;
+            }
+        </style>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var filename = '';
+                var image_data = '';
+
+                $.event.props.push('dataTransfer');
+                $('.dropzone').on({
+                    dragenter: function(e) {
+                        $(this).css('background-color', 'lightBlue');
+                    },
+                    dragleave: function(e) {
+                        $(this).css('background-color', 'white');
+                    },
+                    drop: function(e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+
+                        var file = e.dataTransfer.files[0];
+                        var fileReader = new FileReader();
+
+                        var this_obj = $(this);
+
+                        fileReader.onload = (function(file) {
+                            return function(event) {
+                                // Preview
+                                filename = file.name;
+                                image_data = event.target.result;
+                                $(this_obj).next().html('<a href="#" class="upload-file">Upload file</a>');
+                                $(this_obj).html('<img style="max-width: 200px; max-height: 200px;" src="' + event.target.result + '">');
+                            };
+                        })(file);
+
+                        fileReader.readAsDataURL(file);         
+                    }
+                });
+
+                // Upload file
+                $(".upload-file").live("click", function(e){
+                    e.preventDefault();
+
+                    var this_obj = $(this);
+                    var image_data = $(this_obj).parent().prev().find('img').attr('src');
+
+                    $.post(
+                        'send_image.php',
+                        {
+                            data: image_data,
+                            filename: filename
+                        }, function(response){  
+                            $(this_obj).parent().prev().html(response);
+                            $(this_obj).remove();
+                        }
+                    );
+
+                    //console.log('ok');
+                });
+
+            });
+        </script>
+    </head>
+    <body>
+        <!-- Multiple dropzones -->
+        <div class="dropzone">
+            Drop files here
+        </div>
+        <div id="meta"></div>
+        <div class="dropzone">
+            Drop files here
+        </div>
+        <div id="meta"></div>
+    </body>
+</html>
