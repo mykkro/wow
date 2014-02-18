@@ -3,6 +3,8 @@
 	overflow: auto;
 }
 </style>
+<script type="text/javascript" src="/js/jquery.youtubedrop.js"></script>
+  <div class="admin">
 <script type="text/javascript" src="/js/pages/admin.js"></script>
   <div class="admin">
 <input style="display:none;" id="fileDialog" type="file" accept=".zip,application/zip" />
@@ -34,6 +36,12 @@
 			<h2>Add YouTube Video</h2>
 			<div class="panel-body">
 				<div>
+			        <div class="dropzone">
+			            Drop YouTube video here
+			        </div>
+
+				</div>
+				<div>
 					<label><span>YouTube VideoID: </span><input type="text" id="videoid-textfield"/></label>
 				</div>
 				<div>
@@ -51,6 +59,25 @@
 		</div>
 	</div>	
 	</div>
+
+ 		<style type="text/css">
+            .dropzone {
+            	background-color: salmon;
+                border: 2px dashed #ccc;
+                width: 124px;
+                height: 94px;
+            }
+        </style>
+
+
+	<script>
+        $('.dropzone').youTubeDrop({
+            dropped: function(videoId) {
+                console.log("Dropped!",videoId)
+                $("#videoid-textfield").val(videoId)
+            }
+        })
+	</script>
 <!-- we need this element so widgetizer does not complain... -->
 <div style="display:none;">
 <svg 
