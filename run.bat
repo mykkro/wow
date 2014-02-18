@@ -1,3 +1,3 @@
 @echo off
 
-./bin/win32/node.exe run.js %*
+bin\win32\node.exe run.js %*
