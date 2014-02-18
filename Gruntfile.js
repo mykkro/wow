@@ -130,6 +130,7 @@ module.exports = function (grunt) {
           files: [
             {src: ['assets/**', 'css/**', 'fonts/**', 'js/**', 'lib/**', 'locales/**', 'media/**', 'pages/**', 'public/**', 'routes/**', 'templates/**', 'views/**']},
             {src: ['run.bat', 'run.js', 'server.js', 'package.json', 'main.js']},
+            {src: ['bin/win32/**']},
             {src: ['node_modules/**', 
               '!node_modules/browserify/**',
               '!node_modules/browserify-shim/**',
@@ -139,18 +140,26 @@ module.exports = function (grunt) {
               '!node_modules/grunt-contrib-less/**',
               '!node_modules/grunt-execute/**',
               '!node_modules/grunt-node-webkit-builder/**',
+              '!node_modules/grunt-downloadfile/**',
               '!node_modules/node-chrome/**',
               '!node_modules/pouchdb/**',
               ]}
           ]
         }
-      }      
+      },
+      downloadfile: {
+        files: [
+          {url:'http://nodejs.org/dist/v0.10.25/node.exe', dest:'bin/win32'},
+          {url:'http://nodejs.org/dist/v0.10.25/x64/node.exe', dest:'bin/win64'}
+        ]
+      },  
     })
 	  grunt.loadNpmTasks('grunt-node-webkit-builder');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-execute');
     grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-downloadfile');
 
     grunt.registerTask('default', ['browserify', 'less']);
 }
