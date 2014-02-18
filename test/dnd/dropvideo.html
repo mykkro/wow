@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <style type="text/css">
+            .dropzone {
+                border: 2px dashed #ccc;
+                width: 124px;
+                height: 94px;
+            }
+        </style>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="jquery.youtubedrop.js"></script>
+        <script type="text/javascript">
+
+
+
+    $(document).ready(function() {
+        $('.dropzone').youTubeDrop({
+            dropped: function(videoId) {
+                console.log("Dropped!",videoId)
+            }
+        })
+    });
+        </script>
+    </head>
+    <body>
+        <!-- Multiple dropzones -->
+        <div class="dropzone">
+            Drop YouTube video here
+        </div>
+    </body>
+</html>
