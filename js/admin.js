@@ -4,7 +4,7 @@
 		var url = require('url')
 		var path = require('path')
 
-		var Widgetizer = require("./widgetizer")(window, $)
+		var Widgetizer = require("./widgetizer")(window, $, SVG)
 		var i18n = new(require("./i18n"))({
           locales: ['en', 'de', 'cz'],
           defaultLocale: 'en'
