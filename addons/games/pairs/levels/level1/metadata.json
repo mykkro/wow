@@ -1,0 +1,30 @@
+{
+	"$type":"playonweb-level",
+	"name":"level1",
+	"version":"1.0.0",
+	"title":"Sample Level",
+	"description": "Describe your level here.",
+	"author": "Somebody",
+	"created": "",
+	"helpUri": "",
+	"viewUri": "",			
+	"previewUri": "levelpreview.html",
+	"defaultSettings": {
+		"questPolicy": "random",
+		"_comment": ""
+	},
+	"conditions": [
+		{
+			"when": "all quests completed",
+			"respond": "complete",
+			"title": "Sample Condition",
+			"description": "Describe condition here.",
+			"help": ""
+		},
+		{
+			"when": "any quest failed",
+			"respond": "fail"
+		}
+	],
+	"questsUri": "quests/metadata.json"
+}		
