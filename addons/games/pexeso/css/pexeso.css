@@ -1,0 +1,142 @@
+.container {
+  width: 958px;
+  height: 598px;
+  border: 1px dashed #666;
+}
+
+.container .info {
+  background-color: none;
+  margin-left: 50px;
+}
+
+.container .nav {
+  width: 64px;
+  margin-left: 50px;
+  margin-top: 20px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.container .tabs {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 40px;
+  margin-top: 30px;
+}
+
+button.game {
+  border: 0;
+  width: 64px;
+  height: 64px;
+  color: transparent;
+  background: none;
+}
+
+button.game:disabled {
+  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+}
+
+button.game-new {
+  background-image: url(../media/icons/run.png);
+  background-size: 100% auto;
+}
+
+button.game-quit {
+  background-image: url(../media/icons/quit.png);
+  background-size: 100% auto;
+}
+
+button.game-restart {
+  background-image: url(../media/icons/restart.png);
+  background-size: 100% auto;
+}
+
+button.game-info {
+  background-image: url(../media/icons/info.png);
+  background-size: 100% auto;
+}
+
+button.game-rules {
+  background-image: url(../media/icons/chess.png);
+  background-size: 100% auto;
+}
+
+button.game-scores {
+  background-image: url(../media/icons/scores.png);
+  background-size: 100% auto;
+}
+
+button.game-settings {
+  background-image: url(../media/icons/settings.png);
+  background-size: 100% auto;
+}
+
+#board .tile {
+  background-size: 100%;
+  -moz-background-size: 100%;
+  -o-background-size: 100%;
+  -webkit-background-size: 100%;
+  width: 80px;
+  height: 80px;
+  display: inline-block;
+} 
+
+#board {
+  width: 450px;
+  height: 380px;
+}
+
+
+.card {
+  width:80px;
+  height:80px;
+  margin: 5px;
+  perspective:1000px;
+  -webkit-perspective:1000px;
+  cursor:pointer;
+  color:white;
+  display: inline-block;
+}
+.card>div {
+  width:80px;
+  height:80px;
+  position:absolute;
+  transition:all 1s ease;
+  -webkit-transition:all 1s ease;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  background-size: 100%;
+  -moz-background-size: 100%;
+  -o-background-size: 100%;
+  -webkit-background-size: 100%;
+}
+.tcf {
+    z-index:10;
+    background:#123;
+  transform-origin:0% 50%;
+  -webkit-transform-origin:0% 50%;
+}
+.found .tcf {
+  background-color: #030;
+}
+.tcb {
+  background:#030;
+  transform:translateX(-100%) rotateY(180deg);
+  -webkit-transform:translateX(-100%) rotateY(180deg);
+  z-index:0;
+      transform-origin:100% 50%;
+  -webkit-transform-origin:100% 50%;
+
+}
+.card.flipped>.tcf {
+  transform:translateX(100%) rotateY(-180deg);
+  -webkit-transform:translateX(100%) rotateY(-180deg);
+  z-index:0;
+}
+.card.flipped>.tcb {
+  transform:none;
+  -webkit-transform:none;
+  z-index:10;
+}

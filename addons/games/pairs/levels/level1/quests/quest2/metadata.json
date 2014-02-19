@@ -1,0 +1,14 @@
+{
+	"$type":"playonweb-quest",
+	"name":"quest2",
+	"version":"1.0.0",
+	"title": "Another sample Quest",
+	"description": "Describe your quest here.",
+	"help": "",
+	"view": "",
+	"defaultSettings": {
+
+	},
+	"conditions": [
+	]
+}

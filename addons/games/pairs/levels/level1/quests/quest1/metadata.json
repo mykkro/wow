@@ -1,0 +1,45 @@
+{
+	"$type":"playonweb-quest",
+	"name":"quest1",
+	"version":"1.0.0",
+	"title": "Sample Quest",
+	"description": "Describe your quest here.",
+	"author": "Nobody",
+	"created": "",
+	"help": "",
+	"view": "",
+	"defaultSettings": {
+
+	},
+	"conditions": [
+		{
+			"when": "user response valid",
+			"respond": "complete",
+			"title": "Sample Condition",
+			"description": "Describe condition here.",
+			"help": ""
+		},
+		{
+			"when": "time runs out",
+			"respond": "fail"
+		}
+	],
+	"logs": [
+		{
+			"name": "startup",
+			"title": "Quest startup."
+		},
+		{
+			"name": "finish",
+			"title": "Quest finish (result, score)."
+		},
+		{
+			"name": "fail",
+			"title": "Quest fail (score)."
+		},
+		{
+			"name": "user-response",
+			"title": "User response (question, answer, validity)."
+		}
+	]
+}

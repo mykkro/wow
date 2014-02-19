@@ -1,0 +1,21 @@
+{
+  "$type": "playonweb-tileset-list",
+  "_comment": "Made similar to lists returned from CouchDB",
+  "$schema": "",
+  "total_rows": 1,
+  "offset": 0,
+  "rows": [
+    {
+      "id": "sampleTileset",
+      "key": "sampleTileset",
+      "value": {
+      	"_comment": "URIs are package-absolute",
+        "uri": "/media/tilesets/sampleTileset/metadata.json",
+        "name": "sampleTileset",
+		"title": "Sample tileset",
+		"description": "Describe your tileset here.",
+        "created": "2013-09-02T01:02:03"
+      }
+  }
+]
+}
