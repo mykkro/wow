@@ -1,4 +1,9 @@
+body {
+  background-color: #eee;
+}
+
 .container {
+  background-color: #fff;
   width: 958px;
   height: 598px;
   border: 1px dashed #666;
@@ -6,12 +11,12 @@
 
 .container .info {
   background-color: none;
-  margin-left: 50px;
+  margin-left: 100px;
 }
 
 .container .nav {
   width: 64px;
-  margin-left: 50px;
+  margin-left: 100px;
   margin-top: 20px;
   display: inline-block;
   vertical-align: top;
