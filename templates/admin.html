@@ -4,12 +4,13 @@
 }
 </style>
 <script type="text/javascript" src="/js/jquery.youtubedrop.js"></script>
-  <div class="admin">
+<script src="js/soundmanager2.js"></script>
+<script src="js/jquery.playable.js"></script>
 <script type="text/javascript" src="/js/pages/admin.js"></script>
+
   <div class="admin">
-<input style="display:none;" id="fileDialog" type="file" accept=".zip,application/zip" />
-<input style="display:none;" id="dirDialog"  type="file" nwdirectory />
-	
+  <div class="admin">
+
 	<h1>Admin Page</h1>
 	<div class="admin-nav">
 		<a href="index.html">Back to login page</a>
@@ -36,7 +37,7 @@
 			<h2>Add YouTube Video</h2>
 			<div class="panel-body">
 				<div>
-			        <div class="dropzone">
+			        <div id="video-dropzone" class="dropzone">
 			            Drop YouTube video here
 			        </div>
 
@@ -57,26 +58,68 @@
 			<ul class="panel-body" id="video-list">
 			</ul>
 		</div>
+		<div class="addradio panel">
+			<h2>Add Internet Radio</h2>
+			<div class="panel-body">
+				<div>
+			        <div id="radio-dropzone" class="dropzone">
+			            Drop Internet Radio URL here (raw streams like .mp3 or .ogg are accepted)
+			        </div>
+
+				</div>
+				<div>
+					<label><span>Internet Radio Name: </span><input type="text" id="radiotitle-textfield"/></label>
+				</div>
+				<div>
+					<label><span>Internet Radio URL: </span><input type="text" id="radiourl-textfield"/></label>
+				</div>
+				<div>
+					<label><span>UserID: </span><input type="text" disabled id="radiouser-textfield" value="555"/></label>
+				</div>
+				<div class="buttons">
+					<button id="add-radio-btn">Add to list</button>
+				</div>
+			</div>
+		</div>
+		<div class="radios panel">
+			<h2>Internet Radios</h2>
+			<ul class="panel-body" id="radio-list">
+			</ul>
+		</div>
 	</div>	
-	</div>
+</div>	
+</div>
 
  		<style type="text/css">
             .dropzone {
-            	background-color: salmon;
+            	background-color: #fce;
                 border: 2px dashed #ccc;
+            }
+            .dropzone.error {
+            	background-color: salmon;
+            }
+            .dropzone.accepted {
+            	background-color: greenyellow;
+            }
+            #video-dropzone {
                 width: 124px;
                 height: 94px;
+            }
+            #radio-dropzone {
+            	padding: 20px;
+            	display: inline-block;
+            }
+            #radiotitle-textfield {
+            	width: 400px;
+            }
+            #radiourl-textfield {
+            	width: 400px;
             }
         </style>
 
 
 	<script>
-        $('.dropzone').youTubeDrop({
-            dropped: function(videoId) {
-                console.log("Dropped!",videoId)
-                $("#videoid-textfield").val(videoId)
-            }
-        })
+
 	</script>
 <!-- we need this element so widgetizer does not complain... -->
 <div style="display:none;">
