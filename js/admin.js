@@ -1,4 +1,18 @@
 	$(document).ready(function() {
+
+		var radioJSON = { "radios": [
+		  { "name": "Klassik Radio", "src": "http://edge.live.mp3.mdn.newmedia.nacamar.net/klassikradio128/livestream.mp3"},
+		  { "name": "Sport 1 FM", "src": "http://stream.sport1.fm/api/livestream-redirect/SPORT1FM_24_7.mp3"},
+		  { "name": "Antenne 1", "src": "http://stream.antenne1.de/stream1/livestream.mp3"},
+		  { "name": "Radio FFN", "src": "http://player.ffn.de/ffn.mp3"},
+		  { "name": "Ostseewelle", "src": "http://edge.live.mp3.mdn.newmedia.nacamar.net/ostseewellelive/livestream.mp3"},
+		  { "name": "Radio 21", "src": "http://edge.live.mp3.mdn.newmedia.nacamar.net/ps-radio21/livestream.mp3"},
+		  { "name": "Radio ZUSA", "src": "http://stream.radio-zusa.net:8000/zusa-hifi.ogg"},
+		  { "name": "Kronhit 90sDance", "src": "http://onair.krone.at/kronehit-90sdance.mp3"} 
+		] }
+
+		$.playable('soundmanager/swf/')
+
 		var mustache = require('mustache');
 		var Base = require('basejs');
 		var url = require('url')
@@ -29,6 +43,76 @@
 		var userId = "555"
 		var adminId = "123"
 		var page = 1
+
+		var RadioPanel = Base.extend({
+			constructor: function() {
+				var self = this
+		  		$("#add-radio-btn").click(function() {
+		  			self.addUserRadio()
+		  		})
+				self.refreshRadiosView()
+			},
+			getRadios: function(cb) {
+				server("userRadiosList", {adminId:adminId, page:page}, cb)
+			},
+			showRadios: function(data) {
+				console.log("show radios: ",data)
+				var root = $("#radio-list").empty()
+				if(data && data.items) {
+					for(var i=0; i<data.items.length; i++) {
+						root.append(this.showRadio(data.items[i]))
+					}
+				}
+			},
+			showRadio: function(item) {	
+				var self = this
+				var tpl = '<span><a href="{{url}}">{{title}}</a></span><button>Remove</button>'
+				var html = mustache.to_html(tpl, item)
+				var out = $("<div>").html(html)
+				out.find("a").playable()
+				out.find("button").click(function() {
+					self.showRemoveDialog(function() {
+						// confirmed...
+						self.removeRadio(item.userId, item.url, out)
+					})
+				})
+				return out
+			},
+			removeRadio: function(userId, url, div) {
+				// remove record from database...
+				server("userRadiosRemove", {adminId:adminId, userId:userId, url:url}, function(err, res) {
+					if(err) console.error(err);
+					else {
+						div.fadeOut("slow")
+					}
+				})
+			},
+			addUserRadio: function() {
+				var userId = $("#radiouser-textfield").val()
+				var url = $("#radiourl-textfield").val()
+				var title = $("#radiotitle-textfield").val()
+				if(userId && url) {
+					var self = this
+					server("userRadiosAdd", {adminId:adminId, userId:userId, url:url, title:title}, function(err, res) {
+						console.log(res)
+						self.refreshRadiosView()
+					})
+				}
+			},
+			showRemoveDialog: function(cb) {
+				dialogs.removeDialog(function(reallyRemove) {
+					if(reallyRemove) cb()
+				})
+			},
+			refreshRadiosView: function() {
+				var self = this
+				self.getRadios(function(err, data) {
+					console.log(data)
+					if(!err) self.showRadios(data.result)
+				})					
+			}
+		})
+
 
 		var VideoPanel = Base.extend({
 			constructor: function() {
@@ -175,151 +259,72 @@
 
 		})
 
-/*
-		var fs = require("fs-extra")
-		var unzip = require("unzip")
-		var temp = require("temp")
-		var Manifest =  require("./lib/manifest")
-		var Storage = require("./lib/storage")
-		var Hashids = require('hashids'),
-		hashids = new Hashids('this is my salt', 8);
-		
-		// ensure that some directories exist...
-		Storage.init()
-		
-function getExtension(filename) {
-    var ext = path.extname(filename||'').split('.');
-    return ext[ext.length - 1];
-}
-	var fileSelected = function(path, next) {
-		if(getExtension(path) != "zip") {
-			console.log("Must be a .zip archive")
-			return
-		}
-		Manifest.loadFromArchive(path, function(err, res) {
-			if(err) {
-				/// manifest missing or invalid 
-				console.log("Failed to load manifest file")
-				console.error(err)
-				// TODO show prompt with "are you sure?" and a form with default manifest 
-				// create default manifest and continue importing... 
-				next(path, {})
-			} else {
-				// manifest ok 
-				console.log("Manifest loaded successfully.")
-				console.log(res)
-				next(path, res)
-			}
-		})
-	}
-												  
-	var unpackArchive = function(path, dirPath, next) {
-			fs.createReadStream(path)
-				.pipe(unzip.Extract({ path: dirPath }))
-				.on("close", next)
-	}
-				  
-	var importArchive = function(path, m) {
-		console.log("Importing archive from "+path)
-		console.log("With manifest: ", m)
-		temp.mkdir('wowimport', function(err, dirPath) {
-			console.log("Created temporary directory "+dirPath)
-			unpackArchive(path, dirPath, function(err) {
-				if(err) {
-					console.log("Archive unpacking failed")
-					console.error(err)
-					// TODO remove temporary directory
-					// must set tracking for temp dir
-					temp.cleanup()
-				} else {
-					console.log("Archive unpacked successfully!")
-					finalizeImport(dirPath, m)
-				}
-			})
-		});				
-	}
-	
-	// when doing imports after the first, crud.create returns sometimes with empty ID
-	// until fixed, the page should be refreshed after each import
-	// or.. do not reuse the import form
-	var finalizeImport = function(dirPath, m, copy) {
-		console.log("App is unpacked and ready at "+dirPath)
-		console.log("Preparing to import...")
-		console.log("Manifest:", m)
-		var data = m
-		Imports.create(adminId, data, function(err, res) {
-		if(!err) {
-			console.log("Data inserted! ID="+res._id)
-			console.log(res)
-			var newName = hashids.encrypt(res._id.id)
-			console.log(newName)
-			var newPath = path.join(Storage.importDir, newName)
-			var fun = function(err) {
-				if(!err) {
-					res.importName = newName
-					// update entry in database...
-					Imports.update(res, function(err, res2) {
-						console.log("Import completed successfully.")
-						console.log(res)		
-						refreshImportsView()
-						// signal that import finished OK 
-					})
-				}
-			}
-			if(copy) 
-				fs.copy(dirPath, newPath, fun); 
-			else 
-				fs.rename(dirPath, newPath, fun);
-		}
-		})
-	}
 
-	var importFromDirectory = function(dir) {
-		// is it a directory?
-		////window.alert(dir)
-		// load manifest or create one...
-
-		if (fs.existsSync(path.join(dir, "index.html"))) {
-			// Do something
-			////window.alert("Found index.html")
-			var m = {}
-			finalizeImport(dir, m, true)
-		} else {
-			window.alert("Index.html not found!")
+		function ext(url) {
+		    return (url = url.substr(1 + url.lastIndexOf("/")).split('?')[0]).substr(url.lastIndexOf("."))
 		}
-	}
-		var importPathAdded = function(p) {
-			// get manifest from file...
-			fileSelected(p, function(p, manifest) {
-				console.log("Import path added: "+p)
-				console.log("With manifest:",manifest)
-				
-				manifest.adminId = adminId
-				manifest.originalPath = p
-				manifest.originalName = path.basename(p, '.zip')
-				importArchive(p, manifest)
-			})
+
+		function afterDrop(url) {
+			$("#radiourl-textfield").val(url)
+			$("#radiotitle-textfield").val(url)
 		}
-					
-		// initialization
 
-		  var chooser = $('#fileDialog')
-		  chooser.change(function(evt) {
-		      importPathAdded($(this).val());
-		  });
-		  var chooser2 = $('#dirDialog')
-		  chooser2.change(function(evt) {
-		      importFromDirectory($(this).val());
-		  });
+	    function cancel(e) {
+	      if (e.preventDefault) e.preventDefault(); // required by FF + Safari
+	      return false; // required by IE
+	    }   
 
-		  $("#add-import-btn").click(function() {
-		  	chooser.trigger("click")
-		  })
-		  
-		  $("#add-import-dir-btn").click(function() {
-		  	chooser2.trigger("click")
-		  })
-*/
+	    function drop(e) {
+	    	$(this).removeClass("error").removeClass("accepted")
+	        e.preventDefault();
+	        var found = false;
+	        var types = e.dataTransfer.types
+	        for(var i=0;i<types.length; i++) {
+	            if(types[i] == "text/uri-list") {
+	                found = true;
+	                break;
+	            }
+	        }
+	        var out = ""
+	        var url = null
+	        if(!found) {
+	            // not a link...
+	            $(this).html("Not a link")
+	            $(this).addClass("error")
+	        } else {
+	            url = e.dataTransfer.getData("Text")
+	    		var extension = ext(url).toLowerCase()
+	    		if(extension==".mp3" || extension==".ogg") {
+	    			var link = $('<a href="'+url+'" />').text(url)
+	    	    	$(this).html(link).addClass("accepted")
+	    	    	link.playable()
+			        afterDrop(url)
+		        } else {
+		        	$(this).html("Unsupported link type")
+		            $(this).addClass("error")
+		        }
+	        }
+	        return false;
+	      }
+
+
+
 		var vp = new VideoPanel()  
 		var ip = new ImportPanel()
+		var rp = new RadioPanel()
+
+	    $("#radio-dropzone")
+	    	.bind('drop', drop)
+	        .bind('dragover', cancel)
+	        .bind('dragenter', cancel)
+	        .bind('dragleave', cancel);
+
+
+	    $('#video-dropzone').youTubeDrop({
+	        dropped: function(videoId) {
+	            console.log("Dropped!",videoId)
+	            $("#videoid-textfield").val(videoId)
+	        }
+	    })
+
 	})
