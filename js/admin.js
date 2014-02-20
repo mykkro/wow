@@ -1,16 +1,5 @@
 	$(document).ready(function() {
 
-		var radioJSON = { "radios": [
-		  { "name": "Klassik Radio", "src": "http://edge.live.mp3.mdn.newmedia.nacamar.net/klassikradio128/livestream.mp3"},
-		  { "name": "Sport 1 FM", "src": "http://stream.sport1.fm/api/livestream-redirect/SPORT1FM_24_7.mp3"},
-		  { "name": "Antenne 1", "src": "http://stream.antenne1.de/stream1/livestream.mp3"},
-		  { "name": "Radio FFN", "src": "http://player.ffn.de/ffn.mp3"},
-		  { "name": "Ostseewelle", "src": "http://edge.live.mp3.mdn.newmedia.nacamar.net/ostseewellelive/livestream.mp3"},
-		  { "name": "Radio 21", "src": "http://edge.live.mp3.mdn.newmedia.nacamar.net/ps-radio21/livestream.mp3"},
-		  { "name": "Radio ZUSA", "src": "http://stream.radio-zusa.net:8000/zusa-hifi.ogg"},
-		  { "name": "Kronhit 90sDance", "src": "http://onair.krone.at/kronehit-90sdance.mp3"} 
-		] }
-
 		$.playable('soundmanager/swf/')
 
 		var mustache = require('mustache');
