@@ -18,7 +18,8 @@ module.exports = function (grunt) {
             src: ['./js/widgetizer.js', './js/i18n.js', './js/pageinfo.js', './js/dialogs.js'],
             dest: 'public/js/bundle.js',
             options: {
-              alias: ['./js/widgetizer.js:widgetizer', './js/i18n.js:i18n', './js/pageinfo.js:pageinfo', './js/dialogs.js:dialogs']
+              alias: ['./js/widgetizer.js:widgetizer', './js/i18n.js:i18n', './js/pageinfo.js:pageinfo', './js/dialogs.js:dialogs'],
+              transform: ['brfs']
             }
           },
           // TODO do automatic scanning or regular expression...
@@ -96,6 +97,11 @@ module.exports = function (grunt) {
             src: ['./pages/widgets/main.js'],
             dest: 'public/js/pages/widgets.js',
             options: { alias: [ './pages/widgets/main.js:pagescript' ]}
+          },
+          pg_netradio: {
+            src: ['./pages/netradio/main.js'],
+            dest: 'public/js/pages/netradio.js',
+            options: { alias: [ './pages/netradio/main.js:pagescript' ]}
           }
       },
       less: {

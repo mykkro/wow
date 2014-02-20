@@ -9,5 +9,11 @@
 	"Yes": "Yes",
 	"No": "No",
 	"Remove": "Remove",
-	"Remove this item?": "Remove this item?"	
+	"Remove this item?": "Remove this item?",
+	"Today's weather": "Today's weather",
+	"Today is":"Today is",
+	"year":"year",
+	"Radio":"Radio",
+	"Apps":"Apps",
+	"Videos":"Videos"
 }
