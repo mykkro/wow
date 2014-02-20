@@ -33,6 +33,7 @@ module.exports = function(window, $, SVG, i18n) {
 	var timeinfo = require("../../js/timeinfo")
 	var moment = require('moment');	
 	moment.lang('de')
+    i18n.setLocale('de') // this should be in master page!
 	
 	
 	function updateCalendar() {
@@ -76,6 +77,9 @@ module.exports = function(window, $, SVG, i18n) {
 	function myBooksActivated() {
 		window.location = "/pages/bookcategories"
 	}
+	function myRadiosActivated() {
+		window.location = "/pages/netradio"
+	}
 	function gamesActivated() {
 		window.location = "/pages/userapps"
 	}
@@ -96,6 +100,15 @@ module.exports = function(window, $, SVG, i18n) {
 	return {
 		init: function(Widgetizer, data, next) {
 			var server = Widgetizer.rpc
+
+			// set labels...
+			$("#labelTodayWeather").text(i18n.__("Today's weather").toUpperCase())
+			$("#labelTodayIs").text(i18n.__("Today is").toUpperCase())
+			$("#labelYear").text(i18n.__("year").toUpperCase())
+			$("#labelNavButton1").text(i18n.__("Radio").toUpperCase())
+			$("#labelNavButton2").text(i18n.__("Apps").toUpperCase())
+			$("#labelNavButton3").text(i18n.__("Videos").toUpperCase())
+
 			var updateWeatherInfo = function() {
 				// get weather info...
 				server("weatherInfo", {}, function(err, resp) {
@@ -120,7 +133,7 @@ module.exports = function(window, $, SVG, i18n) {
 			window.setInterval(updateClock, 1000)
 			window.setInterval(updateWeatherInfo, 10*60*1000)
 
-			$("#Button01 .overlay").click(myBooksActivated)
+			$("#Button01 .overlay").click(myRadiosActivated)
 			$("#Button02 .overlay").click(gamesActivated)
 			$("#Button03 .overlay").click(entertainmentActivated)
 

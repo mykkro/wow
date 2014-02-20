@@ -3354,14 +3354,12 @@
          sodipodi:linespacing="125%"
          class="label"
          y="137.23553"
-         x="60.911114"
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         x="150"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;text-anchor:middle;"
          xml:space="preserve"><tspan
            style="font-size:25px;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"
-           y="137.23553"
-           x="60.911114"
-           id="tspan3287"
-           sodipodi:role="line">MEINE BÜCHER</tspan></text>
+           id="labelNavButton1"
+           sodipodi:role="line"></tspan></text>
       <path
          class="overlay"
          d="m 34.862509,42.980004 237.979431,0 c 10.22428,0 18.50949,8.399911 18.50949,18.749809 l 0,112.498807 c 0,10.349 -8.28521,18.74982 -18.50949,18.74982 l -237.979431,0 c -10.136172,0 -18.509515,-8.40082 -18.509515,-18.74982 l 0,-112.498807 c 0,-10.349898 8.373343,-18.749809 18.509515,-18.749809 z"
@@ -3389,13 +3387,11 @@
          sodipodi:linespacing="125%"
          class="label"
          y="316.18878"
-         x="113.19383"
-         style="font-size:25px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"
+         x="150.19383"
+         style="font-size:25px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:Times New Roman;text-anchor:middle;"
          xml:space="preserve"><tspan
-           y="320.18878"
-           x="113.19383"
-           id="tspan3303"
-           sodipodi:role="line">APPS</tspan></text>
+           id="labelNavButton2"
+           sodipodi:role="line"></tspan></text>
       <path
          class="overlay"
          d="m 34.862509,223.89338 237.979431,0 c 10.22428,0 18.50949,8.39991 18.50949,18.7498 l 0,112.49882 c 0,10.34899 -8.28521,18.74982 -18.50949,18.74982 l -237.979431,0 c -10.136172,0 -18.509515,-8.40083 -18.509515,-18.74982 l 0,-112.49882 c 0,-10.34989 8.373343,-18.7498 18.509515,-18.7498 z"
@@ -3423,14 +3419,12 @@
          sodipodi:linespacing="125%"
          class="label"
          y="497.09604"
-         x="52.683006"
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         x="150"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;text-anchor:middle;"
          xml:space="preserve"><tspan
            style="font-size:25px;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"
-           y="497.09604"
-           x="52.683006"
-           id="tspan3315"
-           sodipodi:role="line">UNTERHALTUNG</tspan></text>
+           id="labelNavButton3"
+           sodipodi:role="line"></tspan></text>
       <path
          class="overlay"
          d="m 34.874645,404.83764 237.955165,0 c 10.22322,0 18.50759,8.3984 18.50759,18.74551 l 0,112.47846 c 0,10.34802 -8.28437,18.74641 -18.50759,18.74641 l -237.955165,0 c -10.135139,0 -18.507627,-8.39839 -18.507627,-18.74641 l 0,-112.47846 c 0,-10.34711 8.372488,-18.74551 18.507627,-18.74551 z"
@@ -3439,16 +3433,14 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="790.40662"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;text-anchor:middle;"
+       x="840"
        y="58.479141"
        id="CalendarLabelDay"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         id="tspan4099"
-         x="790.40662"
-         y="58.479141"
-         style="font-size:20px;font-family:Times New Roman;-inkscape-font-specification:Times New Roman">HEUTE IST</tspan></text>
+         id="labelTodayIs"
+         style="font-size:20px;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"></tspan></text>
     <text
        xml:space="preserve"
        style="font-size:22px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:'Times New Roman, Bold'"
@@ -3456,7 +3448,7 @@
        x="840"
        y="83.224487"
        id="CalendarTextDayName"
-       ><tspan>DONNERSTAG</tspan></text>
+       ><tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-size:30px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:'Times New Roman, Bold'"
@@ -3464,7 +3456,7 @@
        x="840"
        y="128.81577"
        id="CalendarTextDayNo"
-       ><tspan>26.</tspan></text>
+       ><tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -3472,15 +3464,16 @@
        x="840"
        y="154.66147"
        id="CalendarTextMonthName"><tspan
-         style="font-size:22px;font-weight:bold;font-family:Times New Roman;-inkscape-font-specification:Times New Roman">SEPTEMBER</tspan></text>
+         style="font-size:22px;font-weight:bold;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"></tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="784.46777"
+       x="790"
        y="200.64989"
        id="CalendarLabelYear"
        sodipodi:linespacing="125%"><tspan
-         style="font-size:20px;font-family:Times New Roman;-inkscape-font-specification:Times New Roman">JAHR</tspan></text>
+         id="labelYear"
+         style="font-size:20px;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"></tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -3488,14 +3481,14 @@
        y="201.30663"
        id="CalendarTextYearNo"
        sodipodi:linespacing="125%"><tspan
-         style="font-size:22px;font-weight:bold;font-family:Times New Roman;-inkscape-font-specification:Times New Roman">2013</tspan></text>
+         style="font-size:22px;font-weight:bold;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"></tspan></text>
     <text
        xml:space="preserve"
        style="font-size:22px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:'Times New Roman, Bold'"
        x="840"
        y="246.61195"
 	   text-anchor="middle"
-       id="CalendarTextDaytime"><tspan>NACHMITTAG</tspan></text>
+       id="CalendarTextDaytime"><tspan></tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -3583,8 +3576,8 @@
        id="DiaryText01-Layer03"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         id="tspan6569"
+         id="labelTodayWeather"
          x="418.32608"
-         y="145.57835">HEUTIGES WETTER</tspan></text>
+         y="145.57835"></tspan></text>
   </g>
 </svg>
