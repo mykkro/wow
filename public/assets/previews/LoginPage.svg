@@ -15,7 +15,7 @@
             </g>
             <rect ry="34.959" y="49.603" x="233.079" height="200" width="150" class="overlay" fill="none"/>
         </g>
-        <g class="login-button button user" name="tzlogin" transform="translate(-202)">
+        <g class="login-button button user" name="tzlogin" transform="translate(-202,50)">
             <rect ry="34.959" y="49.603" x="245.079" height="200" width="150" class="background" fill="#fff" stroke="#ffd940" stroke-width="5"/>
             <text y="221.08" x="305.175" style="line-height:125%;-inkscape-font-specification:'Times New Roman, Bold'" font-size="22" font-weight="bold" letter-spacing="0" word-spacing="0" font-family="Times New Roman">
                 <tspan y="221.08" x="305.175">

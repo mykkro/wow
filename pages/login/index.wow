@@ -14,5 +14,9 @@
     >
     <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
 	<wow:image src="/assets/previews/LoginPage.svg" width="960" height="600" embed="true"></wow:image>
+    <g transform="translate(312,35)">
+    <wow:image src="/assets/logos/CE.jpg" width="146" height="27"></wow:image></g>
+    <g transform="translate(36,18)">
+    <wow:image src="/assets/logos/SPES_logo_OK.svg" width="230" height="57"></wow:image></g>
 	<g id="tempgroup" style="display:none;"></g>
 </svg>
