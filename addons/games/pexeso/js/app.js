@@ -1,4 +1,4 @@
-var Pexeso = Base.extend({
+var Pexeso = Game.extend({
   // options
   cardCoupleShowDuration: 1500,
 
