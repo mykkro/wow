@@ -10,6 +10,15 @@ module.exports = function (grunt) {
                   { expand: true, cwd: 'games/pexeso', src: ['**'] }
               ]
           },
+          fifteen: {
+              options: {
+                  archive: './dist/fifteen.zip',
+                  mode: 'zip'
+              },
+              files: [
+                  { expand: true, cwd: 'games/fifteen', src: ['**'] }
+              ]
+          },
           samplebook: {
               options: {
                   archive: './dist/samplebook.zip',
