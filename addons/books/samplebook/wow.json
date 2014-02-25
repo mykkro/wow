@@ -1,0 +1,8 @@
+{
+	"name": "wow-contrib-samplebook",
+	"apptype": "wow/scrapbook",
+	"title": "Sample eScrapBook",
+	"description": "Sample eScrapBook for demonstration purposes.",
+	"version": "0.1",
+	"author": "Myrousz"
+}
