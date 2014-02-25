@@ -1,36 +1,23 @@
 module.exports = function (grunt) {
     grunt.initConfig({
-      compress: {
-          pexeso: {
-              options: {
-                  archive: './dist/pexeso.zip',
-                  mode: 'zip'
-              },
-              files: [
-                  { expand: true, cwd: 'games/pexeso', src: ['**'] }
-              ]
-          },
-          fifteen: {
-              options: {
-                  archive: './dist/fifteen.zip',
-                  mode: 'zip'
-              },
-              files: [
-                  { expand: true, cwd: 'games/fifteen', src: ['**'] }
-              ]
-          },
-          samplebook: {
-              options: {
-                  archive: './dist/samplebook.zip',
-                  mode: 'zip'
-              },
-              files: [
-                  { expand: true, cwd: 'books/samplebook', src: ['**'] }
-              ]
-          }
+      zip: {
+        samplebook: {
+          cwd: 'books/samplebook/',
+          src: ['books/samplebook/**'],
+          dest: 'dist/samplebook.zip'
+        },
+        fifteen: {
+          cwd: 'games/fifteen/',
+          src: ['games/fifteen/**'],
+          dest: 'dist/fifteen.zip'
+        },
+        pexeso: {
+          cwd: 'games/pexeso/',
+          src: ['games/pexeso/**'],
+          dest: 'dist/pexeso.zip'
+        }
       }
     })
 
-    grunt.loadNpmTasks('grunt-contrib-compress');
-    grunt.loadNpmTasks('grunt-generate');
+    grunt.loadNpmTasks('grunt-zip');
 }

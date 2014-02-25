@@ -11,6 +11,7 @@
   "license": "BSD-2-Clause",
   "devDependencies": {
     "grunt-contrib-compress": "~0.7.0",
-    "grunt-generate": "~0.2.0"
+    "grunt-generate": "~0.2.0",
+    "grunt-zip": "~0.13.0"
   }
 }
