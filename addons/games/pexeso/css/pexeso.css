@@ -83,20 +83,20 @@ button.game-settings {
   -moz-background-size: 100%;
   -o-background-size: 100%;
   -webkit-background-size: 100%;
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   display: inline-block;
 } 
 
 #board {
-  width: 450px;
-  height: 380px;
+  width: 600px;
+  height: 450px;
 }
 
 
 .card {
-  width:80px;
-  height:80px;
+  width:100px;
+  height:100px;
   margin: 5px;
   perspective:1000px;
   -webkit-perspective:1000px;
@@ -105,8 +105,8 @@ button.game-settings {
   display: inline-block;
 }
 .card>div {
-  width:80px;
-  height:80px;
+  width:100px;
+  height:100px;
   position:absolute;
   transition:all 1s ease;
   -webkit-transition:all 1s ease;
