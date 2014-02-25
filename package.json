@@ -79,7 +79,8 @@
     "grunt-contrib-less": "0.9.0",
     "grunt-execute": "0.1.5",
     "grunt-contrib-compress": "0.6.0",
-    "grunt-downloadfile": "~0.3.2"
+    "grunt-downloadfile": "~0.3.2",
+    "grunt-generate": "~0.2.0"
   },
   "webkit": {
     "plugin": true
