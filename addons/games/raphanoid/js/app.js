@@ -1,19 +1,20 @@
 var RaphanoidGame = Game.extend({
 
   init: function(cb) {
-    var paperDiv = $("<div>").attr("id", "paper").appendTo($("#tab-game"))
-
-    // initialization...
-    var paper = Raphael("paper", 400, 400);
-    var as = new Raphanoid.Screen(paper, Raphanoid.screens[0]);
-    as.init(paper);
-
+    this.paperDiv = $("<div>").attr("id", "paper").appendTo($("#tab-game"))
+    this.paper = null
     if(cb) cb()
   },
   start: function(cb) {
+    // initialization...
+    this.paperDiv.empty()
+    this.paper = Raphael("paper", 400, 400);
+    this.screen = new Raphanoid.Screen(this.paper, Raphanoid.screens[0]);
+    this.screen.init(this.paper);
     if(cb) cb()
   },
   stop: function(cb) {
+    this.screen.stop()
     if(cb) cb()
   },
   quit: function(cb) {

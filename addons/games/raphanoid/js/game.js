@@ -22,7 +22,8 @@ var Game = Base.extend({
   },
   quit: function(cb) {
     this.stop(cb)
-  },
+  }
+}, {
   prompt: function(text, options, cb) {
     return new Splash({
       text:text,
@@ -33,7 +34,7 @@ var Game = Base.extend({
         if(cb) cb()
       }
     })
-  }
+  }  
 })
 
 

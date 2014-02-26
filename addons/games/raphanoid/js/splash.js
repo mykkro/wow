@@ -25,3 +25,7 @@ Splash.prototype.hide = function() {
 	    if(this.options.after) this.options.after()
 	}
 }
+
+Splash.removeAll = function() {
+	$(".splash-overlay").remove()
+}
