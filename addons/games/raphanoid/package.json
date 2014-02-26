@@ -1,0 +1,20 @@
+{
+  "name": "wow-contrib-games-raphanoid",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "window": {
+    "toolbar": true,
+    "width": 960,
+    "height": 600,
+    "kiosk": false
+  },
+  "webkit": {
+  	"plugin": true
+  }
+}

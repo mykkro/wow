@@ -1,0 +1,8 @@
+{
+	"name": "wow-contrib-games-raphanoid",
+	"apptype": "wow/game",
+	"title": "Raphatris",
+	"description": "Yet Another Arkanoid Clone",
+	"version": "0.1",
+	"author": "Myrousz"
+}

@@ -20,6 +20,11 @@ module.exports = function (grunt) {
           cwd: 'games/raphatris/',
           src: ['games/raphatris/**'],
           dest: 'dist/raphatris.zip'
+        },
+        raphanoid: {
+          cwd: 'games/raphanoid/',
+          src: ['games/raphanoid/**'],
+          dest: 'dist/raphanoid.zip'
         }
       }
     })
