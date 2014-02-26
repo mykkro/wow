@@ -1,61 +1,47 @@
-Raphanoid.Button = Raphanoid.Komponent.extend({
-	onClick: $.noop,
-	constructor: function(paper, text, color) {
-		this.base(paper);
-		var self = this;
-        this.element = paper.set();
-        this.element.push(paper.rect(150, 180, 100, 40, 10, 10).attr("fill", color));
-        this.element.push(paper.text(200, 200, text).attr({
-            "font-size": 20
-        }));
-        this.element.click(function () {
-            self.remove();
-            self.onClick();
-        });
-    }
-});
-
 Raphanoid.Screen = Base.extend({
     onScreenCleared: $.noop,
     constructor: function (paper) {
         this.paper = paper;
+    	var self = this;
+    	this.background = paper.image ("media/"+Raphanoid.screens[0].background, 0, 0, 400, 400); 
+    	this.background2 = paper.image ("media/"+Raphanoid.screens[0].background, 0, 400, 400, 400); 
+            this.ball = new Raphanoid.Ball(this, this.paper);
+            this.bat = new Raphanoid.Bat(this.paper);
+            this.scoreCounter = new Raphanoid.ScoreCounter(this.paper);
+    	this.livesCounter = new Raphanoid.LivesCounter(this.paper);
+    	this.livesCounter.onNoLifeLeft = function() {
+    		self.gameOver();
+    	};
+    },
+    setLevelBackground: function(level) {
+    	this.background.attr("src", "media/"+Raphanoid.screens[level].background);
+    	this.background2.attr("src", "media/"+Raphanoid.screens[level].background);
+    	this.level = level;
+    },
+    animateBackground: function() {
+        if(!this.alive) return
+        if(this.running) {
+        	this.setBackgroundPosition(this.frame);
+        	this.frame += 1;
+        	if(this.frame >= 400) this.frame -= 400;
+        }
+    	var self = this;
+    	var fun = function() { self.animateBackground(); };
+    	setTimeout(fun, 40);
+    },
+    setBackgroundPosition: function(y) {
+    	this.background.attr("y", y-400);
+    	this.background2.attr("y", y);
+    },
+    init: function (keepScore) {
         this.level = 0;
         this.bricks = {};
         this.score = 0;
-		this.running = false;
-
-	var self = this;
-	this.background = paper.image ("media/"+Raphanoid.screens[0].background, 0, 0, 400, 400); 
-	this.background2 = paper.image ("media/"+Raphanoid.screens[0].background, 0, 400, 400, 400); 
-        this.ball = new Raphanoid.Ball(this, this.paper);
-        this.bat = new Raphanoid.Bat(this.paper);
-        this.scoreCounter = new Raphanoid.ScoreCounter(this.paper);
-	this.livesCounter = new Raphanoid.LivesCounter(this.paper);
-	this.livesCounter.onNoLifeLeft = function() {
-		self.gameOver();
-	};
-	this.setBackgroundPosition(0);
-	this.frame = 0;
-	this.animateBackground();
-    },
-    setLevelBackground: function(level) {
-	this.background.attr("src", "media/"+Raphanoid.screens[level].background);
-	this.background2.attr("src", "media/"+Raphanoid.screens[level].background);
-	this.level = level;
-    },
-    animateBackground: function() {
-	this.setBackgroundPosition(this.frame);
-	this.frame += 1;
-	if(this.frame >= 400) this.frame -= 400;
-	var self = this;
-	var fun = function() { self.animateBackground(); };
-	setTimeout(fun, 40);
-    },
-    setBackgroundPosition: function(y) {
-	this.background.attr("y", y-400);
-	this.background2.attr("y", y);
-    },
-    init: function (keepScore) {
+        this.running = false;
+        this.alive = true;
+        this.setBackgroundPosition(0);
+        this.frame = 0;
+        this.animateBackground();
 		this.screen = Raphanoid.screens[this.level];
         // grid...
         //Rx.grid(paper, 0, 0, 400, 400, 20, 20).attr("stroke","#aaa");
@@ -67,6 +53,10 @@ Raphanoid.Screen = Base.extend({
             this.putBrick(brick.type, brick.x, brick.y);
         }
         this.putStartButton(keepScore);
+    },
+    stop: function() {
+        this.running = false
+        this.alive = false
     },
     isScreenClear: function () {
         // only unbreakable elements shall remain...
@@ -105,28 +95,24 @@ Raphanoid.Screen = Base.extend({
     },
     putStartButton: function (keepScore) {
 		var self = this;
-		var btn = new Raphanoid.Button(this.paper, "Start!", "orange");
-        btn.onClick = function () {
+		Game.prompt("Start!", {}, function () {
 			if(!keepScore) {
 				self.scoreCounter.reset();
 				self.livesCounter.reset();
 			}
             self.startGame();
-        };
-        return btn;
+        })
     },
     putWellDoneButton: function () {
 		var self = this;
-		var btn = new Raphanoid.Button(this.paper, "Well done!", "cyan");
-        btn.onClick = function () {
+        Game.prompt("Well done!", {}, function () {
 			self.level++;
 			if(self.level >= Raphanoid.screens.length) {
 				self.level = 0;
 			}
 			self.setLevelBackground(self.level);
             self.init(true);
-        };
-        return btn;
+        })
     },
 	loseLife: function() {
 		var self = this;
@@ -137,12 +123,11 @@ Raphanoid.Screen = Base.extend({
 	gameOver: function() {
 		var self = this;
 		self.endGame();
-		var btn = new Raphanoid.Button(this.paper, "Game over!", "#888");
-        btn.onClick = function () {
+        Game.prompt("Game over!", {}, function () {
 			self.level = 0;
 			self.setLevelBackground(self.level);
 			self.init();
-        };
+        })
 	},
     testCollisionsWithBrick: function (x, y, dx, dy, distance, brick) {
         var

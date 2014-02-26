@@ -20,6 +20,7 @@ var GameUI = Base.extend({
   startGame: function() {
     var self = this
     // start game...
+    Splash.removeAll()
     alertify.success("Starting game...");
     new Splash({
       text:"Starting game...",
@@ -37,6 +38,7 @@ var GameUI = Base.extend({
   quitGame: function() {
     var self = this
     // quit game...
+    Splash.removeAll()
     this.game.quit(function() {
       self.playing = false;
       self.updateUI()
@@ -44,6 +46,7 @@ var GameUI = Base.extend({
     })
   },
   restartGame: function() {
+    Splash.removeAll()
     var self = this
     self.game.restart(function() {
       self.playing = true;
@@ -52,15 +55,19 @@ var GameUI = Base.extend({
     })
   },
   showGameInfo: function() {
+    Splash.removeAll()
     this.showTab("info")
   },
   showGameRules: function() {
+    Splash.removeAll()
     this.showTab("rules")
   },
   showGameScores: function() {
+    Splash.removeAll()
     this.showTab("scores")
   },
   gameSettings: function() {
+    Splash.removeAll()
     this.showTab("settings")
   },
   init: function() {
