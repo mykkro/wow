@@ -2,18 +2,50 @@ body {
   background-color: #eee;
 }
 
+.hidden {
+  display: none;
+}
+
 .container {
   width: 960px;
   height: 600px;
+  margin: 0;
+  padding: 0;
 }
 
 .container .info {
   background-color: none;
   text-align: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-.container .info h2 {
-  padding: 10px;
+.container .info .title {
+  display: inline-block;
+  width: 360px;
+  margin: 5px 20px 5px 20px;
+  padding: 0;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.container .info .logs {
+  display: inline-block;
+  width: 460px;
+  margin: 5px 20px 5px 20px;
+  padding: 2px;
+  font-size: 20px;
+}
+
+.container .info .log {
+  display: inline-block;
+  margin: 0px 10px;
+}
+
+.container .info .log.hidden {
+  display: none;
 }
 
 .container .nav {
@@ -121,10 +153,10 @@ button.game-settings {
 .splash-overlay {
   position: absolute;
   left: 170px;
-  top: 70px;
+  top: 42px;
   background-color: rgba(208,208,192,0.8);
   width: 700px;
-  height: 450px;
+  height: 447px;
   padding: 20px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
