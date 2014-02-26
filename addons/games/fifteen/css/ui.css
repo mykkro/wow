@@ -111,4 +111,22 @@ button.game-settings {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
+
+  -moz-box-shadow: 0 0 5px 5px #888;
+  -webkit-box-shadow: 0 0 5px 5px#888;
+  box-shadow: 0 0 5px 5px #888;
+
 } 
+
+.splash-overlay {
+  position: absolute;
+  left: 170px;
+  top: 70px;
+  background-color: rgba(208,208,192,0.8);
+  width: 700px;
+  height: 450px;
+  padding: 20px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;  
+}
