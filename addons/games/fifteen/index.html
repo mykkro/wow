@@ -15,14 +15,17 @@
 	<link rel="stylesheet" type="text/css" href="css/alertify.core.css" />    
 	<link rel="stylesheet" type="text/css" href="css/alertify.default.css" />    
 	<script src="js/game.js" type="text/javascript"></script>
+	<script src="js/splash.js" type="text/javascript"></script>
+	<script src="js/gameui.js" type="text/javascript"></script>
 	<script src="js/app.js" type="text/javascript"></script>
 	<script>
 	$(function() {
 
 		var game = new Fifteen()
+		var gui = new GameUI(game)
 
 		console.log("Ready!")
-		runGame(game)
+		gui.init()
 
 
 	})
