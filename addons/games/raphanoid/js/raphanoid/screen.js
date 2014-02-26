@@ -1,6 +1,7 @@
 Raphanoid.Screen = Base.extend({
     onScreenCleared: $.noop,
-    constructor: function (paper) {
+    constructor: function (paper, game) {
+        this.game = game
         this.paper = paper;
     	var self = this;
     	this.background = paper.image ("media/"+Raphanoid.screens[0].background, 0, 0, 400, 400); 
@@ -101,6 +102,8 @@ Raphanoid.Screen = Base.extend({
 				self.livesCounter.reset();
 			}
             self.startGame();
+            self.game.log("score", self.scoreCounter.score)
+            self.game.log("lives", self.livesCounter.lives)
         })
     },
     putWellDoneButton: function () {
@@ -117,6 +120,7 @@ Raphanoid.Screen = Base.extend({
 	loseLife: function() {
 		var self = this;
 		this.livesCounter.loseLife();
+        this.game.log("lives", self.livesCounter.lives)
 		this.ball.reset();
 		this.bat.reset();
 	},
@@ -353,6 +357,7 @@ Raphanoid.Screen = Base.extend({
         this.bricks[ab.id] = ab;
         ab.onHit = function (arkBrick) {
             self.scoreCounter.addPoints(arkBrick.brick.points);
+            self.game.log("score", self.scoreCounter.score)            
         };
         ab.onDestroy = function (arkBrick) {
             // remove brick from screen...

@@ -2,6 +2,30 @@ var GameUI = Base.extend({
   constructor: function(game) {
     this.game = game
     this.playing = false
+    var self = this
+    game.setLogger(function(name, value) {
+      self.updateLogs(name, value)
+    })
+    this.initLogs()
+  },
+  initLogs: function() {
+//    Score: <span class="score"></span> Lives: <span class="lives"></span>
+    var logs = this.game.availableLogs()
+    var cont = $(".container .info .logs")
+    for(var name in logs) {      
+      console.log(name+"="+logs[name].defaultValue)
+      var div = $("<div>").addClass("log").appendTo(cont)
+      if(!logs[name].visible) div.addClass("hidden")
+      div.append($("<span>").addClass("label").text(logs[name].label+": "))
+      div.append($("<span>").addClass(name))
+      // very crude view...
+      $(".container .info .logs ."+name).text(logs[name].defaultValue)
+    }
+  },
+  updateLogs: function(name, value) {
+    console.log(name+"="+value)
+    // very crude view...
+    $(".container .info .logs ."+name).text(value)
   },
   showTab: function(name) {
     $(".tabs .tab").hide()
