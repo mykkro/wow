@@ -15,6 +15,11 @@ module.exports = function (grunt) {
           cwd: 'games/pexeso/',
           src: ['games/pexeso/**'],
           dest: 'dist/pexeso.zip'
+        },
+        raphatris: {
+          cwd: 'games/raphatris/',
+          src: ['games/raphatris/**'],
+          dest: 'dist/raphatris.zip'
         }
       }
     })

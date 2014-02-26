@@ -1,0 +1,8 @@
+{
+	"name": "wow-contrib-games-raphatris",
+	"apptype": "wow/game",
+	"title": "Raphatris",
+	"description": "Yet Another Tetris Clone",
+	"version": "0.1",
+	"author": "Myrousz"
+}
