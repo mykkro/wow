@@ -26,8 +26,44 @@ module.exports = function (grunt) {
           src: ['games/raphanoid/**'],
           dest: 'dist/raphanoid.zip'
         }
+      },
+      concat: {
+        js: {
+          options: {
+            separator: ';',
+          },
+          src: [
+            'shared/js/underscore-min.js',
+            'shared/js/base.js',
+            'shared/js/jquery-2.0.3.min.js',
+            'shared/js/jquery.zoomooz.min.js',
+            'shared/js/alertify.min.js',
+            'shared/js/raphael-min.js',
+
+            'shared/js/raphaelicious-1.0.js',
+            'shared/js/util.js',
+            'shared/js/watches.js',
+
+            'shared/js/game.js',
+            'shared/js/splash.js',
+            'shared/js/minilog.js',
+            'shared/js/gameui.js',
+            'shared/js/app.js'
+          ],
+          dest: 'games/raphanoid/js/bundle.js'
+        },
+        css: {
+          src: [
+            'shared/css/normalize.css',
+            'shared/css/ui.css',
+            "shared/css/alertify.core.css",
+            "shared/css/alertify.default.css"
+          ],
+          dest: 'games/raphanoid/css/bundle.css'
+        }
       }
     })
 
     grunt.loadNpmTasks('grunt-zip');
+    grunt.loadNpmTasks('grunt-contrib-concat');
 }
