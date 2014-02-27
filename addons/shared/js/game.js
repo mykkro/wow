@@ -44,8 +44,7 @@ var Game = Base.extend({
   },
   setLogger: function(logger) {
     this.options.logger = logger
-  }
-}, {
+  },
   prompt: function(text, options, cb) {
     return new Splash({
       text:text,

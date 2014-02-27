@@ -50,7 +50,7 @@ module.exports = function (grunt) {
             'shared/js/gameui.js',
             'shared/js/app.js'
           ],
-          dest: 'games/raphanoid/js/bundle.js'
+          dest: 'shared/js/bundle.js'
         },
         css: {
           src: [
@@ -59,11 +59,23 @@ module.exports = function (grunt) {
             "shared/css/alertify.core.css",
             "shared/css/alertify.default.css"
           ],
-          dest: 'games/raphanoid/css/bundle.css'
+          dest: 'shared/css/bundle.css'
+        }
+      },
+      copy: {
+        main: {
+          files: [
+            // includes files within path
+            {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/raphanoid/js/' },
+            {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/raphanoid/css/' },
+            {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/raphatris/js/' },
+            {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/raphatris/css/' }
+          ]
         }
       }
     })
 
     grunt.loadNpmTasks('grunt-zip');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 }
