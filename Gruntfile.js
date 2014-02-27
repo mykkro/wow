@@ -131,12 +131,14 @@ module.exports = function (grunt) {
       compress: {
         main: {
           options: {
-            archive: 'dist/wow.zip'
+            // TODO how to get this filename by appending version number from package.json?
+            archive: 'dist/wow-0.6.zip'
           },
           files: [
             {src: ['assets/**', 'css/**', 'fonts/**', 'js/**', 'lib/**', 'locales/**', 'media/**', 'pages/**', 'public/**', 'routes/**', 'templates/**', 'views/**']},
             {src: ['run.bat', 'run.js', 'server.js', 'package.json', 'main.js']},
             {src: ['bin/win32/**']},
+            {src: ['addons/dist/**']},
             {src: ['node_modules/**', 
               '!node_modules/browserify/**',
               '!node_modules/browserify-shim/**',
