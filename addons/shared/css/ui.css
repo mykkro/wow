@@ -17,15 +17,14 @@ body {
   background-color: none;
   text-align: center;
   width: 100%;
-  margin: 0;
+  margin: 0px 0px 0px 100px;
   padding: 0;
 }
 
 .container .info .title {
   display: inline-block;
   width: 360px;
-  margin: 5px 20px 5px 20px;
-  padding: 0;
+  padding: 5px 10px;
   font-size: 32px;
   font-weight: bold;
   text-align: left;
@@ -48,9 +47,11 @@ body {
 }
 
 .container .nav {
+  position: absolute;
+  left: 0px;
+  top: 0px;
   width: 64px;
-  margin-left: 40px;
-  padding: 20px;
+  padding: 16px;
   display: inline-block;
   vertical-align: top;
   background-color: #ddc;
@@ -60,9 +61,9 @@ body {
 }
 
 .container .tabs {
-  display: inline-block;
+  display: block;
   vertical-align: top;
-  margin-left: 20px;
+  margin-left: 100px;
   background-color: #ddc;
   width: 700px;
   height: 450px;
@@ -103,6 +104,11 @@ button.game-quit {
 
 button.game-restart {
   background-image: url(../media/icons/restart.png);
+  background-size: 100% auto;
+}
+
+button.game-pause {
+  background-image: url(../media/icons/pause.png);
   background-size: 100% auto;
 }
 

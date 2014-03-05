@@ -354,6 +354,15 @@ Base = Base.extend({
     })
     
   },
+  pause: function(cb) {
+    // restart game
+    this.log("status", "pause")
+    if(cb) cb()
+  },
+  resume: function(cb) {
+    this.log("status", "resume")
+    if(cb) cb()
+  },
   stop: function(cb) {
     this.log("status", "stop")
     if(cb) cb()
@@ -404,10 +413,11 @@ Base = Base.extend({
 	})/*.keydown(function (e) {
 		self.hide()
     })*/
-  } else {
+  } 
+  if(options.delay) {
 	setTimeout(function() {
 		self.hide()
-	},  options.delay || 1000)
+	},  options.delay)
   }
 }
 
@@ -467,6 +477,7 @@ var LivesMiniLog = MiniLog.extend({
   constructor: function(game) {
     this.game = game
     this.playing = false
+    this.paused = false
     var self = this
     game.setLogger(function(name, value) {
       self.updateLogs(name, value)
@@ -492,8 +503,10 @@ var LivesMiniLog = MiniLog.extend({
   },
   updateUI: function() {
     var playing = this.playing
-    $("button.game-new").prop("disabled", playing)
+    var paused = this.paused
+    $("button.game-new").prop("disabled", playing && !paused)
     $("button.game-quit").prop("disabled", !playing)
+    $("button.game-pause").prop("disabled", paused || !playing)
     $("button.game-restart").prop("disabled", !playing)
     $("button.game-settings").prop("disabled", playing)
     $("button.game-rules").prop("disabled", playing)
@@ -502,21 +515,25 @@ var LivesMiniLog = MiniLog.extend({
   },
   startGame: function() {
     var self = this
-    // start game...
-    Splash.removeAll()
-    alertify.success("Starting game...");
-    new Splash({
-      text:"Starting game...",
-      delay: 2000,
-      overlay: true,
-      after: function() {
-        self.game.start(function() {
-          self.playing = true;
-          self.updateUI()
-          self.showTab("game")
-        })
-      }
-    })
+    if(!self.playing) {
+      // start game...
+      Splash.removeAll()
+      alertify.success("Starting game...");
+      new Splash({
+        text:"Starting game...",
+        delay: 2000,
+        overlay: true,
+        after: function() {
+          self.game.start(function() {
+            self.playing = true;
+            self.updateUI()
+            self.showTab("game")
+          })
+        }
+      })
+    } else if(self.paused) {
+      self.resumeGame()
+    }
   },
   quitGame: function() {
     var self = this
@@ -528,11 +545,38 @@ var LivesMiniLog = MiniLog.extend({
       self.showTab("info")
     })
   },
+  pauseGame: function() {
+    Splash.removeAll()
+    var self = this
+    self.game.pause(function() {
+      self.paused = true;
+      self.updateUI()
+      self.showTab("game")
+      new Splash({
+        text:"Paused",
+        overlay: true,
+        hideOnClick: true,
+        after: function() {
+          self.resumeGame()
+        }
+      })
+    })
+  },
+  resumeGame: function() {
+    Splash.removeAll()
+    var self = this
+    self.game.resume(function() {
+      self.paused = false;
+      self.updateUI()
+      self.showTab("game")
+    })
+  },
   restartGame: function() {
     Splash.removeAll()
     var self = this
     self.game.restart(function() {
       self.playing = true;
+      self.paused = false;
       self.updateUI()
       self.showTab("game")  
     })
@@ -560,12 +604,14 @@ var LivesMiniLog = MiniLog.extend({
     self.game.init(function() {
       console.log("Game initialized!")
       self.playing = false
+      self.paused = false
       self.updateUI()
       self.showGameInfo()
 
       $("button.game-new").click(function() { self.startGame(); })
       $("button.game-quit").click(function() { self.quitGame(); })
       $("button.game-restart").click(function() { self.restartGame(); })
+      $("button.game-pause").click(function() { self.pauseGame(); })
       $("button.game-info").click(function() { self.showGameInfo(); })
       $("button.game-rules").click(function() { self.showGameRules(); })
       $("button.game-scores").click(function() { self.showGameScores(); })

@@ -11,10 +11,11 @@ var Splash = function(options) {
 	})/*.keydown(function (e) {
 		self.hide()
     })*/
-  } else {
+  } 
+  if(options.delay) {
 	setTimeout(function() {
 		self.hide()
-	},  options.delay || 1000)
+	},  options.delay)
   }
 }
 
