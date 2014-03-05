@@ -241,7 +241,7 @@ var Raphatris = Game.extend({
           switch(s) {
               case 0: //"init"
                   init()                
-                  self.promptStart = self.prompt("Click to start", {}, function() {
+                  self.promptStart = self.prompt(__("Click to start"), {}, function() {
                     started = true
                   })
                   started = false
@@ -278,7 +278,7 @@ var Raphatris = Game.extend({
                       draw()
                       return 2
                   } else {
-                      self.promptQuit = self.prompt("Game over", {}, function() {
+                      self.promptQuit = self.prompt(__("Game over"), {}, function() {
                         continued = true
                       })
                       continued = false

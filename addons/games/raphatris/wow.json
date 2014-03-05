@@ -3,6 +3,8 @@
 	"apptype": "wow/game",
 	"title": "Raphatris",
 	"description": "Yet Another Tetris Clone",
+	"className": "Raphatris",
 	"version": "0.1",
-	"author": "Myrousz"
+	"author": "Myrousz",
+	"langs": ["en"]
 }

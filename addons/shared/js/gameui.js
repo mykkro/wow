@@ -43,9 +43,9 @@ var GameUI = Base.extend({
     if(!self.playing) {
       // start game...
       Splash.removeAll()
-      alertify.success("Starting game...");
+      //alertify.success(__("Starting game..."));
       new Splash({
-        text:"Starting game...",
+        text:__("Starting game..."),
         delay: 2000,
         overlay: true,
         after: function() {
@@ -78,7 +78,7 @@ var GameUI = Base.extend({
       self.updateUI()
       self.showTab("game")
       new Splash({
-        text:"Paused",
+        text:__("Paused"),
         overlay: true,
         hideOnClick: true,
         after: function() {
@@ -142,7 +142,7 @@ var GameUI = Base.extend({
       $("button.game-scores").click(function() { self.showGameScores(); })
       $("button.game-settings").click(function() { self.gameSettings(); })
 
-      //$(".container").zoomTo({targetsize: 1, duration:1});
+      $(".container").zoomTo({targetsize: 1, duration:1});
     })
   }
 })

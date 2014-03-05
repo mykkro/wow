@@ -58,8 +58,15 @@ body {
 }
 
 .container .nav label span {
-  font-size: 24px;
-  margin-left: 10px;
+  font-size: 22px;
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.container .nav label button {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .container .tabs {
@@ -94,6 +101,8 @@ button.game:disabled {
   filter: gray; /* IE6-9 */
   -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
 }
+
+
 
 button.game-new {
   background-image: url(../media/icons/run.png);

@@ -1,0 +1,24 @@
+{
+	"name": "en",
+	"lang": "en",
+	"title": "Tetris",
+	"info": "Tetris is a classic video game. It is a simple puzzle game involving different configurations of blocks falling down. You control the place the blocks fall and make sure they fit into each other. The blocks fall at faster and faster rates with each level.",
+	"rules":"",
+	"labels": {
+		"Play":"Play",
+		"Pause":"Pause",
+		"Restart":"Restart",
+		"Quit":"Quit",
+		"Info":"Info",
+		"Rules":"Rules",
+		"Scores":"Scores",
+		"Score":"Score",
+		"Settings":"Settings",
+		"GeneralInformation":"General Information",
+		"Starting game...":"Starting game...",
+		"Paused":"Paused",
+		"Status":"Status",
+		"Game over":"Game over",
+		"Click to start":"Click to start"
+	}
+}
