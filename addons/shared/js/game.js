@@ -57,7 +57,7 @@ var Game = Base.extend({
   prompt: function(text, options, cb) {
     return new Splash({
       text:text,
-      delay: 2000,
+      delay: options.delay,
       overlay: true,
       hideOnClick: true,
       after: function() {

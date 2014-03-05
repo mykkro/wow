@@ -34,9 +34,9 @@ var GameUI = Base.extend({
     $("button.game-pause").prop("disabled", paused || !playing)
     $("button.game-restart").prop("disabled", !playing)
     $("button.game-settings").prop("disabled", playing)
-    $("button.game-rules").prop("disabled", playing)
-    $("button.game-scores").prop("disabled", playing)
-    $("button.game-info").prop("disabled", playing)
+    $("button.game-rules").prop("disabled", playing && !paused)
+    $("button.game-scores").prop("disabled", playing && !paused)
+    $("button.game-info").prop("disabled", playing && !paused)
   },
   startGame: function() {
     var self = this
@@ -142,7 +142,7 @@ var GameUI = Base.extend({
       $("button.game-scores").click(function() { self.showGameScores(); })
       $("button.game-settings").click(function() { self.gameSettings(); })
 
-      $(".container").zoomTo({targetsize: 1, duration:1});
+      //$(".container").zoomTo({targetsize: 1, duration:1});
     })
   }
 })
