@@ -42,8 +42,8 @@ var Game = Base.extend({
   availableLogs: function() {
     return {
       // map of available logs
-      status: { "label": "Status", "type": "string", "defaultValue": "", "visible": false },
-      score: { "label": "Score", "type": "integer", "defaultValue": 0, "visible": true }
+      status: { "label": __("Status"), "type": "string", "defaultValue": "", "visible": false },
+      score: { "label": __("Score"), "type": "integer", "defaultValue": 0, "visible": true }
     }
   },
   log: function(name, value) {

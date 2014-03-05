@@ -56,6 +56,7 @@ module.exports = function (grunt) {
           src: [
             'shared/css/normalize.css',
             'shared/css/ui.css',
+            'shared/css/icons.css',
             "shared/css/alertify.core.css",
             "shared/css/alertify.default.css"
           ],
@@ -74,10 +75,63 @@ module.exports = function (grunt) {
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/raphatris/media/' }
           ]
         }
-      }
+      },
+      mustache_render: {
+          options: {
+            // Task global options go here
+          },
+          main: {
+            options: {
+              // Target specific options go here
+            },
+            files : [
+              {
+                data: "games/raphatris/wow.json",
+                template: 'templates/index.mustache',
+                dest: 'games/raphatris/index.html'
+              }
+            ]
+          }
+        }
     })
 
     grunt.loadNpmTasks('grunt-zip');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-mustache-render');
+
+    grunt.registerTask('generateindex', function (key, value) {      
+        var name = 'raphatris'
+        var mustache = require("mustache")
+        var gamedir = 'games/'+name+'/'
+        var projectFile = gamedir + "wow.json";
+        var data = grunt.file.readJSON(projectFile);
+
+        function createIndex(name, locale) {
+          var templateFile = "templates/index.html.mustache"
+          var outFile = gamedir + "index_"+locale+".html"
+          var localeFile = gamedir + "lang/"+locale+".json"
+          var locData = grunt.file.readJSON(localeFile)
+          var template = grunt.file.read(templateFile)
+
+          var dd = { 
+            wow: data, 
+            translated: locData,
+            wow_json: JSON.stringify(data),
+            locale_json: JSON.stringify(locData)
+          }
+          grunt.file.write(outFile, mustache.render(template, dd));
+        }
+        createIndex(name, 'en')
+        createIndex(name, 'cz')
+        createIndex(name, 'de')
+
+        // write package.json...
+        var gamedir = 'games/'+name+'/'
+        var templateFile = "templates/package.json.mustache"
+        var template = grunt.file.read(templateFile)
+        var outFile = gamedir + "package.json"
+        grunt.file.write(outFile, mustache.render(template, data));
+    });
+
 }

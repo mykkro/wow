@@ -374,8 +374,8 @@ Base = Base.extend({
   availableLogs: function() {
     return {
       // map of available logs
-      status: { "label": "Status", "type": "string", "defaultValue": "", "visible": false },
-      score: { "label": "Score", "type": "integer", "defaultValue": 0, "visible": true }
+      status: { "label": __("Status"), "type": "string", "defaultValue": "", "visible": false },
+      score: { "label": __("Score"), "type": "integer", "defaultValue": 0, "visible": true }
     }
   },
   log: function(name, value) {
@@ -518,9 +518,9 @@ var LivesMiniLog = MiniLog.extend({
     if(!self.playing) {
       // start game...
       Splash.removeAll()
-      alertify.success("Starting game...");
+      //alertify.success(__("Starting game..."));
       new Splash({
-        text:"Starting game...",
+        text:__("Starting game..."),
         delay: 2000,
         overlay: true,
         after: function() {
@@ -553,7 +553,7 @@ var LivesMiniLog = MiniLog.extend({
       self.updateUI()
       self.showTab("game")
       new Splash({
-        text:"Paused",
+        text:__("Paused"),
         overlay: true,
         hideOnClick: true,
         after: function() {
@@ -617,7 +617,7 @@ var LivesMiniLog = MiniLog.extend({
       $("button.game-scores").click(function() { self.showGameScores(); })
       $("button.game-settings").click(function() { self.gameSettings(); })
 
-      //$(".container").zoomTo({targetsize: 1, duration:1});
+      $(".container").zoomTo({targetsize: 1, duration:1});
     })
   }
 })
