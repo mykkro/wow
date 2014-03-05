@@ -68,8 +68,10 @@ module.exports = function (grunt) {
             // includes files within path
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/raphanoid/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/raphanoid/css/' },
+            {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/raphanoid/media/' },
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/raphatris/js/' },
-            {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/raphatris/css/' }
+            {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/raphatris/css/' },
+            {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/raphatris/media/' }
           ]
         }
       }

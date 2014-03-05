@@ -22,6 +22,15 @@ var Game = Base.extend({
     })
     
   },
+  pause: function(cb) {
+    // restart game
+    this.log("status", "pause")
+    if(cb) cb()
+  },
+  resume: function(cb) {
+    this.log("status", "resume")
+    if(cb) cb()
+  },
   stop: function(cb) {
     this.log("status", "stop")
     if(cb) cb()
