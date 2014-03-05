@@ -4,6 +4,7 @@ var Raphatris = Game.extend({
     var self = this
     self.state = 0
     self.timerSpeed = 500
+    self.paused = false
 
     var paperDiv = $("<div>").attr("id", "paper").appendTo($("#tab-game"))
       var 
@@ -55,6 +56,7 @@ var Raphatris = Game.extend({
       init = function() {
           blox = {}
           score = 0
+          self.log("score", score)
           linecnt = 0
           pid = null
           next = null
@@ -153,6 +155,7 @@ var Raphatris = Game.extend({
           var lines = fullLines()
           linecnt += lines
           score += lines.length*10
+          self.log("score", score)            
           var brix = bricksOnLines(lines);
           if(!isEmpty(brix)) {
               var newBricks = {}
@@ -164,7 +167,11 @@ var Raphatris = Game.extend({
       // removes blocks specified by idmap blocksToRemove 
       // optionally adds blocks contained in array newBlocks
       killBlocks = function(blocksToRemove, newBlocks) {
-          for(var key in blocksToRemove) delete blox[key]
+          var blocks = 0
+          for(var key in blocksToRemove) {
+            delete blox[key]
+            blocks++
+          }
           for(var key in newBlocks) blox[key] = newBlocks[key]
           bmp_update();
       },
@@ -289,8 +296,10 @@ var Raphatris = Game.extend({
                   
       tick = function() {
         if(self.running) {
-          console.log("Tick!")
-          self.state = go(self.state)
+          if(!self.paused) {
+            console.log("Tick!")
+            self.state = go(self.state)
+          }
           setTimeout(tick, self.timerSpeed)
         }
       }
@@ -343,6 +352,14 @@ var Raphatris = Game.extend({
   },
   quit: function(cb) {
     this.stop(cb)
+  },
+  pause: function(cb) {
+    this.paused = true
+    this.base(cb)
+  },
+  resume: function(cb) {
+    this.paused = false
+    this.base(cb)
   }
 
 
