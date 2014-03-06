@@ -1,0 +1,14 @@
+.tictactoe table tr td {
+  width: 150px;
+  height: 150px;
+  font-size: 120px;
+}
+
+.circle {
+  color: red;
+}
+
+.cross {
+  color: blue;
+}
+ 

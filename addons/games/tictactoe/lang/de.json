@@ -1,0 +1,24 @@
+{
+	"name": "de",
+	"lang": "de",
+	"title": "Tic Tac Toe",
+	"info": "The Tic Tac Toe game.",
+	"rules":"",
+	"labels": {
+		"Play":"Spielen",
+		"Pause":"Pause",
+		"Restart":"Neustart",
+		"Quit":"Verlassen",
+		"Info":"Information",
+		"Rules":"Regeln",
+		"Scores":"Zählen",
+		"Score":"Zählen",
+		"Settings":"Einstellung",
+		"GeneralInformation":"Information",
+		"Starting game...":"Spiel ab",
+		"Paused":"Pausiert",
+		"Status":"Status",
+		"Game over":"Spiel vorbei",
+		"Click to start":"Klicken zum Starten"
+	}
+}

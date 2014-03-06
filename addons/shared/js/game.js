@@ -2,7 +2,8 @@ var Game = Base.extend({
   // options
   constructor: function(options) {
     this.options = options || {}
-  },
+    this.controller = null
+  },  
   init: function(cb) {
     // do some initialization...
     this.log("status", "initialize")
@@ -38,6 +39,16 @@ var Game = Base.extend({
   quit: function(cb) {
     this.log("status", "quit")
     this.stop(cb)
+  },
+  setController: function(controller) {
+    var self = this
+    this.controller = controller
+    this.controller.addListener(function(name, eventType) {
+      self.controllerEvent(name, eventType)
+    })
+  },
+  controllerEvent: function(name, eventType) {
+    console.log("Game controller: "+name+","+eventType)
   },
   availableLogs: function() {
     return {

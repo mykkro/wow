@@ -66,8 +66,43 @@
 	  			<div class="game-scores"></div>
 			</div>
 	  		<div class="tab" id="tab-settings">
-	  			<h3>Nastavení</h3>
 	  			<div class="game-settings"></div>
+
+<script type="text/javascript">
+$(function() {
+  $("#tab-settings .game-settings").alpaca({
+    "schema": {
+      "title": __("Settings"),
+      "description": __("Game Settings"),
+      "type": "object",
+      "properties": {
+        "difficulty": {
+          "type": "string",
+          "required": true,
+          "default": "easy",
+          "enum": ['easy', 'medium', 'hard']
+        }
+      }
+    },
+    "options": {
+            "renderForm": true,
+            "form": {
+                "buttons": {
+                    "submit": {}
+                }
+            },
+            "fields": {
+                "difficulty": {
+                    "label": __("Difficulty"),
+                    "type": "select",
+                    "optionLabels": [__("Easy"), __("Medium"), __("Hard")]
+                }
+            }
+        }
+  });
+});
+</script>
+
 			</div>
 		</div>
 		<div id="overlay"><div class="content"></div></div>

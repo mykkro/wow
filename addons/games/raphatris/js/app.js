@@ -308,34 +308,34 @@ var Raphatris = Game.extend({
       self.tick = tick
 
       
-      $('body').keydown(function (e) {
-          if(self.state == 2) {
-            switch (e.which) {
-                  case 32: // space
+      self.controllerEvent = function(name, eventType) {
+          if(self.state == 2 && eventType=="down") {
+            switch (name) {
+                  case "activate": // space
                       // drop
                       while(moveMe(0,1)) {}
                       break;
-              case 38:
+              case "up":
                       // rotate left
                       rotateMe()
                 break;
-              case 40:
+              case "down":
                       // rotate right
                       rotateMe()
                       rotateMe()
                       rotateMe()
                 break;
-              case 37:
+              case "left":
                       // move left
                       moveMe(-1,0);
                 break;
-              case 39:
+              case "right":
                       // move right
                       moveMe(1,0);
                 break;
             }
           }
-      });
+      }
                               
       if(cb) cb()
   },
