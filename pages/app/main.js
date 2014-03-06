@@ -57,7 +57,7 @@ module.exports = function(window, $, SVG, i18n) {
 					$("<iframe nwfaketop nwdisable>").attr({
 						width: "100%",
 						height: "100%",
-						src: src + "?showquitbutton=no",
+						src: src + "?showquitbutton=no&lang=de",
 						frameborder: 0
 					}).load(function() {
 						// reloading does not seem to help...
