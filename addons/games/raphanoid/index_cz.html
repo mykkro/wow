@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="cz">
+  <head>
+    <meta charset="utf-8">
+    <title>Raphanoid</title>
+
+	<link rel="stylesheet" type="text/css" href="css/bundle.css" />    
+	<link rel="stylesheet" type="text/css" href="css/style.css" />    
+	<script src="js/bundle.js" type="text/javascript"></script>
+	<script src="js/app.js" type="text/javascript"></script>
+	<script>
+	$(function() {
+		var metadata = {"name":"wow-contrib-games-raphanoid","apptype":"wow/game","title":"Raphanoid","description":"Yet Another Arkanoid Clone","className":"RaphanoidGame","version":"0.1","author":"Myrousz","langs":["en","de","cz"]}
+		var locale = "cz"
+		var localedata = {"name":"cz","lang":"cz","title":"Raphanoid","info":"Another of numerous clones of famous arcade game Arkanoid.","rules":"","labels":{"Play":"Hrát","Pause":"Pauza","Restart":"Restart","Quit":"Konec","Info":"Informace","Rules":"Pravidla","Scores":"Skóre","Score":"Skóre","Settings":"Nastavení","GeneralInformation":"Obecné informace","Starting game...":"Začínám hru...","Paused":"Pauza","Status":"Stav","Game over":"Konec hry","Click to start":"Klikni pro start hry"}}
+
+		/* localization function... */
+		window.__ = function(str) {
+			return localedata.labels[str] || str
+		}
+
+		var game = new RaphanoidGame()
+		var gui = new GameUI(game)		
+
+		console.log("Ready!")
+		gui.init()
+
+	})
+	</script>
+
+  </head>
+  <body>
+  	<style>
+  	
+  	</style>
+  	<div class="container">
+		<div class="nav">
+  			<label><button class="game game-new"></button><span>Hrát</span></label>
+  			<label><button class="game game-pause"></button><span>Pauza</span></label>
+  			<label><button class="game game-restart"></button><span>Restart</span></label>
+  			<label><button class="game game-quit"></button><span>Konec</span></label>
+  			<label><button class="game game-info"></button><span>Informace</span></label>
+  			<label><button class="game game-rules"></button><span>Pravidla</span></label>
+  			<label><button class="game game-scores"></button><span>Skóre</span></label>
+  			<label><button class="game game-settings"></button><span>Nastavení</span></label>
+  		</div>
+  		<div class="info">
+  			<div class="title">Raphanoid</div>
+  			<div class="logs"></div>
+  		</div>
+  		<div class="tabs">
+	  		<div class="tab" id="tab-game">
+				
+			</div>
+	  		<div class="tab" id="tab-info">
+	  			<h3>Obecné informace</h3>
+	  			<div class="game-preview"><img src="preview.png"></div>
+	  			<div class="game-description">Another of numerous clones of famous arcade game Arkanoid.</div>
+			</div>
+	  		<div class="tab" id="tab-rules">
+	  			<h3>Pravidla</h3>
+	  			<div class="game-rules"></div>
+			</div>
+	  		<div class="tab" id="tab-scores">
+	  			<h3>Skóre</h3>
+	  			<div class="game-scores"></div>
+			</div>
+	  		<div class="tab" id="tab-settings">
+	  			<h3>Nastavení</h3>
+	  			<div class="game-settings"></div>
+			</div>
+		</div>
+		<div id="overlay"><div class="content"></div></div>
+	</div>
+  </body>
+</html>
+
+
+
+
+
+
+

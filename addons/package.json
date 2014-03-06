@@ -15,6 +15,7 @@
     "grunt-zip": "~0.13.0",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-mustache-render": "~1.2.4",
-    "mustache": "~0.8.1"
+    "mustache": "~0.8.1",
+    "grunt-contrib-less": "~0.10.0"
   }
 }

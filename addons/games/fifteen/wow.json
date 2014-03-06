@@ -1,8 +1,10 @@
 {
 	"name": "wow-contrib-games-fifteen",
 	"apptype": "wow/game",
-	"title": "Pexeso",
-	"description": "15 Game",
+	"title": "Sliding Puzzle",
+	"description": "Sliding Puzzle aka 15 Game",
+	"className": "Fifteen",
 	"version": "0.1",
-	"author": "Myrousz"
+	"author": "Myrousz",
+	"langs": ["en","de","cz"]
 }

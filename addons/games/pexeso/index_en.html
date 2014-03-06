@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Pexeso</title>
+
+	<link rel="stylesheet" type="text/css" href="css/bundle.css" />    
+	<link rel="stylesheet" type="text/css" href="css/style.css" />    
+	<script src="js/bundle.js" type="text/javascript"></script>
+	<script src="js/app.js" type="text/javascript"></script>
+	<script>
+	$(function() {
+		var metadata = {"name":"wow-contrib-games-pexeso","apptype":"wow/game","title":"Pexeso","description":"Pexeso aka Memory Game","className":"Pexeso","version":"0.1","author":"Myrousz","langs":["en","de","cz"]}
+		var locale = "en"
+		var localedata = {"name":"en","lang":"en","title":"Pexeso","info":"Concentration, also known as Memory, Pelmanism, Shinkei-suijaku, Pexeso or simply Pairs, is a card game in which all of the cards are laid face down on a surface and two cards are flipped face up over each turn. The object of the game is to turn over pairs of matching cards.","rules":"","labels":{"Play":"Play","Pause":"Pause","Restart":"Restart","Quit":"Quit","Info":"Info","Rules":"Rules","Scores":"Scores","Score":"Score","Settings":"Settings","GeneralInformation":"General Information","Starting game...":"Starting game...","Paused":"Paused","Status":"Status","Game over":"Game over","Click to start":"Click to start"}}
+
+		/* localization function... */
+		window.__ = function(str) {
+			return localedata.labels[str] || str
+		}
+
+		var game = new Pexeso()
+		var gui = new GameUI(game)		
+
+		console.log("Ready!")
+		gui.init()
+
+	})
+	</script>
+
+  </head>
+  <body>
+  	<style>
+  	
+  	</style>
+  	<div class="container">
+		<div class="nav">
+  			<label><button class="game game-new"></button><span>Play</span></label>
+  			<label><button class="game game-pause"></button><span>Pause</span></label>
+  			<label><button class="game game-restart"></button><span>Restart</span></label>
+  			<label><button class="game game-quit"></button><span>Quit</span></label>
+  			<label><button class="game game-info"></button><span>Info</span></label>
+  			<label><button class="game game-rules"></button><span>Rules</span></label>
+  			<label><button class="game game-scores"></button><span>Scores</span></label>
+  			<label><button class="game game-settings"></button><span>Settings</span></label>
+  		</div>
+  		<div class="info">
+  			<div class="title">Pexeso</div>
+  			<div class="logs"></div>
+  		</div>
+  		<div class="tabs">
+	  		<div class="tab" id="tab-game">
+				
+			</div>
+	  		<div class="tab" id="tab-info">
+	  			<h3>General Information</h3>
+	  			<div class="game-preview"><img src="preview.png"></div>
+	  			<div class="game-description">Concentration, also known as Memory, Pelmanism, Shinkei-suijaku, Pexeso or simply Pairs, is a card game in which all of the cards are laid face down on a surface and two cards are flipped face up over each turn. The object of the game is to turn over pairs of matching cards.</div>
+			</div>
+	  		<div class="tab" id="tab-rules">
+	  			<h3>Rules</h3>
+	  			<div class="game-rules"></div>
+			</div>
+	  		<div class="tab" id="tab-scores">
+	  			<h3>Scores</h3>
+	  			<div class="game-scores"></div>
+			</div>
+	  		<div class="tab" id="tab-settings">
+	  			<h3>Settings</h3>
+	  			<div class="game-settings"></div>
+			</div>
+		</div>
+		<div id="overlay"><div class="content"></div></div>
+	</div>
+  </body>
+</html>
+
+
+
+
+
+
+

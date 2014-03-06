@@ -300,10 +300,11 @@ var Raphatris = Game.extend({
             console.log("Tick!")
             self.state = go(self.state)
           }
-          setTimeout(tick, self.timerSpeed)
+          self.clock = setTimeout(tick, self.timerSpeed)
         }
       }
 
+      self.clock = null
       self.tick = tick
 
       
@@ -346,6 +347,10 @@ var Raphatris = Game.extend({
   },
   stop: function(cb) {
     this.running = false
+    if(this.clock) {
+      clearTimeout(this.clock)
+      this.clock = null
+    }
     if(this.promptStart) this.promptStart.hide()
     if(this.promptQuit) this.promptQuit.hide()
     if(cb) cb()

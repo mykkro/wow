@@ -395,197 +395,12 @@ table {
     border-spacing: 0;
 }
 
-body {
-  background-color: #eee;
-}
-
-.hidden {
-  display: none;
-}
-
-.container {
-  width: 958px;
-  height: 598px;
-  margin: 0;
-  padding: 0;
-  background-color: #eed;
-  border: 1px solid #333;
-}
-
-.container .info {
-  background-color: none;
-  text-align: center;
-  width: 760px;
-  margin: 0px 0px 0px 200px;
-  padding: 0;
-}
-
-.container .info .title {
-  padding: 5px;
-  font-size: 32px;
-  font-weight: bold;
-}
-
-.container .info .logs {
-  padding: 10px;
-  font-size: 28px;
-}
-
-.container .info .log {
-  display: inline-block;
-  margin: 0px 10px;
-}
-
-.container .info .log.hidden {
-  display: none;
-}
-
-.container .nav {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  padding: 70px 0px 0px 0px;
-  width: 200px;
-  height: 530px;
-}
-
-.container .nav label {
-  display: block;
-  padding: 5px;
-}
-
-.container .nav label span {
-  font-size: 22px;
-  margin-left: 5px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.container .nav label button {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.container .tabs {
-  display: block;
-  vertical-align: top;
-  margin-left: 200px;
-  background-color: #ddc;
-  width: 716px;
-  height: 455px;
-  padding: 20px;
-  background-color: #dec;
-  border-top-left-radius: 10px;
-  -moz-border-top-left-radius: 10px;
-  -webkit-border-top-left-radius: 10px;
-}
-
-.container .tab h3 {
-  padding: 8px 0px;
-  margin: 0px;
-}
-
-button.game {
-  border: 0;
-  width: 56px;
-  height: 56px;
-  color: transparent;
-  background: none;
-}
-
-button.game:disabled {
-  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
-  filter: gray; /* IE6-9 */
-  -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
-}
-
-
-
-button.game-new {
-  background-image: url(../media/icons/run.png);
-  background-size: 100% auto;
-}
-
-button.game-quit {
-  background-image: url(../media/icons/quit.png);
-  background-size: 100% auto;
-}
-
-button.game-restart {
-  background-image: url(../media/icons/restart.png);
-  background-size: 100% auto;
-}
-
-button.game-pause {
-  background-image: url(../media/icons/pause.png);
-  background-size: 100% auto;
-}
-
-button.game-info {
-  background-image: url(../media/icons/info.png);
-  background-size: 100% auto;
-}
-
-button.game-rules {
-  background-image: url(../media/icons/chess.png);
-  background-size: 100% auto;
-}
-
-button.game-scores {
-  background-image: url(../media/icons/scores.png);
-  background-size: 100% auto;
-}
-
-button.game-settings {
-  background-image: url(../media/icons/settings.png);
-  background-size: 100% auto;
-}
-
-.splash {
-  position: absolute;
-  width: 400px;
-  height: 40px;
-  background-color: #cde;
-  top: 50%;
-  left: 50%;
-  margin-left: -210px;
-  margin-top: -30px;
-  padding: 10px;
-  font-size: 40px;
-  text-align: center;
-  border: 1px solid #333;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-
-  -moz-box-shadow: 0 0 5px 5px #888;
-  -webkit-box-shadow: 0 0 5px 5px#888;
-  box-shadow: 0 0 5px 5px #888;
-
-} 
-
-.splash-overlay {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  background-color: rgba(208,208,192,0.8);
-  width: 960px;
-  height: 600px;
-}
-
-/*  bar for showing up to 5 lives */
-.lifebar {
-  width: 0px;
-  height: 32px;
-  background-image: url(../media/icons/heart.png);
-  background-repeat: repeat-x;
-}
-.lifebar-wrapper {
-  width: 160px;
-  height: 32px;
-  display: inline-block;
-}
-
+/*---------------------------------------------------
+    LESS Elements 0.9
+  ---------------------------------------------------
+    A set of useful LESS mixins
+    More info at: http://lesselements.com
+  ---------------------------------------------------*/
 .icon.arrow-cycle {
   background-image: url(../media/icons/arrow_cycle.png);
 }
@@ -615,13 +430,13 @@ button.game-settings {
 }
 .icon.arrow_left {
   background-image: url(../media/icons/arrow_left.png);
-}       
+}
 .icon.quit {
   background-image: url(../media/icons/quit.png);
 }
 .icon.arrow_leftright {
   background-image: url(../media/icons/arrow_leftright.png);
-}  
+}
 .icon.restart {
   background-image: url(../media/icons/restart.png);
 }
@@ -663,12 +478,175 @@ button.game-settings {
 }
 .icon.comment_plain {
   background-image: url(../media/icons/comment_plain.png);
-}    
+}
 .icon.yield {
   background-image: url(../media/icons/yield.png);
 }
 .icon.cross {
   background-image: url(../media/icons/cross.png);
+}
+body {
+  background-color: #eee;
+}
+.hidden {
+  display: none;
+}
+.container {
+  width: 958px;
+  height: 598px;
+  margin: 0;
+  padding: 0;
+  background-color: #eed;
+  border: 1px solid #333;
+}
+.container .info {
+  background-color: none;
+  text-align: center;
+  width: 760px;
+  margin: 0px 0px 0px 200px;
+  padding: 0;
+}
+.container .info .title {
+  padding: 5px;
+  font-size: 32px;
+  font-weight: bold;
+}
+.container .info .logs {
+  padding: 10px;
+  font-size: 28px;
+}
+.container .info .log {
+  display: inline-block;
+  margin: 0px 10px;
+}
+.container .info .log.hidden {
+  display: none;
+}
+.container .nav {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  padding: 70px 0px 0px 0px;
+  width: 200px;
+  height: 530px;
+}
+.container .nav label {
+  display: block;
+  padding: 5px;
+}
+.container .nav label span {
+  font-size: 22px;
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.container .nav label button {
+  display: inline-block;
+  vertical-align: middle;
+}
+.container .tabs {
+  display: block;
+  vertical-align: top;
+  margin-left: 200px;
+  background-color: #ddc;
+  width: 716px;
+  height: 455px;
+  padding: 20px;
+  background-color: #dec;
+  border-top-left-radius: 10px;
+  -moz-border-top-left-radius: 10px;
+  -webkit-border-top-left-radius: 10px;
+}
+.container .tabs .tab h3 {
+  padding: 8px 0px;
+  margin: 0px;
+}
+button.game {
+  border: 0;
+  width: 56px;
+  height: 56px;
+  color: transparent;
+  background: none;
+}
+button.game:disabled {
+  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+  /* Firefox 10+, Firefox on Android */
+  filter: gray;
+  /* IE6-9 */
+  -webkit-filter: grayscale(100%);
+  /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+}
+button.game-new {
+  background-image: url(../media/icons/run.png);
+  background-size: 100% auto;
+}
+button.game-quit {
+  background-image: url(../media/icons/quit.png);
+  background-size: 100% auto;
+}
+button.game-restart {
+  background-image: url(../media/icons/restart.png);
+  background-size: 100% auto;
+}
+button.game-pause {
+  background-image: url(../media/icons/pause.png);
+  background-size: 100% auto;
+}
+button.game-info {
+  background-image: url(../media/icons/info.png);
+  background-size: 100% auto;
+}
+button.game-rules {
+  background-image: url(../media/icons/chess.png);
+  background-size: 100% auto;
+}
+button.game-scores {
+  background-image: url(../media/icons/scores.png);
+  background-size: 100% auto;
+}
+button.game-settings {
+  background-image: url(../media/icons/settings.png);
+  background-size: 100% auto;
+}
+.splash {
+  position: absolute;
+  width: 400px;
+  height: 40px;
+  background-color: #cde;
+  top: 50%;
+  left: 50%;
+  margin-left: -210px;
+  margin-top: -30px;
+  padding: 10px;
+  font-size: 40px;
+  text-align: center;
+  border: 1px solid #333;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow: 0 0 5px 5px #888;
+  -webkit-box-shadow: 0 0 5px 5px#888;
+  box-shadow: 0 0 5px 5px #888;
+}
+.splash-overlay {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-color: rgba(208, 208, 192, 0.8);
+  width: 960px;
+  height: 600px;
+}
+/*  bar for showing up to 5 lives */
+.lifebar {
+  width: 0px;
+  height: 32px;
+  background-image: url(../media/icons/heart.png);
+  background-repeat: repeat-x;
+}
+.lifebar-wrapper {
+  width: 160px;
+  height: 32px;
+  display: inline-block;
 }
 
 .alertify,

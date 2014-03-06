@@ -28,6 +28,23 @@ module.exports = function (grunt) {
         }
       },
       concat: {
+        raphanoid: {
+          options: {
+            separator: ';',
+          },
+          src: [
+            'games/raphanoid/js/raphanoid/raphanoid.js',
+            'games/raphanoid/js/raphanoid/komponent.js',
+            'games/raphanoid/js/raphanoid/ball.js',
+            'games/raphanoid/js/raphanoid/bat.js',
+            'games/raphanoid/js/raphanoid/brick.js',
+            'games/raphanoid/js/raphanoid/livescounter.js',
+            'games/raphanoid/js/raphanoid/scorecounter.js',
+            'games/raphanoid/js/raphanoid/screen.js',
+            'games/raphanoid/js/raphanoidgame.js'
+          ],
+          dest: 'games/raphanoid/js/app.js'
+        },
         js: {
           options: {
             separator: ';',
@@ -47,16 +64,14 @@ module.exports = function (grunt) {
             'shared/js/game.js',
             'shared/js/splash.js',
             'shared/js/minilog.js',
-            'shared/js/gameui.js',
-            'shared/js/app.js'
+            'shared/js/gameui.js'
           ],
           dest: 'shared/js/bundle.js'
         },
         css: {
           src: [
             'shared/css/normalize.css',
-            'shared/css/ui.css',
-            'shared/css/icons.css',
+            'shared/css/compiled.css',
             "shared/css/alertify.core.css",
             "shared/css/alertify.default.css"
           ],
@@ -70,9 +85,22 @@ module.exports = function (grunt) {
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/raphanoid/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/raphanoid/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/raphanoid/media/' },
+            {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/raphanoid/' },
+
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/raphatris/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/raphatris/css/' },
-            {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/raphatris/media/' }
+            {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/raphatris/media/' },
+            {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/raphatris/' },
+
+            {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/fifteen/js/' },
+            {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/fifteen/css/' },
+            {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/fifteen/media/' },
+            {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/fifteen/' },
+
+            {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/pexeso/js/' },
+            {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/pexeso/css/' },
+            {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/pexeso/media/' },
+            {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/pexeso/' }
           ]
         }
       },
@@ -92,16 +120,44 @@ module.exports = function (grunt) {
               }
             ]
           }
+        },
+      less: {
+        main: {
+          options: {
+            paths: ["shared/less"]
+          },
+          files: {
+            "shared/css/compiled.css": "shared/less/style.less"
+          }
         }
+      },
+      generateindex: {
+        raphatris: {
+        },
+        raphanoid: {
+
+        },
+        fifteen: {
+
+        },
+        pexeso: {
+
+        }
+      }      
     })
+
+    grunt.registerMultiTask('dummy', 'Dummy stuff.', function() {
+      grunt.log.writeln(this.target + ': ' + this.data);
+    });
 
     grunt.loadNpmTasks('grunt-zip');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-mustache-render');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
-    grunt.registerTask('generateindex', function (key, value) {      
-        var name = 'raphatris'
+    grunt.registerMultiTask('generateindex', 'Generate index.html and package.json.', function (key, value) {      
+        var name = this.target
         var mustache = require("mustache")
         var gamedir = 'games/'+name+'/'
         var projectFile = gamedir + "wow.json";
@@ -134,4 +190,5 @@ module.exports = function (grunt) {
         grunt.file.write(outFile, mustache.render(template, data));
     });
 
+  grunt.registerTask('default', ['less', 'concat', 'copy', 'generateindex']);
 }
