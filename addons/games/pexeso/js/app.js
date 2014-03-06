@@ -77,17 +77,79 @@ var Pexeso = Game.extend({
     this.tilesetBaseUrl = "media/tilesets/sampleTileset/"
     this.tileBackUrl = this.tilesetBaseUrl+"assets/tileback.png"
 
-    $.getJSON(this.tilesetBaseUrl + "metadata.json").done(function(d) {
-      console.log("Tileset metadata loaded.")
-      self.tileset = d
+    //$.getJSON(this.tilesetBaseUrl + "metadata.json").done(function(d) {
+    //  console.log("Tileset metadata loaded.")
+      self.tileset = {
+        "$type": "playonweb-tileset",
+        "name": "sampleTileset",
+        "title": "Sample Tileset",
+        "version": "1.0",
+        "width": 256,
+        "height": 256,
+        "tiles": [
+          {
+            "name": "tile1",
+            "url": "assets/baseball_ball.png"
+          },
+          {
+            "name": "tile2",
+            "url": "assets/basketball_ball.png"
+          },
+          {
+            "name": "tile3",
+            "url": "assets/boxing_gloves.png"
+          },
+          {
+            "name": "tile5",
+            "url": "assets/football_ball.png"
+          },
+          {
+            "name": "tile4",
+            "url": "assets/volleyball_ball.png"
+          },
+          {
+            "name": "tile6",
+            "url": "assets/golf_ball.png"
+          },
+          {
+            "name": "tile7",
+            "url": "assets/hockey_iceskate.png"
+          },
+          {
+            "name": "tile8",
+            "url": "assets/motorsport_helmet.png"
+          },
+          {
+            "name": "tile9",
+            "url": "assets/skateboard.png"
+          },
+          {
+            "name": "tile10",
+            "url": "assets/soccer_ball.png"
+          },
+          {
+            "name": "tile11",
+            "url": "assets/tennis_ball.png"
+          },
+          {
+            "name": "tile12",
+            "url": "assets/tennis.png"
+          },
+          {
+            "name": "tileBackground",
+            "url": "assets/tileback.png"
+          }
+        ]
+      }
       /* start with a set of cards.. */
       self.cards = []
-      _.each(d.tiles, function(ttt) {
+      _.each(self.tileset.tiles, function(ttt) {
         self.cards.push({name: ttt.name, tile:null, url:ttt.url});
       })
       // callback...
       if(cb) cb()
-    })
+//    })
+    $("<div>").attr("id","board").appendTo($("#tab-game"))
 
   },
   start: function(cb) {
