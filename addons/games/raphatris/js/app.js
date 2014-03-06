@@ -8,8 +8,8 @@ var Raphatris = Game.extend({
 
     var paperDiv = $("<div>").attr("id", "paper").appendTo($("#tab-game"))
       var 
-          paper = Raphael("paper", 700, 450),
-          s = 20,
+          paper = Raphael("paper", 700, 484),
+          s = 22,
           colors = ["red", "blue", "green", "orange", "cyan", "yellow", "purple", "#666"],
           bricks = [
               [[-1,0],[0,0],[1,0],[2,0]],

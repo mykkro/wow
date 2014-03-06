@@ -19,7 +19,10 @@
 		"Paused":"Pauza",
 		"Status":"Stav",
 		"Game over":"Konec hry",
-		"Click to start":"Klikni pro start hry"
+		"Click to start":"Klikni pro start hry",
+		"Lives":"Životy",
+		"Level":"Úroveň",
+		"Start!":"Start!"		
 
 	}
 }

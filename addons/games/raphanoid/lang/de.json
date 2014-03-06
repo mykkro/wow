@@ -19,6 +19,9 @@
 		"Paused":"Pausiert",
 		"Status":"Status",
 		"Game over":"Spiel vorbei",
-		"Click to start":"Klicken zum Starten"
+		"Click to start":"Klicken zum Starten",
+		"Lives":"Leben",
+		"Level":"Stufe",
+		"Start!":"Start!"		
 	}
 }

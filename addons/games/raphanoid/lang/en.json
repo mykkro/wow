@@ -19,6 +19,9 @@
 		"Paused":"Paused",
 		"Status":"Status",
 		"Game over":"Game over",
-		"Click to start":"Click to start"
+		"Click to start":"Click to start",
+		"Lives":"Lives",
+		"Level":"Level",
+		"Start!":"Start!"
 	}
 }

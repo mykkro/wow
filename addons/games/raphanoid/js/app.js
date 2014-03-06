@@ -610,7 +610,7 @@ Raphanoid.Brick = Raphanoid.Komponent.extend({
     },
     putStartButton: function (keepScore) {
 		var self = this;
-		this.game.prompt("Start!", {}, function () {
+		this.game.prompt(__("Start!"), {}, function () {
 			if(!keepScore) {
 				self.scoreCounter.reset();
 				self.livesCounter.reset();
