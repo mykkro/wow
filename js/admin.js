@@ -32,7 +32,20 @@
 		var userId = "555"
 		var adminId = "123"
 		var page = 1
-
+		
+		var checkImageUrl = function(url, cb) {
+			$.ajax({
+			  type: "HEAD",
+			  url : url,
+			  success: function(message,text,response){
+				 cb(response.getResponseHeader('Content-Type').indexOf("image")!=-1)
+			  },
+			  error: function() {
+				cb()
+			  }
+			})		
+		}
+		
 		var RadioPanel = Base.extend({
 			constructor: function() {
 				var self = this
@@ -207,10 +220,7 @@
 				console.log(item)
 				// TODO use mustache
 				var self = this
-				var previewUri = "/assets/misc/nopreview.svg"
-				if(item.preview) {
-					previewUri = "/imports/" +item.importName + "/"  + item.preview
-				}
+				var previewUri = "/imports/" +item.importName + "/preview.png"				
 				var out = $("<div>").append(
 					$("<h3>").text(item.title),
 					$("<div>").text("Created: "+item.created),
@@ -228,6 +238,10 @@
 						})
 					})
 				)
+				checkImageUrl(previewUri, function(found) {
+					if(!found) previewUri = "/assets/misc/nopreview.svg"
+					out.find("img").attr("src", previewUri)
+				})
 				return out
 			},
 			removeItem: function(id, div) {
