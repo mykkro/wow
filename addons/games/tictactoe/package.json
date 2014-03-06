@@ -1,0 +1,20 @@
+{
+  "name": "wow-contrib-games-tictactoe",
+  "version": "0.1",
+  "description": "TicTacToe Game",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Myrousz",
+  "license": "BSD-2-Clause",
+  "window": {
+    "toolbar": false,
+    "width": 960,
+    "height": 600,
+    "kiosk": true
+  },
+  "webkit": {
+  	"plugin": true
+  }
+}

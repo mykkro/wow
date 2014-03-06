@@ -1,0 +1,10 @@
+{
+	"name": "wow-contrib-games-tictactoe",
+	"apptype": "wow/game",
+	"title": "Tic Tac Toe",
+	"description": "TicTacToe Game",
+	"className": "TicTacToe",
+	"version": "0.1",
+	"author": "Myrousz",
+	"langs": ["en","de","cz"]
+}

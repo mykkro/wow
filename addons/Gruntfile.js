@@ -25,6 +25,11 @@ module.exports = function (grunt) {
           cwd: 'games/raphanoid/',
           src: ['games/raphanoid/**'],
           dest: 'dist/raphanoid.zip'
+        },
+        tictactoe: {
+          cwd: 'games/tictactoe/',
+          src: ['games/tictactoe/**'],
+          dest: 'dist/tictactoe.zip'
         }
       },
       concat: {
@@ -65,6 +70,7 @@ module.exports = function (grunt) {
             'shared/js/game.js',
             'shared/js/splash.js',
             'shared/js/minilog.js',
+            'shared/js/gamecontroller.js',
             'shared/js/gameui.js'
           ],
           dest: 'shared/js/bundle.js'
@@ -102,7 +108,12 @@ module.exports = function (grunt) {
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/pexeso/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/pexeso/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/pexeso/media/' },
-            {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/pexeso/' }
+            {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/pexeso/' },
+
+            {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/tictactoe/js/' },
+            {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/tictactoe/css/' },
+            {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/tictactoe/media/' },
+            {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/tictactoe/' }
           ]
         }
       },
@@ -144,6 +155,9 @@ module.exports = function (grunt) {
         },
         pexeso: {
 
+        },
+        tictactoe: {
+          
         }
       }      
     })

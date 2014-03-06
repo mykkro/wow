@@ -1,3 +1,50 @@
+var GameController = Base.extend({
+  constructor: function() {
+    this.listeners = []
+  },
+  removeListeners: function() {
+    this.listeners = []
+  },
+  addListener: function(listener) {
+    this.listeners.push(listener)
+  },
+  emit: function(name, eventType) {
+    for(var i=0; i<this.listeners.length; i++) {
+      this.listeners[i](name, eventType)
+    }
+  }
+})
+
+var GameKeyboardController = GameController.extend({
+  constructor: function() {
+    this.base()
+    var self = this
+    $('body').keydown(function (e) {
+        switch (e.which) {
+              case 32: // space
+              case 13:
+                  self.emit("activate", "down")
+                  break;
+          case 38:
+                  self.emit("up", "down")
+                  break;
+          case 27:
+                  self.emit("escape", "down")
+                  break;
+          case 40:
+                  self.emit("down", "down")
+                  break;
+          case 37:
+                  self.emit("left", "down")
+                  break;
+          case 39:
+                  self.emit("right", "down")
+                  break;
+        }
+      });    
+  }
+})
+
 var GameUI = Base.extend({
   constructor: function(game) {
     this.game = game
@@ -9,6 +56,10 @@ var GameUI = Base.extend({
     })
     this.logs = {}
     this.initLogs()    
+
+    /* initializes a controller... */
+    this.controller = new GameKeyboardController()
+    this.game.setController(this.controller)
   },
   initLogs: function() {
     var logs = this.game.availableLogs()
