@@ -13,15 +13,16 @@ Raphanoid.Screen = Base.extend({
     	this.livesCounter.onNoLifeLeft = function() {
     		self.gameOver();
     	};
+        this.level = 0;
+        this.score = 0;
     },
     setLevelBackground: function(level) {
     	this.background.attr("src", "media/"+Raphanoid.screens[level].background);
     	this.background2.attr("src", "media/"+Raphanoid.screens[level].background);
-    	this.level = level;
     },
     animateBackground: function() {
         if(!this.alive) return
-        if(this.running) {
+        if(this.running && !this.game.paused) {
         	this.setBackgroundPosition(this.frame);
         	this.frame += 1;
         	if(this.frame >= 400) this.frame -= 400;
@@ -35,9 +36,7 @@ Raphanoid.Screen = Base.extend({
     	this.background2.attr("y", y);
     },
     init: function (keepScore) {
-        this.level = 0;
         this.bricks = {};
-        this.score = 0;
         this.running = false;
         this.alive = true;
         this.setBackgroundPosition(0);
@@ -100,10 +99,12 @@ Raphanoid.Screen = Base.extend({
 			if(!keepScore) {
 				self.scoreCounter.reset();
 				self.livesCounter.reset();
+                self.level = 0;
 			}
             self.startGame();
             self.game.log("score", self.scoreCounter.score)
             self.game.log("lives", self.livesCounter.lives)
+            self.game.log("level", self.level+1)
         })
     },
     putWellDoneButton: function () {
@@ -113,6 +114,7 @@ Raphanoid.Screen = Base.extend({
 			if(self.level >= Raphanoid.screens.length) {
 				self.level = 0;
 			}
+            self.game.log("level", self.level+1)
 			self.setLevelBackground(self.level);
             self.init(true);
         })
@@ -420,18 +422,20 @@ Raphanoid.Screen = Base.extend({
 		});
 
 		var tick = function () {
-			self.ball.move();
-			if (keyArrowUp) {
-				// up code
-			} else if (keyArrowDown) {
-				// down code
-			} else if (keyArrowLeft) {
-				// left code
-				self.bat.move(-1);
-			} else if (keyArrowRight) {
-				// right code
-				self.bat.move(1);
-			}
+            if(!self.game.paused) {
+    			self.ball.move();
+    			if (keyArrowUp) {
+    				// up code
+    			} else if (keyArrowDown) {
+    				// down code
+    			} else if (keyArrowLeft) {
+    				// left code
+    				self.bat.move(-1);
+    			} else if (keyArrowRight) {
+    				// right code
+    				self.bat.move(1);
+    			}
+            }
 			if(self.running) {
 				setTimeout(tick, tickRate);
 			}

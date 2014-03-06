@@ -1,18 +1,18 @@
 {
   "name": "wow-contrib-games-fifteen",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.1",
+  "description": "Sliding Puzzle aka 15 Game",
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Myrousz",
   "license": "BSD-2-Clause",
   "window": {
-    "toolbar": true,
+    "toolbar": false,
     "width": 960,
     "height": 600,
-    "kiosk": false
+    "kiosk": true
   },
   "webkit": {
   	"plugin": true

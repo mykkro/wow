@@ -1,0 +1,25 @@
+{
+	"name": "cz",
+	"lang": "cz",
+	"title": "Pexeso",
+	"info": "Concentration, also known as Memory, Pelmanism, Shinkei-suijaku, Pexeso or simply Pairs, is a card game in which all of the cards are laid face down on a surface and two cards are flipped face up over each turn. The object of the game is to turn over pairs of matching cards.",
+	"rules":"",
+	"labels": {
+		"Play":"Hrát",
+		"Pause":"Pauza",
+		"Restart":"Restart",
+		"Quit":"Konec",
+		"Info":"Informace",
+		"Rules":"Pravidla",
+		"Scores":"Skóre",
+		"Score":"Skóre",
+		"Settings":"Nastavení",
+		"GeneralInformation":"Obecné informace",
+		"Starting game...":"Začínám hru...",
+		"Paused":"Pauza",
+		"Status":"Stav",
+		"Game over":"Konec hry",
+		"Click to start":"Klikni pro start hry"
+
+	}
+}
