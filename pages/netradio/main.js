@@ -1,4 +1,7 @@
 module.exports = function(window, $, SVG, i18n) {
+
+	$.playable('/swf/')			
+
 	return {
 		radios: [
 		  { "name": "Klassik Radio", "src": "http://edge.live.mp3.mdn.newmedia.nacamar.net/klassikradio128/livestream.mp3"},
@@ -22,14 +25,21 @@ module.exports = function(window, $, SVG, i18n) {
 			this.startPlaying(this.radios[this.currentTrack])
 		},
 		startPlaying: function(radio) {
+			var self = this
 			$("#labelRadioTitle").text(radio.name)
-			self.link = $("<a>").attr("href", radio.src).appendTo($("body")).playable()
+			$("#labelRadioFreq").text("")
+			self.link = $(self.playlist.children()[self.currentTrack])
 			self.link.click()
 		},
 		stopPlaying: function() {
-			var playable = self.link.data('playable')
-			if(playable) playable.stop(true)
-			self.link.remove()
+			soundManager.stopAll()
+		},
+		createPlaylist: function() {
+			var out = $('<div id="netradio-playlist" style="display: none;">')
+			for(var i=0;i<this.radios.length; i++) {
+				out.append($("<a>").text(this.radios[i].name).attr("href", this.radios[i].src))
+			}
+			return out
 		},
 		init: function(Widgetizer, data, next) {
 			var self = this
@@ -49,18 +59,11 @@ module.exports = function(window, $, SVG, i18n) {
 				self.playNextTrack()
 			})
 			
-			// put an internet radio here...
-			var title = "Radio ZUSA"
-			var freq = ""
-			var url = self.radios[6].src
-
-			$.playable('/swf/')			
-
-			$("#labelRadioTitle").text(title)
-			$("#labelRadioFreq").text(freq)
 			
+			self.playlist = self.createPlaylist().appendTo($("body"))
+			self.playlist = $(self.playlist).playable()
+						
 			this.startPlaying(this.radios[this.currentTrack])
-
 
 			/* continue when finished */
 			if(next) next(this)
