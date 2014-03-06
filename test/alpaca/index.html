@@ -180,6 +180,12 @@ $(document).ready(function() {
             console.log(control)
             console.log(ctrl)
         })
+        /* this works! */
+        for(var i=0; i<control.children.length; i++) {
+            control.children[i].on("change", function(ctrl2) {
+                console.log(ctrl2);
+            })
+        }
     };
 
     /**
