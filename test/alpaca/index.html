@@ -182,8 +182,8 @@ $(document).ready(function() {
         })
         /* this works! */
         for(var i=0; i<control.children.length; i++) {
-            control.children[i].on("change", function(ctrl2) {
-                console.log(ctrl2);
+            control.children[i].on("change", function(ev) {
+                console.log(ev);
             })
         }
     };
