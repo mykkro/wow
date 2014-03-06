@@ -3,13 +3,13 @@ var Raphatris = Game.extend({
   init: function(cb) {
     var self = this
     self.state = 0
-    self.timerSpeed = 500
+    self.timerSpeed = 700
     self.paused = false
 
     var paperDiv = $("<div>").attr("id", "paper").appendTo($("#tab-game"))
       var 
           paper = Raphael("paper", 700, 484),
-          s = 22,
+          s = 23,
           colors = ["red", "blue", "green", "orange", "cyan", "yellow", "purple", "#666"],
           bricks = [
               [[-1,0],[0,0],[1,0],[2,0]],
@@ -61,8 +61,8 @@ var Raphatris = Game.extend({
           pid = null
           next = null
           // background
-          drawBrick(1, 1, stageW, stageH).attr("fill","#ccc")
-          drawBrick(3+stageW, 1, 5, 5).attr("fill", "#ccc")
+          drawBrick(0, 0, stageW, stageH).attr("fill","#ccc")
+          drawBrick(2+stageW, 0, 5, 5).attr("fill", "#ccc")
           stage = paper.set()
           preview = paper.set()
           nextBlock()
@@ -79,7 +79,7 @@ var Raphatris = Game.extend({
       drawBlock = function(block) {
           var st = paper.set()
           block.bricks.forEach(function(pos) {
-              st.push(drawBrick(pos[0], pos[1]));
+              st.push(drawBrick(pos[0]-1, pos[1]-1));
           })
           return st.attr("fill", block.color)
       },

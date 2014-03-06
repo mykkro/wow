@@ -56,6 +56,7 @@ module.exports = function (grunt) {
             'shared/js/jquery.zoomooz.min.js',
             'shared/js/alertify.min.js',
             'shared/js/raphael-min.js',
+            'shared/js/alpaca.min.js',
 
             'shared/js/raphaelicious-1.0.js',
             'shared/js/util.js',
@@ -73,7 +74,8 @@ module.exports = function (grunt) {
             'shared/css/normalize.css',
             'shared/css/compiled.css',
             "shared/css/alertify.core.css",
-            "shared/css/alertify.default.css"
+            "shared/css/alertify.default.css",
+            'shared/css/alpaca.min.css',
           ],
           dest: 'shared/css/bundle.css'
         }
