@@ -62,6 +62,7 @@ module.exports = function (grunt) {
             'shared/js/alertify.min.js',
             'shared/js/raphael-min.js',
             'shared/js/alpaca.min.js',
+            'shared/js/mustache.js',
 
             'shared/js/raphaelicious-1.0.js',
             'shared/js/util.js',
@@ -90,29 +91,35 @@ module.exports = function (grunt) {
         main: {
           files: [
             // includes files within path
+            // TODO make this a task!
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/raphanoid/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/raphanoid/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/raphanoid/media/' },
+            {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/raphanoid/templates/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/raphanoid/' },
 
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/raphatris/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/raphatris/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/raphatris/media/' },
+            {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/raphatris/templates/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/raphatris/' },
 
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/fifteen/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/fifteen/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/fifteen/media/' },
+            {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/fifteen/templates/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/fifteen/' },
 
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/pexeso/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/pexeso/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/pexeso/media/' },
+            {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/pexeso/templates/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/pexeso/' },
 
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/tictactoe/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/tictactoe/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/tictactoe/media/' },
+            {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/tictactoe/templates/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/tictactoe/' }
           ]
         }
@@ -172,31 +179,12 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-mustache-render');
     grunt.loadNpmTasks('grunt-contrib-less');
 
-    grunt.registerMultiTask('generateindex', 'Generate index.html and package.json.', function (key, value) {      
+    grunt.registerMultiTask('generateindex', 'Generate index.html and package.json and copy shared files.', function (key, value) {      
         var name = this.target
         var mustache = require("mustache")
         var gamedir = 'games/'+name+'/'
         var projectFile = gamedir + "wow.json";
         var data = grunt.file.readJSON(projectFile);
-
-        function createIndex(name, locale) {
-          var templateFile = "templates/index.html.mustache"
-          var outFile = gamedir + "index_"+locale+".html"
-          var localeFile = gamedir + "lang/"+locale+".json"
-          var locData = grunt.file.readJSON(localeFile)
-          var template = grunt.file.read(templateFile)
-
-          var dd = { 
-            wow: data, 
-            translated: locData,
-            wow_json: JSON.stringify(data),
-            locale_json: JSON.stringify(locData)
-          }
-          grunt.file.write(outFile, mustache.render(template, dd));
-        }
-        createIndex(name, 'en')
-        createIndex(name, 'cz')
-        createIndex(name, 'de')
 
         // write package.json...
         var gamedir = 'games/'+name+'/'

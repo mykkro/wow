@@ -148,13 +148,20 @@ var GameUI = Base.extend({
     })
   },
   restartGame: function() {
-    Splash.removeAll()
     var self = this
-    self.game.restart(function() {
-      self.playing = true;
-      self.paused = false;
-      self.updateUI()
-      self.showTab("game")  
+    Splash.removeAll()
+    new Splash({
+      text:__("Starting game..."),
+      delay: 2000,
+      overlay: true,
+      after: function() {
+        self.game.restart(function() {
+          self.playing = true;
+          self.paused = false;
+          self.updateUI()
+          self.showTab("game")  
+        })
+      }
     })
   },
   showGameInfo: function() {
