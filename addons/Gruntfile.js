@@ -96,30 +96,35 @@ module.exports = function (grunt) {
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/raphanoid/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/raphanoid/media/' },
             {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/raphanoid/templates/' },
+            {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/raphanoid/lang/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/raphanoid/' },
 
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/raphatris/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/raphatris/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/raphatris/media/' },
             {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/raphatris/templates/' },
+            {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/raphatris/lang/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/raphatris/' },
 
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/fifteen/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/fifteen/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/fifteen/media/' },
             {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/fifteen/templates/' },
+            {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/fifteen/lang/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/fifteen/' },
 
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/pexeso/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/pexeso/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/pexeso/media/' },
             {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/pexeso/templates/' },
+            {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/pexeso/lang/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/pexeso/' },
 
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/tictactoe/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/tictactoe/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/tictactoe/media/' },
             {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/tictactoe/templates/' },
+            {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/tictactoe/lang/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/tictactoe/' }
           ]
         }

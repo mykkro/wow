@@ -5,23 +5,5 @@
 	"info": "Another of numerous clones of famous arcade game Arkanoid.",
 	"rules":"",
 	"labels": {
-		"Play":"Play",
-		"Pause":"Pause",
-		"Restart":"Restart",
-		"Quit":"Quit",
-		"Info":"Info",
-		"Rules":"Rules",
-		"Scores":"Scores",
-		"Score":"Score",
-		"Settings":"Settings",
-		"GeneralInformation":"General Information",
-		"Starting game...":"Starting game...",
-		"Paused":"Paused",
-		"Status":"Status",
-		"Game over":"Game over",
-		"Click to start":"Click to start",
-		"Lives":"Lives",
-		"Level":"Level",
-		"Start!":"Start!"
 	}
 }

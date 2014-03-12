@@ -1,0 +1,15 @@
+{
+    "renderForm": true,
+    "form": {
+        "buttons": {
+            "submit": {}
+        }
+    },
+    "fields": {
+        "difficulty": {
+            "label": "{{translated.difficulty}}",
+            "type": "select",
+            "optionLabels": ["{{translated.easy}}", "{{translated.medium}}", "{{translated.hard}}"]
+        }
+    }
+}
