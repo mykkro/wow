@@ -19,18 +19,33 @@ function getParameterByName(name) {
 
 	$(function() {
     var locale = getParameterByName('lang') || 'en'
+    var defaultLocaleUrl = "lang/labels."+locale+".json"
     var localeUrl = "lang/"+locale+".json"
     var metadataUrl = "wow.json"
 
 
-    $.when($.getJSON(metadataUrl), $.getJSON(localeUrl), $.get("templates/view.html")).done(function(d1, d2, d3) {
+    $.when(
+    	$.getJSON(metadataUrl), 
+    	$.getJSON(defaultLocaleUrl), 
+    	$.getJSON(localeUrl), 
+    	$.get("templates/view.html"),
+    	$.get("templates/form-settings-schema"),
+    	$.get("templates/form-settings-options")
+    ).done(function(d1, dd2, d2, d3, t1, t2) {
 
       var metadata = d1[0]
-      var localedata = d2[0]
+      var localedata = $.extend(d2[0], dd2[0])
       var viewTpl = d3[0]
+      var formSchemaTpl = t1[0]
+      var formOptionsTpl = t2[0]
+
+      var dd = {wow:metadata, translated:localedata}
+
+      var formSchema = JSON.parse(Mustache.render(formSchemaTpl, dd))
+      var formOptions = JSON.parse(Mustache.render(formOptionsTpl, dd))
 
     $("head title").text(metadata.title)
-    $("body").append(Mustache.render(viewTpl, {wow:metadata, translated:localedata}))
+    $("body").append(Mustache.render(viewTpl, dd))
 
       /* localization function... */
       window.__ = function(str) {
@@ -44,38 +59,12 @@ function getParameterByName(name) {
       console.log("Ready!")
       gui.init()
 
-  $("#tab-settings .game-settings").alpaca({
-    "schema": {
-      "title": __("Settings"),
-      "description": __("Game Settings"),
-      "type": "object",
-      "properties": {
-        "difficulty": {
-          "type": "string",
-          "required": true,
-          "default": "easy",
-          "enum": ['easy', 'medium', 'hard']
-        }
-      }
-    },
-    "options": {
-            "renderForm": true,
-            "form": {
-                "buttons": {
-                    "submit": {}
-                }
-            },
-            "fields": {
-                "difficulty": {
-                    "label": __("Difficulty"),
-                    "type": "select",
-                    "optionLabels": [__("Easy"), __("Medium"), __("Hard")]
-                }
-            }
-        }
-  });
-
-    })
+      // initialize settings form...
+  	  $("#tab-settings .game-settings").alpaca({
+    	"schema": formSchema,
+    	"options": formOptions
+      })
+  	})
   })
 	</script>
 

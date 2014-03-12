@@ -5,24 +5,5 @@
 	"info": "Another of numerous clones of famous arcade game Arkanoid.",
 	"rules":"",
 	"labels": {
-		"Play":"Hrát",
-		"Pause":"Pauza",
-		"Restart":"Restart",
-		"Quit":"Konec",
-		"Info":"Informace",
-		"Rules":"Pravidla",
-		"Scores":"Skóre",
-		"Score":"Skóre",
-		"Settings":"Nastavení",
-		"GeneralInformation":"Obecné informace",
-		"Starting game...":"Začínám hru...",
-		"Paused":"Pauza",
-		"Status":"Stav",
-		"Game over":"Konec hry",
-		"Click to start":"Klikni pro start hry",
-		"Lives":"Životy",
-		"Level":"Úroveň",
-		"Start!":"Start!"		
-
 	}
 }

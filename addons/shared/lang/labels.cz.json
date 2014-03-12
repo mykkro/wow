@@ -1,0 +1,31 @@
+{
+	"name": "cz",
+	"lang": "cz",
+	"labels": {
+		"Play":"Hrát",
+		"Pause":"Pauza",
+		"Restart":"Restart",
+		"Quit":"Konec",
+		"Info":"Informace",
+		"Rules":"Pravidla",
+		"Scores":"Skóre",
+		"Score":"Skóre",
+		"Settings":"Nastavení",
+		"GeneralInformation":"Obecné informace",
+		"Starting game...":"Začínám hru...",
+		"Paused":"Pauza",
+		"Status":"Stav",
+		"Game over":"Konec hry",
+		"Well done!":"Dobrá práce!",
+		"Difficulty":"Obtížnost",
+		"Easy":"Lehká",
+		"Medium":"Střední",
+		"Hard":"Těžká",
+		"GameSettings":"Nastavení hry",
+		"Submit": "Uložit změny",
+		"Reset": "Výchozí hodnoty",
+		"Lives":"Životy",
+		"Level":"Úroveň"		
+
+	}
+}
