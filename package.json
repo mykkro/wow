@@ -80,7 +80,8 @@
     "grunt-execute": "0.1.5",
     "grunt-contrib-compress": "0.6.0",
     "grunt-downloadfile": "~0.3.2",
-    "grunt-generate": "~0.2.0"
+    "grunt-generate": "~0.2.0",
+    "grunt-contrib-concat": "~0.3.0"
   },
   "webkit": {
     "plugin": true
