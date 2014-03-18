@@ -1,35 +1,23 @@
 //Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
+//Modified by Myrousz 2014
 //MIT License
 
-// USAGE:
-/*
-    var target = new EventTarget();
-    function handleEvent(event){
-        alert(event.type);
-    };
+var Base = require("basejs")
 
-    target.addListener("foo", handleEvent);
-    target.fire({ type: "foo" });    //can also do target.fire("foo")
-    target.removeListener("foo", handleEvent);
-*/
-
-
-function EventTarget(){
-    this._listeners = {};
-}
-
-EventTarget.prototype = {
-
-    constructor: EventTarget,
-
-    addListener: function(type, listener){
-        if (typeof this._listeners[type] == "undefined"){
-            this._listeners[type] = [];
-        }
-
-        this._listeners[type].push(listener);
+var EventTarget = Base.extend({
+    constructor: function() {
+        this._listeners = {};
     },
-
+    addListener: function(type, listener){
+        var types = type.split(" ")
+        for(var i=0; i<types.length; i++) {
+            type = types[i]
+            if (typeof this._listeners[type] == "undefined"){
+                this._listeners[type] = [];
+            }
+            this._listeners[type].push(listener);
+        }
+    },
     fire: function(event){
         if (typeof event == "string"){
             event = { type: event };
@@ -49,18 +37,21 @@ EventTarget.prototype = {
             }
         }
     },
-
     removeListener: function(type, listener){
-        if (this._listeners[type] instanceof Array){
-            var listeners = this._listeners[type];
-            for (var i=0, len=listeners.length; i < len; i++){
-                if (listeners[i] === listener){
-                    listeners.splice(i, 1);
-                    break;
+        var types = type.split(" ")
+        for(var i=0; i<types.length; i++) {
+            type = types[i]
+            if (this._listeners[type] instanceof Array){
+                var listeners = this._listeners[type];
+                for (var i=0, len=listeners.length; i < len; i++){
+                    if (listeners[i] === listener){
+                        listeners.splice(i, 1);
+                        break;
+                    }
                 }
             }
         }
     }
-};
+})
 
 module.exports = EventTarget

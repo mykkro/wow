@@ -9,7 +9,7 @@ var BasePage = Base.extend({
 	},
 	handleEvent: function(evt) {
 		// incoming events are handled here...
-		console.log("BasePage event:", evt)
+		// console.log("BasePage event:", evt)
 	}
 })
 

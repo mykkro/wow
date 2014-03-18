@@ -22,7 +22,8 @@ module.exports = function (grunt) {
               './js/dialogs.js',
               './js/mygamepad.js',
               './js/basepage.js',
-              './js/eventtarget.js'
+              './js/eventtarget.js',
+              './js/virtualcontrol.js'
             ],
             dest: 'public/js/bundle.js',
             options: {
@@ -33,7 +34,8 @@ module.exports = function (grunt) {
                 './js/dialogs.js:dialogs',
                 './js/mygamepad.js:mygamepad',
                 './js/basepage.js:basepage',
-                './js/eventtarget.js:eventtarget'
+                './js/eventtarget.js:eventtarget',
+                './js/virtualcontrol.js:virtualcontrol'
               ],
               transform: ['brfs']
             }
