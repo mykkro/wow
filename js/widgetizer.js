@@ -46,6 +46,7 @@ module.exports = function(window, $, SVG) {
 	widgetizers: {},
 	widgetId: 1,
 	debug: false,
+	Widget: Widget,
 	newWidgetId: function(prefix) {
 		return (prefix || "wow-widget-")+(this.widgetId++)
 	},
@@ -97,9 +98,16 @@ module.exports = function(window, $, SVG) {
 		  dim: dim
 		}
 	  },
+	  // TODO ability to create widgets of other classes than Widget
 	  widget: function(type, element, dim) {
 	  	var data = this.prepareWidgetData(type, element, dim)
 	  	var w = new Widget(data)
+	  	this.widgets[data.id] = w
+	  	return w
+	  },
+	  widgetByClass: function(type, klass, element, dim) {
+	  	var data = this.prepareWidgetData(type, element, dim)
+	  	var w = new klass(data)
 	  	this.widgets[data.id] = w
 	  	return w
 	  },
