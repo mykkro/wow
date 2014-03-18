@@ -24,6 +24,12 @@
           defaultLocale: 'en'
         })
         i18n.setLocale('de')
+
+        /* detect and initialize input devices... */
+        var MyGamepadClass = require("mygamepad")(window, $, Gamepad)
+        var MyGamepad = new MyGamepadClass()
+
+        // create widgetizer and load widgets
         var Widgetizer = require("widgetizer")(window, $, SVG)
         var pagescript = require("pagescript")(window, $, SVG, i18n)
         var allData = pageInfo
