@@ -34,6 +34,8 @@
           SVG: SVG
         }
 
+        var EventTarget = require("eventtarget")
+
         /* detect and initialize input devices... */
         var MyGamepadClass = require("mygamepad")(window, $, Gamepad)
         var MyGamepad = new MyGamepadClass()
