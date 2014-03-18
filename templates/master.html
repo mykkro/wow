@@ -25,17 +25,27 @@
         })
         i18n.setLocale('de')
 
+        /* Global utility object holding useful things together */
+        var Wow = {
+          window: window,
+          $: $,
+          _: _,
+          i18n: i18n,
+          SVG: SVG
+        }
+
         /* detect and initialize input devices... */
         var MyGamepadClass = require("mygamepad")(window, $, Gamepad)
         var MyGamepad = new MyGamepadClass()
 
         // create widgetizer and load widgets
         var Widgetizer = require("widgetizer")(window, $, SVG)
-        var pagescript = require("pagescript")(window, $, SVG, i18n)
+        var pageClass = require("pagescript")(Wow)
+        var page = new pageClass()
         var allData = pageInfo
         Widgetizer.useCommonWidgets()
         Widgetizer.widgetize(document, function() {
-            pagescript.init(Widgetizer, allData, function(pg) {
+            page.init(Widgetizer, allData, function(pg) {
                 // FIX to prevent backspace key from doing "go back to previous page"
                 // from: http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back
                 
@@ -45,7 +55,12 @@
                  */
                 var rx = /INPUT|SELECT|TEXTAREA/i;
 
-                $(window.document).bind("keydown keypress", function(e){
+                // attach input devices to the page controller
+                $(window.document)
+                  .bind("keydown", function(e) {
+                    pg.handleEvent(e)
+                  })
+                  .bind("keydown keypress", function(e) {
                   if( e.which == 8 ){ // 8 == backspace
                     if(!rx.test(e.target.tagName) || e.target.disabled || e.target.readOnly ){
                       e.preventDefault();

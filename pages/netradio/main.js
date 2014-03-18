@@ -1,8 +1,13 @@
-module.exports = function(window, $, SVG, i18n) {
+module.exports = function(Wow) {
+	var window = Wow.window
+	var $ = Wow.$
+	var SVG = Wow.SVG
+	var i18n = Wow.i18n
+	var BasePage = require("../../js/basepage")
 
 	$.playable('/swf/')			
 
-	return {
+	return BasePage.extend({
 		radios: [
 		  { "name": "Klassik Radio", "src": "http://edge.live.mp3.mdn.newmedia.nacamar.net/klassikradio128/livestream.mp3"},
 		  { "name": "Sport 1 FM", "src": "http://stream.sport1.fm/api/livestream-redirect/SPORT1FM_24_7.mp3"},
@@ -68,6 +73,6 @@ module.exports = function(window, $, SVG, i18n) {
 			/* continue when finished */
 			if(next) next(this)
 		}
-	}
+	})
 
 }

@@ -1,10 +1,13 @@
+module.exports = function(Wow) {
+	var window = Wow.window
+	var $ = Wow.$
+	var SVG = Wow.SVG
+	var i18n = Wow.i18n
+	var BasePage = require("../../js/basepage")
 
-module.exports = function(window, $, SVG, i18n) {
 	var Auth  = {}//require("../lib/auth")(window)
 
-
-
-	var page = {
+	var page = BasePage.extend({
 		init: function(Widgetizer, data, next) {
 			var W = Widgetizer
 			var server = Widgetizer.rpc
@@ -67,9 +70,9 @@ module.exports = function(window, $, SVG, i18n) {
 			});
 
 			/* continue when finished */
-			if(next) next(page)
+			if(next) next(this)
 		}
-	}
+	})
 	return page
 
 }

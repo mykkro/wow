@@ -1,5 +1,10 @@
-module.exports = function(window, $, SVG, i18n) {
-	return {
+module.exports = function(Wow) {
+	var window = Wow.window
+	var $ = Wow.$
+	var SVG = Wow.SVG
+	var i18n = Wow.i18n
+	var BasePage = require("../../js/basepage")
+	return BasePage.extend({
 		init: function(Widgetizer, data, next) {
 			/* widgetization complete! */
 			Widgetizer.get("quitButton").click(function() {
@@ -10,6 +15,6 @@ module.exports = function(window, $, SVG, i18n) {
 			/* continue when finished */
 			if(next) next(this)
 		}
-	}
+	})
 
 }

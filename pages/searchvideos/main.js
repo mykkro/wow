@@ -1,10 +1,14 @@
-module.exports = function(window, $, SVG, i18n) {
+module.exports = function(Wow) {
+	var window = Wow.window
+	var $ = Wow.$
+	var SVG = Wow.SVG
+	var i18n = Wow.i18n
+	var BasePage = require("../../js/basepage")
 	var url = require('url');	
 	var document = window.document
 	var svgsvg = document.getElementById("svg")
-
 	
-	var page = {
+	var page = BasePage.extend({
 		init: function(Widgetizer, data, next) {
 			var server = Widgetizer.rpc
 			var SvgHelper = Widgetizer.SvgHelper
@@ -153,9 +157,9 @@ module.exports = function(window, $, SVG, i18n) {
 			})
 
 			/* continue when finished */
-			if(next) next(page)
+			if(next) next(this)
 		}
-	}
+	})
 	return page
 
 }

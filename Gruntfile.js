@@ -20,7 +20,8 @@ module.exports = function (grunt) {
               './js/i18n.js', 
               './js/pageinfo.js', 
               './js/dialogs.js',
-              './js/mygamepad.js'
+              './js/mygamepad.js',
+              './js/basepage.js'
             ],
             dest: 'public/js/bundle.js',
             options: {
@@ -29,7 +30,8 @@ module.exports = function (grunt) {
                 './js/i18n.js:i18n', 
                 './js/pageinfo.js:pageinfo', 
                 './js/dialogs.js:dialogs',
-                './js/mygamepad.js:mygamepad'
+                './js/mygamepad.js:mygamepad',
+                './js/basepage.js:basepage'
               ],
               transform: ['brfs']
             }
@@ -122,6 +124,7 @@ module.exports = function (grunt) {
     },
     dist: {
       src: [
+        "js/vendor/underscore-min.js",
         "js/vendor/jquery-2.0.3.min.js",
         "js/vendor/jquery.history.min.js",
         "js/vendor/jquery.svg.min.js",
