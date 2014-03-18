@@ -19,11 +19,18 @@ module.exports = function (grunt) {
               './js/widgetizer.js', 
               './js/i18n.js', 
               './js/pageinfo.js', 
-              './js/dialogs.js'
+              './js/dialogs.js',
+              './js/mygamepad.js'
             ],
             dest: 'public/js/bundle.js',
             options: {
-              alias: ['./js/widgetizer.js:widgetizer', './js/i18n.js:i18n', './js/pageinfo.js:pageinfo', './js/dialogs.js:dialogs'],
+              alias: [
+                './js/widgetizer.js:widgetizer', 
+                './js/i18n.js:i18n', 
+                './js/pageinfo.js:pageinfo', 
+                './js/dialogs.js:dialogs',
+                './js/mygamepad.js:mygamepad'
+              ],
               transform: ['brfs']
             }
           },
