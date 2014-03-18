@@ -241,10 +241,10 @@ var Raphatris = Game.extend({
           switch(s) {
               case 0: //"init"
                   init()                
-                  self.promptStart = self.prompt(__("Click to start"), {}, function() {
+                  //self.promptStart = self.prompt(__("Click to start"), {}, function() {
                     started = true
-                  })
-                  started = false
+                  //})
+                  //started = false
                   return 1
               case 1: //"start" - waiting for S key...
                   if(started) {
@@ -351,7 +351,7 @@ var Raphatris = Game.extend({
       clearTimeout(this.clock)
       this.clock = null
     }
-    if(this.promptStart) this.promptStart.hide()
+    //if(this.promptStart) this.promptStart.hide()
     if(this.promptQuit) this.promptQuit.hide()
     if(cb) cb()
   },

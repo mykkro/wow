@@ -89,7 +89,7 @@ module.exports = function(window, $, SVG, i18n) {
 				var klass = "youtube-result"
 				if(data) {
 					var label = data.title ? truncate(data.title, 20) : ""
-					var thumbUrl = "/uploads/"+data.importName+"/preview.png"
+					var thumbUrl = "/imports/"+data.importName+"/preview.png"
 					var thumb = SvgHelper.image({x:7, y:20, width:180, height:120, src:thumbUrl})
 					var txt = SvgHelper.text(label, {x:97, y: 170, "text-anchor":"middle"})
 					items = [rect, thumb, txt]

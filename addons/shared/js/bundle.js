@@ -231,7 +231,577 @@ address:
 
   info@gitanasoftware.com
 */
-(function(b){var a=b.alpaca;a.Fields.AddressField=a.Fields.ObjectField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();this.schema={title:"Home Address",type:"object",properties:{street:{title:"Street",type:"array",items:{type:"string",maxLength:30,minItems:0,maxItems:3}},city:{title:"City",type:"string"},state:{title:"State",type:"string","enum":["AL","AK","AS","AZ","AR","CA","CO","CT","DE","DC","FM","FL","GA","GU","HI","ID","IL","IN","IA","KS","KY","LA","ME","MH","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","MP","OH","OK","OR","PW","PA","PR","RI","SC","SD","TN","TX","UT","VT","VI","VA","WA","WV","WI","WY"]},zip:{title:"Zip Code",type:"string",pattern:/^(\d{5}(-\d{4})?)?$/}}};a.merge(this.options,{fields:{zip:{maskString:"99999",size:5},state:{optionLabels:["ALABAMA","ALASKA","AMERICANSAMOA","ARIZONA","ARKANSAS","CALIFORNIA","COLORADO","CONNECTICUT","DELAWARE","DISTRICTOFCOLUMBIA","FEDERATEDSTATESOFMICRONESIA","FLORIDA","GEORGIA","GUAM","HAWAII","IDAHO","ILLINOIS","INDIANA","IOWA","KANSAS","KENTUCKY","LOUISIANA","MAINE","MARSHALLISLANDS","MARYLAND","MASSACHUSETTS","MICHIGAN","MINNESOTA","MISSISSIPPI","MISSOURI","MONTANA","NEBRASKA","NEVADA","NEWHAMPSHIRE","NEWJERSEY","NEWMEXICO","NEWYORK","NORTHCAROLINA","NORTHDAKOTA","NORTHERNMARIANAISLANDS","OHIO","OKLAHOMA","OREGON","PALAU","PENNSYLVANIA","PUERTORICO","RHODEISLAND","SOUTHCAROLINA","SOUTHDAKOTA","TENNESSEE","TEXAS","UTAH","VERMONT","VIRGINISLANDS","VIRGINIA","WASHINGTON","WESTVIRGINIA","WISCONSIN","WYOMING"]}}});if(a.isEmpty(this.options.addressValidation)){this.options.addressValidation=true}},getAddress:function(){var d=this.getValue();if(this.view.type=="view"){d=this.data}var c="";if(d){if(d.street){b.each(d.street,function(e,f){c+=f+" "})}if(d.city){c+=d.city+" "}if(d.state){c+=d.state+" "}if(d.zip){c+=d.zip}}return c},renderField:function(c){this.base();var e=this;b(this.fieldContainer).addClass("alpaca-addressfield");if(this.options.addressValidation&&!this.isDisplayOnly()){b('<div style="clear:both;"></div>').appendTo(this.fieldContainer);var d=b('<div class="alpaca-form-button">Google Map</div>').appendTo(this.fieldContainer);if(d.button){d.button({text:true})}d.click(function(){if(google&&google.maps){var g=new google.maps.Geocoder();var f=e.getAddress();if(g){g.geocode({address:f},function(k,i){if(i==google.maps.GeocoderStatus.OK){var j=e.getId()+"-map-canvas";if(b("#"+j).length===0){b("<div id='"+j+"' class='alpaca-controlfield-address-mapcanvas'></div>").appendTo(e.fieldContainer)}var l=new google.maps.Map(document.getElementById(e.getId()+"-map-canvas"),{zoom:10,center:k[0].geometry.location,mapTypeId:google.maps.MapTypeId.ROADMAP});var h=new google.maps.Marker({map:l,position:k[0].geometry.location})}else{e.displayMessage("Geocoding failed: "+i)}})}}else{e.displayMessage("Google Map API is not installed.")}}).wrap("<small/>");if(this.options.showMapOnLoad){d.click()}}if(c){c()}}});a.registerFieldClass("address",a.Fields.AddressField)})(jQuery);(function(b){var a=b.alpaca;a.Fields.DateField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.options.dateFormat){this.options.dateFormat=a.defaultDateFormat}if(!this.options.dateFormatRegex){this.options.dateFormatRegex=a.regexps.date}},postRender:function(){this.base();if(this.field&&b.datepicker){var c=this.options.datepicker;if(!c){c={changeMonth:true,changeYear:true}}if(!c.dateFormat){c.dateFormat=this.options.dateFormat}this.field.datepicker(c);if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-date")}}},onChange:function(c){this.base();this.renderValidationState()},handleValidate:function(){var e=this.base();var d=this.validation;var c=this._validateDateFormat();d.invalidDate={message:c?"":a.substituteTokens(this.view.getMessage("invalidDate"),[this.options.dateFormat]),status:c};return e&&d.invalidDate["status"]},_validateDateFormat:function(){var c=this.field.val();if(b.datepicker){try{b.datepicker.parseDate(this.options.dateFormat,c);return true}catch(d){return false}}else{return c.match(this.options.dateFormatRegex)}},setValue:function(c){if(c===""){this.base(c);return}this.base(c)}});a.registerMessages({invalidDate:"Invalid date for format {0}"});a.registerFieldClass("date",a.Fields.DateField);a.registerDefaultFormatFieldMapping("date","date")})(jQuery);(function(b){var a=b.alpaca;a.Fields.DatetimeField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base()},postRender:function(){var c=this;this.base();if(this.field){if(this.field.datetimepicker){this.field.hover(function(){if(!b(this).hasClass("hasDatepicker")){var d=c.options.timepicker;if(!d){d=c.options.timepicker}if(!d){d={changeYear:true,changeMonth:true}}b(this).datetimepicker(d)}});if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-datetime")}}}},setValue:function(c){if(c){if(a.isNumber()){c=new Date(c)}if(Object.prototype.toString.call(c)=="[object Date]"){this.base((c.getMonth()+1)+"/"+c.getDate()+"/"+c.getFullYear()+" "+c.getHours()+":"+c.getMinutes())}else{this.base(c)}}else{this.base(c)}},getValue:function(){return this.base()},getDatetime:function(){try{return this.field.datetimepicker("getDate")}catch(c){return this.getValue()}}});a.registerFieldClass("datetime",a.Fields.DatetimeField);a.registerDefaultFormatFieldMapping("datetime","datetime")})(jQuery);(function(b){var a=b.alpaca;a.Fields.EditorField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();this.controlFieldTemplateDescriptor=this.view.getTemplateDescriptor("controlFieldEditor")},postRender:function(){this.base();var d=this;if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-editor");b(this.fieldContainer).parent().css("width","100%");var e=this.options.aceHeight;if(e){b(this.fieldContainer).css("height",e)}var c=this.options.aceWidth;if(!c){c="100%"}b(this.fieldContainer).css("width",c)}var g=b(this.fieldContainer).find(".control-field-editor-el")[0];if(!ace&&window.ace){ace=window.ace}this.editor=ace.edit(g);var f=this.options.aceTheme;if(!f){f="ace/theme/chrome"}this.editor.setTheme(f);var i=this.options.aceMode;if(!i){i="ace/mode/json"}this.editor.getSession().setMode(i);this.editor.renderer.setHScrollBarAlwaysVisible(false);this.editor.setShowPrintMargin(false);this.editor.setValue(this.data);this.editor.clearSelection();if(this.options.aceFitContentHeight){var h=function(){var j=d.editor.getSession().getScreenLength()*d.editor.renderer.lineHeight+d.editor.renderer.scrollBar.getWidth();b(d.fieldContainer).height(j.toString()+"px");d.editor.resize()};h();d.editor.getSession().on("change",h)}if(this.schema.readonly){this.editor.setReadOnly(true)}b(g).bind("destroyed",function(){if(d.editor){d.editor.destroy();d.editor=null}})},destroy:function(){if(this.editor){this.editor.destroy();this.editor=null}this.base()},getEditor:function(){return this.editor},handleValidate:function(){var e=this.base();var d=this.validation;var c=this._validateWordCount();d.wordLimitExceeded={message:c?"":a.substituteTokens(this.view.getMessage("wordLimitExceeded"),[this.options.wordlimit]),status:c};return e&&d.wordLimitExceeded["status"]},_validateWordCount:function(){if(this.options.wordlimit&&this.options.wordlimit>-1){var d=this.editor.getValue();if(d){var c=d.split(" ").length;if(c>this.options.wordlimit){return false}}}return true},onDependentReveal:function(){this.editor.resize()},setValue:function(d){var c=this;if(this.editor){this.editor.setValue(d)}this.base(d)},getValue:function(){var c=null;if(this.editor){c=this.editor.getValue()}return c}});a.registerMessages({wordLimitExceeded:"The maximum word limit of {0} has been exceeded."});a.registerTemplate("controlFieldEditor",'<div id="${id}" class="control-field-editor-el"></div>');a.registerFieldClass("editor",a.Fields.EditorField)})(jQuery);(function(b){var a=b.alpaca;a.Fields.EmailField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.schema.pattern){this.schema.pattern=a.regexps.email}},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-email")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.invalidPattern["status"]){c.invalidPattern["message"]=this.view.getMessage("invalidEmail")}return d}});a.registerMessages({invalidEmail:"Invalid Email address e.g. info@cloudcms.com"});a.registerFieldClass("email",a.Fields.EmailField);a.registerDefaultFormatFieldMapping("email","email")})(jQuery);(function(b){var a=b.alpaca;a.Fields.IntegerField=a.Fields.NumberField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},getValue:function(){var c=this.field.val();if(a.isValEmpty(c)){return -1}else{return parseInt(c,10)}},onChange:function(c){this.base();if(this.slider){this.slider.slider("value",this.getValue())}},postRender:function(){this.base();var c=this;if(this.options.slider){if(!a.isEmpty(this.schema.maximum)&&!a.isEmpty(this.schema.minimum)){if(this.field){this.field.after('<div id="slider"></div>');this.slider=b("#slider",this.field.parent()).slider({value:this.getValue(),min:this.schema.minimum,max:this.schema.maximum,slide:function(d,e){c.setValue(e.value);c.renderValidationState()}})}}}if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-integer")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.stringNotANumber["status"]){c.stringNotANumber["message"]=this.view.getMessage("stringNotAnInteger")}return d},_validateNumber:function(){var c=this.field.val();if(a.isValEmpty(c)){return true}var d=this.getValue();if(isNaN(d)){return false}if(!c.match(a.regexps.integer)){return false}return true}});a.registerMessages({stringNotAnInteger:"This value is not an integer."});a.registerFieldClass("integer",a.Fields.IntegerField);a.registerDefaultSchemaFieldMapping("integer","integer")})(jQuery);(function(b){var a=b.alpaca;a.Fields.IPv4Field=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.schema.pattern){this.schema.pattern=a.regexps.ipv4}},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-ipv4")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.invalidPattern["status"]){c.invalidPattern["message"]=this.view.getMessage("invalidIPv4")}return d}});a.registerMessages({invalidIPv4:"Invalid IPv4 address, e.g. 192.168.0.1"});a.registerFieldClass("ipv4",a.Fields.IPv4Field);a.registerDefaultFormatFieldMapping("ip-address","ipv4")})(jQuery);(function(b){var a=b.alpaca;a.Fields.JSONField=a.Fields.TextAreaField.extend({constructor:function(f,j,h,i,e,d,g){this.base(f,j,h,i,e,d,g)},setValue:function(d){if(a.isObject(d)||typeof(d)=="object"){d=JSON.stringify(d,null,3)}this.base(d)},getValue:function(){var d=this.base();if(d&&a.isString(d)){d=JSON.parse(d)}return d},handleValidate:function(){var f=this.base();var e=this.validation;var d=this._validateJSON();e.stringNotAJSON={message:d.status?"":this.view.getMessage("stringNotAJSON")+" "+d.message,status:d.status};return f&&e.stringNotAJSON["status"]},_validateJSON:function(){var d=this.field.val();if(a.isValEmpty(d)){return{status:true}}try{var g=JSON.parse(d);this.setValue(JSON.stringify(g,null,3));return{status:true}}catch(f){return{status:false,message:f.message}}},postRender:function(){this.base();var d=this;if(this.field){this.field.bind("keypress",function(f){if(f.which==34){d.field.insertAtCaret('"')}if(f.which==123){d.field.insertAtCaret("}")}if(f.which==91){d.field.insertAtCaret("]")}});this.field.bind("keypress","Ctrl+l",function(){d.getEl().removeClass("alpaca-field-focused");d.renderValidationState()});this.field.attr("title","Type Ctrl+L to format and validate the JSON string.")}if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-json")}}});a.registerMessages({stringNotAJSON:"This value is not a valid JSON string."});a.registerFieldClass("json",a.Fields.JSONField);b.fn.insertAtCaret=function(d){return this.each(function(){if(document.selection){this.focus();sel=document.selection.createRange();sel.text=d;this.focus()}else{if(this.selectionStart||this.selectionStart=="0"){var f=this.selectionStart;var e=this.selectionEnd;var g=this.scrollTop;this.value=this.value.substring(0,f)+d+this.value.substring(e,this.value.length);this.focus();this.selectionStart=f;this.selectionEnd=f;this.scrollTop=g}else{this.value+=d;this.focus()}}})};jQuery.hotkeys={version:"0.8",specialKeys:{8:"backspace",9:"tab",13:"return",16:"shift",17:"ctrl",18:"alt",19:"pause",20:"capslock",27:"esc",32:"space",33:"pageup",34:"pagedown",35:"end",36:"home",37:"left",38:"up",39:"right",40:"down",45:"insert",46:"del",96:"0",97:"1",98:"2",99:"3",100:"4",101:"5",102:"6",103:"7",104:"8",105:"9",106:"*",107:"+",109:"-",110:".",111:"/",112:"f1",113:"f2",114:"f3",115:"f4",116:"f5",117:"f6",118:"f7",119:"f8",120:"f9",121:"f10",122:"f11",123:"f12",144:"numlock",145:"scroll",191:"/",224:"meta"},shiftNums:{"`":"~","1":"!","2":"@","3":"#","4":"$","5":"%","6":"^","7":"&","8":"*","9":"(","0":")","-":"_","=":"+",";":": ","'":'"',",":"<",".":">","/":"?","\\":"|"}};function c(e){if(typeof e.data!=="string"){return}var d=e.handler,f=e.data.toLowerCase().split(" ");e.handler=function(o){if(this!==o.target&&(/textarea|select/i.test(o.target.nodeName)||o.target.type==="text")){return}var j=o.type!=="keypress"&&jQuery.hotkeys.specialKeys[o.which],p=String.fromCharCode(o.which).toLowerCase(),m,n="",h={};if(o.altKey&&j!=="alt"){n+="alt+"}if(o.ctrlKey&&j!=="ctrl"){n+="ctrl+"}if(o.metaKey&&!o.ctrlKey&&j!=="meta"){n+="meta+"}if(o.shiftKey&&j!=="shift"){n+="shift+"}if(j){h[n+j]=true}else{h[n+p]=true;h[n+jQuery.hotkeys.shiftNums[p]]=true;if(n==="shift+"){h[jQuery.hotkeys.shiftNums[p]]=true}}for(var k=0,g=f.length;k<g;k++){if(h[f[k]]){return d.apply(this,arguments)}}}}jQuery.each(["keydown","keyup","keypress"],function(){jQuery.event.special[this]={add:c}})})(jQuery);(function(b){var a=b.alpaca;a.Fields.IntegerField=a.Fields.NumberField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},getValue:function(){var c=this.field.val();if(a.isValEmpty(c)){return -1}else{return parseInt(c,10)}},onChange:function(c){this.base();if(this.slider){this.slider.slider("value",this.getValue())}},postRender:function(){this.base();var c=this;if(this.options.slider){if(!a.isEmpty(this.schema.maximum)&&!a.isEmpty(this.schema.minimum)){if(this.field){this.field.after('<div id="slider"></div>');this.slider=b("#slider",this.field.parent()).slider({value:this.getValue(),min:this.schema.minimum,max:this.schema.maximum,slide:function(d,e){c.setValue(e.value);c.renderValidationState()}})}}}if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-integer")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.stringNotANumber["status"]){c.stringNotANumber["message"]=this.view.getMessage("stringNotAnInteger")}return d},_validateNumber:function(){var c=this.field.val();if(a.isValEmpty(c)){return true}var d=this.getValue();if(isNaN(d)){return false}if(!c.match(a.regexps.integer)){return false}return true}});a.registerMessages({stringNotAnInteger:"This value is not an integer."});a.registerFieldClass("integer",a.Fields.IntegerField);a.registerDefaultSchemaFieldMapping("integer","integer")})(jQuery);(function(b){var a=b.alpaca;a.Fields.LowerCaseField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-lowercase")}},setValue:function(d){var c=d.toLowerCase();if(c!=this.getValue()){this.base(c)}},onKeyPress:function(c){this.base(c);var d=this;a.later(25,this,function(){var e=d.getValue();d.setValue(e)})}});a.registerFieldClass("lowercase",a.Fields.LowerCaseField);a.registerDefaultFormatFieldMapping("lowercase","lowercase")})(jQuery);(function(b){var a=b.alpaca;a.Fields.MapField=a.Fields.ArrayField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();a.mergeObject(this.options,{forceRevalidation:true});if(a.isEmpty(this.data)){return}if(!a.isArray(this.data)){if(a.isObject(this.data)){var c=[];b.each(this.data,function(d,e){var f=a.copyOf(e);f._key=d;c.push(f)});this.data=c}}},getValue:function(){if(this.children.length===0&&!this.schema.required){return}var f={};for(var e=0;e<this.children.length;e++){var c=this.children[e].getValue();var d=c._key;if(d){delete c._key;f[d]=c}}return f},handleValidate:function(){var e=this.base();var d=this.validation;var f=this._validateMapKeysNotEmpty();d.keyMissing={message:f?"":this.view.getMessage("keyMissing"),status:f};var c=this._validateMapKeysUnique();d.keyNotUnique={message:c?"":this.view.getMessage("keyNotUnique"),status:c};return e&&d.keyMissing["status"]&&d.keyNotUnique["status"]},_validateMapKeysNotEmpty:function(){var f=true;for(var e=0;e<this.children.length;e++){var c=this.children[e].getValue();var d=c._key;if(!d){f=false;break}}return f},_validateMapKeysUnique:function(){var g=true;var f={};for(var e=0;e<this.children.length;e++){var c=this.children[e].getValue();var d=c._key;if(f[d]){g=false}f[d]=d}return g},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-map")}}});a.registerFieldClass("map",a.Fields.MapField);a.registerMessages({keyNotUnique:"Keys of map field are not unique.",keyMissing:"Map contains an empty key."})})(jQuery);(function(b){var a=b.alpaca;a.Fields.PasswordField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.schema.pattern){this.schema.pattern=a.regexps.password}this.controlFieldTemplateDescriptor=this.view.getTemplateDescriptor("controlFieldPassword")},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-password")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.invalidPattern["status"]){c.invalidPattern["message"]=this.view.getMessage("invalidPassword")}return d}});a.registerTemplate("controlFieldPassword",'<input type="password" id="${id}" {{if options.size}}size="${options.size}"{{/if}} {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each(i,v) options.data}}data-${i}="${v}"{{/each}}/>');a.registerMessages({invalidPassword:"Invalid Password"});a.registerFieldClass("password",a.Fields.PasswordField);a.registerDefaultFormatFieldMapping("password","password")})(jQuery);(function(b){var a=b.alpaca;a.Fields.PersonalNameField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-personalname")}},setValue:function(d){var e="";for(var c=0;c<d.length;c++){if(c===0){e+=d.charAt(c).toUpperCase()}else{if(d.charAt(c-1)==" "||d.charAt(c-1)=="-"||d.charAt(c-1)=="'"){e+=d.charAt(c).toUpperCase()}else{e+=d.charAt(c)}}}if(e!=this.getValue()){this.base(e)}},onKeyPress:function(c){this.base(c);var d=this;a.later(25,this,function(){var e=d.getValue();d.setValue(e)})}});a.registerFieldClass("personalname",a.Fields.PersonalNameField)})(jQuery);(function(b){var a=b.alpaca;a.Fields.PhoneField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.schema.pattern){this.schema.pattern=a.regexps.phone}if(a.isEmpty(this.options.maskString)){this.options.maskString="(999) 999-9999"}},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-phone")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.invalidPattern["status"]){c.invalidPattern["message"]=this.view.getMessage("invalidPhone")}return d}});a.registerMessages({invalidPhone:"Invalid Phone Number, e.g. (123) 456-9999"});a.registerFieldClass("phone",a.Fields.PhoneField);a.registerDefaultFormatFieldMapping("phone","phone")})(jQuery);(function(b){var a=b.alpaca;a.Fields.TagField=a.Fields.LowerCaseField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.options.separator){this.options.separator=","}},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-tag")}},getValue:function(){var c=this.base();if(c===""){return[]}return c.split(this.options.separator)},setValue:function(c){if(c===""){return}this.base(c.join(this.options.separator))},onBlur:function(f){this.base(f);var c=this.getValue();var d=[];b.each(c,function(g,e){if(e.trim()!==""){d.push(e.trim())}});this.setValue(d)}});a.registerFieldClass("tag",a.Fields.TagField)})(jQuery);(function(b){var a=b.alpaca;a.Fields.TimeField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.options.timeFormat){this.options.timeFormat="hh:mm:ss"}if(!this.options.timeFormatRegex){this.options.timeFormatRegex=/^(([0-1][0-9])|([2][0-3])):([0-5][0-9]):([0-5][0-9])$/}if(a.isEmpty(this.options.maskString)){this.options.maskString="99:99:99"}},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-time")}},onChange:function(c){this.base();this.renderValidationState()},handleValidate:function(){var e=this.base();var d=this.validation;var c=this._validateTimeFormat();d.invalidTime={message:c?"":a.substituteTokens(this.view.getMessage("invalidTime"),[this.options.timeFormat]),status:c};return e&&d.invalidTime["status"]},_validateTimeFormat:function(){var c=this.field.val();if(!this.schema.required&&(a.isValEmpty(c)||c=="__:__:__")){return true}return c.match(this.options.timeFormatRegex)}});a.registerMessages({invalidTime:"Invalid time for format {0}"});a.registerFieldClass("time",a.Fields.TimeField);a.registerDefaultFormatFieldMapping("time","time")})(jQuery);(function(b){var a=b.alpaca;a.Fields.UpperCaseField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-uppercase")}},setValue:function(c){var d=c.toUpperCase();if(d!=this.getValue()){this.base(d)}},onKeyPress:function(c){this.base(c);var d=this;a.later(25,this,function(){var e=d.getValue();d.setValue(e)})}});a.registerFieldClass("uppercase",a.Fields.UpperCaseField);a.registerDefaultFormatFieldMapping("uppercase","uppercase")})(jQuery);(function(b){var a=b.alpaca;a.Fields.WysiwygField=a.Fields.TextAreaField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f);this.controlsConfig={};this.controlsConfig.simple={html:{visible:true},createLink:{visible:false},unLink:{visible:false},h1:{visible:false},h2:{visible:false},h3:{visible:false},indent:{visible:false},insertHorizontalRule:{visible:false},insertImage:{visible:false},insertOrderedList:{visible:false},insertTable:{visible:false},insertUnorderedList:{visible:false},justifyCenter:{visible:false},justifyFull:{visible:false},justifyLeft:{visible:false},justifyRight:{visible:false},outdent:{visible:false},redo:{visible:false},removeFormat:{visible:false},subscript:{visible:false},superscript:{visible:false},undo:{visible:false},code:{visible:false},strikeThrough:{visible:false}}},setup:function(){this.base();this.plugin=null},postRender:function(){this.base();var d=this;if(this.field&&b.wysiwyg){var c=this.options.wysiwyg?this.options.wysiwyg:{};if(c.controls){if(typeof(c.controls)==="string"){c.controls=this.controlsConfig[c.controls];if(!c.controls){c.controls={}}}}if(this.options.onDemand){this.outerEl.find("textarea").mouseover(function(){if(!d.plugin){d.plugin=b(this).wysiwyg(c);d.outerEl.find(".wysiwyg").mouseout(function(){if(d.plugin){d.plugin.wysiwyg("destroy")}d.plugin=null})}})}else{this.plugin=this.field.wysiwyg(c)}this.outerEl.find(".wysiwyg").mouseout(function(){d.data=d.getValue();d.renderValidationState()})}if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-wysiwyg")}}});a.registerFieldClass("wysiwyg",a.Fields.WysiwygField)})(jQuery);(function(b){var a=b.alpaca;a.Fields.StateField=a.Fields.SelectField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){if(a.isUndefined(this.options.capitalize)){this.options.capitalize=false}if(a.isUndefined(this.options.includeStates)){this.options.includeStates=true}if(a.isUndefined(this.options.includeTerritories)){this.options.includeTerritories=true}if(a.isUndefined(this.options.format)){this.options.format="name"}if(this.options.format=="name"||this.options.format=="code"){}else{a.logError("The configured state format: "+this.options.format+" is not a legal value [name, code]");this.options.format="name"}var c=a.retrieveUSHoldings(this.options.includeStates,this.options.includeTerritories,(this.options.format=="code"),this.options.capitalize);this.schema["enum"]=c.keys;this.options.optionLabels=c.values;this.base()},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-state")}},handleValidate:function(){var c=this.base();return c}});a.registerFieldClass("state",a.Fields.StateField);a.registerDefaultFormatFieldMapping("state","state");a.retrieveUSHoldings=function(){var c=[];c.push({name:"Arkansas",code:"AK",state:true,territory:false});c.push({name:"Alabama",code:"AL",state:true,territory:false});c.push({name:"American Samoa",code:"AS",state:false,territory:true});c.push({name:"Arizona",code:"AR",state:true,territory:false});c.push({name:"California",code:"CA",state:true,territory:false});c.push({name:"Colorado",code:"CO",state:true,territory:false});c.push({name:"Connecticut",code:"CT",state:true,territory:false});c.push({name:"Delaware",code:"DE",state:true,territory:false});c.push({name:"Distict of Columbia",code:"DC",state:false,territory:true});c.push({name:"Federated States of Micronesia",code:"FM",state:false,territory:true});c.push({name:"Florida",code:"FL",state:true,territory:false});c.push({name:"Georgia",code:"GA",state:true,territory:false});c.push({name:"Guam",code:"GU",state:false,territory:true});c.push({name:"Georgia",code:"GA",state:true,territory:false});c.push({name:"Hawaii",code:"HI",state:true,territory:false});c.push({name:"Idaho",code:"ID",state:true,territory:false});c.push({name:"Illinois",code:"IL",state:true,territory:false});c.push({name:"Indiana",code:"IN",state:true,territory:false});c.push({name:"Iowa",code:"IA",state:true,territory:false});c.push({name:"Kansas",code:"KS",state:true,territory:false});c.push({name:"Kentucky",code:"KY",state:true,territory:false});c.push({name:"Louisiana",code:"LA",state:true,territory:false});c.push({name:"Maine",code:"ME",state:true,territory:false});c.push({name:"Marshall Islands",code:"MH",state:false,territory:true});c.push({name:"Maryland",code:"MD",state:true,territory:false});c.push({name:"Massachusetts",code:"MA",state:true,territory:false});c.push({name:"Michigan",code:"MI",state:true,territory:false});c.push({name:"Minnesota",code:"MN",state:true,territory:false});c.push({name:"Mississippi",code:"MS",state:true,territory:false});c.push({name:"Missouri",code:"MO",state:true,territory:false});c.push({name:"Montana",code:"MT",state:true,territory:false});c.push({name:"Nebraska",code:"NE",state:true,territory:false});c.push({name:"Nevada",code:"NV",state:true,territory:false});c.push({name:"New Hampshire",code:"NH",state:true,territory:false});c.push({name:"New Jersey",code:"NJ",state:true,territory:false});c.push({name:"New Mexico",code:"NM",state:true,territory:false});c.push({name:"New York",code:"NY",state:true,territory:false});c.push({name:"North Carolina",code:"NC",state:true,territory:false});c.push({name:"North Dakota",code:"ND",state:true,territory:false});c.push({name:"Northern Mariana Islands",code:"MP",state:true,territory:false});c.push({name:"Ohio",code:"OH",state:true,territory:false});c.push({name:"Oklahoma",code:"OK",state:true,territory:false});c.push({name:"Oregon",code:"OR",state:true,territory:false});c.push({name:"Palau",code:"PW",state:false,territory:true});c.push({name:"Pennsylvania",code:"PA",state:true,territory:false});c.push({name:"Puerto Rico",code:"PR",state:false,territory:true});c.push({name:"Rhode Island",code:"RI",state:true,territory:false});c.push({name:"South Carolina",code:"SC",state:true,territory:false});c.push({name:"South Dakota",code:"SD",state:true,territory:false});c.push({name:"Tennessee",code:"TN",state:true,territory:false});c.push({name:"Texas",code:"TX",state:true,territory:false});c.push({name:"Utah",code:"UT",state:true,territory:false});c.push({name:"Vermont",code:"VT",state:true,territory:false});c.push({name:"Virgin Islands",code:"VI",state:false,territory:true});c.push({name:"Virginia",code:"VA",state:true,territory:false});c.push({name:"Washington",code:"WA",state:true,territory:false});c.push({name:"West Virginia",code:"WV",state:true,territory:false});c.push({name:"Wisconsin",code:"WI",state:true,territory:false});c.push({name:"Wyoming",code:"WY",state:true,territory:false});return function(l,e,h,g){var m={keys:[],values:[]};for(var f=0;f<c.length;f++){var d=false;if(c[f].state&&l){d=true}else{if(c[f].territory&&e){d=true}}if(d){var k=c[f].code;var j=c[f].name;if(h){j=c[f].code}if(g){j=j.toUpperCase()}m.keys.push(k);m.values.push(j)}}return m}}()})(jQuery);(function(b){var a=b.alpaca;a.Fields.CountryField=a.Fields.SelectField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){if(a.isUndefined(this.options.capitalize)){this.options.capitalize=false}this.schema["enum"]=[];this.options.optionLabels=[];var e=this.view.getMessage("countries");if(e){for(var d in e){this.schema["enum"].push(d);var c=e[d];if(this.options.capitalize){c=c.toUpperCase()}this.options.optionLabels.push(c)}}this.base()},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-country")}},handleValidate:function(){var c=this.base();return c}});a.registerFieldClass("country",a.Fields.CountryField);a.registerDefaultFormatFieldMapping("country","country")})(jQuery);(function(b){var a=b.alpaca;a.Fields.ZipcodeField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.options.format=(this.options.format?this.options.format:"nine");if(this.options.format=="nine"){this.schema.pattern=a.regexps["zipcode-nine"]}else{if(this.options.format=="five"){this.schema.pattern=a.regexps["zipcode-five"]}else{a.logError("The configured zipcode format: "+this.options.format+" is not a legal value [five, nine]");this.options.format="nine";this.schema.pattern=a.regexps["zipcode-nine"]}}if(this.options.format=="nine"){this.options.maskString="99999-9999"}else{if(this.options.format=="five"){this.options.maskString="99999"}}this.base()},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-zipcode")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.invalidPattern["status"]){if(this.options.format=="nine"){c.invalidPattern["message"]=this.view.getMessage("invalidZipcodeFormatNine")}else{if(this.options.format=="five"){c.invalidPattern["message"]=this.view.getMessage("invalidZipcodeFormatFive")}}}return d}});a.registerMessages({invalidZipcodeFormatFive:"Invalid Five-Digit Zipcode (#####)",invalidZipcodeFormatNine:"Invalid Nine-Digit Zipcode (#####-####)"});a.registerFieldClass("zipcode",a.Fields.ZipcodeField);a.registerDefaultFormatFieldMapping("zipcode","zipcode")})(jQuery);(function(b){var a=b.alpaca;a.Fields.URLField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.schema.pattern=a.regexps.url;this.schema.format="uri";this.base()},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-url")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.invalidPattern["status"]){c.invalidPattern["message"]=this.view.getMessage("invalidURLFormat")}return d}});a.registerMessages({invalidURLFormat:"The URL provided is not a valid web address."});a.registerFieldClass("url",a.Fields.URLField);a.registerDefaultFormatFieldMapping("url","url")})(jQuery);;/*
+(function(b){var a=b.alpaca;a.Fields.AddressField=a.Fields.ObjectField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();this.schema={title:"Home Address",type:"object",properties:{street:{title:"Street",type:"array",items:{type:"string",maxLength:30,minItems:0,maxItems:3}},city:{title:"City",type:"string"},state:{title:"State",type:"string","enum":["AL","AK","AS","AZ","AR","CA","CO","CT","DE","DC","FM","FL","GA","GU","HI","ID","IL","IN","IA","KS","KY","LA","ME","MH","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","MP","OH","OK","OR","PW","PA","PR","RI","SC","SD","TN","TX","UT","VT","VI","VA","WA","WV","WI","WY"]},zip:{title:"Zip Code",type:"string",pattern:/^(\d{5}(-\d{4})?)?$/}}};a.merge(this.options,{fields:{zip:{maskString:"99999",size:5},state:{optionLabels:["ALABAMA","ALASKA","AMERICANSAMOA","ARIZONA","ARKANSAS","CALIFORNIA","COLORADO","CONNECTICUT","DELAWARE","DISTRICTOFCOLUMBIA","FEDERATEDSTATESOFMICRONESIA","FLORIDA","GEORGIA","GUAM","HAWAII","IDAHO","ILLINOIS","INDIANA","IOWA","KANSAS","KENTUCKY","LOUISIANA","MAINE","MARSHALLISLANDS","MARYLAND","MASSACHUSETTS","MICHIGAN","MINNESOTA","MISSISSIPPI","MISSOURI","MONTANA","NEBRASKA","NEVADA","NEWHAMPSHIRE","NEWJERSEY","NEWMEXICO","NEWYORK","NORTHCAROLINA","NORTHDAKOTA","NORTHERNMARIANAISLANDS","OHIO","OKLAHOMA","OREGON","PALAU","PENNSYLVANIA","PUERTORICO","RHODEISLAND","SOUTHCAROLINA","SOUTHDAKOTA","TENNESSEE","TEXAS","UTAH","VERMONT","VIRGINISLANDS","VIRGINIA","WASHINGTON","WESTVIRGINIA","WISCONSIN","WYOMING"]}}});if(a.isEmpty(this.options.addressValidation)){this.options.addressValidation=true}},getAddress:function(){var d=this.getValue();if(this.view.type=="view"){d=this.data}var c="";if(d){if(d.street){b.each(d.street,function(e,f){c+=f+" "})}if(d.city){c+=d.city+" "}if(d.state){c+=d.state+" "}if(d.zip){c+=d.zip}}return c},renderField:function(c){this.base();var e=this;b(this.fieldContainer).addClass("alpaca-addressfield");if(this.options.addressValidation&&!this.isDisplayOnly()){b('<div style="clear:both;"></div>').appendTo(this.fieldContainer);var d=b('<div class="alpaca-form-button">Google Map</div>').appendTo(this.fieldContainer);if(d.button){d.button({text:true})}d.click(function(){if(google&&google.maps){var g=new google.maps.Geocoder();var f=e.getAddress();if(g){g.geocode({address:f},function(k,i){if(i==google.maps.GeocoderStatus.OK){var j=e.getId()+"-map-canvas";if(b("#"+j).length===0){b("<div id='"+j+"' class='alpaca-controlfield-address-mapcanvas'></div>").appendTo(e.fieldContainer)}var l=new google.maps.Map(document.getElementById(e.getId()+"-map-canvas"),{zoom:10,center:k[0].geometry.location,mapTypeId:google.maps.MapTypeId.ROADMAP});var h=new google.maps.Marker({map:l,position:k[0].geometry.location})}else{e.displayMessage("Geocoding failed: "+i)}})}}else{e.displayMessage("Google Map API is not installed.")}}).wrap("<small/>");if(this.options.showMapOnLoad){d.click()}}if(c){c()}}});a.registerFieldClass("address",a.Fields.AddressField)})(jQuery);(function(b){var a=b.alpaca;a.Fields.DateField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.options.dateFormat){this.options.dateFormat=a.defaultDateFormat}if(!this.options.dateFormatRegex){this.options.dateFormatRegex=a.regexps.date}},postRender:function(){this.base();if(this.field&&b.datepicker){var c=this.options.datepicker;if(!c){c={changeMonth:true,changeYear:true}}if(!c.dateFormat){c.dateFormat=this.options.dateFormat}this.field.datepicker(c);if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-date")}}},onChange:function(c){this.base();this.renderValidationState()},handleValidate:function(){var e=this.base();var d=this.validation;var c=this._validateDateFormat();d.invalidDate={message:c?"":a.substituteTokens(this.view.getMessage("invalidDate"),[this.options.dateFormat]),status:c};return e&&d.invalidDate["status"]},_validateDateFormat:function(){var c=this.field.val();if(b.datepicker){try{b.datepicker.parseDate(this.options.dateFormat,c);return true}catch(d){return false}}else{return c.match(this.options.dateFormatRegex)}},setValue:function(c){if(c===""){this.base(c);return}this.base(c)}});a.registerMessages({invalidDate:"Invalid date for format {0}"});a.registerFieldClass("date",a.Fields.DateField);a.registerDefaultFormatFieldMapping("date","date")})(jQuery);(function(b){var a=b.alpaca;a.Fields.DatetimeField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base()},postRender:function(){var c=this;this.base();if(this.field){if(this.field.datetimepicker){this.field.hover(function(){if(!b(this).hasClass("hasDatepicker")){var d=c.options.timepicker;if(!d){d=c.options.timepicker}if(!d){d={changeYear:true,changeMonth:true}}b(this).datetimepicker(d)}});if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-datetime")}}}},setValue:function(c){if(c){if(a.isNumber()){c=new Date(c)}if(Object.prototype.toString.call(c)=="[object Date]"){this.base((c.getMonth()+1)+"/"+c.getDate()+"/"+c.getFullYear()+" "+c.getHours()+":"+c.getMinutes())}else{this.base(c)}}else{this.base(c)}},getValue:function(){return this.base()},getDatetime:function(){try{return this.field.datetimepicker("getDate")}catch(c){return this.getValue()}}});a.registerFieldClass("datetime",a.Fields.DatetimeField);a.registerDefaultFormatFieldMapping("datetime","datetime")})(jQuery);(function(b){var a=b.alpaca;a.Fields.EditorField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();this.controlFieldTemplateDescriptor=this.view.getTemplateDescriptor("controlFieldEditor")},postRender:function(){this.base();var d=this;if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-editor");b(this.fieldContainer).parent().css("width","100%");var e=this.options.aceHeight;if(e){b(this.fieldContainer).css("height",e)}var c=this.options.aceWidth;if(!c){c="100%"}b(this.fieldContainer).css("width",c)}var g=b(this.fieldContainer).find(".control-field-editor-el")[0];if(!ace&&window.ace){ace=window.ace}this.editor=ace.edit(g);var f=this.options.aceTheme;if(!f){f="ace/theme/chrome"}this.editor.setTheme(f);var i=this.options.aceMode;if(!i){i="ace/mode/json"}this.editor.getSession().setMode(i);this.editor.renderer.setHScrollBarAlwaysVisible(false);this.editor.setShowPrintMargin(false);this.editor.setValue(this.data);this.editor.clearSelection();if(this.options.aceFitContentHeight){var h=function(){var j=d.editor.getSession().getScreenLength()*d.editor.renderer.lineHeight+d.editor.renderer.scrollBar.getWidth();b(d.fieldContainer).height(j.toString()+"px");d.editor.resize()};h();d.editor.getSession().on("change",h)}if(this.schema.readonly){this.editor.setReadOnly(true)}b(g).bind("destroyed",function(){if(d.editor){d.editor.destroy();d.editor=null}})},destroy:function(){if(this.editor){this.editor.destroy();this.editor=null}this.base()},getEditor:function(){return this.editor},handleValidate:function(){var e=this.base();var d=this.validation;var c=this._validateWordCount();d.wordLimitExceeded={message:c?"":a.substituteTokens(this.view.getMessage("wordLimitExceeded"),[this.options.wordlimit]),status:c};return e&&d.wordLimitExceeded["status"]},_validateWordCount:function(){if(this.options.wordlimit&&this.options.wordlimit>-1){var d=this.editor.getValue();if(d){var c=d.split(" ").length;if(c>this.options.wordlimit){return false}}}return true},onDependentReveal:function(){this.editor.resize()},setValue:function(d){var c=this;if(this.editor){this.editor.setValue(d)}this.base(d)},getValue:function(){var c=null;if(this.editor){c=this.editor.getValue()}return c}});a.registerMessages({wordLimitExceeded:"The maximum word limit of {0} has been exceeded."});a.registerTemplate("controlFieldEditor",'<div id="${id}" class="control-field-editor-el"></div>');a.registerFieldClass("editor",a.Fields.EditorField)})(jQuery);(function(b){var a=b.alpaca;a.Fields.EmailField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.schema.pattern){this.schema.pattern=a.regexps.email}},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-email")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.invalidPattern["status"]){c.invalidPattern["message"]=this.view.getMessage("invalidEmail")}return d}});a.registerMessages({invalidEmail:"Invalid Email address e.g. info@cloudcms.com"});a.registerFieldClass("email",a.Fields.EmailField);a.registerDefaultFormatFieldMapping("email","email")})(jQuery);(function(b){var a=b.alpaca;a.Fields.IntegerField=a.Fields.NumberField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},getValue:function(){var c=this.field.val();if(a.isValEmpty(c)){return -1}else{return parseInt(c,10)}},onChange:function(c){this.base();if(this.slider){this.slider.slider("value",this.getValue())}},postRender:function(){this.base();var c=this;if(this.options.slider){if(!a.isEmpty(this.schema.maximum)&&!a.isEmpty(this.schema.minimum)){if(this.field){this.field.after('<div id="slider"></div>');this.slider=b("#slider",this.field.parent()).slider({value:this.getValue(),min:this.schema.minimum,max:this.schema.maximum,slide:function(d,e){c.setValue(e.value);c.renderValidationState()}})}}}if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-integer")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.stringNotANumber["status"]){c.stringNotANumber["message"]=this.view.getMessage("stringNotAnInteger")}return d},_validateNumber:function(){var c=this.field.val();if(a.isValEmpty(c)){return true}var d=this.getValue();if(isNaN(d)){return false}if(!c.match(a.regexps.integer)){return false}return true}});a.registerMessages({stringNotAnInteger:"This value is not an integer."});a.registerFieldClass("integer",a.Fields.IntegerField);a.registerDefaultSchemaFieldMapping("integer","integer")})(jQuery);(function(b){var a=b.alpaca;a.Fields.IPv4Field=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.schema.pattern){this.schema.pattern=a.regexps.ipv4}},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-ipv4")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.invalidPattern["status"]){c.invalidPattern["message"]=this.view.getMessage("invalidIPv4")}return d}});a.registerMessages({invalidIPv4:"Invalid IPv4 address, e.g. 192.168.0.1"});a.registerFieldClass("ipv4",a.Fields.IPv4Field);a.registerDefaultFormatFieldMapping("ip-address","ipv4")})(jQuery);(function(b){var a=b.alpaca;a.Fields.JSONField=a.Fields.TextAreaField.extend({constructor:function(f,j,h,i,e,d,g){this.base(f,j,h,i,e,d,g)},setValue:function(d){if(a.isObject(d)||typeof(d)=="object"){d=JSON.stringify(d,null,3)}this.base(d)},getValue:function(){var d=this.base();if(d&&a.isString(d)){d=JSON.parse(d)}return d},handleValidate:function(){var f=this.base();var e=this.validation;var d=this._validateJSON();e.stringNotAJSON={message:d.status?"":this.view.getMessage("stringNotAJSON")+" "+d.message,status:d.status};return f&&e.stringNotAJSON["status"]},_validateJSON:function(){var d=this.field.val();if(a.isValEmpty(d)){return{status:true}}try{var g=JSON.parse(d);this.setValue(JSON.stringify(g,null,3));return{status:true}}catch(f){return{status:false,message:f.message}}},postRender:function(){this.base();var d=this;if(this.field){this.field.bind("keypress",function(f){if(f.which==34){d.field.insertAtCaret('"')}if(f.which==123){d.field.insertAtCaret("}")}if(f.which==91){d.field.insertAtCaret("]")}});this.field.bind("keypress","Ctrl+l",function(){d.getEl().removeClass("alpaca-field-focused");d.renderValidationState()});this.field.attr("title","Type Ctrl+L to format and validate the JSON string.")}if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-json")}}});a.registerMessages({stringNotAJSON:"This value is not a valid JSON string."});a.registerFieldClass("json",a.Fields.JSONField);b.fn.insertAtCaret=function(d){return this.each(function(){if(document.selection){this.focus();sel=document.selection.createRange();sel.text=d;this.focus()}else{if(this.selectionStart||this.selectionStart=="0"){var f=this.selectionStart;var e=this.selectionEnd;var g=this.scrollTop;this.value=this.value.substring(0,f)+d+this.value.substring(e,this.value.length);this.focus();this.selectionStart=f;this.selectionEnd=f;this.scrollTop=g}else{this.value+=d;this.focus()}}})};jQuery.hotkeys={version:"0.8",specialKeys:{8:"backspace",9:"tab",13:"return",16:"shift",17:"ctrl",18:"alt",19:"pause",20:"capslock",27:"esc",32:"space",33:"pageup",34:"pagedown",35:"end",36:"home",37:"left",38:"up",39:"right",40:"down",45:"insert",46:"del",96:"0",97:"1",98:"2",99:"3",100:"4",101:"5",102:"6",103:"7",104:"8",105:"9",106:"*",107:"+",109:"-",110:".",111:"/",112:"f1",113:"f2",114:"f3",115:"f4",116:"f5",117:"f6",118:"f7",119:"f8",120:"f9",121:"f10",122:"f11",123:"f12",144:"numlock",145:"scroll",191:"/",224:"meta"},shiftNums:{"`":"~","1":"!","2":"@","3":"#","4":"$","5":"%","6":"^","7":"&","8":"*","9":"(","0":")","-":"_","=":"+",";":": ","'":'"',",":"<",".":">","/":"?","\\":"|"}};function c(e){if(typeof e.data!=="string"){return}var d=e.handler,f=e.data.toLowerCase().split(" ");e.handler=function(o){if(this!==o.target&&(/textarea|select/i.test(o.target.nodeName)||o.target.type==="text")){return}var j=o.type!=="keypress"&&jQuery.hotkeys.specialKeys[o.which],p=String.fromCharCode(o.which).toLowerCase(),m,n="",h={};if(o.altKey&&j!=="alt"){n+="alt+"}if(o.ctrlKey&&j!=="ctrl"){n+="ctrl+"}if(o.metaKey&&!o.ctrlKey&&j!=="meta"){n+="meta+"}if(o.shiftKey&&j!=="shift"){n+="shift+"}if(j){h[n+j]=true}else{h[n+p]=true;h[n+jQuery.hotkeys.shiftNums[p]]=true;if(n==="shift+"){h[jQuery.hotkeys.shiftNums[p]]=true}}for(var k=0,g=f.length;k<g;k++){if(h[f[k]]){return d.apply(this,arguments)}}}}jQuery.each(["keydown","keyup","keypress"],function(){jQuery.event.special[this]={add:c}})})(jQuery);(function(b){var a=b.alpaca;a.Fields.IntegerField=a.Fields.NumberField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},getValue:function(){var c=this.field.val();if(a.isValEmpty(c)){return -1}else{return parseInt(c,10)}},onChange:function(c){this.base();if(this.slider){this.slider.slider("value",this.getValue())}},postRender:function(){this.base();var c=this;if(this.options.slider){if(!a.isEmpty(this.schema.maximum)&&!a.isEmpty(this.schema.minimum)){if(this.field){this.field.after('<div id="slider"></div>');this.slider=b("#slider",this.field.parent()).slider({value:this.getValue(),min:this.schema.minimum,max:this.schema.maximum,slide:function(d,e){c.setValue(e.value);c.renderValidationState()}})}}}if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-integer")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.stringNotANumber["status"]){c.stringNotANumber["message"]=this.view.getMessage("stringNotAnInteger")}return d},_validateNumber:function(){var c=this.field.val();if(a.isValEmpty(c)){return true}var d=this.getValue();if(isNaN(d)){return false}if(!c.match(a.regexps.integer)){return false}return true}});a.registerMessages({stringNotAnInteger:"This value is not an integer."});a.registerFieldClass("integer",a.Fields.IntegerField);a.registerDefaultSchemaFieldMapping("integer","integer")})(jQuery);(function(b){var a=b.alpaca;a.Fields.LowerCaseField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-lowercase")}},setValue:function(d){var c=d.toLowerCase();if(c!=this.getValue()){this.base(c)}},onKeyPress:function(c){this.base(c);var d=this;a.later(25,this,function(){var e=d.getValue();d.setValue(e)})}});a.registerFieldClass("lowercase",a.Fields.LowerCaseField);a.registerDefaultFormatFieldMapping("lowercase","lowercase")})(jQuery);(function(b){var a=b.alpaca;a.Fields.MapField=a.Fields.ArrayField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();a.mergeObject(this.options,{forceRevalidation:true});if(a.isEmpty(this.data)){return}if(!a.isArray(this.data)){if(a.isObject(this.data)){var c=[];b.each(this.data,function(d,e){var f=a.copyOf(e);f._key=d;c.push(f)});this.data=c}}},getValue:function(){if(this.children.length===0&&!this.schema.required){return}var f={};for(var e=0;e<this.children.length;e++){var c=this.children[e].getValue();var d=c._key;if(d){delete c._key;f[d]=c}}return f},handleValidate:function(){var e=this.base();var d=this.validation;var f=this._validateMapKeysNotEmpty();d.keyMissing={message:f?"":this.view.getMessage("keyMissing"),status:f};var c=this._validateMapKeysUnique();d.keyNotUnique={message:c?"":this.view.getMessage("keyNotUnique"),status:c};return e&&d.keyMissing["status"]&&d.keyNotUnique["status"]},_validateMapKeysNotEmpty:function(){var f=true;for(var e=0;e<this.children.length;e++){var c=this.children[e].getValue();var d=c._key;if(!d){f=false;break}}return f},_validateMapKeysUnique:function(){var g=true;var f={};for(var e=0;e<this.children.length;e++){var c=this.children[e].getValue();var d=c._key;if(f[d]){g=false}f[d]=d}return g},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-map")}}});a.registerFieldClass("map",a.Fields.MapField);a.registerMessages({keyNotUnique:"Keys of map field are not unique.",keyMissing:"Map contains an empty key."})})(jQuery);(function(b){var a=b.alpaca;a.Fields.PasswordField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.schema.pattern){this.schema.pattern=a.regexps.password}this.controlFieldTemplateDescriptor=this.view.getTemplateDescriptor("controlFieldPassword")},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-password")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.invalidPattern["status"]){c.invalidPattern["message"]=this.view.getMessage("invalidPassword")}return d}});a.registerTemplate("controlFieldPassword",'<input type="password" id="${id}" {{if options.size}}size="${options.size}"{{/if}} {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each(i,v) options.data}}data-${i}="${v}"{{/each}}/>');a.registerMessages({invalidPassword:"Invalid Password"});a.registerFieldClass("password",a.Fields.PasswordField);a.registerDefaultFormatFieldMapping("password","password")})(jQuery);(function(b){var a=b.alpaca;a.Fields.PersonalNameField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-personalname")}},setValue:function(d){var e="";for(var c=0;c<d.length;c++){if(c===0){e+=d.charAt(c).toUpperCase()}else{if(d.charAt(c-1)==" "||d.charAt(c-1)=="-"||d.charAt(c-1)=="'"){e+=d.charAt(c).toUpperCase()}else{e+=d.charAt(c)}}}if(e!=this.getValue()){this.base(e)}},onKeyPress:function(c){this.base(c);var d=this;a.later(25,this,function(){var e=d.getValue();d.setValue(e)})}});a.registerFieldClass("personalname",a.Fields.PersonalNameField)})(jQuery);(function(b){var a=b.alpaca;a.Fields.PhoneField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.schema.pattern){this.schema.pattern=a.regexps.phone}if(a.isEmpty(this.options.maskString)){this.options.maskString="(999) 999-9999"}},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-phone")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.invalidPattern["status"]){c.invalidPattern["message"]=this.view.getMessage("invalidPhone")}return d}});a.registerMessages({invalidPhone:"Invalid Phone Number, e.g. (123) 456-9999"});a.registerFieldClass("phone",a.Fields.PhoneField);a.registerDefaultFormatFieldMapping("phone","phone")})(jQuery);(function(b){var a=b.alpaca;a.Fields.TagField=a.Fields.LowerCaseField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.options.separator){this.options.separator=","}},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-tag")}},getValue:function(){var c=this.base();if(c===""){return[]}return c.split(this.options.separator)},setValue:function(c){if(c===""){return}this.base(c.join(this.options.separator))},onBlur:function(f){this.base(f);var c=this.getValue();var d=[];b.each(c,function(g,e){if(e.trim()!==""){d.push(e.trim())}});this.setValue(d)}});a.registerFieldClass("tag",a.Fields.TagField)})(jQuery);(function(b){var a=b.alpaca;a.Fields.TimeField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.base();if(!this.options.timeFormat){this.options.timeFormat="hh:mm:ss"}if(!this.options.timeFormatRegex){this.options.timeFormatRegex=/^(([0-1][0-9])|([2][0-3])):([0-5][0-9]):([0-5][0-9])$/}if(a.isEmpty(this.options.maskString)){this.options.maskString="99:99:99"}},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-time")}},onChange:function(c){this.base();this.renderValidationState()},handleValidate:function(){var e=this.base();var d=this.validation;var c=this._validateTimeFormat();d.invalidTime={message:c?"":a.substituteTokens(this.view.getMessage("invalidTime"),[this.options.timeFormat]),status:c};return e&&d.invalidTime["status"]},_validateTimeFormat:function(){var c=this.field.val();if(!this.schema.required&&(a.isValEmpty(c)||c=="__:__:__")){return true}return c.match(this.options.timeFormatRegex)}});a.registerMessages({invalidTime:"Invalid time for format {0}"});a.registerFieldClass("time",a.Fields.TimeField);a.registerDefaultFormatFieldMapping("time","time")})(jQuery);(function(b){var a=b.alpaca;a.Fields.UpperCaseField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-uppercase")}},setValue:function(c){var d=c.toUpperCase();if(d!=this.getValue()){this.base(d)}},onKeyPress:function(c){this.base(c);var d=this;a.later(25,this,function(){var e=d.getValue();d.setValue(e)})}});a.registerFieldClass("uppercase",a.Fields.UpperCaseField);a.registerDefaultFormatFieldMapping("uppercase","uppercase")})(jQuery);(function(b){var a=b.alpaca;a.Fields.WysiwygField=a.Fields.TextAreaField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f);this.controlsConfig={};this.controlsConfig.simple={html:{visible:true},createLink:{visible:false},unLink:{visible:false},h1:{visible:false},h2:{visible:false},h3:{visible:false},indent:{visible:false},insertHorizontalRule:{visible:false},insertImage:{visible:false},insertOrderedList:{visible:false},insertTable:{visible:false},insertUnorderedList:{visible:false},justifyCenter:{visible:false},justifyFull:{visible:false},justifyLeft:{visible:false},justifyRight:{visible:false},outdent:{visible:false},redo:{visible:false},removeFormat:{visible:false},subscript:{visible:false},superscript:{visible:false},undo:{visible:false},code:{visible:false},strikeThrough:{visible:false}}},setup:function(){this.base();this.plugin=null},postRender:function(){this.base();var d=this;if(this.field&&b.wysiwyg){var c=this.options.wysiwyg?this.options.wysiwyg:{};if(c.controls){if(typeof(c.controls)==="string"){c.controls=this.controlsConfig[c.controls];if(!c.controls){c.controls={}}}}if(this.options.onDemand){this.outerEl.find("textarea").mouseover(function(){if(!d.plugin){d.plugin=b(this).wysiwyg(c);d.outerEl.find(".wysiwyg").mouseout(function(){if(d.plugin){d.plugin.wysiwyg("destroy")}d.plugin=null})}})}else{this.plugin=this.field.wysiwyg(c)}this.outerEl.find(".wysiwyg").mouseout(function(){d.data=d.getValue();d.renderValidationState()})}if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-wysiwyg")}}});a.registerFieldClass("wysiwyg",a.Fields.WysiwygField)})(jQuery);(function(b){var a=b.alpaca;a.Fields.StateField=a.Fields.SelectField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){if(a.isUndefined(this.options.capitalize)){this.options.capitalize=false}if(a.isUndefined(this.options.includeStates)){this.options.includeStates=true}if(a.isUndefined(this.options.includeTerritories)){this.options.includeTerritories=true}if(a.isUndefined(this.options.format)){this.options.format="name"}if(this.options.format=="name"||this.options.format=="code"){}else{a.logError("The configured state format: "+this.options.format+" is not a legal value [name, code]");this.options.format="name"}var c=a.retrieveUSHoldings(this.options.includeStates,this.options.includeTerritories,(this.options.format=="code"),this.options.capitalize);this.schema["enum"]=c.keys;this.options.optionLabels=c.values;this.base()},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-state")}},handleValidate:function(){var c=this.base();return c}});a.registerFieldClass("state",a.Fields.StateField);a.registerDefaultFormatFieldMapping("state","state");a.retrieveUSHoldings=function(){var c=[];c.push({name:"Arkansas",code:"AK",state:true,territory:false});c.push({name:"Alabama",code:"AL",state:true,territory:false});c.push({name:"American Samoa",code:"AS",state:false,territory:true});c.push({name:"Arizona",code:"AR",state:true,territory:false});c.push({name:"California",code:"CA",state:true,territory:false});c.push({name:"Colorado",code:"CO",state:true,territory:false});c.push({name:"Connecticut",code:"CT",state:true,territory:false});c.push({name:"Delaware",code:"DE",state:true,territory:false});c.push({name:"Distict of Columbia",code:"DC",state:false,territory:true});c.push({name:"Federated States of Micronesia",code:"FM",state:false,territory:true});c.push({name:"Florida",code:"FL",state:true,territory:false});c.push({name:"Georgia",code:"GA",state:true,territory:false});c.push({name:"Guam",code:"GU",state:false,territory:true});c.push({name:"Georgia",code:"GA",state:true,territory:false});c.push({name:"Hawaii",code:"HI",state:true,territory:false});c.push({name:"Idaho",code:"ID",state:true,territory:false});c.push({name:"Illinois",code:"IL",state:true,territory:false});c.push({name:"Indiana",code:"IN",state:true,territory:false});c.push({name:"Iowa",code:"IA",state:true,territory:false});c.push({name:"Kansas",code:"KS",state:true,territory:false});c.push({name:"Kentucky",code:"KY",state:true,territory:false});c.push({name:"Louisiana",code:"LA",state:true,territory:false});c.push({name:"Maine",code:"ME",state:true,territory:false});c.push({name:"Marshall Islands",code:"MH",state:false,territory:true});c.push({name:"Maryland",code:"MD",state:true,territory:false});c.push({name:"Massachusetts",code:"MA",state:true,territory:false});c.push({name:"Michigan",code:"MI",state:true,territory:false});c.push({name:"Minnesota",code:"MN",state:true,territory:false});c.push({name:"Mississippi",code:"MS",state:true,territory:false});c.push({name:"Missouri",code:"MO",state:true,territory:false});c.push({name:"Montana",code:"MT",state:true,territory:false});c.push({name:"Nebraska",code:"NE",state:true,territory:false});c.push({name:"Nevada",code:"NV",state:true,territory:false});c.push({name:"New Hampshire",code:"NH",state:true,territory:false});c.push({name:"New Jersey",code:"NJ",state:true,territory:false});c.push({name:"New Mexico",code:"NM",state:true,territory:false});c.push({name:"New York",code:"NY",state:true,territory:false});c.push({name:"North Carolina",code:"NC",state:true,territory:false});c.push({name:"North Dakota",code:"ND",state:true,territory:false});c.push({name:"Northern Mariana Islands",code:"MP",state:true,territory:false});c.push({name:"Ohio",code:"OH",state:true,territory:false});c.push({name:"Oklahoma",code:"OK",state:true,territory:false});c.push({name:"Oregon",code:"OR",state:true,territory:false});c.push({name:"Palau",code:"PW",state:false,territory:true});c.push({name:"Pennsylvania",code:"PA",state:true,territory:false});c.push({name:"Puerto Rico",code:"PR",state:false,territory:true});c.push({name:"Rhode Island",code:"RI",state:true,territory:false});c.push({name:"South Carolina",code:"SC",state:true,territory:false});c.push({name:"South Dakota",code:"SD",state:true,territory:false});c.push({name:"Tennessee",code:"TN",state:true,territory:false});c.push({name:"Texas",code:"TX",state:true,territory:false});c.push({name:"Utah",code:"UT",state:true,territory:false});c.push({name:"Vermont",code:"VT",state:true,territory:false});c.push({name:"Virgin Islands",code:"VI",state:false,territory:true});c.push({name:"Virginia",code:"VA",state:true,territory:false});c.push({name:"Washington",code:"WA",state:true,territory:false});c.push({name:"West Virginia",code:"WV",state:true,territory:false});c.push({name:"Wisconsin",code:"WI",state:true,territory:false});c.push({name:"Wyoming",code:"WY",state:true,territory:false});return function(l,e,h,g){var m={keys:[],values:[]};for(var f=0;f<c.length;f++){var d=false;if(c[f].state&&l){d=true}else{if(c[f].territory&&e){d=true}}if(d){var k=c[f].code;var j=c[f].name;if(h){j=c[f].code}if(g){j=j.toUpperCase()}m.keys.push(k);m.values.push(j)}}return m}}()})(jQuery);(function(b){var a=b.alpaca;a.Fields.CountryField=a.Fields.SelectField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){if(a.isUndefined(this.options.capitalize)){this.options.capitalize=false}this.schema["enum"]=[];this.options.optionLabels=[];var e=this.view.getMessage("countries");if(e){for(var d in e){this.schema["enum"].push(d);var c=e[d];if(this.options.capitalize){c=c.toUpperCase()}this.options.optionLabels.push(c)}}this.base()},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-country")}},handleValidate:function(){var c=this.base();return c}});a.registerFieldClass("country",a.Fields.CountryField);a.registerDefaultFormatFieldMapping("country","country")})(jQuery);(function(b){var a=b.alpaca;a.Fields.ZipcodeField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.options.format=(this.options.format?this.options.format:"nine");if(this.options.format=="nine"){this.schema.pattern=a.regexps["zipcode-nine"]}else{if(this.options.format=="five"){this.schema.pattern=a.regexps["zipcode-five"]}else{a.logError("The configured zipcode format: "+this.options.format+" is not a legal value [five, nine]");this.options.format="nine";this.schema.pattern=a.regexps["zipcode-nine"]}}if(this.options.format=="nine"){this.options.maskString="99999-9999"}else{if(this.options.format=="five"){this.options.maskString="99999"}}this.base()},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-zipcode")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.invalidPattern["status"]){if(this.options.format=="nine"){c.invalidPattern["message"]=this.view.getMessage("invalidZipcodeFormatNine")}else{if(this.options.format=="five"){c.invalidPattern["message"]=this.view.getMessage("invalidZipcodeFormatFive")}}}return d}});a.registerMessages({invalidZipcodeFormatFive:"Invalid Five-Digit Zipcode (#####)",invalidZipcodeFormatNine:"Invalid Nine-Digit Zipcode (#####-####)"});a.registerFieldClass("zipcode",a.Fields.ZipcodeField);a.registerDefaultFormatFieldMapping("zipcode","zipcode")})(jQuery);(function(b){var a=b.alpaca;a.Fields.URLField=a.Fields.TextField.extend({constructor:function(e,i,g,h,d,c,f){this.base(e,i,g,h,d,c,f)},setup:function(){this.schema.pattern=a.regexps.url;this.schema.format="uri";this.base()},postRender:function(){this.base();if(this.fieldContainer){this.fieldContainer.addClass("alpaca-controlfield-url")}},handleValidate:function(){var d=this.base();var c=this.validation;if(!c.invalidPattern["status"]){c.invalidPattern["message"]=this.view.getMessage("invalidURLFormat")}return d}});a.registerMessages({invalidURLFormat:"The URL provided is not a valid web address."});a.registerFieldClass("url",a.Fields.URLField);a.registerDefaultFormatFieldMapping("url","url")})(jQuery);;/*!
+ * mustache.js - Logic-less {{mustache}} templates with JavaScript
+ * http://github.com/janl/mustache.js
+ */
+
+/*global define: false*/
+
+(function (root, factory) {
+  if (typeof exports === "object" && exports) {
+    factory(exports); // CommonJS
+  } else {
+    var mustache = {};
+    factory(mustache);
+    if (typeof define === "function" && define.amd) {
+      define(mustache); // AMD
+    } else {
+      root.Mustache = mustache; // <script>
+    }
+  }
+}(this, function (mustache) {
+
+  // Workaround for https://issues.apache.org/jira/browse/COUCHDB-577
+  // See https://github.com/janl/mustache.js/issues/189
+  var RegExp_test = RegExp.prototype.test;
+  function testRegExp(re, string) {
+    return RegExp_test.call(re, string);
+  }
+
+  var nonSpaceRe = /\S/;
+  function isWhitespace(string) {
+    return !testRegExp(nonSpaceRe, string);
+  }
+
+  var Object_toString = Object.prototype.toString;
+  var isArray = Array.isArray || function (object) {
+    return Object_toString.call(object) === '[object Array]';
+  };
+
+  function isFunction(object) {
+    return typeof object === 'function';
+  }
+
+  function escapeRegExp(string) {
+    return string.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
+  }
+
+  var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+  };
+
+  function escapeHtml(string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+      return entityMap[s];
+    });
+  }
+
+  function escapeTags(tags) {
+    if (!isArray(tags) || tags.length !== 2) {
+      throw new Error('Invalid tags: ' + tags);
+    }
+
+    return [
+      new RegExp(escapeRegExp(tags[0]) + "\\s*"),
+      new RegExp("\\s*" + escapeRegExp(tags[1]))
+    ];
+  }
+
+  var whiteRe = /\s*/;
+  var spaceRe = /\s+/;
+  var equalsRe = /\s*=/;
+  var curlyRe = /\s*\}/;
+  var tagRe = /#|\^|\/|>|\{|&|=|!/;
+
+  /**
+   * Breaks up the given `template` string into a tree of tokens. If the `tags`
+   * argument is given here it must be an array with two string values: the
+   * opening and closing tags used in the template (e.g. [ "<%", "%>" ]). Of
+   * course, the default is to use mustaches (i.e. mustache.tags).
+   *
+   * A token is an array with at least 4 elements. The first element is the
+   * mustache symbol that was used inside the tag, e.g. "#" or "&". If the tag
+   * did not contain a symbol (i.e. {{myValue}}) this element is "name". For
+   * all text that appears outside a symbol this element is "text".
+   *
+   * The second element of a token is its "value". For mustache tags this is
+   * whatever else was inside the tag besides the opening symbol. For text tokens
+   * this is the text itself.
+   *
+   * The third and fourth elements of the token are the start and end indices,
+   * respectively, of the token in the original template.
+   *
+   * Tokens that are the root node of a subtree contain two more elements: 1) an
+   * array of tokens in the subtree and 2) the index in the original template at
+   * which the closing tag for that section begins.
+   */
+  function parseTemplate(template, tags) {
+    tags = tags || mustache.tags;
+    template = template || '';
+
+    if (typeof tags === 'string') {
+      tags = tags.split(spaceRe);
+    }
+
+    var tagRes = escapeTags(tags);
+    var scanner = new Scanner(template);
+
+    var sections = [];     // Stack to hold section tokens
+    var tokens = [];       // Buffer to hold the tokens
+    var spaces = [];       // Indices of whitespace tokens on the current line
+    var hasTag = false;    // Is there a {{tag}} on the current line?
+    var nonSpace = false;  // Is there a non-space char on the current line?
+
+    // Strips all whitespace tokens array for the current line
+    // if there was a {{#tag}} on it and otherwise only space.
+    function stripSpace() {
+      if (hasTag && !nonSpace) {
+        while (spaces.length) {
+          delete tokens[spaces.pop()];
+        }
+      } else {
+        spaces = [];
+      }
+
+      hasTag = false;
+      nonSpace = false;
+    }
+
+    var start, type, value, chr, token, openSection;
+    while (!scanner.eos()) {
+      start = scanner.pos;
+
+      // Match any text between tags.
+      value = scanner.scanUntil(tagRes[0]);
+      if (value) {
+        for (var i = 0, len = value.length; i < len; ++i) {
+          chr = value.charAt(i);
+
+          if (isWhitespace(chr)) {
+            spaces.push(tokens.length);
+          } else {
+            nonSpace = true;
+          }
+
+          tokens.push(['text', chr, start, start + 1]);
+          start += 1;
+
+          // Check for whitespace on the current line.
+          if (chr === '\n') {
+            stripSpace();
+          }
+        }
+      }
+
+      // Match the opening tag.
+      if (!scanner.scan(tagRes[0])) break;
+      hasTag = true;
+
+      // Get the tag type.
+      type = scanner.scan(tagRe) || 'name';
+      scanner.scan(whiteRe);
+
+      // Get the tag value.
+      if (type === '=') {
+        value = scanner.scanUntil(equalsRe);
+        scanner.scan(equalsRe);
+        scanner.scanUntil(tagRes[1]);
+      } else if (type === '{') {
+        value = scanner.scanUntil(new RegExp('\\s*' + escapeRegExp('}' + tags[1])));
+        scanner.scan(curlyRe);
+        scanner.scanUntil(tagRes[1]);
+        type = '&';
+      } else {
+        value = scanner.scanUntil(tagRes[1]);
+      }
+
+      // Match the closing tag.
+      if (!scanner.scan(tagRes[1])) {
+        throw new Error('Unclosed tag at ' + scanner.pos);
+      }
+
+      token = [ type, value, start, scanner.pos ];
+      tokens.push(token);
+
+      if (type === '#' || type === '^') {
+        sections.push(token);
+      } else if (type === '/') {
+        // Check section nesting.
+        openSection = sections.pop();
+
+        if (!openSection) {
+          throw new Error('Unopened section "' + value + '" at ' + start);
+        }
+        if (openSection[1] !== value) {
+          throw new Error('Unclosed section "' + openSection[1] + '" at ' + start);
+        }
+      } else if (type === 'name' || type === '{' || type === '&') {
+        nonSpace = true;
+      } else if (type === '=') {
+        // Set the tags for the next time around.
+        tagRes = escapeTags(tags = value.split(spaceRe));
+      }
+    }
+
+    // Make sure there are no open sections when we're done.
+    openSection = sections.pop();
+    if (openSection) {
+      throw new Error('Unclosed section "' + openSection[1] + '" at ' + scanner.pos);
+    }
+
+    return nestTokens(squashTokens(tokens));
+  }
+
+  /**
+   * Combines the values of consecutive text tokens in the given `tokens` array
+   * to a single token.
+   */
+  function squashTokens(tokens) {
+    var squashedTokens = [];
+
+    var token, lastToken;
+    for (var i = 0, len = tokens.length; i < len; ++i) {
+      token = tokens[i];
+
+      if (token) {
+        if (token[0] === 'text' && lastToken && lastToken[0] === 'text') {
+          lastToken[1] += token[1];
+          lastToken[3] = token[3];
+        } else {
+          squashedTokens.push(token);
+          lastToken = token;
+        }
+      }
+    }
+
+    return squashedTokens;
+  }
+
+  /**
+   * Forms the given array of `tokens` into a nested tree structure where
+   * tokens that represent a section have two additional items: 1) an array of
+   * all tokens that appear in that section and 2) the index in the original
+   * template that represents the end of that section.
+   */
+  function nestTokens(tokens) {
+    var nestedTokens = [];
+    var collector = nestedTokens;
+    var sections = [];
+
+    var token, section;
+    for (var i = 0, len = tokens.length; i < len; ++i) {
+      token = tokens[i];
+
+      switch (token[0]) {
+      case '#':
+      case '^':
+        collector.push(token);
+        sections.push(token);
+        collector = token[4] = [];
+        break;
+      case '/':
+        section = sections.pop();
+        section[5] = token[2];
+        collector = sections.length > 0 ? sections[sections.length - 1][4] : nestedTokens;
+        break;
+      default:
+        collector.push(token);
+      }
+    }
+
+    return nestedTokens;
+  }
+
+  /**
+   * A simple string scanner that is used by the template parser to find
+   * tokens in template strings.
+   */
+  function Scanner(string) {
+    this.string = string;
+    this.tail = string;
+    this.pos = 0;
+  }
+
+  /**
+   * Returns `true` if the tail is empty (end of string).
+   */
+  Scanner.prototype.eos = function () {
+    return this.tail === "";
+  };
+
+  /**
+   * Tries to match the given regular expression at the current position.
+   * Returns the matched text if it can match, the empty string otherwise.
+   */
+  Scanner.prototype.scan = function (re) {
+    var match = this.tail.match(re);
+
+    if (match && match.index === 0) {
+      var string = match[0];
+      this.tail = this.tail.substring(string.length);
+      this.pos += string.length;
+      return string;
+    }
+
+    return "";
+  };
+
+  /**
+   * Skips all text until the given regular expression can be matched. Returns
+   * the skipped string, which is the entire tail if no match can be made.
+   */
+  Scanner.prototype.scanUntil = function (re) {
+    var index = this.tail.search(re), match;
+
+    switch (index) {
+    case -1:
+      match = this.tail;
+      this.tail = "";
+      break;
+    case 0:
+      match = "";
+      break;
+    default:
+      match = this.tail.substring(0, index);
+      this.tail = this.tail.substring(index);
+    }
+
+    this.pos += match.length;
+
+    return match;
+  };
+
+  /**
+   * Represents a rendering context by wrapping a view object and
+   * maintaining a reference to the parent context.
+   */
+  function Context(view, parentContext) {
+    this.view = view == null ? {} : view;
+    this.cache = { '.': this.view };
+    this.parent = parentContext;
+  }
+
+  /**
+   * Creates a new context using the given view with this context
+   * as the parent.
+   */
+  Context.prototype.push = function (view) {
+    return new Context(view, this);
+  };
+
+  /**
+   * Returns the value of the given name in this context, traversing
+   * up the context hierarchy if the value is absent in this context's view.
+   */
+  Context.prototype.lookup = function (name) {
+    var value;
+    if (name in this.cache) {
+      value = this.cache[name];
+    } else {
+      var context = this;
+
+      while (context) {
+        if (name.indexOf('.') > 0) {
+          value = context.view;
+
+          var names = name.split('.'), i = 0;
+          while (value != null && i < names.length) {
+            value = value[names[i++]];
+          }
+        } else {
+          value = context.view[name];
+        }
+
+        if (value != null) break;
+
+        context = context.parent;
+      }
+
+      this.cache[name] = value;
+    }
+
+    if (isFunction(value)) {
+      value = value.call(this.view);
+    }
+
+    return value;
+  };
+
+  /**
+   * A Writer knows how to take a stream of tokens and render them to a
+   * string, given a context. It also maintains a cache of templates to
+   * avoid the need to parse the same template twice.
+   */
+  function Writer() {
+    this.cache = {};
+  }
+
+  /**
+   * Clears all cached templates in this writer.
+   */
+  Writer.prototype.clearCache = function () {
+    this.cache = {};
+  };
+
+  /**
+   * Parses and caches the given `template` and returns the array of tokens
+   * that is generated from the parse.
+   */
+  Writer.prototype.parse = function (template, tags) {
+    var cache = this.cache;
+    var tokens = cache[template];
+
+    if (tokens == null) {
+      tokens = cache[template] = parseTemplate(template, tags);
+    }
+
+    return tokens;
+  };
+
+  /**
+   * High-level method that is used to render the given `template` with
+   * the given `view`.
+   *
+   * The optional `partials` argument may be an object that contains the
+   * names and templates of partials that are used in the template. It may
+   * also be a function that is used to load partial templates on the fly
+   * that takes a single argument: the name of the partial.
+   */
+  Writer.prototype.render = function (template, view, partials) {
+    var tokens = this.parse(template);
+    var context = (view instanceof Context) ? view : new Context(view);
+    return this.renderTokens(tokens, context, partials, template);
+  };
+
+  /**
+   * Low-level method that renders the given array of `tokens` using
+   * the given `context` and `partials`.
+   *
+   * Note: The `originalTemplate` is only ever used to extract the portion
+   * of the original template that was contained in a higher-order section.
+   * If the template doesn't use higher-order sections, this argument may
+   * be omitted.
+   */
+  Writer.prototype.renderTokens = function (tokens, context, partials, originalTemplate) {
+    var buffer = '';
+
+    // This function is used to render an arbitrary template
+    // in the current context by higher-order sections.
+    var self = this;
+    function subRender(template) {
+      return self.render(template, context, partials);
+    }
+
+    var token, value;
+    for (var i = 0, len = tokens.length; i < len; ++i) {
+      token = tokens[i];
+
+      switch (token[0]) {
+      case '#':
+        value = context.lookup(token[1]);
+        if (!value) continue;
+
+        if (isArray(value)) {
+          for (var j = 0, jlen = value.length; j < jlen; ++j) {
+            buffer += this.renderTokens(token[4], context.push(value[j]), partials, originalTemplate);
+          }
+        } else if (typeof value === 'object' || typeof value === 'string') {
+          buffer += this.renderTokens(token[4], context.push(value), partials, originalTemplate);
+        } else if (isFunction(value)) {
+          if (typeof originalTemplate !== 'string') {
+            throw new Error('Cannot use higher-order sections without the original template');
+          }
+
+          // Extract the portion of the original template that the section contains.
+          value = value.call(context.view, originalTemplate.slice(token[3], token[5]), subRender);
+
+          if (value != null) buffer += value;
+        } else {
+          buffer += this.renderTokens(token[4], context, partials, originalTemplate);
+        }
+
+        break;
+      case '^':
+        value = context.lookup(token[1]);
+
+        // Use JavaScript's definition of falsy. Include empty arrays.
+        // See https://github.com/janl/mustache.js/issues/186
+        if (!value || (isArray(value) && value.length === 0)) {
+          buffer += this.renderTokens(token[4], context, partials, originalTemplate);
+        }
+
+        break;
+      case '>':
+        if (!partials) continue;
+        value = isFunction(partials) ? partials(token[1]) : partials[token[1]];
+        if (value != null) buffer += this.renderTokens(this.parse(value), context, partials, value);
+        break;
+      case '&':
+        value = context.lookup(token[1]);
+        if (value != null) buffer += value;
+        break;
+      case 'name':
+        value = context.lookup(token[1]);
+        if (value != null) buffer += mustache.escape(value);
+        break;
+      case 'text':
+        buffer += token[1];
+        break;
+      }
+    }
+
+    return buffer;
+  };
+
+  mustache.name = "mustache.js";
+  mustache.version = "0.8.1";
+  mustache.tags = [ "{{", "}}" ];
+
+  // All high-level mustache.* functions use this writer.
+  var defaultWriter = new Writer();
+
+  /**
+   * Clears all cached templates in the default writer.
+   */
+  mustache.clearCache = function () {
+    return defaultWriter.clearCache();
+  };
+
+  /**
+   * Parses and caches the given template in the default writer and returns the
+   * array of tokens it contains. Doing this ahead of time avoids the need to
+   * parse templates on the fly as they are rendered.
+   */
+  mustache.parse = function (template, tags) {
+    return defaultWriter.parse(template, tags);
+  };
+
+  /**
+   * Renders the `template` with the given `view` and `partials` using the
+   * default writer.
+   */
+  mustache.render = function (template, view, partials) {
+    return defaultWriter.render(template, view, partials);
+  };
+
+  // This is here for backwards compatibility with 0.4.x.
+  mustache.to_html = function (template, view, partials, send) {
+    var result = mustache.render(template, view, partials);
+
+    if (isFunction(send)) {
+      send(result);
+    } else {
+      return result;
+    }
+  };
+
+  // Export the escaping function so that the user may override it.
+  // See https://github.com/janl/mustache.js/issues/244
+  mustache.escape = escapeHtml;
+
+  // Export these mainly for testing, but also for advanced usage.
+  mustache.Scanner = Scanner;
+  mustache.Context = Context;
+  mustache.Writer = Writer;
+
+}));
+;/*
  * Raphaelicious 1.0 - Raphael Utility plugin
  *
  * Copyright (c) 2013 Myrousz <myrousz@gmail.com>
@@ -774,13 +1344,20 @@ var GameUI = Base.extend({
     })
   },
   restartGame: function() {
-    Splash.removeAll()
     var self = this
-    self.game.restart(function() {
-      self.playing = true;
-      self.paused = false;
-      self.updateUI()
-      self.showTab("game")  
+    Splash.removeAll()
+    new Splash({
+      text:__("Starting game..."),
+      delay: 2000,
+      overlay: true,
+      after: function() {
+        self.game.restart(function() {
+          self.playing = true;
+          self.paused = false;
+          self.updateUI()
+          self.showTab("game")  
+        })
+      }
     })
   },
   showGameInfo: function() {

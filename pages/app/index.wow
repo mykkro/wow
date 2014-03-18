@@ -51,11 +51,5 @@
     <g transform="translate(906, 4) scale(0.5)">
         <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
     </g>
-    <g transform="translate(4, 4) scale(0.5)">
-        <wow:iconbutton name="favButton" src="favorite"></wow:iconbutton>
-    </g>
-    <g transform="translate(64, 4) scale(0.5)">
-        <wow:iconbutton name="unfavButton" src="unfavorite"></wow:iconbutton>
-    </g>
 </svg>
 </div>

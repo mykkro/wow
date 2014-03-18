@@ -1,0 +1,13 @@
+{
+    "title": "{{translated.settings}}",
+    "description": "{{translated.gamesettings}}",
+    "type": "object",
+    "properties": {
+      "difficulty": {
+        "type": "string",
+        "required": true,
+        "default": "easy",
+        "enum": ["easy", "medium", "hard"]
+      }
+    }
+}
