@@ -14,6 +14,19 @@
     >
     <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
 	<wow:image src="/assets/previews/HomePage.svg" width="960" height="600" embed="true"></wow:image>
+
+    <g transform="translate(14, 40)">
+        <wow:bigbutton name="navButton01" class="green">RADIO</wow:bigbutton>
+    </g>
+
+    <g transform="translate(14, 221)">
+        <wow:bigbutton name="navButton02" class="orange">APPS</wow:bigbutton>
+    </g>
+
+    <g transform="translate(14, 402)">
+        <wow:bigbutton name="navButton03" class="purple">VIDEOS</wow:bigbutton>
+    </g>
+
 	<g id="tempgroup" style="display:none;"></g>
 
 </svg>
