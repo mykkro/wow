@@ -5,7 +5,39 @@ module.exports = function(Wow) {
 	var i18n = Wow.i18n
 	var BasePage = require("../../js/basepage")
 
+	var url = require("url")
+
 	var UserAppsPage = BasePage.extend({
+		updateBrowserQuery: function(page, query) {
+			var newQuery = "?page="+page
+			window.History.replaceState({}, "", newQuery)
+		},
+		getQueryString: function(dpage) {
+			var parsedUrl = url.parse(window.location.href, true)
+			var pg = parseInt(parsedUrl.query.page || 1)
+			if(dpage) pg += dpage
+			if(pg<1) pg=1
+			parsedUrl.query.page = pg
+			parsedUrl.search = null
+			return url.format(parsedUrl)
+		},
+		goToPreviousPage: function() {
+			var href = this.getQueryString(-1)
+			window.location.href = href
+		},
+		goToNextPage: function() {
+			var href = this.getQueryString(1)
+			window.location.href = href
+		},
+		goToImportPage: function(data) {
+			window.location.href = "/pages/app?importname="+data.importName
+		},
+		goToHomePage: function() {
+			window.location = "/pages/home"
+		},
+		colors: [
+			"#330099", "#f8c300", "#dd1379", "#dd1379", "#330099", "#f8c300"
+		],
 		init: function(Widgetizer, data, next) {
 			var document = window.document
 			var SvgHelper = Widgetizer.SvgHelper
@@ -17,14 +49,12 @@ module.exports = function(Wow) {
 			var rightBtn
 			var textBox
 
-			var updateBrowserQuery = function(page, query) {
-				var newQuery = "?page="+page
-				window.History.replaceState({}, "", newQuery)
-			}
+			var self = this
+
 
 			/* update GUI with search results */
 			/* also update left/right button status */
-			var showSearchResults = function(err, data) {
+			self.showSearchResults = function(err, data) {
 				console.log("Showing search results",data)
 				if(err) console.error(err);
 				else {
@@ -49,7 +79,7 @@ module.exports = function(Wow) {
 					for(var i=0; i<6; i++) {
 						var item = null
 						if(i<items.length) item = items[i]
-						resultGrp.appendChild(showItem(item, i))
+						resultGrp.appendChild(self.showItem(item, i))
 					}
 					var leftEnabled = (page>1)
 					var rightEnabled = (start-1+items.length<total)
@@ -58,36 +88,14 @@ module.exports = function(Wow) {
 				}
 			}
 
-			var getQueryString = function(dpage) {
-				var parsedUrl = url.parse(window.location.href, true)
-				var pg = parseInt(parsedUrl.query.page || 1)
-				if(dpage) pg += dpage
-				if(pg<1) pg=1
-				parsedUrl.query.page = pg
-				parsedUrl.search = null
-				return url.format(parsedUrl)
-			}
 
-
-			var goToPreviousPage = function() {
-				var href = getQueryString(-1)
-				window.location.href = href
-			}
-
-			var goToNextPage = function() {
-				var href = getQueryString(1)
-				window.location.href = href
-			}
-
-			var colors = ["#330099", "#f8c300", "#dd1379", "#dd1379", "#330099", "#f8c300"]
-
-			var showItem = function(data, index) {
+			self.showItem = function(data, index) {
 				console.log(data)
 				var column = index%3
 				var row = Math.floor(index/3)	
 				var tx = 160 + column*223
 				var ty = 36 + row*223		
-				var rect = SvgHelper.rect({ry: 35, rx:35, height:195, width:195, fill:"#fff", stroke:colors[index], "stroke-width":5})
+				var rect = SvgHelper.rect({ry: 35, rx:35, height:195, width:195, fill:"#fff", stroke:self.colors[index], "stroke-width":5})
 				var items = [rect]
 				var klass = "youtube-result"
 				if(data) {
@@ -98,7 +106,7 @@ module.exports = function(Wow) {
 					items = [rect, thumb, txt]
 					$(thumb).click(function() {
 						// go to video page...
-						goToImportPage(data)
+						self.goToImportPage(data)
 					})
 				} else {
 					klass += " disabled"
@@ -106,13 +114,12 @@ module.exports = function(Wow) {
 				return SvgHelper.group({"class":klass, transform: "translate("+tx+", "+ty+")"}, items)
 			}
 
-			var goToImportPage = function(data) {
-				window.location.href = "/pages/app?importname="+data.importName
-			}
 
-			var searchIt = function(page) {
-				updateBrowserQuery(page)
-				server("importsList", {/*userId:userId, */page:page}, showSearchResults) 
+			self.searchIt = function(page) {
+				self.updateBrowserQuery(page)
+				server("importsList", {/*userId:userId, */page:page}, function(err, data) {
+					self.showSearchResults(err, data)
+				}) 
 			}
 
 			resultGrp = SvgHelper.group({"class":"youtube-results"})
@@ -121,21 +128,38 @@ module.exports = function(Wow) {
 			rightBtn = Widgetizer.get("rightButton")	
 			textBox = Widgetizer.get("searchTextbox")
 
-			leftBtn.click(goToPreviousPage)
-			rightBtn.click(goToNextPage)
-
-			showSearchResults()
+			leftBtn.click(function() {
+				self.goToPreviousPage()
+			})
+			rightBtn.click(function() {
+				self.goToNextPage()
+			})
 
 			/* bind events... */
 			Widgetizer.get("homeButton").click(function() {
 				// move back to main page
-				window.location = "/pages/home"
+				self.goToHomePage()
 			})
 			var page = parseInt(data.query.page || 1)
-			searchIt(page)
+			self.searchIt(page)
 
 			/* continue when finished */
 			if(next) next(this)
+		},
+		handleEvent: function(evt) {
+			if(evt.device == "virtual") {
+				switch(evt.control) {
+					case "left":
+						this.goToPreviousPage()
+						break;
+					case "right":
+						this.goToNextPage()
+						break;
+					case "home":
+						this.goToHomePage()
+						break;
+				}
+			}
 		}
 	})
 	return UserAppsPage
