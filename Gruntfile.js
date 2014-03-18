@@ -15,7 +15,12 @@ module.exports = function (grunt) {
       },
       browserify: {
         basic: {
-            src: ['./js/widgetizer.js', './js/i18n.js', './js/pageinfo.js', './js/dialogs.js'],
+            src: [
+              './js/widgetizer.js', 
+              './js/i18n.js', 
+              './js/pageinfo.js', 
+              './js/dialogs.js'
+            ],
             dest: 'public/js/bundle.js',
             options: {
               alias: ['./js/widgetizer.js:widgetizer', './js/i18n.js:i18n', './js/pageinfo.js:pageinfo', './js/dialogs.js:dialogs'],
@@ -104,6 +109,27 @@ module.exports = function (grunt) {
             options: { alias: [ './pages/netradio/main.js:pagescript' ], transform: ['brfs']}
           }
       },
+   concat: {
+    options: {
+      separator: ';',
+    },
+    dist: {
+      src: [
+        "js/vendor/jquery-2.0.3.min.js",
+        "js/vendor/jquery.history.min.js",
+        "js/vendor/jquery.svg.min.js",
+        "js/vendor/jquery.svgdom.min.js",
+        "js/vendor/svgjs/svg.min.js",
+        "js/vendor/svgjs/svg.easing.min.js",
+        "js/vendor/svgjs/svg.filter.js",
+        "js/vendor/soundmanager2.js",
+        "js/vendor/jquery.playable.js",
+        "js/vendor/jquery.youtubedrop.js",
+        "js/vendor/gamepad.min.js"
+      ],
+      dest: 'public/js/wow-libs.js',
+    },
+  },      
       less: {
         development: {
           options: {
@@ -168,6 +194,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-execute');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-downloadfile');
+    grunt.loadNpmTasks('grunt-contrib-concat');
 
-    grunt.registerTask('default', ['browserify', 'less']);
+    grunt.registerTask('default', ['concat', 'browserify', 'less']);
 }
