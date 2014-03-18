@@ -207,6 +207,7 @@ module.exports = function(window, $, SVG) {
 		require("./widgets/image/image")(self)
 		require("./widgets/text/text")(self)
 		require("./widgets/iconbutton/iconbutton")(self)
+		require("./widgets/bigbutton/bigbutton")(self)
 	  },
 	  /* some utility methods */
 	  	/* copy non null attributes to an object... */
@@ -240,8 +241,6 @@ module.exports = function(window, $, SVG) {
 				$svg.removeAttr('xmlns:a');
 				$svg.removeAttr('xml:space');
 				$svg.removeAttr('enable-background');
-				// remove fill attribute from svg subelements...
-				//////$svg.find('*').removeAttr("fill");
 
 				$svg.attr("width", attrs.width);         
 				$svg.attr("height", attrs.height);

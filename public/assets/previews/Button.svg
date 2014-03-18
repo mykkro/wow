@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="280"
+   height="155"
+   viewBox="0 0 280 155"
+   >
+  <defs>
+    <filter
+       x="-0.035217389"
+       y="-0.20250005"
+       width="1.0704348"
+       height="1.4050001"
+       color-interpolation-filters="sRGB"
+       id="filter4051">
+      <feGaussianBlur
+         stdDeviation="3.5916624"
+         id="feGaussianBlur4053" />
+    </filter>
+  </defs>
+  <style>
+    .background.green {
+        fill: #99c918;
+        stroke: #4f8c0d;
+    }
+    .background.orange {
+        fill: #e77815;
+        stroke: #ba5205;
+    }
+    .background.purple {
+        fill: #9900ff;
+        stroke: #70126b;
+    }
+  </style>
+  <g
+     transform="translate(0,-897.36218)">
+    <g class="button nav-button"
+       transform="translate(-13.852211,856.88296)"
+       style="display:inline">
+      <path
+         class="background"
+         d="m 34.862509,42.980004 237.979431,0 c 10.22428,0 18.50949,8.399911 18.50949,18.749809 l 0,112.498807 c 0,10.349 -8.28521,18.74982 -18.50949,18.74982 l -237.979431,0 c -10.136172,0 -18.509515,-8.40082 -18.509515,-18.74982 l 0,-112.498807 c 0,-10.349898 8.373343,-18.749809 18.509515,-18.749809 z"
+         stroke-width="5"
+     />
+      <path
+         d="m 32.315161,105.71602 244.765149,0 0,42.56784 -244.765149,0 z"
+         style="fill:#ffffff;stroke:none;filter:url(#filter4051)" />
+      <text
+         x="150"
+         y="137.23553"
+         xml:space="preserve"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;"><tspan
+           x="150"
+           y="137.23553"
+           class="caption"
+           style="font-size:25px;font-family:Times New Roman;" /></text>
+      <path
+         class="overlay"
+         d="m 34.862509,42.980004 237.979431,0 c 10.22428,0 18.50949,8.399911 18.50949,18.749809 l 0,112.498807 c 0,10.349 -8.28521,18.74982 -18.50949,18.74982 l -237.979431,0 c -10.136172,0 -18.509515,-8.40082 -18.509515,-18.74982 l 0,-112.498807 c 0,-10.349898 8.373343,-18.749809 18.509515,-18.749809 z"
+         style="fill:none;stroke:none" />
+    </g>
+  </g>
+</svg>
