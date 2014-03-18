@@ -16,15 +16,15 @@
 	<wow:image src="/assets/previews/HomePage.svg" width="960" height="600" embed="true"></wow:image>
 
     <g transform="translate(14, 40)">
-        <wow:bigbutton name="navButton01" class="green">RADIO</wow:bigbutton>
+        <wow:bigbutton name="navButton01" class="green"></wow:bigbutton>
     </g>
 
     <g transform="translate(14, 221)">
-        <wow:bigbutton name="navButton02" class="orange">APPS</wow:bigbutton>
+        <wow:bigbutton name="navButton02" class="orange"></wow:bigbutton>
     </g>
 
     <g transform="translate(14, 402)">
-        <wow:bigbutton name="navButton03" class="purple">VIDEOS</wow:bigbutton>
+        <wow:bigbutton name="navButton03" class="purple"></wow:bigbutton>
     </g>
 
 	<g id="tempgroup" style="display:none;"></g>

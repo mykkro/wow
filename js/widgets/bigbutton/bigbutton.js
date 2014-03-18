@@ -8,6 +8,15 @@ module.exports = function(Widgetizer) {
 	/***********************************************************************************************************/
 	var widgetname = "bigbutton"
 		
+
+	var BigButtonWidget = Widgetizer.Widget.extend({
+		setCaption: function(text) {
+			var $e = $(this.element)
+			$e.find(".caption").text(text)
+			return this
+		}
+	})
+
 	var factory = function(element, done) {
         var $e = $(element)
 
@@ -18,7 +27,13 @@ module.exports = function(Widgetizer) {
 		var text = $e.text()
 		var gg = SvgHelper.group()		
 
-        var ww = Widgetizer.widget(widgetname, gg, {width:width, height:height})
+		// TODO creation of classed widgets is too complicated, simplify it...
+        var ww = Widgetizer.widgetByClass(
+        	widgetname, 
+        	BigButtonWidget, 
+        	gg, 
+        	{width:width, height:height}
+        )
         if($e.attr("name")) SvgHelper.attr(ww.element, "name", $e.attr("name"))
 		Widgetizer.loadSvg({src:"/assets/previews/Button.svg"}, function($svg) {
 			$(ww.element).append($svg)

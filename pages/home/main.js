@@ -105,9 +105,6 @@ module.exports = function(window, $, SVG, i18n) {
 			$("#labelTodayWeather").text(i18n.__("Today's weather").toUpperCase())
 			$("#labelTodayIs").text(i18n.__("Today is").toUpperCase())
 			$("#labelYear").text(i18n.__("year").toUpperCase())
-			//$("#labelNavButton1").text(i18n.__("Radio").toUpperCase())
-			//$("#labelNavButton2").text(i18n.__("Apps").toUpperCase())
-			//$("#labelNavButton3").text(i18n.__("Videos").toUpperCase())
 
 			var updateWeatherInfo = function() {
 				// get weather info...
@@ -133,9 +130,9 @@ module.exports = function(window, $, SVG, i18n) {
 			window.setInterval(updateClock, 1000)
 			window.setInterval(updateWeatherInfo, 10*60*1000)
 
-			Widgetizer.get("navButton01").click(myRadiosActivated)
-			Widgetizer.get("navButton02").click(gamesActivated)
-			Widgetizer.get("navButton03").click(entertainmentActivated)
+			Widgetizer.get("navButton01").setCaption(i18n.__("Radio").toUpperCase()).click(myRadiosActivated)
+			Widgetizer.get("navButton02").setCaption(i18n.__("Apps").toUpperCase()).click(gamesActivated)
+			Widgetizer.get("navButton03").setCaption(i18n.__("Videos").toUpperCase()).click(entertainmentActivated)
 
 			$(".hiddenQuitButton").click(function() {
 				showQuitDialog()
