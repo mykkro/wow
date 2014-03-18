@@ -1,4 +1,9 @@
-module.exports = function(window, $, SVG, i18n) {
+module.exports = function(Wow) {
+	var window = Wow.window
+	var $ = Wow.$
+	var SVG = Wow.SVG
+	var i18n = Wow.i18n
+	var BasePage = require("../../js/basepage")
 	
 	// CalendarTextDaytime
 	// CalendarTextYearNo
@@ -97,7 +102,7 @@ module.exports = function(window, $, SVG, i18n) {
 		})
 	}
 
-	return {
+	return BasePage.extend({
 		init: function(Widgetizer, data, next) {
 			var server = Widgetizer.rpc
 
@@ -144,6 +149,6 @@ module.exports = function(window, $, SVG, i18n) {
 			if(next) next(this)
 			
 		}
-	}
+	})
 
 }

@@ -1,11 +1,15 @@
-module.exports = function(window, $, SVG, i18n) {
+module.exports = function(Wow) {
+	var window = Wow.window
+	var $ = Wow.$
+	var SVG = Wow.SVG
+	var i18n = Wow.i18n
+	var BasePage = require("../../js/basepage")
 
 	var path = require("path")
 	var url = require("url")
 	var parsedUrl = url.parse(window.location.href, true)
-	
 
-	var page = {
+	var page = BasePage.extend({
 		init: function(Widgetizer, data, next) {
 			var W = Widgetizer
 			var server = W.rpc
@@ -69,9 +73,9 @@ module.exports = function(window, $, SVG, i18n) {
 			//}, 1000)
 			
 			/* continue when finished */
-			if(next) next(page)
+			if(next) next(this)
 		}
-	}
+	})
 	return page
 
 }

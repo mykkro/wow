@@ -1,4 +1,9 @@
-module.exports = function(window, $, SVG, i18n) {
+module.exports = function(Wow) {
+	var window = Wow.window
+	var $ = Wow.$
+	var SVG = Wow.SVG
+	var i18n = Wow.i18n
+	var BasePage = require("../../js/basepage")
 
 	function tzLogin() {
 		//window.alert("TZ!")
@@ -11,16 +16,15 @@ module.exports = function(window, $, SVG, i18n) {
 	}
 	var baseUrl;
 	
-	var page = {
+	return BasePage.extend({
 		init: function(Widgetizer, data, next) {
 			/* do something... */
 			$("[name=tzlogin] .overlay").click(tzLogin)
 			$("[name=adminlogin] .overlay").click(adminLogin)
 
 			/* continue when finished */
-			if(next) next(page)
+			if(next) next(this)
 		}
-	}
-	return page
+	})
 
 }

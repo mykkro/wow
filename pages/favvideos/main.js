@@ -1,8 +1,13 @@
-module.exports = function(window, $, SVG, i18n) {
+module.exports = function(Wow) {
+	var window = Wow.window
+	var $ = Wow.$
+	var SVG = Wow.SVG
+	var i18n = Wow.i18n
+	var BasePage = require("../../js/basepage")
 	var url = require('url');	
 	var userId = '555'
 
-	var page = {
+	var page = BasePage.extend({
 		init: function(Widgetizer, data, next) {
 			var server = Widgetizer.rpc
 			var document = window.document
@@ -129,9 +134,9 @@ module.exports = function(window, $, SVG, i18n) {
 			searchIt(page)
 
 			/* continue when finished */
-			if(next) next(page)
+			if(next) next(this)
 		}
-	}
+	})
 	return page
 
 }
