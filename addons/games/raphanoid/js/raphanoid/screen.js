@@ -95,7 +95,7 @@ Raphanoid.Screen = Base.extend({
     },
     putStartButton: function (keepScore) {
 		var self = this;
-		this.game.prompt(__("Start!"), {}, function () {
+		//this.game.prompt(__("Start!"), {}, function () {
 			if(!keepScore) {
 				self.scoreCounter.reset();
 				self.livesCounter.reset();
@@ -105,11 +105,11 @@ Raphanoid.Screen = Base.extend({
             self.game.log("score", self.scoreCounter.score)
             self.game.log("lives", self.livesCounter.lives)
             self.game.log("level", self.level+1)
-        })
+        //})
     },
     putWellDoneButton: function () {
 		var self = this;
-        this.game.prompt("Well done!", {}, function () {
+        this.game.prompt(__("Well done!"), {}, function () {
 			self.level++;
 			if(self.level >= Raphanoid.screens.length) {
 				self.level = 0;
@@ -129,7 +129,7 @@ Raphanoid.Screen = Base.extend({
 	gameOver: function() {
 		var self = this;
 		self.endGame();
-        this.game.prompt("Game over!", {}, function () {
+        this.game.prompt(__("Game over"), {}, function () {
 			self.level = 0;
 			self.setLevelBackground(self.level);
 			self.init();

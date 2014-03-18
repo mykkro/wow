@@ -20,5 +20,13 @@
     <g transform="translate(20, 20)">
         <wow:iconbutton name="homeButton" src="home"></wow:iconbutton>
     </g>
+	
+        <g transform="translate(256, 452)">
+            <wow:iconbutton id="prevButton" name="prevButton" src="pause" width="60" height="60"></wow:iconbutton>
+        </g>
+        <g transform="translate(646, 451)">
+            <wow:iconbutton id="nextButton" name="nextButton" src="stop" width="60" height="60"></wow:iconbutton>
+        </g>
+	
 	<g id="tempgroup" style="display:none;"></g>
 </svg>
