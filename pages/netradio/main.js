@@ -4,6 +4,8 @@ module.exports = function(Wow) {
 	var SVG = Wow.SVG
 	var i18n = Wow.i18n
 	var BasePage = require("../../js/basepage")
+	var Base = require("basejs")
+	var SelectChain = require("../../js/selectchain")($, Base)
 
 	$.playable('/swf/')			
 
@@ -70,8 +72,38 @@ module.exports = function(Wow) {
 						
 			this.startPlaying(this.radios[this.currentTrack])
 
+			this.selectChain = new SelectChain([
+				Widgetizer.get("homeButton").element,
+				Widgetizer.get("quitButton").element
+			])
+
 			/* continue when finished */
 			if(next) next(this)
+		},
+		handleEvent: function(evt) {
+			if(evt.device == "virtual") {
+				switch(evt.control) {
+					case "home":
+						this.goToHomePage()
+						break;
+					case "left":
+						this.playPreviousTrack()
+						break;
+					case "right":
+						this.playNextTrack()
+						break;
+					case "up":
+						this.selectChain.selectPrevious()
+						break;
+					case "down":
+						this.selectChain.selectNext()
+						break;
+					case "select":
+						$(this.selectChain.current()).click()
+						this.selectChain.update()
+						break;
+				}
+			}
 		}
 	})
 
