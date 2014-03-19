@@ -9,6 +9,7 @@ module.exports = function($) {
 			this.id = data.id
 			this.bounds = data.bounds
 			this.dim = data.dim
+			/**/this.setHighlighted(true)/**/
 		},
 		click: function(cb) {	
 			var self = this
@@ -31,6 +32,16 @@ module.exports = function($) {
 		},
 		isEnabled: function() {
 			return !$(this.element).hasClass("disabled")
+		},
+		setHighlighted: function(flag) {
+			if(flag) {
+				$(this.element).addClass("glow")
+			} else {
+				$(this.element).removeClass("glow")
+			}
+		},
+		isHighlighted: function() {
+			return !$(this.element).hasClass("glow")
 		}
 	})
 
