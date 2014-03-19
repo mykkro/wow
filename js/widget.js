@@ -9,7 +9,7 @@ module.exports = function($) {
 			this.id = data.id
 			this.bounds = data.bounds
 			this.dim = data.dim
-			/**/this.setHighlighted(true)/**/
+			//this.setClass("glow2", true)
 		},
 		click: function(cb) {	
 			var self = this
@@ -31,17 +31,23 @@ module.exports = function($) {
 			}
 		},
 		isEnabled: function() {
-			return !$(this.element).hasClass("disabled")
+			return this.hasClass("disabled")
 		},
 		setHighlighted: function(flag) {
-			if(flag) {
-				$(this.element).addClass("glow")
-			} else {
-				$(this.element).removeClass("glow")
-			}
+			this.setClass("glow", flag)
 		},
 		isHighlighted: function() {
-			return !$(this.element).hasClass("glow")
+			return this.hasClass("glow")
+		},
+		setClass: function(klass, flag) {
+			if(flag) {
+				$(this.element).addClass(klass)
+			} else {
+				$(this.element).removeClass(klass)
+			}
+		},
+		hasClass: function(klass) {
+			return !$(this.element).hasClass(klass)
 		}
 	})
 

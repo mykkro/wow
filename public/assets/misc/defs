@@ -28,3 +28,15 @@
         <feMergeNode in="SourceGraphic"/>
     </feMerge>
 </filter>
+<filter id="glow2">
+    <feColorMatrix type="matrix" values=
+                "0 0 0 0   0
+                 0 0 0 0   0
+                 0 0 0 1   0
+                 0 0 0 1 0"/>
+    <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+    <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+    </feMerge>
+</filter>

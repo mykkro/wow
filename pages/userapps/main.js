@@ -29,8 +29,8 @@ module.exports = function(Wow) {
 			var href = this.getQueryString(1)
 			window.location.href = href
 		},
-		goToImportPage: function(data) {
-			window.location.href = "/pages/app?importname="+data.importName
+		goToImportPage: function(name) {
+			window.location.href = "/pages/app?importname="+name
 		},
 		goToHomePage: function() {
 			window.location = "/pages/home"
@@ -97,21 +97,21 @@ module.exports = function(Wow) {
 				var ty = 36 + row*223		
 				var rect = SvgHelper.rect({ry: 35, rx:35, height:195, width:195, fill:"#fff", stroke:self.colors[index], "stroke-width":5})
 				var items = [rect]
-				var klass = "youtube-result"
+				var obj = { 
+					"class": "youtube-result", 
+					transform: "translate("+tx+", "+ty+")"
+				}
 				if(data) {
 					var label = data.title ? truncate(data.title, 20) : ""
 					var thumbUrl = "/imports/"+data.importName+"/preview.png"
 					var thumb = SvgHelper.image({x:7, y:20, width:180, height:120, src:thumbUrl})
 					var txt = SvgHelper.text(label, {x:97, y: 170, "text-anchor":"middle"})
 					items = [rect, thumb, txt]
-					$(thumb).click(function() {
-						// go to video page...
-						self.goToImportPage(data)
-					})
+					obj['data-name'] = data.importName
 				} else {
-					klass += " disabled"
+					obj["class"] += " disabled"
 				}
-				return SvgHelper.group({"class":klass, transform: "translate("+tx+", "+ty+")"}, items)
+				return SvgHelper.group(obj, items)
 			}
 
 
@@ -119,6 +119,21 @@ module.exports = function(Wow) {
 				self.updateBrowserQuery(page)
 				server("importsList", {/*userId:userId, */page:page}, function(err, data) {
 					self.showSearchResults(err, data)
+					/* create plain widgets from results... */
+					$(".youtube-result").each(function() {
+						var $this = $(this)
+						var el = $this.get(0)
+						Widgetizer.makePlainWidget(el, function(w) {
+							/* attach events... */
+							var name = $this.data("name")
+							if(name) {
+								$this.click(function() {
+									self.goToImportPage(name)			
+								})
+							}
+						})
+					})
+
 				}) 
 			}
 
