@@ -34,10 +34,10 @@ module.exports = function($) {
 			return this.hasClass("disabled")
 		},
 		setHighlighted: function(flag) {
-			this.setClass("glow", flag)
+			this.setClass("glow2", flag)
 		},
 		isHighlighted: function() {
-			return this.hasClass("glow")
+			return this.hasClass("glow2")
 		},
 		setClass: function(klass, flag) {
 			if(flag) {

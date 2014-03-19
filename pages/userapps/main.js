@@ -35,6 +35,26 @@ module.exports = function(Wow) {
 		goToHomePage: function() {
 			window.location = "/pages/home"
 		},
+		selectionIndex: 0,
+		selectResult: function(index) {
+			this.selectionIndex = index
+			$(".youtube-results .wow-widget.plain").each(function(ind) {
+				console.log(ind)
+				$(this).removeClass("glow2")
+				if(ind==index) $(this).addClass("glow2")
+			})
+		},
+		selectPrevious: function() {
+			this.selectResult((this.selectionIndex+6-1)%6)
+		},
+		selectNext: function() {
+			this.selectResult((this.selectionIndex+1)%6)
+		},
+		activateSelected: function() {
+			var target = $(".youtube-results .youtube-result").eq(this.selectionIndex)
+			var targetName = target.data("name")
+			if(targetName) this.goToImportPage(targetName)
+		},
 		colors: [
 			"#330099", "#f8c300", "#dd1379", "#dd1379", "#330099", "#f8c300"
 		],
@@ -133,6 +153,7 @@ module.exports = function(Wow) {
 							}
 						})
 					})
+					self.selectResult(0)
 
 				}) 
 			}
@@ -172,6 +193,15 @@ module.exports = function(Wow) {
 						break;
 					case "home":
 						this.goToHomePage()
+						break;
+					case "up":
+						this.selectPrevious()
+						break;
+					case "down":
+						this.selectNext()
+						break;
+					case "select":
+						this.activateSelected()
 						break;
 				}
 			}
