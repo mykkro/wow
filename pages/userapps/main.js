@@ -7,6 +7,10 @@ module.exports = function(Wow) {
 
 	var url = require("url")
 
+	var Base = require("basejs")
+
+	var SelectChain = require("../../js/selectchain")($, Base)
+
 	var UserAppsPage = BasePage.extend({
 		updateBrowserQuery: function(page, query) {
 			var newQuery = "?page="+page
@@ -35,23 +39,14 @@ module.exports = function(Wow) {
 		goToHomePage: function() {
 			window.location = "/pages/home"
 		},
-		selectionIndex: 0,
-		selectResult: function(index) {
-			this.selectionIndex = index
-			$(".youtube-results .wow-widget.plain").each(function(ind) {
-				console.log(ind)
-				$(this).removeClass("glow2")
-				if(ind==index) $(this).addClass("glow2")
-			})
-		},
 		selectPrevious: function() {
-			this.selectResult((this.selectionIndex+6-1)%6)
+			this.selectChain.selectPrevious()
 		},
 		selectNext: function() {
-			this.selectResult((this.selectionIndex+1)%6)
+			this.selectChain.selectNext()
 		},
 		activateSelected: function() {
-			var target = $(".youtube-results .youtube-result").eq(this.selectionIndex)
+			var target = $(this.selectChain.current())
 			var targetName = target.data("name")
 			if(targetName) this.goToImportPage(targetName)
 		},
@@ -153,7 +148,7 @@ module.exports = function(Wow) {
 							}
 						})
 					})
-					self.selectResult(0)
+					self.selectChain = new SelectChain($(".youtube-result"))					
 
 				}) 
 			}

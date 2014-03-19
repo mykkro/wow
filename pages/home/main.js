@@ -4,6 +4,8 @@ module.exports = function(Wow) {
 	var SVG = Wow.SVG
 	var i18n = Wow.i18n
 	var BasePage = require("../../js/basepage")
+	var Base = require("basejs")
+	var SelectChain = require("../../js/selectchain")($, Base)
 	
 	// CalendarTextDaytime
 	// CalendarTextYearNo
@@ -145,9 +147,37 @@ module.exports = function(Wow) {
 				//if(state) gui.App.quit()
 			})
 
+			// create selection chain
+			this.selectChain = new SelectChain($(".wow-widget.bigbutton"))
+
 			/* continue when finished */
 			if(next) next(this)
 			
+		},
+		selectPrevious: function() {
+			this.selectChain.selectPrevious()
+		},
+		selectNext: function() {
+			this.selectChain.selectNext()
+		},
+		activateSelected: function() {
+			var target = $(this.selectChain.current())
+			$(target).click()
+		},
+		handleEvent: function(evt) {
+			if(evt.device == "virtual") {
+				switch(evt.control) {
+					case "up":
+						this.selectPrevious()
+						break;
+					case "down":
+						this.selectNext()
+						break;
+					case "select":
+						this.activateSelected()
+						break;
+				}
+			}
 		}
 	})
 
