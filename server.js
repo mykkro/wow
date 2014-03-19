@@ -118,7 +118,8 @@ var WowServer = {
         app.get('/pages/:name', function(req, res) {
           var name = req.params.name
           var view = fs.readFileSync("pages/"+name+"/index.wow", "utf8")
-          var viewData = {query:req.query}
+          var defs = fs.readFileSync("public/assets/misc/defs", "utf8")
+          var viewData = {query:req.query, defs:defs}
           var viewHtml = mustache.to_html(view, viewData)
           var page = fs.readFileSync("templates/master.html", "utf8")
           var data = {query:req.query, "name":name, "content":viewHtml}

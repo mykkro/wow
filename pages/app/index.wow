@@ -48,6 +48,9 @@
     class="main controls"
     preserveAspectRatio="none"
     >
+    <defs>
+    {{{defs}}}
+    </defs>
     <g transform="translate(906, 4) scale(0.5)">
         <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
     </g>

@@ -13,6 +13,9 @@
     	height="100%"
     	preserveAspectRatio="none"
         >
+    <defs>
+    {{{defs}}}
+    </defs>
         <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
         <g transform="translate(840, 20)">
             <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>

@@ -22,7 +22,8 @@
 
 
     </pattern>
-  </defs>
+    {{{defs}}}
+    </defs>
 
   <g transform="translate(50,50)">
     <rect fill="url(#checkerPattern)" x="0"
