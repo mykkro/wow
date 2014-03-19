@@ -7,7 +7,7 @@ module.exports = function(Wow) {
 	var url = require('url');	
 	var userId = '555'
 
-	var page = BasePage.extend({
+	var UserVideosPage = BasePage.extend({
 		init: function(Widgetizer, data, next) {
 			var document = window.document
 			var SvgHelper = Widgetizer.SvgHelper
@@ -19,10 +19,7 @@ module.exports = function(Wow) {
 			var rightBtn
 			var textBox
 
-			var updateBrowserQuery = function(page, query) {
-				var newQuery = "?page="+page
-				window.History.replaceState({}, "", newQuery)
-			}
+			var self = this
 
 			/* update GUI with search results */
 			/* also update left/right button status */
@@ -57,27 +54,6 @@ module.exports = function(Wow) {
 				}
 			}
 
-			var getQueryString = function(dpage) {
-				var parsedUrl = url.parse(window.location.href, true)
-				var pg = parseInt(parsedUrl.query.page || 1)
-				if(dpage) pg += dpage
-				if(pg<1) pg=1
-				parsedUrl.query.page = pg
-				parsedUrl.search = null
-				return url.format(parsedUrl)
-			}
-
-
-			var goToPreviousPage = function() {
-				var href = getQueryString(-1)
-				window.location.href = href
-			}
-
-			var goToNextPage = function() {
-				var href = getQueryString(1)
-				window.location.href = href
-			}
-
 			var colors = ["#330099", "#f8c300", "#dd1379", "#dd1379", "#330099", "#f8c300"]
 
 			var showItem = function(data, index) {
@@ -96,7 +72,7 @@ module.exports = function(Wow) {
 					items = [rect, thumb, txt]
 					$(thumb).click(function() {
 						// go to video page...
-						goToVideoPage(data.id)
+						self.goToVideoPage(data.id)
 					})
 				} else {
 					klass += " disabled"
@@ -104,12 +80,8 @@ module.exports = function(Wow) {
 				return SvgHelper.group({"class":klass, transform: "translate("+tx+", "+ty+")"}, items)
 			}
 
-			var goToVideoPage = function(ytId) {
-				window.location.href = "/pages/video?id="+ytId
-			}
-
 			var searchIt = function(page) {
-				updateBrowserQuery(page)
+				self.updateBrowserQuery(page)
 				server("userVideosList", {userId:userId, page:page}, showSearchResults) 
 			}
 
@@ -119,8 +91,8 @@ module.exports = function(Wow) {
 			rightBtn = Widgetizer.get("rightButton")	
 			textBox = Widgetizer.get("searchTextbox")
 
-			leftBtn.click(goToPreviousPage)
-			rightBtn.click(goToNextPage)
+			leftBtn.click(function() { self.goToPreviousPage()} )
+			rightBtn.click(function() { self.goToNextPage()} ) 
 
 			showSearchResults()
 
@@ -136,6 +108,6 @@ module.exports = function(Wow) {
 			if(next) next(this)
 		}
 	})
-	return page
+	return UserVideosPage
 
 }

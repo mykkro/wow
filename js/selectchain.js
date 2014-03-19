@@ -37,6 +37,18 @@ module.exports = function($, Base) {
 			this.update()
 			return this
 		},
+		show: function() {
+			this.update()
+			this.hidden = false
+		},
+		hide: function() {
+			for(var i=0; i<this.widgets.length; i++) {
+				var el = this.widgets[i]
+				$(el).removeClass("glow2")
+			}
+			this.hidden = true
+			return this
+		},
 		update: function() {
 			for(var i=0; i<this.widgets.length; i++) {
 				var el = this.widgets[i]
@@ -49,7 +61,7 @@ module.exports = function($, Base) {
 			return this
 		},
 		current: function() {
-			return this.widgets.length 
+			return (this.widgets.length && !this.hidden)
 				? this.widgets[this.currentIndex]
 				: null
 		}

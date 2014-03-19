@@ -12,33 +12,6 @@ module.exports = function(Wow) {
 	var SelectChain = require("../../js/selectchain")($, Base)
 
 	var UserAppsPage = BasePage.extend({
-		updateBrowserQuery: function(page, query) {
-			var newQuery = "?page="+page
-			window.History.replaceState({}, "", newQuery)
-		},
-		getQueryString: function(dpage) {
-			var parsedUrl = url.parse(window.location.href, true)
-			var pg = parseInt(parsedUrl.query.page || 1)
-			if(dpage) pg += dpage
-			if(pg<1) pg=1
-			parsedUrl.query.page = pg
-			parsedUrl.search = null
-			return url.format(parsedUrl)
-		},
-		goToPreviousPage: function() {
-			var href = this.getQueryString(-1)
-			window.location.href = href
-		},
-		goToNextPage: function() {
-			var href = this.getQueryString(1)
-			window.location.href = href
-		},
-		goToImportPage: function(name) {
-			window.location.href = "/pages/app?importname="+name
-		},
-		goToHomePage: function() {
-			window.location = "/pages/home"
-		},
 		selectPrevious: function() {
 			this.selectChain.selectPrevious()
 		},
