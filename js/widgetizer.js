@@ -100,10 +100,7 @@ module.exports = function(window, $, SVG) {
 	  },
 	  // TODO ability to create widgets of other classes than Widget
 	  widget: function(type, element, dim) {
-	  	var data = this.prepareWidgetData(type, element, dim)
-	  	var w = new Widget(data)
-	  	this.widgets[data.id] = w
-	  	return w
+	  	return this.widgetByClass(type, Widget, element, dim)
 	  },
 	  widgetByClass: function(type, klass, element, dim) {
 	  	var data = this.prepareWidgetData(type, element, dim)
@@ -162,11 +159,18 @@ module.exports = function(window, $, SVG) {
 	  		return this.findWidgetByName(node, name)
 	  	}
 	  },
+	  /* 
+	   * Creates widget from wow: markup.
+	   * element: DOM element to be transformed to Widget
+	   * done: function(aWidget)  - callback to be called after widgetization
+	   */
 	  makeWidget: function(element, done) {
 		/* if the widget has subwidgets, create them... */
 		this.widgetize(element)
 		/* create the widget */
+		/* nodename has always prefix wow: */
 		var type = element.nodeName.split(":")[1]
+		/* locate a widgetizer... */
 		var widgetizer = this.widgetizers[type]
 		if(widgetizer) {
 		  /* we can run widgetizer on an element... */
@@ -178,10 +182,36 @@ module.exports = function(window, $, SVG) {
 		  })
 		} else {
 		  console.warn("Unknown widget type: "+type)
+		  /* wrap the element to basic 'plain' Widget */
 		  if(done) done(null)
 		  return null
 		}
 	  },
+	  /* 
+	   * Creates a plain widget from an element
+	   * element: DOM element to be transformed to Widget
+	   * done: function(aWidget)  - callback to be called after widgetization
+	   */
+	  makePlainWidget: function(element, done) {
+	  	/* create the wrapping group... */
+	  	var grp = SvgHelper.group()
+	  	$(element).replaceWith(grp)
+	  	grp.appendChild(element)
+	  	element = grp
+		this.widgetize(element)
+		/* create the widget */
+		/* nodename has always prefix wow: */
+		var type = "plain"
+		/* locate a widgetizer... */
+		var widgetizer = this.widgetizers[type]
+	  	/* we can run widgetizer on an element... */
+	  	return widgetizer(element, function(w) {
+			// replace element with output
+			$(element).replaceWith(w.element)
+			// console.log(output) -> this causes error under node=webkit on Windows
+			if(done) done(w);
+	  	})
+	  },	  
 	  uses: function(widgets) {
 		var self = this
 		_.each(widgets, function(w){
@@ -216,6 +246,7 @@ module.exports = function(window, $, SVG) {
 		require("./widgets/text/text")(self)
 		require("./widgets/iconbutton/iconbutton")(self)
 		require("./widgets/bigbutton/bigbutton")(self)
+		require("./widgets/plain/plain")(self)
 	  },
 	  /* some utility methods */
 	  	/* copy non null attributes to an object... */
