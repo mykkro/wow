@@ -13,25 +13,7 @@
 	preserveAspectRatio="none"
     >
     <defs>
-    <!-- TODO put those filters to all SVG files.. -->
-    <filter id="dusk">
-      <feColorMatrix 
-        type="matrix" 
-        values="1.0 0   0   0   0
-                0   0.2 0   0   0 
-                0   0   0.2 0   0 
-                0   0   0   1.0 0 "/>
-    </filter>
-    <filter id="drop-shadow">
-        <feGaussianBlur in="SourceAlpha" stdDeviation="2.2"/>
-        <feOffset dx="12" dy="12" result="offsetblur"/>
-        <feFlood flood-color="rgba(0,0,0,0.5)"/>
-        <feComposite in2="offsetblur" operator="in"/>
-        <feMerge>
-            <feMergeNode/>
-            <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-    </filter>    
+    {{{defs}}}
     </defs>
     <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
 	<wow:image src="/assets/previews/HomePage.svg" width="960" height="600" embed="true"></wow:image>
@@ -48,6 +30,7 @@
         <wow:bigbutton name="navButton03" class="purple"></wow:bigbutton>
     </g>
 
+    <!-- TODO this group is also common to all SVG pages.. -->
 	<g id="tempgroup" style="display:none;"></g>
 
 </svg>

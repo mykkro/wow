@@ -12,6 +12,9 @@
 	height="100%"
 	preserveAspectRatio="none"
     >
+    <defs>
+    {{{defs}}}
+    </defs>
 
 <wow:grid cols="3" rows="3" valign="center" halign="center" uniformColumns="false" uniformRows="true">
     <wow:piechart name="foo" title="Sales by Region">

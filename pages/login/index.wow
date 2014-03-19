@@ -12,6 +12,9 @@
 	height="100%"
 	preserveAspectRatio="none"
     >
+    <defs>
+    {{{defs}}}
+    </defs>
     <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
 	<wow:image src="/assets/previews/LoginPage.svg" width="960" height="600" embed="true"></wow:image>
     <g transform="translate(312,35)">
