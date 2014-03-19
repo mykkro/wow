@@ -4,6 +4,8 @@ module.exports = function(Wow) {
 	var SVG = Wow.SVG
 	var i18n = Wow.i18n
 	var BasePage = require("../../js/basepage")
+	var Base = require("basejs")
+	var SelectChain = require("../../js/selectchain")($, Base)
 
 	function tzLogin() {
 		//window.alert("TZ!")
@@ -22,8 +24,30 @@ module.exports = function(Wow) {
 			$("[name=tzlogin] .overlay").click(tzLogin)
 			$("[name=adminlogin] .overlay").click(adminLogin)
 
+			this.selectChain = new SelectChain([
+				$("[name=tzlogin]").get(0),
+				$("[name=adminlogin]").get(0)
+			])
+
 			/* continue when finished */
 			if(next) next(this)
+		},
+		handleEvent: function(evt) {
+			if(evt.device == "virtual") {
+				switch(evt.control) {
+					case "up":
+						this.selectChain.selectPrevious()
+						break;
+					case "down":
+						this.selectChain.selectNext()
+						break;
+					case "select":
+						var el = this.selectChain.current()
+						$(el).find(".overlay").click()
+						this.selectChain.update()
+						break;
+				}
+			}
 		}
 	})
 

@@ -139,7 +139,8 @@ module.exports = function (grunt) {
         "js/vendor/soundmanager2.js",
         "js/vendor/jquery.playable.js",
         "js/vendor/jquery.youtubedrop.js",
-        "js/vendor/gamepad.min.js"
+        "js/vendor/gamepad.min.js",
+        "js/vendor/moment-with-langs.min.js"
       ],
       dest: 'public/js/wow-libs.js',
     },

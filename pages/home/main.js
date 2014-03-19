@@ -38,10 +38,7 @@ module.exports = function(Wow) {
 	}
 	
 	var timeinfo = require("../../js/timeinfo")
-	var moment = require('moment');	
-	moment.lang('de')
-    i18n.setLocale('de') // this should be in master page!
-	
+	var moment = Wow.moment
 	
 	function updateCalendar() {
 		console.log("Updating calendar...")
@@ -138,7 +135,7 @@ module.exports = function(Wow) {
 			window.setInterval(updateWeatherInfo, 10*60*1000)
 
 			Widgetizer.get("navButton01").setCaption(i18n.__("Radio").toUpperCase()).click(myRadiosActivated)
-			Widgetizer.get("navButton02").setCaption(i18n.__("Apps").toUpperCase()).click(gamesActivated)
+			Widgetizer.get("navButton02").setCaption(i18n.__("Entertainment").toUpperCase()).click(gamesActivated)
 			Widgetizer.get("navButton03").setCaption(i18n.__("Videos").toUpperCase()).click(entertainmentActivated)
 
 			$(".hiddenQuitButton").click(function() {
