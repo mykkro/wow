@@ -3,9 +3,21 @@ module.exports = function($, Base) {
 	var SelectChain = Base.extend({
 		/* widgets: an array of DOM/jQuery elements representing widgets */		
 		constructor: function(widgets, currentIndex) {
-			this.widgets = widgets;
+			this.widgets = [];
+			if(widgets) {
+				for(var i=0; i<widgets.length; i++) this.append(widgets[i])
+			}
 			this.currentIndex = currentIndex || 0
 			this.update()
+		},
+		append: function(el) {
+			this.widgets.push(el)
+			return this
+		},
+		clear: function() {
+			this.unselect()
+			this.currentIndex = 0
+			this.widgets = []
 		},
 		select: function(index) {
 			this.currentIndex = index
