@@ -37,13 +37,17 @@ module.exports = function(Wow) {
 				self.goToHomePage()
 			})
 			svgsvg.appendChild(self.resultGrp)
+
+			self.updateView(page)
+
+			/* continue when finished */
+			if(next) next(this)
+		},
+		updateView: function(data) {
 			var page = parseInt(data.query.page || 1)
 			self.searchIt(Widgetizer, page, function(results) {
 				console.log("Displaying results: ", results)
 			})
-
-			/* continue when finished */
-			if(next) next(this)
 		},
 		/* create a plain widget from a SVG element. Returns Promise. */
 		widgetize: function(Widgetizer, el) {
