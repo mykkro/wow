@@ -43,7 +43,16 @@ var BasePage = Base.extend({
 		window.location.href = "/pages/video?id="+ytId
 	},
 	getWidget: function(name) {
-		return this.wtr.get(name)
+		if(typeof name == "string") {
+			return this.wtr.get(name)
+		} else {
+			var el = $(name)
+			if(el.data("wow") && el.attr("id")) {
+				return this.wtr.get("#"+el.attr("id"))
+			} else {
+				return null // DOM element is not a widget
+			}
+		}
 	},
 	handleEvent: function(evt) {
 		switch(evt.device) {
