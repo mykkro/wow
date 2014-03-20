@@ -2,7 +2,11 @@ var Base = require("basejs")
 var url = require("url")
 
 var BasePage = Base.extend({
-	init: function(Widgetizer, data, next) {
+	constructor: function(Wow) {
+		this.wow = Wow
+		this.wtr = Wow.Widgetizer
+	},
+	init: function(data, next) {
 		// initializations happens here...
 		// ...
 		// call this after you finish
@@ -41,6 +45,9 @@ var BasePage = Base.extend({
 	},
 	goToVideoPage: function(ytId) {
 		window.location.href = "/pages/video?id="+ytId
+	},
+	getWidget: function(name) {
+		return this.wtr.get(name)
 	}
 
 })

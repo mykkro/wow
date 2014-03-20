@@ -26,16 +26,6 @@
         i18n.setLocale('de')
         moment.lang('de')
 
-        /* Global utility object holding useful things together */
-        var Wow = {
-          window: window,
-          $: $,
-          _: _,
-          i18n: i18n,
-          SVG: SVG,
-          moment: moment
-        }
-
         /* detect and initialize input devices... */
 
         // virtual control device
@@ -124,12 +114,24 @@
 
         // create widgetizer and load widgets
         var Widgetizer = require("widgetizer")(window, $, SVG)
+
+        /* Global utility object holding useful things together */
+        var Wow = {
+          window: window,
+          $: $,
+          _: _,
+          i18n: i18n,
+          SVG: SVG,
+          moment: moment,
+          Widgetizer: Widgetizer
+        }
+
         var pageClass = require("pagescript")(Wow)
-        var page = new pageClass()
+        var page = new pageClass(Wow)
         var allData = pageInfo
         Widgetizer.useCommonWidgets()
         Widgetizer.widgetize(document, function() {
-            page.init(Widgetizer, allData, function(pg) {
+            page.init(allData, function(pg) {
 
                 myControl.addListener("press", function(evt) {
                   pg.handleEvent($.extend({"device":"virtual"}, evt))

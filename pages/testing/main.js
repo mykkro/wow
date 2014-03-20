@@ -5,8 +5,8 @@ module.exports = function(Wow) {
 	var i18n = Wow.i18n
 	var BasePage = require("../../js/basepage")
 	var page = BasePage.extend({
-		init: function(Widgetizer, data, next) {
-			var draw = Widgetizer.SVGDoc
+		init: function(data, next) {
+			var draw = this.wtr.SVGDoc
 
 			// create image
 			var image = draw.image('/icons/SVG/air.svg')		

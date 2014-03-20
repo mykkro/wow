@@ -5,9 +5,9 @@ module.exports = function(Wow) {
 	var i18n = Wow.i18n
 	var BasePage = require("../../js/basepage")
 	return BasePage.extend({
-		init: function(Widgetizer, data, next) {
+		init: function(data, next) {
 			/* widgetization complete! */
-			Widgetizer.get("quitButton").click(function() {
+			this.getWidget("quitButton").click(function() {
 				// move back to previous page...
 				window.history.go(-1)
 			})

@@ -7,32 +7,32 @@ module.exports = function(Wow) {
 	var url = require("url")
 
 	var SearchVideosPage = VideosPage.extend({
-		init: function(Widgetizer, data, next) {
+		init: function(data, next) {
 			var self = this
 			// additional controls...
 			var page = parseInt(data.query.page || 1)
 			self.page = page
 			self.query = data.query.query
-			self.textBox = Widgetizer.get("searchTextbox")
+			self.textBox = self.getWidget("searchTextbox")
 			self.textBox.onEnterPressed = function() {
-				self.searchIt(Widgetizer, page)
+				self.searchIt(page)
 			}
-			Widgetizer.get("searchButton").click(function() {
-				self.searchIt(Widgetizer, page)
+			self.getWidget("searchButton").click(function() {
+				self.searchIt(page)
 			})
-			this.base(Widgetizer, data, next)
+			this.base(data, next)
 		},
-		updateView: function(Widgetizer, data) {
+		updateView: function(data) {
 			var self = this
 			var query = data.query.query || ""
 			var page = parseInt(data.query.page || 1)
 			if(query) {
 				self.textBox.val(query)				
-				self.searchIt(Widgetizer, page, function(results) {
+				self.searchIt(page, function(results) {
 					console.log("Displaying results: ", results)
 				})
 			} else {
-				self.displayResults(Widgetizer, page, null)
+				self.displayResults(page, null)
 			}
 		},
 		getQueryString: function(dpage) {
@@ -50,21 +50,21 @@ module.exports = function(Wow) {
 			var newQuery = "?page="+page+"&query="+encodeURIComponent(query)
 			window.History.replaceState({}, "", newQuery)
 		},
-		searchIt: function(Widgetizer, page, next) {
+		searchIt: function(page, next) {
 			var self = this
 			var query = self.textBox.val()
 			self.updateBrowserQuery(page, query)
-			self.searchYouTubeVideos(Widgetizer, {q:query, 'max-results':6, 'start-index':1+(page-1)*6}, function(err, data) {	
+			self.searchYouTubeVideos({q:query, 'max-results':6, 'start-index':1+(page-1)*6}, function(err, data) {	
 				if(!err) {			
-					self.displayResults(Widgetizer, page, data, next)
+					self.displayResults(page, data, next)
 				}
 			}) 
 		},
-		searchYouTubeVideos: function(Widgetizer, data, next) {
+		searchYouTubeVideos: function(data, next) {
 			console.log("Searching for YouTube videos")
 			console.log(data)
 			if(data.q) {
-				Widgetizer.rpc("youTubeSearch", data, function(err, res) {
+				this.wtr.rpc("youTubeSearch", data, function(err, res) {
 					if(err) next(err);
 					else next(null, res.result)
 				})

@@ -102,8 +102,8 @@ module.exports = function(Wow) {
 	}
 
 	return BasePage.extend({
-		init: function(Widgetizer, data, next) {
-			var server = Widgetizer.rpc
+		init: function(data, next) {
+			var server = this.wtr.rpc
 
 			// set labels...
 			$("#labelTodayWeather").text(i18n.__("Today's weather").toUpperCase())
@@ -134,9 +134,9 @@ module.exports = function(Wow) {
 			window.setInterval(updateClock, 1000)
 			window.setInterval(updateWeatherInfo, 10*60*1000)
 
-			Widgetizer.get("navButton01").setCaption(i18n.__("Radio").toUpperCase()).click(myRadiosActivated)
-			Widgetizer.get("navButton02").setCaption(i18n.__("Entertainment").toUpperCase()).click(gamesActivated)
-			Widgetizer.get("navButton03").setCaption(i18n.__("Videos").toUpperCase()).click(entertainmentActivated)
+			this.getWidget("navButton01").setCaption(i18n.__("Radio").toUpperCase()).click(myRadiosActivated)
+			this.getWidget("navButton02").setCaption(i18n.__("Entertainment").toUpperCase()).click(gamesActivated)
+			this.getWidget("navButton03").setCaption(i18n.__("Videos").toUpperCase()).click(entertainmentActivated)
 
 			$(".hiddenQuitButton").click(function() {
 				showQuitDialog()

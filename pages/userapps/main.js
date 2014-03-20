@@ -11,19 +11,16 @@ module.exports = function(Wow) {
 	var ItemListPage = require("../../js/itemlistpage")(Wow)
 
 	var UserAppsPage = ItemListPage.extend({
-		init: function(Widgetizer, data, next) {
-			this.base(Widgetizer, data, next)
-		},
 		activateSelected: function() {
 			var target = $(this.selectChain.current())
 			var targetName = target.find(".youtube-result").data("name")
 			if(targetName) this.goToImportPage(targetName)
 		},
 		// TODO callback after all items are widgetized
-		searchIt: function(Widgetizer, page, next) {
+		searchIt: function(page, next) {
 			var self = this
 			self.updateBrowserQuery(page)
-			Widgetizer.rpc("importsList", {/*userId:userId, */page:page}, function(err, data) {
+			this.wtr.rpc("importsList", {/*userId:userId, */page:page}, function(err, data) {
 				if(!err) {
 					if(data) data = {
 						// TODO change server query to return similar results as youtube search...
@@ -33,12 +30,12 @@ module.exports = function(Wow) {
 						items: data.result
 					} 
 					self.selectChain.clear()
-					self.showSearchResults(Widgetizer.SvgHelper, page, data)
+					self.showSearchResults(page, data)
 					/* create plain widgets from results... */
 					var promises = $(".youtube-result").map(function() {
 						var $this = $(this)
 						var el = $this.get(0)
-						return self.widgetize(Widgetizer, el)
+						return self.widgetize(el)
 					})
 					$.when.apply($, promises).then(function() {
 						var results = Array.prototype.slice.call(arguments)

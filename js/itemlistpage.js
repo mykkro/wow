@@ -14,7 +14,7 @@ module.exports = function(Wow) {
 		colors: [
 			"#330099", "#f8c300", "#dd1379", "#dd1379", "#330099", "#f8c300"
 		],
-		init: function(Widgetizer, data, next) {
+		init: function(data, next) {
 			var document = window.document
 			var svgsvg = document.getElementById("svg")
 
@@ -22,10 +22,10 @@ module.exports = function(Wow) {
 			self.selectChain = new SelectChain()					
 			
 			self.resultGrp = SvgHelper.group({"class":"youtube-results"})
-			self.leftBtn = Widgetizer.get("leftButton")
-			self.rightBtn = Widgetizer.get("rightButton")	
-			self.textBox = Widgetizer.get("searchTextbox")
-			self.homeButton = Widgetizer.get("homeButton")
+			self.leftBtn = this.getWidget("leftButton")
+			self.rightBtn = this.getWidget("rightButton")	
+			self.textBox = this.getWidget("searchTextbox")
+			self.homeButton = this.getWidget("homeButton")
 
 			self.leftBtn.click(function() {
 				self.goToPreviousPage()
@@ -38,22 +38,22 @@ module.exports = function(Wow) {
 			})
 			svgsvg.appendChild(self.resultGrp)
 
-			self.updateView(Widgetizer, data)
+			self.updateView(data)
 
 			/* continue when finished */
 			if(next) next(this)
 		},
-		updateView: function(Widgetizer, data) {
+		updateView: function(data) {
 			var self = this
 			var page = parseInt(data.query.page || 1)
-			self.searchIt(Widgetizer, page, function(results) {
+			self.searchIt(page, function(results) {
 				console.log("Displaying results: ", results)
 			})
 		},
 		/* create a plain widget from a SVG element. Returns Promise. */
-		widgetize: function(Widgetizer, el) {
+		widgetize: function(el) {
 			var deferred = $.Deferred()
-			Widgetizer.makePlainWidget(el, function(w) {
+			this.wtr.makePlainWidget(el, function(w) {
 				deferred.resolve(w)
 			})
 			return deferred.promise()
@@ -69,7 +69,7 @@ module.exports = function(Wow) {
 			var target = $(this.selectChain.current())
 			console.log("Selected: "+target)
 		},
-		searchIt: function(Widgetizer, page) {
+		searchIt: function(page) {
 			// to be implemented in subclass...
 			// TODO callback after all items are widgetized
 		},
@@ -79,7 +79,7 @@ module.exports = function(Wow) {
 		},
 		/* update GUI with search results */
 		/* also update left/right button status */
-		showSearchResults: function(SvgHelper, page, data) {
+		showSearchResults: function(page, data) {
 			var self = this
 			data = data || {totalItems:0, startIndex:1, itemsPerPage:6, items:[]}	
 			var total = data.totalItems

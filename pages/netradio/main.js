@@ -48,21 +48,21 @@ module.exports = function(Wow) {
 			}
 			return out
 		},
-		init: function(Widgetizer, data, next) {
+		init: function(data, next) {
 			var self = this
 			/* widgetization complete! */
-			Widgetizer.get("quitButton").click(function() {
+			this.getWidget("quitButton").click(function() {
 				// move back to previous page...
 				window.history.go(-1)
 			})
-			Widgetizer.get("homeButton").click(function() {
+			this.getWidget("homeButton").click(function() {
 				// move back to previous page...
 				window.location.href = "/pages/home"
 			})
-			Widgetizer.get("prevButton").click(function() {
+			this.getWidget("prevButton").click(function() {
 				self.playPreviousTrack()
 			})
-			Widgetizer.get("nextButton").click(function() {
+			this.getWidget("nextButton").click(function() {
 				self.playNextTrack()
 			})
 			
@@ -73,8 +73,8 @@ module.exports = function(Wow) {
 			this.startPlaying(this.radios[this.currentTrack])
 
 			this.selectChain = new SelectChain([
-				Widgetizer.get("homeButton").element,
-				Widgetizer.get("quitButton").element
+				self.getWidget("homeButton").element,
+				self.getWidget("quitButton").element
 			])
 
 			/* continue when finished */

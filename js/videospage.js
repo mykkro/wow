@@ -39,15 +39,15 @@ module.exports = function(Wow) {
 			}
 			return SvgHelper.group(obj, items)
 		},
-		displayResults: function(Widgetizer, page, data, next) {
+		displayResults: function(page, data, next) {
 			var self = this
 			self.selectChain.clear()
-			self.showSearchResults(Widgetizer.SvgHelper, page, data)
+			self.showSearchResults(page, data)
 			/* create plain widgets from results... */
 			var promises = $(".youtube-result").map(function() {
 				var $this = $(this)
 				var el = $this.get(0)
-				return self.widgetize(Widgetizer, el)
+				return self.widgetize(el)
 			})
 			$.when.apply($, promises).then(function() {
 				var results = Array.prototype.slice.call(arguments)
