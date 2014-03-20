@@ -10,9 +10,8 @@ module.exports = function(Wow) {
 	var parsedUrl = url.parse(window.location.href, true)
 
 	var page = BasePage.extend({
-		init: function(Widgetizer, data, next) {
-			var W = Widgetizer
-			var server = W.rpc
+		init: function(data, next) {
+			var server = this.wtr.rpc
 			var url = require("url")
         	var parsedUrl = url.parse(window.location.href, true)
           	var appName = parsedUrl.query.importname
@@ -20,9 +19,9 @@ module.exports = function(Wow) {
 			var userId = "555"		
 			
 			/* use data to modify page */
-			var quitBtn = W.get("quitButton")
-			var favButton = W.get("favButton")
-			var unfavButton = W.get("unfavButton")
+			var quitBtn = this.getWidget("quitButton")
+			var favButton = this.getWidget("favButton")
+			var unfavButton = this.getWidget("unfavButton")
 			function setFavState(flag) {
 				if(flag) {
 					favButton.disable()

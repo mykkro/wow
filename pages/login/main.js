@@ -19,7 +19,7 @@ module.exports = function(Wow) {
 	var baseUrl;
 	
 	return BasePage.extend({
-		init: function(Widgetizer, data, next) {
+		init: function(data, next) {
 			/* do something... */
 			$("[name=tzlogin] .overlay").click(tzLogin)
 			$("[name=adminlogin] .overlay").click(adminLogin)

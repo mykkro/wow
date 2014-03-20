@@ -5,13 +5,13 @@ module.exports = function(Wow) {
 	var VideosPage = require("../../js/videospage")(Wow)
 
 	var UserVideosPage = VideosPage.extend({
-		searchIt: function(Widgetizer, page, next) {
+		searchIt: function(page, next) {
 			var self = this
 			self.updateBrowserQuery(page)
-			Widgetizer.rpc("userVideosList", {userId:userId, page:page}, function(err, data) {	
+			self.wtr.rpc("userVideosList", {userId:userId, page:page}, function(err, data) {	
 				if(!err) {					
 					data = data.result
-					self.displayResults(Widgetizer, page, data, next)
+					self.displayResults(page, data, next)
 				}
 			}) 
 		}

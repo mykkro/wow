@@ -10,17 +10,20 @@ module.exports = function(Wow) {
 	var Auth  = {}//require("../lib/auth")(window)
 
 	var VideoPage = BasePage.extend({
-		init: function(Widgetizer, data, next) {
-			var W = Widgetizer
-			var server = Widgetizer.rpc
+		init: function(data, next) {
+			var W = this.wtr
+			var server = W.rpc
           	var videoId = data.query.id
 			var userId = "555" //Auth.getLoggedUser().id
 			var self = this
 
-			/* use data to modify page */
-			var quitBtn = W.get("quitButton")
-			var favButton = W.get("favButton")
-			var unfavButton = W.get("unfavButton")
+			var quitBtn = this.getWidget("quitButton")
+			var favButton = this.getWidget("favButton")
+			var unfavButton = this.getWidget("unfavButton")
+			var playButton = this.getWidget("playButton")
+			var pauseButton = this.getWidget("pauseButton")
+			var stopButton = this.getWidget("stopButton")
+
 			function setFavState(flag) {
 				self.selectChain.hide()
 				if(flag) {
@@ -51,30 +54,30 @@ module.exports = function(Wow) {
 			})
 			self.play = function() {
 				window.player.playVideo()
-				W.get("playButton").disable()
-				W.get("pauseButton").enable()
-				W.get("stopButton").enable()
+				playButton.disable()
+				pauseButton.enable()
+				stopButton.enable()
 			}
 			self.pause = function() {
 				window.player.pauseVideo()
-				W.get("playButton").enable()
-				W.get("pauseButton").disable()
-				W.get("stopButton").enable()
+				playButton.enable()
+				pauseButton.disable()
+				stopButton.enable()
 			}
 			self.stop = function() {
 				window.player.seekTo(0)
 				window.player.stopVideo()
-				W.get("playButton").enable()
-				W.get("pauseButton").disable()
-				W.get("stopButton").disable()
+				playButton.enable()
+				pauseButton.disable()
+				stopButton.disable()
 			}
-			W.get("playButton").click(function() {
+			playButton.click(function() {
 				self.play()
 			})
-			W.get("pauseButton").click(function() {
+			pauseButton.click(function() {
 				self.pause()
 			})
-			W.get("stopButton").click(function() {
+			stopButton.click(function() {
 				self.stop()
 			})
 
