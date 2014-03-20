@@ -3,11 +3,11 @@ module.exports = function(Wow) {
 	var $ = Wow.$
 	var SVG = Wow.SVG
 	var i18n = Wow.i18n
-	var BasePage = require("../../js/basepage")
-	var SvgHelper = require("../../js/svghelper")(window)
+	var BasePage = require("./basepage")
+	var SvgHelper = require("./svghelper")(window)
 	var url = require("url")
 	var Base = require("basejs")
-	var SelectChain = require("../../js/selectchain")($, Base)
+	var SelectChain = require("./selectchain")($, Base)
 	var truncate = require('html-truncate');
 
 	var ItemListPage = BasePage.extend({
@@ -76,13 +76,7 @@ module.exports = function(Wow) {
 		/* also update left/right button status */
 		showSearchResults: function(SvgHelper, page, data) {
 			var self = this
-			data = (data) ? {
-				// TODO change server query to return similar results as youtube search...
-				totalItems: 7,
-				startIndex: 1,
-				itemsPerPage: 6,
-				items: data.result
-			} : {totalItems:0, startIndex:1, itemsPerPage:6, items:[]}	
+			data = data || {totalItems:0, startIndex:1, itemsPerPage:6, items:[]}	
 			var total = data.totalItems
 			var start = data.startIndex
 			var pagesize = data.itemsPerPage
@@ -107,10 +101,12 @@ module.exports = function(Wow) {
 			if(evt.device == "virtual") {
 				switch(evt.control) {
 					case "left":
-						this.goToPreviousPage()
+						if(self.leftBtn.isEnabled())
+							this.goToPreviousPage()
 						break;
 					case "right":
-						this.goToNextPage()
+						if(self.rightBtn.isEnabled())
+							this.goToNextPage()
 						break;
 					case "home":
 						this.goToHomePage()

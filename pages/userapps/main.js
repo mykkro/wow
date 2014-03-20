@@ -8,7 +8,7 @@ module.exports = function(Wow) {
 	var url = require("url")
 	var truncate = require('html-truncate');
 
-	var ItemListPage = require("./itemlistpage")(Wow)
+	var ItemListPage = require("../../js/itemlistpage")(Wow)
 
 	var UserAppsPage = ItemListPage.extend({
 		init: function(Widgetizer, data, next) {
@@ -25,6 +25,13 @@ module.exports = function(Wow) {
 			self.updateBrowserQuery(page)
 			Widgetizer.rpc("importsList", {/*userId:userId, */page:page}, function(err, data) {
 				if(!err) {
+					if(data) data = {
+						// TODO change server query to return similar results as youtube search...
+						totalItems: 7,
+						startIndex: 1,
+						itemsPerPage: 6,
+						items: data.result
+					} 
 					self.selectChain.clear()
 					self.showSearchResults(Widgetizer.SvgHelper, page, data)
 					/* create plain widgets from results... */

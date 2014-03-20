@@ -31,7 +31,7 @@ module.exports = function($) {
 			}
 		},
 		isEnabled: function() {
-			return this.hasClass("disabled")
+			return !this.hasClass("disabled")
 		},
 		setHighlighted: function(flag) {
 			this.setClass("glow2", flag)
@@ -47,7 +47,7 @@ module.exports = function($) {
 			}
 		},
 		hasClass: function(klass) {
-			return !$(this.element).hasClass(klass)
+			return $(this.element).hasClass(klass)
 		}
 	})
 
