@@ -7,33 +7,34 @@ module.exports = function(Wow) {
 	var url = require("url")
 
 	var SearchVideosPage = VideosPage.extend({
-		init: function(data, next) {
+		createControls: function(data) {
+			this.base(data)
 			var self = this
-			this.base(data, function() {
-				var favVidButton = self.getWidget("favVidButton")
-				var userVidButton = self.getWidget("userVidButton")
-				userVidButton.click(function() {
-					self.goTo("/pages/uservideos")
-				})
-				favVidButton.click(function() {
-					self.goTo("/pages/favvideos")
-				})
-				self.selectChain.append(favVidButton.element)
-				self.selectChain.append(userVidButton.element)
-				self.selectChain.update()
+			var favVidButton = self.getWidget("favVidButton")
+			var userVidButton = self.getWidget("userVidButton")
+			self.textBox = self.getWidget("searchTextbox")
+			userVidButton.click(function() {
+				self.goTo("/pages/uservideos")
+			})
+			favVidButton.click(function() {
+				self.goTo("/pages/favvideos")
+			})
+			self.textBox.onFocused(function() {
+				// alert("TextBox focused!")
+				self.selectChain.select(self.textBox.element)
+			})
+			self.selectChain.append(favVidButton.element)
+			self.selectChain.append(userVidButton.element)
+			self.selectChain.append(self.textBox.element)
 
-				var page = parseInt(data.query.page || 1)
-				self.page = page
-				self.query = data.query.query
-				self.textBox = self.getWidget("searchTextbox")
-				self.textBox.onEnterPressed = function() {
-					self.searchIt(page)
-				}
-				self.getWidget("searchButton").click(function() {
-					self.searchIt(page)
-				})
-
-				if(next) next(self)
+			var page = parseInt(data.query.page || 1)
+			self.page = page
+			self.query = data.query.query
+			self.textBox.onEnterPressed = function() {
+				self.searchIt(page)
+			}
+			self.getWidget("searchButton").click(function() {
+				self.searchIt(page)
 			})
 		},
 		updateView: function(data) {
@@ -86,19 +87,54 @@ module.exports = function(Wow) {
 				next("No search criteria given")
 			}
 		},
+		focusTextBoxIfCurrent: function() {
+			var target = $(this.selectChain.current())
+			var widget = this.getWidget(target)
+			if(widget == this.textBox) {
+				// focus text box
+				this.textBox.focus()
+			} else {
+				// unfocus text box
+				this.textBox.blur()
+			}
+		},		
+		// modified from VideoPage
+		selectPrevious: function() {
+			this.base()
+			// if textbox is highlighted, focus the element
+			this.focusTextBoxIfCurrent()
+		},
+		selectNext: function() {
+			this.base()
+			this.focusTextBoxIfCurrent()
+		},
+		// modified from VideoPage
+		activateSelected: function() {
+			var target = $(this.selectChain.current())
+			var widget = this.getWidget(target)
+			if(widget.type == "iconbutton") {
+				target.click()
+			} else {
+				var targetName = target.find(".youtube-result").data("name")
+				if(targetName) this.goToVideoPage(targetName)
+			}
+		},
 		onVirtualControl: function(evt) {
-			// TODO controls will work only if the text box is not selected
+			var target = $(this.selectChain.current())
+			var widget = this.getWidget(target)
+			var inTextBox = (widget == this.textBox)
+			var self = this
 			switch(evt.control) {
 				case "left":
-					//if(self.leftBtn.isEnabled())
-					//	this.goToPreviousPage()
+					if(!inTextBox && self.leftBtn.isEnabled())
+						this.goToPreviousPage()
 					break;
 				case "right":
-					//if(self.rightBtn.isEnabled())
-					//	this.goToNextPage()
+					if(!inTextBox && self.rightBtn.isEnabled())
+						this.goToNextPage()
 					break;
 				case "home":
-					//this.goToHomePage()
+					if(!inTextBox) this.goToHomePage()
 					break;
 				case "up":
 					this.selectPrevious()
@@ -107,7 +143,7 @@ module.exports = function(Wow) {
 					this.selectNext()
 					break;
 				case "select":
-					//this.activateSelected()
+					if(!inTextBox) this.activateSelected()
 					break;
 			}
 		}

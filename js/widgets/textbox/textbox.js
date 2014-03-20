@@ -39,8 +39,17 @@ module.exports = function(Widgetizer) {
 		});
 		var name = $e.attr("name")
 		var ww = Widgetizer.inputWidget(widgetname, name, newElement, tb.getValue())
+		ww.focus = function() {
+			tb.focus()
+		}
+		ww.blur = function() {
+			tb.release()
+		}
 		ww.setValue = function(value) {
 			tb.setValue(value)
+		}
+		ww.onFocused = function(fun) {
+			tb.onFocused = fun
 		}
         if($e.attr("name")) SvgHelper.attr(ww.element, "name", $e.attr("name"))
 		if(done) done(ww)

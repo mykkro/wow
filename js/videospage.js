@@ -8,14 +8,11 @@ module.exports = function(Wow) {
 	var ItemListPage = require("./itemlistpage")(Wow)
 
 	var VideosPage = ItemListPage.extend({
-		init: function(data, next) {
+		createControls: function(data) {
+			this.base(data)
 			var self = this
-			this.base(data, function() {
-				var homeButton = self.getWidget("homeButton")
-				self.selectChain.append(homeButton.element)
-				self.selectChain.update()
-				if(next) next(self)
-			})
+			var homeButton = self.getWidget("homeButton")
+			self.selectChain.append(homeButton.element)
 		},
 		activateSelected: function() {
 			var target = $(this.selectChain.current())
@@ -64,6 +61,7 @@ module.exports = function(Wow) {
 			})
 			$.when.apply($, promises).then(function() {
 				var results = Array.prototype.slice.call(arguments)
+				self.selectChain = self.defaultChain.copy()
 				_.each(results, function(w) {
 					/* attach events... */
 					self.selectChain.append(w.element)					
