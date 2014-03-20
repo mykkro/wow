@@ -7,6 +7,7 @@ module.exports = function($) {
 			this.element = data.element
 			this.type = data.type
 			this.id = data.id
+			this.name = data.name
 			this.bounds = data.bounds
 			this.dim = data.dim
 			//this.setClass("glow2", true)

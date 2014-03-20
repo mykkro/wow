@@ -9,18 +9,32 @@ module.exports = function(Wow) {
 	var SearchVideosPage = VideosPage.extend({
 		init: function(data, next) {
 			var self = this
-			// additional controls...
-			var page = parseInt(data.query.page || 1)
-			self.page = page
-			self.query = data.query.query
-			self.textBox = self.getWidget("searchTextbox")
-			self.textBox.onEnterPressed = function() {
-				self.searchIt(page)
-			}
-			self.getWidget("searchButton").click(function() {
-				self.searchIt(page)
+			this.base(data, function() {
+				var favVidButton = self.getWidget("favVidButton")
+				var userVidButton = self.getWidget("userVidButton")
+				userVidButton.click(function() {
+					self.goTo("/pages/uservideos")
+				})
+				favVidButton.click(function() {
+					self.goTo("/pages/favvideos")
+				})
+				self.selectChain.append(favVidButton.element)
+				self.selectChain.append(userVidButton.element)
+				self.selectChain.update()
+
+				var page = parseInt(data.query.page || 1)
+				self.page = page
+				self.query = data.query.query
+				self.textBox = self.getWidget("searchTextbox")
+				self.textBox.onEnterPressed = function() {
+					self.searchIt(page)
+				}
+				self.getWidget("searchButton").click(function() {
+					self.searchIt(page)
+				})
+
+				if(next) next(self)
 			})
-			this.base(data, next)
 		},
 		updateView: function(data) {
 			var self = this

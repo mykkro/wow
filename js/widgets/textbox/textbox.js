@@ -37,7 +37,8 @@ module.exports = function(Widgetizer) {
 				if(enterPressed && ww.onEnterPressed) ww.onEnterPressed()
 			}
 		});
-		var ww = Widgetizer.inputWidget(widgetname, newElement, tb.getValue())
+		var name = $e.attr("name")
+		var ww = Widgetizer.inputWidget(widgetname, name, newElement, tb.getValue())
 		ww.setValue = function(value) {
 			tb.setValue(value)
 		}

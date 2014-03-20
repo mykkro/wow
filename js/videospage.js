@@ -8,10 +8,24 @@ module.exports = function(Wow) {
 	var ItemListPage = require("./itemlistpage")(Wow)
 
 	var VideosPage = ItemListPage.extend({
+		init: function(data, next) {
+			var self = this
+			this.base(data, function() {
+				var homeButton = self.getWidget("homeButton")
+				self.selectChain.append(homeButton.element)
+				self.selectChain.update()
+				if(next) next(self)
+			})
+		},
 		activateSelected: function() {
 			var target = $(this.selectChain.current())
-			var targetName = target.find(".youtube-result").data("name")
-			if(targetName) this.goToVideoPage(targetName)
+			var widget = this.getWidget(target)
+			if(widget.type == "iconbutton") {
+				target.click()
+			} else {
+				var targetName = target.find(".youtube-result").data("name")
+				if(targetName) this.goToVideoPage(targetName)
+			}
 		},
 		showItem: function(data, index) {
 			var self = this
@@ -41,7 +55,6 @@ module.exports = function(Wow) {
 		},
 		displayResults: function(page, data, next) {
 			var self = this
-			self.selectChain.clear()
 			self.showSearchResults(page, data)
 			/* create plain widgets from results... */
 			var promises = $(".youtube-result").map(function() {

@@ -24,12 +24,14 @@ module.exports = function(Widgetizer) {
 		var width = parseFloat($e.attr("width") || 280)
 		var height = parseFloat($e.attr("height") || 155)
 		var klass = $e.attr("class")
+		var name = $e.attr("name")
 		var text = $e.text()
 		var gg = SvgHelper.group()		
 
 		// TODO creation of classed widgets is too complicated, simplify it...
         var ww = Widgetizer.widgetByClass(
         	widgetname, 
+        	name,
         	BigButtonWidget, 
         	gg, 
         	{width:width, height:height}
