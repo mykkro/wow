@@ -10,6 +10,9 @@ module.exports = function($, Base) {
 			this.currentIndex = currentIndex || 0
 			this.update()
 		},
+		copy: function() {
+			return new SelectChain(this.widgets, this.currentIndex)
+		},
 		append: function(el) {
 			this.widgets.push(el)
 			return this
@@ -19,8 +22,18 @@ module.exports = function($, Base) {
 			this.currentIndex = 0
 			this.widgets = []
 		},
+		/* select either by index or by element */
 		select: function(index) {
-			this.currentIndex = index
+			if(typeof index == "number") {
+				this.currentIndex = index
+			} else {
+				var i = this.widgets.length - 1
+				while(i>=0) {
+					if(this.widgets[i]==index) break
+					i--
+				}
+				this.currentIndex = i
+			}
 			this.update()
 			return this
 		},

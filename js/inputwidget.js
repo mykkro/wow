@@ -27,6 +27,12 @@ module.exports = function($) {
 		// to be overridden in subclasses... 
 		setValue: function(value) {
 			console.log("Updating value: "+value)
+		},
+		focus: function() {
+			console.log("Focused!")
+		},
+		blur: function() {
+			console.log("Unfocused!")
 		}
 	})
 

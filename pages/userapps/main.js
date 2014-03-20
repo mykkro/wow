@@ -21,14 +21,11 @@ module.exports = function(Wow) {
 				if(targetName) this.goToImportPage(targetName)
 			}
 		},
-		init: function(data, next) {
+		createControls: function(data) {
 			var self = this
-			this.base(data, function() {
-				var homeButton = self.getWidget("homeButton")
-				self.selectChain.append(homeButton.element)
-				self.selectChain.update()
-				if(next) next(self)
-			})
+			this.base(data)
+			var homeButton = self.getWidget("homeButton")
+			self.selectChain.append(homeButton.element)
 		},
 		// TODO callback after all items are widgetized
 		searchIt: function(page, next) {

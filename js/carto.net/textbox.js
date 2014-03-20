@@ -258,6 +258,10 @@ textbox.prototype.removeTextbox = function() {
 	this.parentGroup.removeChild(this.textboxParent);
 }
 
+textbox.prototype.onFocused = function() {
+	console.log('I am focused!')
+}
+
 //event handler functions
 textbox.prototype.handleEvent = function(evt) {
 	this.enterPressed = false 
@@ -270,33 +274,8 @@ textbox.prototype.handleEvent = function(evt) {
 		else {
 			//this is for preparing the textbox with first mousedown and to reposition cursor with each subsequent mousedowns
 			if (evt.currentTarget.nodeName == "g" || evt.currentTarget.nodeName == "svg:g") {
-				this.calcCursorPosFromMouseEvt(evt);
-				// set event listeners, this is only done on first mousedown in the textbox
-				if (this.textboxStatus == 0) {
-					window.addEventListener("keydown",this,false);
-					window.addEventListener("keypress",this,false);
-					svgsvg.addEventListener("mousedown",this,false);
-					svgsvg.addEventListener("mouseup",this,false);
-					svgsvg.addEventListener("mousemove",this,false);
-					// set textbox status
-					this.textboxStatus = 1;
-					// set cursor visibility
-					this.textboxCursor.setAttributeNS(null,"visibility","visible");
-				}
-				else {
-					evt.stopPropagation();
-				}
-				this.setCursorPos();
-				//start text selection
-				this.startOrigSelection = this.cursorPosition + 1;
-				this.startSelection = this.cursorPosition + 1;
-				this.endSelection = this.cursorPosition + 2;
-				//remove previous selections
-				this.selectionRect.setAttributeNS(null,"display","none");
-				this.selectionRectVisible = false;
-				//set status of shiftDown and mouseDown
-				this.shiftDown = true;
-				this.mouseDown = true;
+				this.focus(evt)
+				this.onFocused()
 			}
 			//this mouseup should be received from background rectangle (received via document element)
 			else {
@@ -751,6 +730,37 @@ textbox.prototype.setValue = function(value,fireFunction) {
 		this.textboxStatus = 5; //5 means is set by setValue
 		this.fireFunction();
 	}
+}
+
+textbox.prototype.focus = function(evt) {
+	if(evt) this.calcCursorPosFromMouseEvt(evt);
+	else this.cursorPosition = -1
+	// set event listeners, this is only done on first mousedown in the textbox
+	if (this.textboxStatus == 0) {
+		window.addEventListener("keydown",this,false);
+		window.addEventListener("keypress",this,false);
+		svgsvg.addEventListener("mousedown",this,false);
+		svgsvg.addEventListener("mouseup",this,false);
+		svgsvg.addEventListener("mousemove",this,false);
+		// set textbox status
+		this.textboxStatus = 1;
+		// set cursor visibility
+		this.textboxCursor.setAttributeNS(null,"visibility","visible");
+	}
+	else {
+		if(evt) evt.stopPropagation();
+	}
+	this.setCursorPos();
+	//start text selection
+	this.startOrigSelection = this.cursorPosition + 1;
+	this.startSelection = this.cursorPosition + 1;
+	this.endSelection = this.cursorPosition + 2;
+	//remove previous selections
+	this.selectionRect.setAttributeNS(null,"display","none");
+	this.selectionRectVisible = false;
+	//set status of shiftDown and mouseDown
+	this.shiftDown = true;
+	this.mouseDown = true;
 }
 
 textbox.prototype.release = function() {

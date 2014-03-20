@@ -5,22 +5,19 @@ module.exports = function(Wow) {
 	var VideosPage = require("../../js/videospage")(Wow)
 
 	var UserVideosPage = VideosPage.extend({
-		init: function(data, next) {
+		createControls: function(data) {
 			var self = this
-			this.base(data, function() {
-				var favVidButton = self.getWidget("favVidButton")
-				var searchVidButton = self.getWidget("searchVidButton")
-				favVidButton.click(function() {
-					self.goTo("/pages/favvideos")
-				})
-				searchVidButton.click(function() {
-					self.goTo("/pages/searchvideos")
-				})
-				self.selectChain.append(favVidButton.element)
-				self.selectChain.append(searchVidButton.element)
-				self.selectChain.update()
-				if(next) next(self)
+			this.base(data)
+			var favVidButton = self.getWidget("favVidButton")
+			var searchVidButton = self.getWidget("searchVidButton")
+			favVidButton.click(function() {
+				self.goTo("/pages/favvideos")
 			})
+			searchVidButton.click(function() {
+				self.goTo("/pages/searchvideos")
+			})
+			self.selectChain.append(favVidButton.element)
+			self.selectChain.append(searchVidButton.element)
 		},
 		searchIt: function(page, next) {
 			var self = this

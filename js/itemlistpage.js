@@ -15,12 +15,21 @@ module.exports = function(Wow) {
 			"#330099", "#f8c300", "#dd1379", "#dd1379", "#330099", "#f8c300"
 		],
 		init: function(data, next) {
+			var self = this
+			self.createControls(data)
+			self.selectChain.update()
+			self.defaultChain = self.selectChain
+			self.updateView(data)
+
+			/* continue when finished */
+			if(next) next(this)
+		},
+		createControls: function(data) {
 			var document = window.document
 			var svgsvg = document.getElementById("svg")
 
 			var self = this
-			self.selectChain = new SelectChain()					
-			
+			self.selectChain = new SelectChain()
 			self.resultGrp = SvgHelper.group({"class":"youtube-results"})
 			self.leftBtn = this.getWidget("leftButton")
 			self.rightBtn = this.getWidget("rightButton")	
@@ -37,11 +46,6 @@ module.exports = function(Wow) {
 				self.goToHomePage()
 			})
 			svgsvg.appendChild(self.resultGrp)
-
-			self.updateView(data)
-
-			/* continue when finished */
-			if(next) next(this)
 		},
 		updateView: function(data) {
 			var self = this

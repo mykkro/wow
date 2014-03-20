@@ -150,6 +150,7 @@ html {
 .glow2 {
 	filter: url(#glow2);
 }
+
 .dusk {
 	filter :url(#dusk);
 }
@@ -163,10 +164,20 @@ html {
 
 /* current video selection */
 .youtube-results .wow-widget.plain:hover {
-	filter: url(#glow);
+	.glow;
 }
 .wow-widget.iconbutton:hover,
 .wow-widget.bigbutton:hover
- {
-	filter: url(#glow);
+{
+	.glow;
 }
+
+.theme.darkness {
+	.glow {
+		filter: url(#glow-darkness);
+	}
+	.glow2 {
+		filter: url(#glow2-darkness);
+	}
+}
+
