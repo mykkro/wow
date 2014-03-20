@@ -38,12 +38,13 @@ module.exports = function(Wow) {
 			})
 			svgsvg.appendChild(self.resultGrp)
 
-			self.updateView(page)
+			self.updateView(Widgetizer, data)
 
 			/* continue when finished */
 			if(next) next(this)
 		},
-		updateView: function(data) {
+		updateView: function(Widgetizer, data) {
+			var self = this
 			var page = parseInt(data.query.page || 1)
 			self.searchIt(Widgetizer, page, function(results) {
 				console.log("Displaying results: ", results)
