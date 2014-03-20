@@ -10,26 +10,33 @@ module.exports = function(Wow) {
 		init: function(Widgetizer, data, next) {
 			var self = this
 			// additional controls...
+			var page = parseInt(data.query.page || 1)
+			self.page = page
+			self.query = data.query.query
 			self.textBox = Widgetizer.get("searchTextbox")
 			self.textBox.onEnterPressed = function() {
-				self.searchIt(page)
+				self.searchIt(Widgetizer, page)
 			}
 			Widgetizer.get("searchButton").click(function() {
-				self.searchIt(page)
+				self.searchIt(Widgetizer, page)
 			})
 			this.base(Widgetizer, data, next)
 		},
-		updateView: function(data) {
-			var query = data.query.query
+		updateView: function(Widgetizer, data) {
+			var self = this
+			var query = data.query.query || ""
 			var page = parseInt(data.query.page || 1)
 			if(query) {
 				self.textBox.val(query)				
 				self.searchIt(Widgetizer, page, function(results) {
 					console.log("Displaying results: ", results)
 				})
+			} else {
+				self.displayResults(Widgetizer, page, null)
 			}
 		},
 		getQueryString: function(dpage) {
+			var self = this
 			var parsedUrl = url.parse(window.location.href, true)
 			parsedUrl.query.query = self.textBox.val()
 			var pg = parseInt(parsedUrl.query.page || 1)
@@ -45,24 +52,51 @@ module.exports = function(Wow) {
 		},
 		searchIt: function(Widgetizer, page, next) {
 			var self = this
-			self.updateBrowserQuery(page)
-			self.searchYouTubeVideos({q:query, 'max-results':6, 'start-index':1+(page-1)*6}, function(err, data) {	
-				if(!err) {					
-					data = data.result
+			var query = self.textBox.val()
+			self.updateBrowserQuery(page, query)
+			self.searchYouTubeVideos(Widgetizer, {q:query, 'max-results':6, 'start-index':1+(page-1)*6}, function(err, data) {	
+				if(!err) {			
 					self.displayResults(Widgetizer, page, data, next)
 				}
 			}) 
 		},
-		searchYouTubeVideos: function(data, next) {
+		searchYouTubeVideos: function(Widgetizer, data, next) {
 			console.log("Searching for YouTube videos")
 			console.log(data)
 			if(data.q) {
-				server("youTubeSearch", data, function(err, res) {
+				Widgetizer.rpc("youTubeSearch", data, function(err, res) {
 					if(err) next(err);
 					else next(null, res.result)
 				})
 			} else {
 				next("No search criteria given")
+			}
+		},
+		handleEvent: function(evt) {
+			if(evt.device == "virtual") {
+				// TODO controls will work only if the text box is not selected
+				switch(evt.control) {
+					case "left":
+						//if(self.leftBtn.isEnabled())
+						//	this.goToPreviousPage()
+						break;
+					case "right":
+						//if(self.rightBtn.isEnabled())
+						//	this.goToNextPage()
+						break;
+					case "home":
+						//this.goToHomePage()
+						break;
+					case "up":
+						this.selectPrevious()
+						break;
+					case "down":
+						this.selectNext()
+						break;
+					case "select":
+						//this.activateSelected()
+						break;
+				}
 			}
 		}
 
