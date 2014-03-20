@@ -50,21 +50,25 @@ module.exports = function(window, $, SVG) {
 	newWidgetId: function(prefix) {
 		return (prefix || "wow-widget-")+(this.widgetId++)
 	},
-	prepareWidgetData: function(type, element, dim) {
+	prepareWidgetData: function(type, name, element, dim) {
 		var id = this.newWidgetId()
-		var group = SvgHelper.attrs(SvgHelper.group(), {
+		var groupAttrs = {
 		  "data-wow": type,
 		  "id": id,
 		  "class": "wow-widget "+type
-		})
-		if(element.length) {
-		  // it is an array of elements!
-		  _.each(element, function(e) {
-			group.appendChild(e)
-		  })
-		} else {
-		  // it is only one element
-		  group.appendChild(element)
+		}
+		if(name) groupAttrs.name = name
+		var group = SvgHelper.attrs(SvgHelper.group(), groupAttrs)
+		if(element) {
+			if(element.length) {
+			  // it is an array of elements!
+			  _.each(element, function(e) {
+				group.appendChild(e)
+			  })
+			} else {
+			  // it is only one element
+			  group.appendChild(element)
+			}
 		}
 
 		// in order to get bounding box, the node must be inserted in the DOM
@@ -94,22 +98,23 @@ module.exports = function(window, $, SVG) {
 		  element: group,
 		  type: type,
 		  id: id,
+		  name: name,
 		  bounds: {x:bbox.x, y:bbox.y, width:bbox.width,height:bbox.height},
 		  dim: dim
 		}
 	  },
 	  // TODO ability to create widgets of other classes than Widget
-	  widget: function(type, element, dim) {
-	  	return this.widgetByClass(type, Widget, element, dim)
+	  widget: function(type, name, element, dim) {
+	  	return this.widgetByClass(type, name, Widget, element, dim)
 	  },
-	  widgetByClass: function(type, klass, element, dim) {
-	  	var data = this.prepareWidgetData(type, element, dim)
+	  widgetByClass: function(type, name, klass, element, dim) {
+	  	var data = this.prepareWidgetData(type, name, element, dim)
 	  	var w = new klass(data)
 	  	this.widgets[data.id] = w
 	  	return w
 	  },
-	  inputWidget: function(type, element, value, dim) {
-	  	var data = this.prepareWidgetData(type, element, dim)
+	  inputWidget: function(type, name, element, value, dim) {
+	  	var data = this.prepareWidgetData(type, name, element, dim)
 	  	data.value = value
 	  	var w = new InputWidget(data)
 	  	this.widgets[data.id] = w

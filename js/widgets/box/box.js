@@ -10,11 +10,12 @@ module.exports = function(Widgetizer) {
 		
 	var factory = function(element, done) {
         var $e = $(element)
+		var name = $e.attr("name")
 		var width = $e.attr("width") || 100
 		var height = $e.attr("height") || 100
 		var fill = $e.attr("fill") || "gray"
 		var newElement = SvgHelper.box({width:width,height:height,fill:fill})
-        var ww = Widgetizer.widget(widgetname, newElement)
+        var ww = Widgetizer.widget(widgetname, name, newElement)
 		$e.moveChildren(ww.element)
 		if(done) done(ww)
 		return ww

@@ -12,6 +12,7 @@ module.exports = function(Widgetizer) {
       // children are already widgetized...
       var uniformRows = ($(element).attr("uniformRows") == "true")
       var uniformColumns = ($(element).attr("uniformColumns") == "true")
+	  var name = $(element).attr("name")
       var rows = $(element).attr("rows") || 3
       var cols = $(element).attr("cols") || 3
       var halign = $(element).attr("halign") || "center"
@@ -87,7 +88,7 @@ module.exports = function(Widgetizer) {
 			return
 		}
       })
-      var ww = Widgetizer.widget(widgetname, gg, {width: cols*maxwidth, height: rows*maxheight})
+      var ww = Widgetizer.widget(widgetname, name, gg, {width: cols*maxwidth, height: rows*maxheight})
 	  if(done) done(ww)
 	  return ww
 	}

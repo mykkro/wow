@@ -34,7 +34,8 @@ module.exports = function(Widgetizer) {
 		} 
 		var newElement = SvgHelper.svg(dim, vbox, par)
 		if(vboxAttr) newElement.setAttribute("viewBox", vboxAttr)
-        var ww = Widgetizer.widget(widgetname, newElement, dim)
+		var name = $e.attr("name")
+        var ww = Widgetizer.widget(widgetname, name, newElement, dim)
 		$e.moveChildren(newElement)
 		if(done) done(ww)		
 		return ww

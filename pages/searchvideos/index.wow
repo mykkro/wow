@@ -1,15 +1,11 @@
 <wow:image src="/assets/backgrounds/waves.svg" width="960" height="600"></wow:image>
 <wow:image src="/assets/previews/YouTubePage.svg" width="960" height="600" embed="true"></wow:image>
-<a xlink:href="/pages/favvideos">
 <g transform="translate(840, 20)">
     <wow:iconbutton id="favVidButton" name="favVidButton" src="favoritevideos"></wow:iconbutton>
 </g>
-</a>
-<a xlink:href="/pages/uservideos">
 <g transform="translate(840, 144)">
     <wow:iconbutton id="userVidButton" name="userVidButton" src="uservideos"></wow:iconbutton>
 </g>
-</a>
 <g transform="translate(20, 20)">
     <wow:iconbutton name="homeButton" src="home"></wow:iconbutton>
 </g>

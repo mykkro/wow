@@ -86,7 +86,8 @@ module.exports = function(Widgetizer) {
         gg.appendChild(grp)
       })
       SvgHelper.transform(gg, "translate("+(-xmin)+","+(-ymin)+")")
-      var ww = Widgetizer.widget(widgetname, gg, {width: xmax-xmin, height: ymax-ymin})
+      var name = $(element).attr("name")
+      var ww = Widgetizer.widget(widgetname, name, gg, {width: xmax-xmin, height: ymax-ymin})
 	  if(done) done(ww)
 	  return ww
     }

@@ -25,22 +25,23 @@ var BasePage = Base.extend({
 		parsedUrl.search = null
 		return url.format(parsedUrl)
 	},
+	goTo: function(url) {
+		window.location.href = url
+	},
 	goToPreviousPage: function() {
-		var href = this.getQueryString(-1)
-		window.location.href = href
+		this.goTo(this.getQueryString(-1))
 	},
 	goToNextPage: function() {
-		var href = this.getQueryString(1)
-		window.location.href = href
+		this.goTo(this.getQueryString(1))
 	},
 	goToImportPage: function(name) {
-		window.location.href = "/pages/app?importname="+name
+		this.goTo("/pages/app?importname="+name)
 	},
 	goToHomePage: function() {
-		window.location = "/pages/home"
+		this.goTo("/pages/home")
 	},
 	goToVideoPage: function(ytId) {
-		window.location.href = "/pages/video?id="+ytId
+		this.goTo("/pages/video?id="+ytId)
 	},
 	getWidget: function(name) {
 		if(typeof name == "string") {

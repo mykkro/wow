@@ -13,8 +13,22 @@ module.exports = function(Wow) {
 	var UserAppsPage = ItemListPage.extend({
 		activateSelected: function() {
 			var target = $(this.selectChain.current())
-			var targetName = target.find(".youtube-result").data("name")
-			if(targetName) this.goToImportPage(targetName)
+			var widget = this.getWidget(target)
+			if(widget.type == "iconbutton") {
+				target.click()
+			} else {
+				var targetName = target.find(".youtube-result").data("name")
+				if(targetName) this.goToImportPage(targetName)
+			}
+		},
+		init: function(data, next) {
+			var self = this
+			this.base(data, function() {
+				var homeButton = self.getWidget("homeButton")
+				self.selectChain.append(homeButton.element)
+				self.selectChain.update()
+				if(next) next(self)
+			})
 		},
 		// TODO callback after all items are widgetized
 		searchIt: function(page, next) {
@@ -29,7 +43,7 @@ module.exports = function(Wow) {
 						itemsPerPage: 6,
 						items: data.result
 					} 
-					self.selectChain.clear()
+					//self.selectChain.clear()
 					self.showSearchResults(page, data)
 					/* create plain widgets from results... */
 					var promises = $(".youtube-result").map(function() {
