@@ -145,7 +145,7 @@ module.exports = function(window, $, SVG) {
 	  	var id = $(node).find("g[name="+name+"]").attr("id")
 	  	return this.widgets[id]
 	  },
-	  findWidgetById: function(node, name) {
+	  findWidgetById: function(node, id) {
 	  	return this.widgets[id]
 	  },
 	  get: function(node, name) {

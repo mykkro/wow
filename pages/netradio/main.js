@@ -50,31 +50,35 @@ module.exports = function(Wow) {
 		},
 		init: function(data, next) {
 			var self = this
+			var homeButton = this.getWidget("homeButton")
+			var quitButton = this.getWidget("quitButton")
+			var prevButton = this.getWidget("prevButton")
+			var nextButton = this.getWidget("nextButton")
+
 			/* widgetization complete! */
-			this.getWidget("quitButton").click(function() {
+			quitButton.click(function() {
 				// move back to previous page...
 				window.history.go(-1)
 			})
-			this.getWidget("homeButton").click(function() {
+			homeButton.click(function() {
 				// move back to previous page...
 				window.location.href = "/pages/home"
 			})
-			this.getWidget("prevButton").click(function() {
+			prevButton.click(function() {
 				self.playPreviousTrack()
 			})
-			this.getWidget("nextButton").click(function() {
+			nextButton.click(function() {
 				self.playNextTrack()
 			})
-			
-			
+						
 			self.playlist = self.createPlaylist().appendTo($("body"))
 			self.playlist = $(self.playlist).playable()
 						
 			this.startPlaying(this.radios[this.currentTrack])
 
 			this.selectChain = new SelectChain([
-				self.getWidget("homeButton").element,
-				self.getWidget("quitButton").element
+				homeButton.element,
+				quitButton.element
 			])
 
 			/* continue when finished */
