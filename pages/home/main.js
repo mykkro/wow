@@ -161,19 +161,17 @@ module.exports = function(Wow) {
 			var target = $(this.selectChain.current())
 			$(target).click()
 		},
-		handleEvent: function(evt) {
-			if(evt.device == "virtual") {
-				switch(evt.control) {
-					case "up":
-						this.selectPrevious()
-						break;
-					case "down":
-						this.selectNext()
-						break;
-					case "select":
-						this.activateSelected()
-						break;
-				}
+		onVirtualControl: function(evt) {
+			switch(evt.control) {
+				case "up":
+					this.selectPrevious()
+					break;
+				case "down":
+					this.selectNext()
+					break;
+				case "select":
+					this.activateSelected()
+					break;
 			}
 		}
 	})

@@ -12,10 +12,6 @@ var BasePage = Base.extend({
 		// call this after you finish
 		if(next) next(this)
 	},
-	handleEvent: function(evt) {
-		// incoming events are handled here...
-		// console.log("BasePage event:", evt)
-	},
 	updateBrowserQuery: function(page, query) {
 		var newQuery = "?page="+page
 		window.History.replaceState({}, "", newQuery)
@@ -48,7 +44,23 @@ var BasePage = Base.extend({
 	},
 	getWidget: function(name) {
 		return this.wtr.get(name)
+	},
+	handleEvent: function(evt) {
+		switch(evt.device) {
+			case "virtual": 
+				this.onVirtualControl(evt)
+				break
+			default:
+				this.onEvent(evt)
+		}
+	},
+	onVirtualControl: function(evt) {
+		// handle virtual controller...
+	},
+	onEvent: function(evt) {
+		// handler for other devices...
 	}
+
 
 })
 

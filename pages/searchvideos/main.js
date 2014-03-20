@@ -72,31 +72,29 @@ module.exports = function(Wow) {
 				next("No search criteria given")
 			}
 		},
-		handleEvent: function(evt) {
-			if(evt.device == "virtual") {
-				// TODO controls will work only if the text box is not selected
-				switch(evt.control) {
-					case "left":
-						//if(self.leftBtn.isEnabled())
-						//	this.goToPreviousPage()
-						break;
-					case "right":
-						//if(self.rightBtn.isEnabled())
-						//	this.goToNextPage()
-						break;
-					case "home":
-						//this.goToHomePage()
-						break;
-					case "up":
-						this.selectPrevious()
-						break;
-					case "down":
-						this.selectNext()
-						break;
-					case "select":
-						//this.activateSelected()
-						break;
-				}
+		onVirtualControl: function(evt) {
+			// TODO controls will work only if the text box is not selected
+			switch(evt.control) {
+				case "left":
+					//if(self.leftBtn.isEnabled())
+					//	this.goToPreviousPage()
+					break;
+				case "right":
+					//if(self.rightBtn.isEnabled())
+					//	this.goToNextPage()
+					break;
+				case "home":
+					//this.goToHomePage()
+					break;
+				case "up":
+					this.selectPrevious()
+					break;
+				case "down":
+					this.selectNext()
+					break;
+				case "select":
+					//this.activateSelected()
+					break;
 			}
 		}
 
