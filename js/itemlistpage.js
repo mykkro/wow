@@ -102,30 +102,29 @@ module.exports = function(Wow) {
 			self.leftBtn.setEnabled(leftEnabled)
 			self.rightBtn.setEnabled(rightEnabled)
 		},
-		handleEvent: function(evt) {
-			if(evt.device == "virtual") {
-				switch(evt.control) {
-					case "left":
-						if(self.leftBtn.isEnabled())
-							this.goToPreviousPage()
-						break;
-					case "right":
-						if(self.rightBtn.isEnabled())
-							this.goToNextPage()
-						break;
-					case "home":
-						this.goToHomePage()
-						break;
-					case "up":
-						this.selectPrevious()
-						break;
-					case "down":
-						this.selectNext()
-						break;
-					case "select":
-						this.activateSelected()
-						break;
-				}
+		onVirtualControl: function(evt) {
+			var self = this
+			switch(evt.control) {
+				case "left":
+					if(self.leftBtn.isEnabled())
+						this.goToPreviousPage()
+					break;
+				case "right":
+					if(self.rightBtn.isEnabled())
+						this.goToNextPage()
+					break;
+				case "home":
+					this.goToHomePage()
+					break;
+				case "up":
+					this.selectPrevious()
+					break;
+				case "down":
+					this.selectNext()
+					break;
+				case "select":
+					this.activateSelected()
+					break;
 			}
 		}
 	})
