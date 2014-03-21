@@ -32,21 +32,19 @@ module.exports = function(Wow) {
 			/* continue when finished */
 			if(next) next(this)
 		},
-		handleEvent: function(evt) {
-			if(evt.device == "virtual") {
-				switch(evt.control) {
-					case "up":
-						this.selectChain.selectPrevious()
-						break;
-					case "down":
-						this.selectChain.selectNext()
-						break;
-					case "select":
-						var el = this.selectChain.current()
-						$(el).find(".overlay").click()
-						this.selectChain.update()
-						break;
-				}
+		onVirtualControl: function(evt) {
+			switch(evt.control) {
+				case "up":
+					this.selectChain.selectPrevious()
+					break;
+				case "down":
+					this.selectChain.selectNext()
+					break;
+				case "select":
+					var el = this.selectChain.current()
+					$(el).find(".overlay").click()
+					this.selectChain.update()
+					break;
 			}
 		}
 	})

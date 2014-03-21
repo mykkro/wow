@@ -15,10 +15,13 @@ WowServer.start(function(srv) {
 
 	var baseURL = "http://localhost:" + WowServer.port + "/";
 
-	var runtime = 
-		(process.platform === 'win32') 
+	var runtime = argv.runtime 
+		? argv.runtime 
+		: ((process.platform === 'win32') 
 			? "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
-			: "chromium-browser" // linux
+			: "chromium-browser") // linux
+		
+	console.log("Using runtime: "+runtime)
 
 	var args = [
 		'--force-app-mode',
