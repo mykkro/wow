@@ -1,16 +1,14 @@
 var Base = require("basejs")
 var url = require("url")
 
-var BasePage = Base.extend({
-	constructor: function(Wow) {
-		this.wow = Wow
-		this.wtr = Wow.Widgetizer
-	},
-	init: function(data, next) {
-		// initializations happens here...
-		// ...
-		// call this after you finish
-		if(next) next(this)
+var BasicLayer = require("./basiclayer")
+var Overlay = require("./overlay")
+
+var BasePage = BasicLayer.extend({
+	constructor: function(Wow, options) {
+		this.base(Wow, options)
+		this.overlays = []
+		this.overlayGroup = document.getElementById("overlaygroup")
 	},
 	updateBrowserQuery: function(page, query) {
 		var newQuery = "?page="+page
@@ -43,34 +41,36 @@ var BasePage = Base.extend({
 	goToVideoPage: function(ytId) {
 		this.goTo("/pages/video?id="+ytId)
 	},
-	getWidget: function(name) {
-		if(typeof name == "string") {
-			return this.wtr.get(name)
-		} else {
-			var el = $(name)
-			if(el.data("wow") && el.attr("id")) {
-				return this.wtr.get("#"+el.attr("id"))
-			} else {
-				return null // DOM element is not a widget
+	handleEvent: function(evt) {
+		console.log("Handling event: ", evt)
+		for(var i=this.overlays.length-1; i>=0; i--) {
+			console.log("Checking overlay: ", i)
+			if(!this.overlays[i].transparent && this.overlays[i].visible) {
+				this.overlays[i].handleEvent(evt)
+				return
 			}
 		}
+		this.base(evt)
+	},	
+	// overlays should not be reused...
+	addOverlay: function(o) {
+		this.overlays.push(o)
+		$(o.paperElement()).appendTo($(this.overlayGroup))
+		o.show()
 	},
-	handleEvent: function(evt) {
-		switch(evt.device) {
-			case "virtual": 
-				this.onVirtualControl(evt)
-				break
-			default:
-				this.onEvent(evt)
+	// overlays should not be reused...
+	removeOverlay: function(o) {
+		o.hide()
+		$(o.paperElement()).detach()
+		var idx = this.overlays.indexOf(o)
+		if(idx != -1) {
+			this.overlays.splice(idx, 1)
 		}
 	},
-	onVirtualControl: function(evt) {
-		// handle virtual controller...
-	},
-	onEvent: function(evt) {
-		// handler for other devices...
+	removeOverlays: function() {
+		$(this.overlayGroup).empty()
+		this.overlays = []
 	}
-
 
 })
 

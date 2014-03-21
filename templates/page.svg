@@ -15,7 +15,10 @@
   <defs>
     {{{defs}}}
   </defs>
-  {{{content}}}
+  <g id="pagecontent">
+    {{{content}}}
+  </g>
   <g id="tempgroup" style="display:none;"></g>
+  <g id="overlaygroup"></g>
 </svg>
 
