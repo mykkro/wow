@@ -26,7 +26,7 @@ module.exports = function(Wow) {
 		},
 		createControls: function(data) {
 			var document = window.document
-			var svgsvg = document.getElementById("svg")
+			var svgsvg = document.getElementById("pagecontent")
 
 			var self = this
 			self.selectChain = new SelectChain()
