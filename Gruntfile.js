@@ -177,7 +177,7 @@ module.exports = function (grunt) {
           },
           files: [
             {src: ['assets/**', 'css/**', 'fonts/**', 'js/**', 'lib/**', 'locales/**', 'media/**', 'pages/**', 'public/**', 'routes/**', 'templates/**', 'views/**']},
-            {src: ['run.bat', 'run.js', 'server.js', 'package.json', 'main.js']},
+            {src: ['run.bat', 'run7.bat', 'run.js', 'server.js', 'package.json', 'main.js']},
             {src: ['bin/win32/**']},
             {src: ['addons/dist/**']},
             {src: ['node_modules/**', 
