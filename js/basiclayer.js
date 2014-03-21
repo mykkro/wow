@@ -2,11 +2,13 @@ var Base = require("basejs")
 
 var BasicLayer = Base.extend({
 	constructor: function(Wow, options) {
-		this.options = options
+		this.options = options || {}
 		this.wow = Wow
 		this.wtr = Wow.Widgetizer
 		this.SVG = this.wtr.SVGDoc
-		this.paper = this.SVG.group().attr("class","wow-overlay") 
+		var klass = "wow-overlay"
+		if(this.options.cssClass) klass += " " + this.options.cssClass
+		this.paper = this.SVG.group().attr("class",klass) 
 	},
 	paperElement: function() {
 		return this.paper.node;
@@ -28,15 +30,38 @@ var BasicLayer = Base.extend({
 			case "virtual": 
 				this.onVirtualControl(evt)
 				break
+			case "keyboard": 
+				this.onKeyboard(evt)
+				break
+			case "gamepad": 
+				this.onGamepad(evt)
+				break
+			case "mouse": 
+				this.onMouse(evt)
+				break
 			default:
 				this.onEvent(evt)
 		}
 	},
 	onVirtualControl: function(evt) {
 		// handle virtual controller...
+		//console.log(evt)
 	},
 	onEvent: function(evt) {
 		// handler for other devices...
+		//console.log(evt)
+	},
+	onKeyboard: function(evt) {
+		// handler for keyboard
+		//console.log(evt)
+	},
+	onGamepad: function(evt) {
+		// handler for keyboard
+		//console.log(evt)
+	},
+	onMouse: function(evt) {
+		// handler for mouse
+		//console.log(evt)
 	}
 })
 

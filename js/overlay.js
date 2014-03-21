@@ -10,8 +10,6 @@ var Overlay = BasicLayer.extend({
 		} else {
 			this.paper.attr("class", this.paper.attr("class") + " transparent")
 		}
-
-		this.paper.image('/icons/SVG/air.svg')
 		this.hide()
 	},
 	init: function(data, next) {

@@ -2,13 +2,22 @@ var Base = require("basejs")
 var url = require("url")
 
 var BasicLayer = require("./basiclayer")
-var Overlay = require("./overlay")
+var SoftwareKeyboard = require("./softwarekeyboard")
 
 var BasePage = BasicLayer.extend({
 	constructor: function(Wow, options) {
 		this.base(Wow, options)
 		this.overlays = []
 		this.overlayGroup = document.getElementById("overlaygroup")
+
+		/*
+		var sk = new SoftwareKeyboard(Wow)
+		var self = this
+		sk.onClosed = function() {
+			self.removeOverlay(sk)
+		}
+		this.addOverlay(sk)
+		*/
 	},
 	updateBrowserQuery: function(page, query) {
 		var newQuery = "?page="+page
@@ -42,9 +51,7 @@ var BasePage = BasicLayer.extend({
 		this.goTo("/pages/video?id="+ytId)
 	},
 	handleEvent: function(evt) {
-		console.log("Handling event: ", evt)
 		for(var i=this.overlays.length-1; i>=0; i--) {
-			console.log("Checking overlay: ", i)
 			if(!this.overlays[i].transparent && this.overlays[i].visible) {
 				this.overlays[i].handleEvent(evt)
 				return
