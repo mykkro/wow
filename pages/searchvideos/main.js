@@ -12,6 +12,7 @@ module.exports = function(Wow) {
 			var self = this
 			var favVidButton = self.getWidget("favVidButton")
 			var userVidButton = self.getWidget("userVidButton")
+			self.searchButton = self.getWidget("searchButton")
 			self.textBox = self.getWidget("searchTextbox")
 			userVidButton.click(function() {
 				self.goTo("/pages/uservideos")
@@ -19,12 +20,19 @@ module.exports = function(Wow) {
 			favVidButton.click(function() {
 				self.goTo("/pages/favvideos")
 			})
+			self.searchButton.click(function() {
+				self.showSoftwareKeybard(function(txt) {
+					self.textBox.val(txt)
+					self.searchIt(self.page)
+				})
+			})
 			self.textBox.onFocused(function() {
 				// alert("TextBox focused!")
 				self.selectChain.select(self.textBox.element)
 			})
 			self.selectChain.append(favVidButton.element)
 			self.selectChain.append(userVidButton.element)
+			self.selectChain.append(self.searchButton.element)
 			self.selectChain.append(self.textBox.element)
 
 			var page = parseInt(data.query.page || 1)

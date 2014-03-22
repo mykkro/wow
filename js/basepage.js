@@ -9,12 +9,6 @@ var BasePage = BasicLayer.extend({
 		this.base(Wow, options)
 		this.overlays = []
 		this.overlayGroup = document.getElementById("overlaygroup")
-
-		/*
-		this.showSoftwareKeybard(function(txt) {
-			alert("Text entered: "+txt)
-		})
-		*/
 	},
 	showSoftwareKeybard: function(onEntered) {
 		var sk = new SoftwareKeyboard(this.wow)
