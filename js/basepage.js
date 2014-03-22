@@ -11,13 +11,22 @@ var BasePage = BasicLayer.extend({
 		this.overlayGroup = document.getElementById("overlaygroup")
 
 		/*
-		var sk = new SoftwareKeyboard(Wow)
+		this.showSoftwareKeybard(function(txt) {
+			alert("Text entered: "+txt)
+		})
+		*/
+	},
+	showSoftwareKeybard: function(onEntered) {
+		var sk = new SoftwareKeyboard(this.wow)
 		var self = this
 		sk.onClosed = function() {
 			self.removeOverlay(sk)
 		}
+		sk.onTextEntered = function(txt) {
+			self.removeOverlay(sk)
+			if(onEntered) onEntered(txt)
+		}
 		this.addOverlay(sk)
-		*/
 	},
 	updateBrowserQuery: function(page, query) {
 		var newQuery = "?page="+page
