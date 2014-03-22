@@ -65,7 +65,8 @@
     "mongoose-schema-extend": "~0.1.7",
     "mongoose-file": "0.0.2",
     "mkdirp": "~0.3.5",
-    "brfs": "~0.2.1"
+    "brfs": "~0.2.1",
+    "googleapis": "~0.6.1"
   },
   "repository": {
     "type": "git",
