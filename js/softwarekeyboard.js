@@ -11,20 +11,22 @@ var SoftwareKeyboard = Overlay.extend({
 		options.transparent = false
 		this.base(Wow, options)
 
+		this.size = 50
+		this.gap = 5
 		this.selectChain = new SelectChain()
-		this.useLayout("Dark")		
+		this.useLayout("Deutsch")		
 	},
 	useLayout: function(layoutName) {
 		this.layout = SoftwareKeyboard.layouts[layoutName]
 		this.mapping = SoftwareKeyboard.mappings[layoutName]
 		this.keyboard = this.drawKeyboard(this.layout)
-		this.keyboard.move(0, 60)
+		this.textfieldBack = this.paper.rect(500,50).attr({rx:this.gap, ry:this.gap}).move(230, 105).attr("fill", "#eee")
 		this.textfield = this.paper.text("").attr({
 			"class": "softkey-textfield",
 			"text-anchor":"middle",
 			"font-weight": "bold",
 			"font-size": 40
-		}).move(480, 0)
+		}).move(480, 100)
 		this.setText("")
 	},
 	setText: function(text) {
@@ -34,7 +36,7 @@ var SoftwareKeyboard = Overlay.extend({
 	drawKeyboard: function(layout) {
 		var self = this
 		var grp = this.paper.group()
-		var rect = grp.rect(960, 600)
+		var rect = grp.rect().attr("rx", this.gap).attr("ry", this.gap)
 		var keys = []
 		// layout is array of rows (lines)
 		var x = 0
@@ -49,11 +51,13 @@ var SoftwareKeyboard = Overlay.extend({
 		var y2 = 0
 		var w2 = 0
 		var h2 = 0
-		var ndx = 1
+		var ndx = 0
 		var backcolor = "#eeeeee"
 		var maxw = 0
 		var maxh = 0
-		self.keys = []
+		var rr = 0
+		self.keys = {}
+		self.keysArray = []
 		_.each(layout, function(row, i) {
 			x = 0
 			if(!(row instanceof Array)) {
@@ -63,7 +67,8 @@ var SoftwareKeyboard = Overlay.extend({
 					if(typeof(key)=="string") {
 						// create a key...
 						var keyid = "key"+(ndx++)
-						self.keys[keyid] = self.drawKey(grp, keyid, key, {x:x, y:y, w:w, h:h, c:c, t:t, a:a, f:f, x2:x2, y2:y2, w2:w2, h2:h2})
+						self.keys[keyid] = self.drawKey(grp, keyid, key, {x:x, y:y, w:w, h:h, c:c, t:t, a:a, f:f, x2:x2, y2:y2, w2:w2, h2:h2, index:ndx, row:rr})
+						self.keysArray.push(self.keys[keyid])
 						self.selectChain.append(self.keys[keyid].element)
 						x += w
 						w = 1
@@ -91,11 +96,18 @@ var SoftwareKeyboard = Overlay.extend({
 				})
 			}
 			y++
+			rr++
 			maxh = y
 		}) 
 		this.rows = maxh
 		this.columns = maxw
 		rect.attr("fill", backcolor)
+		var wwww = maxw*(this.size+this.gap)+this.gap
+		var hhhh = maxh*(this.size+this.gap)+this.gap
+		rect.attr("width", wwww)
+		rect.attr("height", hhhh)
+		rect.move(-this.gap, -this.gap)
+		grp.move((960-wwww)/2, 170)
 		var self = this
 		$(grp.node).find(".keywrapper").each(function() {
 			var el = $(this)
@@ -108,8 +120,8 @@ var SoftwareKeyboard = Overlay.extend({
 		return grp
 	},
 	drawKey: function(root, keyid, label, opts) {
-		var size = 50
-		var gap = 10
+		var size = this.size
+		var gap = this.gap
 		var grp = root.group().attr("class", "keywrapper")
 		var ww = opts.w*size+(opts.w-1)*gap
 		var hh = opts.h*size+(opts.h-1)*gap
@@ -176,6 +188,32 @@ var SoftwareKeyboard = Overlay.extend({
 	onTextEntered: function(text) {
 		alert(text)
 	},
+	findBelowKey: function(key) {
+		var ndx = key.index
+		var row = key.row
+		var x = key.x
+		var w = key.w
+		do {
+			ndx++
+			if(ndx>=this.keysArray.length) ndx=0
+			var key2 = this.keysArray[ndx]
+			if(key2.row != row && !(key.x+key.w<=key2.x || key2.x+key2.w<=key.x)) break
+		} while(ndx != key.index)
+		return this.keysArray[ndx]
+	},
+	findAboveKey: function(key) {
+		var ndx = key.index
+		var row = key.row
+		var x = key.x
+		var w = key.w
+		do {
+			ndx--
+			if(ndx<0) ndx=this.keysArray.length-1
+			var key2 = this.keysArray[ndx]
+			if(key2.row != row && !(key.x+key.w<=key2.x || key2.x+key2.w<=key.x)) break
+		} while(ndx != key.index)
+		return this.keysArray[ndx]
+	},
 	pressKey: function() {
 		var key = this.getSelectedKey()				
 		var txt = this.text
@@ -204,8 +242,14 @@ var SoftwareKeyboard = Overlay.extend({
 		var self = this
 		switch(evt.control) {
 			case "up":
+				var key = this.getSelectedKey()	
+				var key2 = this.findAboveKey(key)
+				this.selectChain.select(key2.element)
 				break;
 			case "down":
+				var key = this.getSelectedKey()	
+				var key2 = this.findBelowKey(key)
+				this.selectChain.select(key2.element)
 				break;
 			case "home":
 				// works like escape key
@@ -248,13 +292,6 @@ var SoftwareKeyboard = Overlay.extend({
 			[{"w":2.25},"Shift","Z","X","C","V","B","N","M","<\n,",">\n.","?\n/",{"w":2.75},"Shift",{"x":1.5},"↑",{"x":1.5},"1\nEnd","2\n↓","3\nPgDn",{"h":2},"Enter"],
 			[{"w":1.25},"Ctrl",{"w":1.25},"Win",{"w":1.25},"Alt",{"w":6.25},"",{"w":1.25},"Alt",{"w":1.25},"Win",{"w":1.25},"Menu",{"w":1.25},"Ctrl",{"x":0.5},"←","↓","→",{"x":0.5,"w":2},"0\nIns",".\nDel"]
 		],
-
-		"cs": {
-
-		},
-		"cs-qwerty": {
-
-		},
 		"Dark": [
 			{backcolor:"#222222"},
 			[{c:"#7b9b48",t:"#e4dedd",p:"DSA",a:7,f:4},"ESC",{x:1,c:"#483527",f:3},"F1","F2","F3","F4",{x:0.5,c:"#733636"},"F5","F6","F7","F8",{x:0.5,c:"#483527"},"F9","F10","F11","F12",{x:0.5,c:"#733636"},"PRINT",{f:2},"SCROLL LOCK",{f:3},"PAUSE\nBreak"],
@@ -264,7 +301,7 @@ var SoftwareKeyboard = Overlay.extend({
 			[{c:"#733636",f:3,w:2.25},"SHIFT",{c:"#483527",f:8},"Z","X","C","V","B","N","M",{a:5,f:5},"<\n,",">\n.","?\n/",{c:"#733636",a:7,f:3,w:2.75},"SHIFT",{x:1.5,f:6},"&#9652;",{x:1.5,c:"#483527",f:8},"1\nEnd","2\nâ†“","3\nPgDn",{c:"#733636",f:3,h:2},"ENTER"],
 			[{w:1.25},"CTRL",{w:1.25},"WIN",{w:1.25},"ALT",{c:"#483527",p:"DSA SPACE",w:6.25},"",{c:"#733636",p:"DSA",w:1.25},"ALT",{w:1.25},"WIN",{w:1.25},"MENU",{w:1.25},"CTRL",{x:0.5,f:6},"&#9666;","&#9662;","&#9656;",{x:0.5,c:"#483527",f:8,w:2},"0\nIns",".\nDel"]],
 		"Deutsch": [
-			[{a:5,f:8},"\n\n\n\n\n\n1","\n\n\n\n\n\n2","\n\n\n\n\n\n3","\n\n\n\n\n\n4","\n\n\n\n\n\n5","\n\n\n\n\n\n6","\n\n\n\n\n\n7","\n\n\n\n\n\n9","\n\n\n\n\n\n0","\n\n\n\n\n\nß",{f:9,w:3},"←\n←\n\n\n\n\n←"],
+			[{a:5,f:8},"\n\n\n\n\n\n1","\n\n\n\n\n\n2","\n\n\n\n\n\n3","\n\n\n\n\n\n4","\n\n\n\n\n\n5","\n\n\n\n\n\n6","\n\n\n\n\n\n7","\n\n\n\n\n\n8", "\n\n\n\n\n\n9","\n\n\n\n\n\n0","\n\n\n\n\n\nß",{f:9,w:2},"←\n←\n\n\n\n\n←"],
 			[{x:0.5,f:8},"\n\n\n\n\n\nQ","\n\n\n\n\n\nW","\n\n\n\n\n\nE","\n\n\n\n\n\nR","\n\n\n\n\n\nT","\n\n\n\n\n\nZ","\n\n\n\n\n\nU","\n\n\n\n\n\nI","\n\n\n\n\n\nO","\n\n\n\n\n\nP","\n\n\n\n\n\nÜ",{x:0.25,f:9,w:1.25,h:2,w2:1.5,h2:1,x2:-0.25},"\n\n\n\n\n\n↵"],
 			[{x:0.75,f:8},"\n\n\n\n\n\nA","\n\n\n\n\n\nS","\n\n\n\n\n\nD","\n\n\n\n\n\nF","\n\n\n\n\n\nG","\n\n\n\n\n\nH","\n\n\n\n\n\nJ","\n\n\n\n\n\nK","\n\n\n\n\n\nL","\n\n\n\n\n\nÖ","\n\n\n\n\n\nÄ"],
 			[{x:1.25},"\n\n\n\n\n\nY","\n\n\n\n\n\nX","\n\n\n\n\n\nC","\n\n\n\n\n\nV","\n\n\n\n\n\nB","\n\n\n\n\n\nN","\n\n\n\n\n\nM",{x:0.25,a:4,f:9,w:0.75},"\n,",{w:0.75},"\n.",{a:5,f:8},"←","→",{f:6},"\n\n\n\n\n\nEntf"],
@@ -281,6 +318,10 @@ var SoftwareKeyboard = Overlay.extend({
 			"BACK SPACE": "backspace",
 			"RETURN": "enter",
 			"": "space"
+		},
+		"Numeric": {
+			"Num Lock": "numlock",
+			"Enter": "enter"
 		}
 	}	
 })
