@@ -11,7 +11,7 @@ var SoftwareKeyboard = Overlay.extend({
 		options.transparent = false
 		this.base(Wow, options)
 
-		this.size = 50
+		this.size = 60
 		this.gap = 5
 		this.selectChain = new SelectChain()
 		this.useLayout("Deutsch")		
@@ -309,6 +309,7 @@ var SoftwareKeyboard = Overlay.extend({
 	},
 	mappings: {
 		"Deutsch": {
+			"\n\n\n\n\n\nEntf": "escape",
 			"←\n←\n\n\n\n\n←" : "backspace",
 			"\n\n\n\n\n\n↵": "enter",
 			"": "space"
