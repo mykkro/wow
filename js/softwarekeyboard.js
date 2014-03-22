@@ -12,16 +12,25 @@ var SoftwareKeyboard = Overlay.extend({
 		this.base(Wow, options)
 
 		this.selectChain = new SelectChain()
-		this.useLayout("Deutsch")		
+		this.useLayout("Dark")		
 	},
 	useLayout: function(layoutName) {
-		var layout = SoftwareKeyboard.layouts[layoutName]
-		if(!layout) {
-			throw "Undefined keyboard layout: "+layoutName
-		} else {
-			this.drawKeyboard(layout)
-		}
+		this.layout = SoftwareKeyboard.layouts[layoutName]
+		this.mapping = SoftwareKeyboard.mappings[layoutName]
+		this.keyboard = this.drawKeyboard(this.layout)
+		this.keyboard.move(0, 60)
+		this.textfield = this.paper.text("").attr({
+			"class": "softkey-textfield",
+			"text-anchor":"middle",
+			"font-weight": "bold",
+			"font-size": 40
+		}).move(480, 0)
+		this.setText("")
 	},
+	setText: function(text) {
+		this.text = text
+		$(this.textfield.node).find("tspan").text(text)
+	},	
 	drawKeyboard: function(layout) {
 		var self = this
 		var grp = this.paper.group()
@@ -42,6 +51,8 @@ var SoftwareKeyboard = Overlay.extend({
 		var h2 = 0
 		var ndx = 1
 		var backcolor = "#eeeeee"
+		var maxw = 0
+		var maxh = 0
 		self.keys = []
 		_.each(layout, function(row, i) {
 			x = 0
@@ -76,19 +87,30 @@ var SoftwareKeyboard = Overlay.extend({
 						if(key.h2) h2 = key.h2
 						if(key.w2) w2 = key.w2
 					}
-
+					maxw = Math.max(maxw, x)
 				})
 			}
 			y++
+			maxh = y
 		}) 
+		this.rows = maxh
+		this.columns = maxw
 		rect.attr("fill", backcolor)
+		var self = this
+		$(grp.node).find(".keywrapper").each(function() {
+			var el = $(this)
+			el.click(function() {
+				self.selectChain.select(el.get(0))
+				self.pressKey()
+			})
+		})
 		this.selectChain.update()
 		return grp
 	},
 	drawKey: function(root, keyid, label, opts) {
 		var size = 50
 		var gap = 10
-		var grp = root.group()
+		var grp = root.group().attr("class", "keywrapper")
 		var ww = opts.w*size+(opts.w-1)*gap
 		var hh = opts.h*size+(opts.h-1)*gap
 		grp.rect(ww, hh).attr({
@@ -110,8 +132,11 @@ var SoftwareKeyboard = Overlay.extend({
 			}).move(xx2, yy2)
 		}
 		var lines = label.split("\n")
+		var label1 = ""
+		var label2 = ""
 		lines = _.filter(lines, function(e) { return e.trim()!=""; })
 		if(lines.length>0) {
+			label1 = lines[0].trim()
 			grp.text(lines[0]).attr({
 				"class": "label",
 				"fill": opts.t,
@@ -119,6 +144,7 @@ var SoftwareKeyboard = Overlay.extend({
 				"text-anchor": "middle"
 			}).x((ww-gap)/2).y((hh-gap)*0.2)
 			if(lines.length>=2) {
+				label2 = lines[1].trim()
 				grp.text(lines[1]).attr({
 					"class": "label",
 					"fill": opts.t,
@@ -132,7 +158,9 @@ var SoftwareKeyboard = Overlay.extend({
 		return $.extend(opts, {
 			svg: grp,
 			element: grp.node,
-			label: label
+			label: label,
+			label1: label1,
+			label2: label2
 		})
 	},
 	init: function(data, next) {
@@ -146,29 +174,51 @@ var SoftwareKeyboard = Overlay.extend({
 		// this is called after the keyboard is closed
 	},
 	onTextEntered: function(text) {
-
+		alert(text)
+	},
+	pressKey: function() {
+		var key = this.getSelectedKey()				
+		var txt = this.text
+		var instr = this.mapping[key.label]
+		switch(instr) {
+			case "backspace":
+				txt = txt.slice(0, -1)
+				break
+			case "enter":
+				this.onClosed()
+				this.onTextEntered(this.text)
+				break;
+			case "space":
+				txt += " "
+				break
+			case "escape":
+				this.onClosed()
+				return
+			default:
+				txt += key.label1
+		}
+		// is it number or letter?
+		this.setText(txt)
 	},
 	onVirtualControl: function(evt) {
 		var self = this
 		switch(evt.control) {
-			case "left":
+			case "up":
 				break;
-			case "right":
+			case "down":
 				break;
 			case "home":
 				// works like escape key
 				this.onClosed()
 				break;
-			case "up":
+			case "left":
 				this.selectChain.selectPrevious()
 				break;
-			case "down":
+			case "right":
 				this.selectChain.selectNext()
 				break;
 			case "select":
-				var key = this.getSelectedKey()
-				alert(key.label)
-//				this.activateSelected()
+				this.pressKey()
 				break;
 		}
 	}
@@ -219,6 +269,19 @@ var SoftwareKeyboard = Overlay.extend({
 			[{x:0.75,f:8},"\n\n\n\n\n\nA","\n\n\n\n\n\nS","\n\n\n\n\n\nD","\n\n\n\n\n\nF","\n\n\n\n\n\nG","\n\n\n\n\n\nH","\n\n\n\n\n\nJ","\n\n\n\n\n\nK","\n\n\n\n\n\nL","\n\n\n\n\n\nÖ","\n\n\n\n\n\nÄ"],
 			[{x:1.25},"\n\n\n\n\n\nY","\n\n\n\n\n\nX","\n\n\n\n\n\nC","\n\n\n\n\n\nV","\n\n\n\n\n\nB","\n\n\n\n\n\nN","\n\n\n\n\n\nM",{x:0.25,a:4,f:9,w:0.75},"\n,",{w:0.75},"\n.",{a:5,f:8},"←","→",{f:6},"\n\n\n\n\n\nEntf"],
 			[{x:3.75,a:4,f:3,w:6.25},""]]
+	},
+	mappings: {
+		"Deutsch": {
+			"←\n←\n\n\n\n\n←" : "backspace",
+			"\n\n\n\n\n\n↵": "enter",
+			"": "space"
+		},
+		"Dark": {
+			"ESC": "escape",
+			"BACK SPACE": "backspace",
+			"RETURN": "enter",
+			"": "space"
+		}
 	}	
 })
 
