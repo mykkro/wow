@@ -101,6 +101,11 @@ module.exports = function (grunt) {
             dest: 'public/js/pages/app.js',
             options: { alias: [ './pages/app/main.js:pagescript' ], transform: ['brfs']}
           },
+          pg_game: {
+            src: ['./pages/game/main.js'],
+            dest: 'public/js/pages/game.js',
+            options: { alias: [ './pages/game/main.js:pagescript' ], transform: ['brfs']}
+          },
           pg_enter: {
             src: ['./pages/entertainment/main.js'],
             dest: 'public/js/pages/entertainment.js',

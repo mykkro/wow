@@ -11,9 +11,10 @@ module.exports = function(Widgetizer) {
 	var factory = function(element, done) {
       // children are already widgetized...
       var direction = $(element).attr("direction") || "right"
+      var gap = parseInt($(element).attr("gap") || 0)
       var anchor = $(element).attr("anchor") || "middle"
-	  // we must find topmost widgets...
-	  var nodes = Widgetizer.findWidgetizedNodes(element, [], true)
+	    // we must find topmost widgets...
+	    var nodes = Widgetizer.findWidgetizedNodes(element, [], true)
       subwidgets = _.map(nodes, function(e) {
         return Widgetizer.widgets[e.getAttribute("id")]
       })
@@ -57,21 +58,25 @@ module.exports = function(Widgetizer) {
         if(direction=="right") {
           box.x = x
           x += box.w
+          x += gap
           xmax = x
           ymax = Math.max(ymax, box.h)
         } else if(direction=="left") {
           x -= box.w
+          x -= gap
           box.x = x
           xmin = x
           ymax = Math.max(ymax, box.h)
         } else if(direction=="up") {
           y -= box.h
+          y -= gap
           box.y = y
           ymin = y
           xmax = Math.max(xmax, box.w)
         } else if(direction=="down") {
           box.y = y
           y += box.h
+          y += gap
           ymax = y
           xmax = Math.max(xmax, box.w)
         } 
@@ -88,8 +93,8 @@ module.exports = function(Widgetizer) {
       SvgHelper.transform(gg, "translate("+(-xmin)+","+(-ymin)+")")
       var name = $(element).attr("name")
       var ww = Widgetizer.widget(widgetname, name, gg, {width: xmax-xmin, height: ymax-ymin})
-	  if(done) done(ww)
-	  return ww
+	    if(done) done(ww)
+	    return ww
     }
 
 	/***********************************************************************************************************/

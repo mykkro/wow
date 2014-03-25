@@ -70,6 +70,12 @@ var SvgHelper = function(window) {
 			if(options) this.attrs(txt, options)
 			return txt
 		},
+		tspan: function(text, options) {
+			var txt = document.createElementNS(svgNS, "tspan")
+			txt.textContent = text
+			if(options) this.attrs(txt, options)
+			return txt
+		},
 		foreignObject: function(bbox) {
 			if(!bbox) bbox = {}				
 		    var bbe = document.createElementNS(svgNS, "foreignObject");
