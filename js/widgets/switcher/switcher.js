@@ -14,9 +14,20 @@ module.exports = function(Widgetizer) {
       this.setActive(0)
     },
     setActive: function(index) {
-      this.active = index
       var $e = $(this.element)
-      var opts = $e.children().first().children()
+      var opts = $e.children().first().children()      
+      if(typeof(index) == "string") {
+        // we search for a widget with specified name
+        var found = -1
+        opts.each(function(i) {
+          var name = $(this).children(".wow-widget").attr("name")
+          if(name == index) {
+            found = i
+          }
+        })
+        index = found
+      }
+      this.active = index
       opts.each(function(i) {
         var isActive = (i == index)
         $(this).css("display",isActive ? "inline" : "none")

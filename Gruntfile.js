@@ -138,6 +138,7 @@ module.exports = function (grunt) {
         "js/vendor/jquery.history.min.js",
         "js/vendor/jquery.svg.min.js",
         "js/vendor/jquery.svgdom.min.js",
+        "js/vendor/jquery.zoomooz.min.js",
         "js/vendor/svgjs/svg.min.js",
         "js/vendor/svgjs/svg.easing.min.js",
         "js/vendor/svgjs/svg.filter.js",
@@ -145,10 +146,31 @@ module.exports = function (grunt) {
         "js/vendor/jquery.playable.js",
         "js/vendor/jquery.youtubedrop.js",
         "js/vendor/gamepad.min.js",
+        "js/vendor/mustache.js",
+        "js/vendor/alpaca.min.js",
         "js/vendor/moment-with-langs.min.js"
       ],
-      dest: 'public/js/wow-libs.js',
+      dest: 'public/js/wow-libs.js'
     },
+    game: {
+      src: [
+        "js/game/game.js",
+        "js/game/gamecontroller.js",
+        "js/game/gameui.js",
+        "js/game/minilog.js",
+        "js/game/splash.js",
+        "js/game/util.js",
+        "js/game/watches.js"
+      ],
+      dest: 'public/js/wow-game.js'
+    },
+    css: {
+      src: [
+        "public/css/normalize.css",
+        "js/vendor/alpaca.min.css"
+      ],
+      dest: 'public/css/wow-libs.css'
+    }
   },      
       less: {
         development: {
@@ -156,7 +178,10 @@ module.exports = function (grunt) {
             paths: ["./css"]
           },
           files: {
-            "public/css/bundle.css": "less/style.less"
+            "public/css/bundle.css": [
+              "public/css/wow-libs.css",
+              "less/style.less"
+              ]
           }
         },
         production: {
@@ -165,7 +190,10 @@ module.exports = function (grunt) {
             cleancss: true
           },
           files: {
-            "public/css/bundle.min.css": "less/style.less"
+            "public/css/bundle.min.css": [
+              "public/css/wow-libs.css",
+              "less/style.less"
+              ]
           }
         }
       },
