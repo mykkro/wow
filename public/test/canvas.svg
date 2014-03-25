@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<title>markup for Canvas in SVG</title>
+<foreignObject width="300" height="150">
+  <xhtml:canvas width="300" height="150" >
+    alternate content for browsers that do not support Canvas
+  </xhtml:canvas>
+</foreignObject>
+
+<script type="text/javascript"><![CDATA[
+  window.onload = function () {
+    var xhtmlNS = "http://www.w3.org/1999/xhtml";
+    var context = document.getElementsByTagNameNS(
+                  xhtmlNS,'canvas')[0].getContext('2d');
+    context.fillStyle = 'rgba(0,200,0,0.7)';
+    context.fillRect(0,0,100,75);
+  };
+]]></script>
+
+</svg>

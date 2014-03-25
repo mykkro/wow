@@ -252,6 +252,7 @@ module.exports = function(window, $, SVG) {
 		require("./widgets/iconbutton/iconbutton")(self)
 		require("./widgets/bigbutton/bigbutton")(self)
 		require("./widgets/plain/plain")(self)
+		require("./widgets/button/button")(self)
 	  },
 	  /* some utility methods */
 	  	/* copy non null attributes to an object... */

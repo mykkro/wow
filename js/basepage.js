@@ -38,6 +38,9 @@ var BasePage = BasicLayer.extend({
 	goTo: function(url) {
 		window.location.href = url
 	},
+	goBack: function() {
+		window.history.go(-1)
+	},
 	goToPreviousPage: function() {
 		this.goTo(this.getQueryString(-1))
 	},
