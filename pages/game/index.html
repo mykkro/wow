@@ -7,6 +7,7 @@
     fill: red;
 }
 </style>
+<script type="text/javascript" src="/js/wow-game.js"></script>
 <svg 
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +26,7 @@
     <defs>
     {{{defs}}}
         <g id="switcherTab">
-            <rect width="250" height="48"></rect>
+            <rect width="200" height="48"></rect>
         </g>
     </defs>
     <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
@@ -34,47 +35,95 @@
     </g>
 
     <use class="tab" xlink:href="#switcherTab" x="0" y="0"></use>
-    <use class="tab"  xlink:href="#switcherTab" x="0" y="58"></use>
-    <use class="tab"  xlink:href="#switcherTab" x="0" y="116"></use>
-    <use class="tab"  xlink:href="#switcherTab" x="0" y="174"></use>
-    <use class="tab activeTab" xlink:href="#switcherTab" x="0" y="232"></use>
+    <use class="tab"  xlink:href="#switcherTab" x="0" y="50"></use>
+    <use class="tab"  xlink:href="#switcherTab" x="0" y="100"></use>
+    <use class="tab"  xlink:href="#switcherTab" x="0" y="150"></use>
+    <use class="tab activeTab" xlink:href="#switcherTab" x="0" y="200"></use>
 
 
-    <wow:flow direction="down" anchor="left" gap="10">
-        <wow:button name="newGameButton" icon="/icons/PNG/128/run.png" iconAt="left">New Game</wow:button>
-        <wow:button name="pauseButton" icon="/icons/PNG/128/pause.png" iconAt="left">Pause</wow:button>
-        <wow:button name="restartButton" icon="/icons/PNG/128/restart.png" iconAt="left">Restart</wow:button>
-        <wow:button name="quitGameButton" icon="/icons/PNG/128/quit.png" iconAt="left">Quit Game</wow:button>
-        <wow:button name="infoButton" icon="/icons/PNG/128/info.png" iconAt="left">Info</wow:button>
-        <wow:button name="rulesButton" icon="/icons/PNG/128/chess.png" iconAt="left">Rules</wow:button>
-        <wow:button name="scoreButton" icon="/icons/PNG/128/scores.png" iconAt="left">Scores</wow:button>
-        <wow:button name="settingsButton" icon="/icons/PNG/128/settings.png" iconAt="left">Settings</wow:button>
+    <wow:flow direction="down" anchor="left" gap="0">
+        <wow:button name="homeButton" icon="/icons/SVG/home.svg" height="50" iconAt="left">Home</wow:button>
+        <wow:box height="50" fill="none" stroke="none"></wow:box>
+        <wow:button name="newGameButton" icon="/icons/PNG/128/run.png" height="50" iconAt="left">New Game</wow:button>
+        <wow:button name="pauseButton" icon="/icons/PNG/128/pause.png" height="50" iconAt="left">Pause</wow:button>
+        <wow:button name="restartButton" icon="/icons/PNG/128/restart.png" height="50" iconAt="left">Restart</wow:button>
+        <wow:button name="quitGameButton" icon="/icons/PNG/128/quit.png" height="50" iconAt="left">Quit Game</wow:button>
+        <wow:button name="infoButton" icon="/icons/PNG/128/info.png" height="50" iconAt="left">Info</wow:button>
+        <wow:button name="rulesButton" icon="/icons/PNG/128/chess.png" height="50" iconAt="left">Rules</wow:button>
+        <wow:button name="scoreButton" icon="/icons/PNG/128/scores.png" height="50" iconAt="left">Scores</wow:button>
+        <wow:button name="settingsButton" icon="/icons/PNG/128/settings.png" height="50" conAt="left">Settings</wow:button>
         
     </wow:flow>
 
-    <g transform="translate(0, 450)">
-        <wow:switcher name="mySwitcher" active=0>
-            <wow:button name="gameTab" icon="/icons/PNG/128/chess.png" iconAt="left">Rules</wow:button>
-            <wow:button name="scoreButton2" icon="/icons/PNG/128/scores.png" iconAt="left">Scores</wow:button>
-            <wow:button name="settingsButton2" icon="/icons/PNG/128/settings.png" iconAt="left">Settings</wow:button>
-        </wow:switcher>
-    </g>
+    <wow:switcher name="mySwitcher" active=0>
+        <wow:plain name="gameTab">
+            <g id="gameTab">
+            </g>
+        </wow:plain>
+        <wow:plain name="infoTab">
+            <g id="infoTab">
+                <foreignObject x="200" y="100" width="760" height="500">
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                    <img id="infoImg" src=""></img>
+                    <div id="infoDiv"></div>
+                  </div>
+              </foreignObject>
+            </g>
+        </wow:plain>
+        <wow:plain name="rulesTab">
+            <g id="rulesTab">
+                <foreignObject x="200" y="100" width="760" height="500">
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                    <div id="rulesDiv"></div>
+                  </div>
+              </foreignObject>
+            </g>
+        </wow:plain>
+        <wow:plain name="scoresTab">
+            <g id="scoresTab">
+                <foreignObject x="200" y="100" width="760" height="500">
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                    <div id="scoresDiv"></div>
+                  </div>
+              </foreignObject>
+            </g>
+        </wow:plain>
+        <wow:plain name="settingsTab">
+            <g id="settingsTab">
+                <foreignObject x="200" y="100" width="760" height="500">
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                    <div id="settingsDiv"></div>
+                  </div>
+              </foreignObject>
+            </g>
+        </wow:plain>
+    </wow:switcher>
     
-    <g id="previewTab">
-    </g>
-    <g id="infoTab">
-        <foreignObject x="200" y="100" width="760" height="500">
-          <div id="infoDiv" xmlns="http://www.w3.org/1999/xhtml">
-          </div>
-      </foreignObject>
-    </g>
-    <g id="rulesTab">
-        <foreignObject x="200" y="100" width="760" height="500">
-          <div id="rulesDiv" xmlns="http://www.w3.org/1999/xhtml">
-          </div>
-      </foreignObject>
-    </g>
-
     <g id="tempgroup" style="display:none;"></g>    
 </svg>
+<style>
+.game-overlay {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    display: none;
+    pointer-events: none;
+}
+.game-settings, .game-container {
+    margin-left: 200px;
+    margin-top: 100px;
+    padding: 10px;
+    pointer-events: auto;
+}
+</style>
+<div class="game-overlay" id="gameOverlay">
+    <div class="game-container">
+        <h1>GAME IN PROGRESS</h1>
+    </div>
+</div>
+<div class="game-overlay" id="gameSettingsOverlay">
+    <div class="game-settings"></div>    
+</div>
 </div>

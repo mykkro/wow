@@ -11,13 +11,16 @@ module.exports = function(Widgetizer) {
 	var factory = function(element, done) {
         var $e = $(element)
 		var name = $e.attr("name")
-		var attrs = {gap: 20, iconAt: "left", iconSize: 48, fontSize: 32}
+		var attrs = {gap: 20, iconAt: "left", iconSize: 40, fontSize: 20, inset: 5}
 		Widgetizer.getAttrs($e, attrs, { 
 			"icon":"string",
 			"iconAt":"string",
 			"gap": "number",
 			"iconSize": "number",
-			"fontSize": "number"
+			"fontSize": "number",
+			"inset": "number",
+			"width": "number",
+			"height": "number"
 		})
 		var text = $e.text()
 		var textElement = SvgHelper.text("", {"class":"wow-button-text"})		
@@ -73,7 +76,16 @@ module.exports = function(Widgetizer) {
 				ww = Math.max(box1.width, box2.width)
 				break;
 		}
-
+		tx += attrs.inset
+		ty += attrs.inset
+		hh += 2*attrs.inset
+		ww += 2*attrs.inset
+		if(attrs.width) {
+			ww = attrs.width
+		}
+		if(attrs.height) {
+			hh = attrs.height
+		}
 		var groupElement = SvgHelper.group({"transform":"translate("+tx+","+ty+")"}, [textElement, iconElement])
         var ww = Widgetizer.widget(widgetname, name, groupElement, {width:ww, height: hh})
         if($e.attr("name")) SvgHelper.attr(ww.element, "name", $e.attr("name"))
