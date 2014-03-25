@@ -6,17 +6,15 @@ module.exports = function(Wow) {
 	var BasePage = require("../../js/basepage")
 
 	var path = require("path")
-	var url = require("url")
-	var parsedUrl = url.parse(window.location.href, true)
 
 	var page = BasePage.extend({
 		init: function(data, next) {
 			var server = this.wtr.rpc
 			var url = require("url")
-        	var parsedUrl = url.parse(window.location.href, true)
-          	var appName = parsedUrl.query.importname
+          	var appName = data.query.importname
 			var appId = appName
 			var userId = "555"		
+			var self = this
 			
 			/* use data to modify page */
 			var quitBtn = this.getWidget("quitButton")
@@ -48,9 +46,9 @@ module.exports = function(Wow) {
 */
 			quitBtn.click(function() {
 				// move back to previous page...
-				window.history.go(-1)
+				self.goBack()
 			})
-			var importName = parsedUrl.query.importname || "notfound"
+			var importName = appName || "notfound"
 			var src = "/imports/"+ importName+ "/index.html"
 			//window.alert(src)
 			// TODO automatic iframe resizing... 

@@ -1,0 +1,30 @@
+{
+	"name": "de",
+	"lang": "de",
+	"labels": {
+		"New Game":"Spielen",
+		"Pause":"Pause",
+		"Restart":"Neustart",
+		"Quit Game":"Verlassen",
+		"Info":"Information",
+		"Rules":"Regeln",
+		"Scores":"Spielstände",
+		"Score":"Spielstand",
+		"Settings":"Einstellungen",
+		"Information":"Information",
+		"Starting game...":"Spiel Vorbereitung...",
+		"Paused":"Pausiert",
+		"Status":"Status",
+		"Game over":"Das Spiel ist aus!",
+		"Well done!":"Ausgezeichnet!",
+		"Difficulty":"Schwierigkeit",
+		"Easy":"Leicht",
+		"Medium":"Mittel",
+		"Hard":"Schwer",
+		"GameSettings":"Spiele Einstellungen",
+		"Submit": "Benutzen",
+		"Reset": "Zurücksetzen",
+		"Lives":"Leben",
+		"Level":"Stufe"		
+	}
+}
