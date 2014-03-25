@@ -58,6 +58,8 @@ module.exports = function(Wow) {
 		      		var el = $(btn.element).find("tspan")
 		      		el.text(dd.translated.labels[el.text()])
 		      	}
+		      	$("#infoDiv").text(dd.translated.info)
+		      	$("#rulesDiv").text(dd.translated.rules)
 
 				console.log("WOW metadata loaded")
 				console.log(dd)
