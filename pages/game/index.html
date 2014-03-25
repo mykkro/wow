@@ -1,5 +1,11 @@
 <div>
 <style>
+.tab {
+    fill: #ccc;
+}
+.activeTab {
+    fill: red;
+}
 </style>
 <svg 
     version="1.1"
@@ -18,11 +24,20 @@
     >
     <defs>
     {{{defs}}}
+        <g id="switcherTab">
+            <rect width="250" height="48"></rect>
+        </g>
     </defs>
     <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
     <g transform="translate(906, 4) scale(0.5)">
         <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
     </g>
+
+    <use class="tab" xlink:href="#switcherTab" x="0" y="0"></use>
+    <use class="tab"  xlink:href="#switcherTab" x="0" y="58"></use>
+    <use class="tab"  xlink:href="#switcherTab" x="0" y="116"></use>
+    <use class="tab"  xlink:href="#switcherTab" x="0" y="174"></use>
+    <use class="tab activeTab" xlink:href="#switcherTab" x="0" y="232"></use>
 
 
     <wow:flow direction="down" anchor="left" gap="10">
@@ -39,7 +54,7 @@
 
     <g transform="translate(0, 450)">
         <wow:switcher name="mySwitcher" active=0>
-            <wow:button name="rulesButton2" icon="/icons/PNG/128/chess.png" iconAt="left">Rules</wow:button>
+            <wow:button name="gameTab" icon="/icons/PNG/128/chess.png" iconAt="left">Rules</wow:button>
             <wow:button name="scoreButton2" icon="/icons/PNG/128/scores.png" iconAt="left">Scores</wow:button>
             <wow:button name="settingsButton2" icon="/icons/PNG/128/settings.png" iconAt="left">Settings</wow:button>
         </wow:switcher>
