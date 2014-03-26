@@ -93,6 +93,7 @@ module.exports = function(Widgetizer) {
       SvgHelper.transform(gg, "translate("+(-xmin)+","+(-ymin)+")")
       var name = $(element).attr("name")
       var ww = Widgetizer.widget(widgetname, name, gg, {width: xmax-xmin, height: ymax-ymin})
+      if($(element).attr("class")) SvgHelper.attr(ww.element, "class", ww.element.getAttribute("class")+" "+$(element).attr("class"))
 	    if(done) done(ww)
 	    return ww
     }

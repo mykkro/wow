@@ -15,6 +15,8 @@ module.exports = function(Wow) {
 	    link.href = url;
 	    document.getElementsByTagName("head")[0].appendChild(link);
 	}
+var Base = require("basejs")
+var SelectChain = require("../../js/selectchain")($, Base)
 
 	var GamePage = BasePage.extend({
 		init: function(data, next) {
@@ -48,6 +50,10 @@ module.exports = function(Wow) {
 				"settingsButton"
 			], function(x){return [x, self.getWidget(x)]}))
 			console.log(buttons)
+
+      self.selectChain = new SelectChain()
+      for(var key in buttons) self.selectChain.append(buttons[key].element)
+
 
 			function showTab(name) {
 				$(".game-overlay").hide()
@@ -149,32 +155,43 @@ module.exports = function(Wow) {
             // initialization...
 
             buttons.homeButton.click(function() {
+              self.selectChain.select(buttons.homeButton.element)
               self.goToHomePage()
             })
             buttons.newGameButton.click(function() {
+              self.selectChain.select(buttons.newGameButton.element)
               self.startGame()
             })
             buttons.pauseButton.click(function() {
+              self.selectChain.select(buttons.pauseButton.element)
               self.pauseGame();
             })
             buttons.restartButton.click(function() {
+              self.selectChain.select(buttons.restartButton.element)
               self.restartGame();
             })
             buttons.quitGameButton.click(function() {
+              self.selectChain.select(buttons.quitGameButton.element)
               self.quitGame()
             })
             buttons.infoButton.click(function() {
+              self.selectChain.select(buttons.infoButton.element)
               self.showGameInfo();
             })
             buttons.rulesButton.click(function() {
+              self.selectChain.select(buttons.rulesButton.element)
               self.showGameRules();
             })
             buttons.scoreButton.click(function() {
+              self.selectChain.select(buttons.scoreButton.element)
               self.showGameScores();
             })
             buttons.settingsButton.click(function() {
+              self.selectChain.select(buttons.settingsButton.element)
               self.gameSettings();
             })    
+
+
 
             self.buttons = buttons
 
@@ -185,8 +202,7 @@ module.exports = function(Wow) {
               self.updateUI()
               self.showGameInfo()
 
-
-
+              self.selectChain.select(buttons.newGameButton.element)
               //$(".container").zoomTo({targetsize: 1, duration:1});
             })
 
@@ -310,8 +326,27 @@ module.exports = function(Wow) {
       }
     })
   },
-
-
+    activateSelected: function() {
+      var target = $(this.selectChain.current())
+      $(target).click()
+    },
+    onVirtualControl: function(evt) {
+      var self = this
+      switch(evt.control) {
+        case "home":
+          this.goToHomePage()
+          break;
+        case "up":
+          this.selectChain.selectPrevious()
+          break;
+        case "down":
+          this.selectChain.selectNext()
+          break;
+        case "select":
+          this.activateSelected()
+          break;
+      }
+    }
 	})
 	return GamePage
 
