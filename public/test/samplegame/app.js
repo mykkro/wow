@@ -112,9 +112,13 @@ var Fifteen = Game.extend({
         updateView()
         /* moved - we can test order */
         if(checkFinished && isSolved()) {
-          alertify.success("Congratulations!")
+          //alertify.success("Congratulations!")
           // TODO event
-        }
+          self.prompt(__("Well done!"), {}, function() {
+              // restart game...
+              self.start()
+          })
+              }
       }
     }
     var isSolved = function() {
