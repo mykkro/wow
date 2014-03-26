@@ -1,0 +1,67 @@
+.hidden {
+  display: none;
+}
+.game-info {
+  background-color: none;
+  text-align: center;
+  width: 760px;
+  margin: 0;
+  padding: 0;
+}
+.game-info .title {
+  padding: 5px;
+  font-size: 32px;
+  font-weight: bold;
+}
+.game-info .logs {
+  padding: 10px;
+  font-size: 28px;
+}
+.game-info .log {
+  display: inline-block;
+  margin: 0px 10px;
+}
+.game-info .log.hidden {
+  display: none;
+}
+.splash {
+  position: absolute;
+  width: 400px;
+  height: 40px;
+  background-color: #cde;
+  top: 50%;
+  left: 50%;
+  margin-left: -210px;
+  margin-top: -30px;
+  padding: 10px;
+  font-size: 40px;
+  text-align: center;
+  border: 1px solid #333;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow: 0 0 5px 5px #888;
+  -webkit-box-shadow: 0 0 5px 5px#888;
+  box-shadow: 0 0 5px 5px #888;
+}
+.splash-overlay {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-color: rgba(208, 208, 192, 0.8);
+  width: 960px;
+  height: 600px;
+}
+/*  bar for showing up to 5 lives */
+.lifebar {
+  width: 0px;
+  height: 32px;
+  background-image: url(../media/icons/heart.png);
+  background-repeat: repeat-x;
+}
+.lifebar-wrapper {
+  width: 160px;
+  height: 32px;
+  display: inline-block;
+}
+

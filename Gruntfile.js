@@ -179,7 +179,8 @@ module.exports = function (grunt) {
           files: {
             "public/css/bundle.css": [
               "public/css/wow-libs.css",
-              "less/style.less"
+              "less/style.less",
+              "less/game.less"
               ]
           }
         },
@@ -191,7 +192,8 @@ module.exports = function (grunt) {
           files: {
             "public/css/bundle.min.css": [
               "public/css/wow-libs.css",
-              "less/style.less"
+              "less/style.less",
+              "less/game.less"
               ]
           }
         }
