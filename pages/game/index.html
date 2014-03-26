@@ -30,9 +30,6 @@
         </g>
     </defs>
     <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
-    <g transform="translate(906, 4) scale(0.5)">
-        <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
-    </g>
 
     <use class="tab" xlink:href="#switcherTab" x="0" y="0"></use>
     <use class="tab"  xlink:href="#switcherTab" x="0" y="50"></use>
@@ -54,6 +51,16 @@
         <wow:button name="settingsButton" icon="/icons/PNG/128/settings.png" height="50" conAt="left">Settings</wow:button>
         
     </wow:flow>
+
+<foreignObject x="200" y="0" width="760" height="100">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+    <div class="game-info">
+        <div class="title">title</div>
+        <div class="logs"></div>
+    </div>
+  </div>
+</foreignObject>
+
 
     <wow:switcher name="mySwitcher" active=0>
         <wow:plain name="gameTab">

@@ -4,8 +4,9 @@ var Fifteen = Game.extend({
   shuffleSteps: 20,
 
   init: function(cb) {
-
-    this.container = $("<div>").addClass("fifteen").appendTo($("#tab-game"))
+    var root = this.root
+    this.container = $("<div>").addClass("fifteen")
+    root.html(this.container)
 
     if(cb) cb()
 

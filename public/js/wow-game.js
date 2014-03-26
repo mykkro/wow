@@ -1,7 +1,8 @@
 var Game = Base.extend({
   // options
-  constructor: function(options) {
+  constructor: function(options, root) {
     this.options = options || {}
+    this.root = root
     this.controller = null
   },  
   init: function(cb) {
