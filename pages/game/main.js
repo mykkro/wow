@@ -51,12 +51,27 @@ module.exports = function(Wow) {
 
 			function showTab(name) {
 				$(".game-overlay").hide()
+        $(".nav-tabs .tab").removeClass("activeTab")
 				mySwitcher.setActive(name)
-				if(name == "gameTab") {
-					$("#gameOverlay").show()
-				} else if(name == "settingsTab") {
-					$("#gameSettingsOverlay").show()
-				}
+        switch(name) {
+          case "gameTab":
+            $("#gameOverlay").show()
+            $(".nav-game").addClass("activeTab")
+            break;
+          case "settingsTab":
+            $("#gameSettingsOverlay").show()
+            $(".nav-settings").addClass("activeTab")
+            break;
+          case "rulesTab":
+            $(".nav-rules").addClass("activeTab")
+            break;
+          case "scoresTab":
+            $(".nav-scores").addClass("activeTab")
+            break;
+          case "infoTab":
+            $(".nav-info").addClass("activeTab")
+            break;
+        }
 			}	
 
       self.showTab = showTab

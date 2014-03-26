@@ -2,9 +2,11 @@
 <style>
 .tab {
     fill: #ccc;
+    fill-opacity: 0.3;
 }
-.activeTab {
-    fill: red;
+.activeTab, .nav-tabs-back {
+    fill: rgb(146, 188, 235);;
+    fill-opacity: 0.5;
 }
 </style>
 <script type="text/javascript" src="/js/wow-game.js"></script>
@@ -26,20 +28,25 @@
     <defs>
     {{{defs}}}
         <g id="switcherTab">
-            <rect width="200" height="48"></rect>
+            <rect width="200" height="50"></rect>
         </g>
     </defs>
     <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
 
-    <use class="tab" xlink:href="#switcherTab" x="0" y="0"></use>
-    <use class="tab"  xlink:href="#switcherTab" x="0" y="50"></use>
-    <use class="tab"  xlink:href="#switcherTab" x="0" y="100"></use>
-    <use class="tab"  xlink:href="#switcherTab" x="0" y="150"></use>
-    <use class="tab activeTab" xlink:href="#switcherTab" x="0" y="200"></use>
-
+    <g class="nav-tabs">
+        <use class="tab nav-game" xlink:href="#switcherTab" x="0" y="100"></use>
+        <use class="tab nav-game"  xlink:href="#switcherTab" x="0" y="150"></use>
+        <use class="tab nav-game"  xlink:href="#switcherTab" x="0" y="200"></use>
+        <use class="tab nav-game"  xlink:href="#switcherTab" x="0" y="250"></use>
+        <use class="tab nav-info" xlink:href="#switcherTab" x="0" y="300"></use>
+        <use class="tab nav-rules" xlink:href="#switcherTab" x="0" y="350"></use>
+        <use class="tab nav-scores" xlink:href="#switcherTab" x="0" y="400"></use>
+        <use class="tab nav-settings" xlink:href="#switcherTab" x="0" y="450"></use>
+    </g>
+    <rect class="nav-tabs-back" x="200" y="0" width="760" height="600"></rect>
 
     <wow:flow direction="down" anchor="left" gap="0">
-        <wow:button name="homeButton" icon="/icons/SVG/home.svg" height="50" iconAt="left">Home</wow:button>
+        <wow:button name="homeButton" icon="/assets/buttons/home.svg" height="50" iconAt="left">Home</wow:button>
         <wow:box height="50" fill="none" stroke="none"></wow:box>
         <wow:button name="newGameButton" icon="/icons/PNG/128/run.png" height="50" iconAt="left">New Game</wow:button>
         <wow:button name="pauseButton" icon="/icons/PNG/128/pause.png" height="50" iconAt="left">Pause</wow:button>
@@ -70,7 +77,7 @@
         <wow:plain name="infoTab">
             <g id="infoTab">
                 <foreignObject x="200" y="100" width="760" height="500">
-                  <div xmlns="http://www.w3.org/1999/xhtml">
+                  <div id="infoTabInt" xmlns="http://www.w3.org/1999/xhtml">
                     <img id="infoImg" src=""></img>
                     <div id="infoDiv"></div>
                   </div>
@@ -80,7 +87,7 @@
         <wow:plain name="rulesTab">
             <g id="rulesTab">
                 <foreignObject x="200" y="100" width="760" height="500">
-                  <div xmlns="http://www.w3.org/1999/xhtml">
+                  <div id="rulesTabInt"  xmlns="http://www.w3.org/1999/xhtml">
                     <div id="rulesDiv"></div>
                   </div>
               </foreignObject>
@@ -109,6 +116,9 @@
     <g id="tempgroup" style="display:none;"></g>    
 </svg>
 <style>
+#infoTabInt, #rulesTabInt {
+    padding: 10px;
+}
 .game-overlay {
     position: absolute;
     left: 0px;
