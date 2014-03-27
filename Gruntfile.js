@@ -156,7 +156,6 @@ module.exports = function (grunt) {
     game: {
       src: [
         "js/game/game.js",
-        "js/game/gamecontroller.js",
         "js/game/minilog.js",
         "js/game/splash.js",
         "js/game/util.js",

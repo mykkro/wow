@@ -18,6 +18,7 @@ module.exports = function(Wow) {
 var Base = require("basejs")
 var SelectChain = require("../../js/selectchain")($, Base)
 
+
 	var GamePage = BasePage.extend({
 		init: function(data, next) {
 			var server = this.wtr.rpc
@@ -81,16 +82,14 @@ var SelectChain = require("../../js/selectchain")($, Base)
 			}	
 
       self.showTab = showTab
-
 		    $.when(
 		    	$.getJSON(appUrl+metadataUrl), 
 		    	$.getJSON(appUrl+defaultLocaleUrl), 
 		    	$.getJSON(appUrl+localeUrl),
- 				$.get(appUrl+"templates/form-settings-schema"),
+ 				  $.get(appUrl+"templates/form-settings-schema"),
     			$.get(appUrl+"templates/form-settings-options"),
     			$.getScript(appUrl+scriptUrl)
 		    ).done(function(meta, dl, l, t1, t2, sc1) {
-
 		      	var metadata = meta[0]
 		      	var localedata = $.extend({},l[0],dl[0])
 		      	var dd = {wow:metadata, translated:localedata}
@@ -145,10 +144,6 @@ var SelectChain = require("../../js/selectchain")($, Base)
             })
             self.logs = {}
             self.initLogs()    
-
-            // initializes a controller... 
-            self.controller = new GameKeyboardController()
-            self.game.setController(self.controller)
 		        
             console.log("Ready!")
 		        //gui.init()
@@ -249,39 +244,34 @@ var SelectChain = require("../../js/selectchain")($, Base)
     this.logs[name].update(value)
   },
   showGameInfo: function() {
-    Splash.removeAll()
+    this.game.hidePrompt()
     this.showTab("infoTab")
   },
   showGameRules: function() {
-    Splash.removeAll()
+    this.game.hidePrompt()
     this.showTab("rulesTab")
   },
   showGameScores: function() {
-    Splash.removeAll()
+    this.game.hidePrompt()
     this.showTab("scoresTab")
   },
   gameSettings: function() {
-    Splash.removeAll()
+    this.game.hidePrompt()
     this.showTab("settingsTab")
   },
   startGame: function() {
     var self = this
     if(!self.playing) {
       // start game...
-      Splash.removeAll()
-      //alertify.success(__("Starting game..."));
-      new Splash({
-        text:__("Starting game..."),
-        delay: 2000,
-        overlay: true,
-        after: function() {
+      this.game.hidePrompt()
+      this.game.startGamePrompt(function() {
           self.game.start(function() {
             self.playing = true;
             self.updateUI()
             self.showTab("gameTab")
           })
         }
-      })
+      )
     } else if(self.paused) {
       self.resumeGame()
     }
@@ -289,7 +279,7 @@ var SelectChain = require("../../js/selectchain")($, Base)
   quitGame: function() {
     var self = this
     // quit game...
-    Splash.removeAll()
+    this.game.hidePrompt()
     this.game.quit(function() {
       self.playing = false;
       self.updateUI()
@@ -297,24 +287,19 @@ var SelectChain = require("../../js/selectchain")($, Base)
     })
   },
   pauseGame: function() {
-    Splash.removeAll()
+    this.game.hidePrompt()
     var self = this
     self.game.pause(function() {
       self.paused = true;
       self.updateUI()
       self.showTab("gameTab")
-      new Splash({
-        text:__("Paused"),
-        overlay: true,
-        hideOnClick: true,
-        after: function() {
+      self.game.pauseGamePrompt(function() {
           self.resumeGame()
-        }
       })
     })
   },
   resumeGame: function() {
-    Splash.removeAll()
+    this.game.hidePrompt()
     var self = this
     self.game.resume(function() {
       self.paused = false;
@@ -323,41 +308,41 @@ var SelectChain = require("../../js/selectchain")($, Base)
     })
   },
   restartGame: function() {
+    this.game.hidePrompt()
     var self = this
-    Splash.removeAll()
-    new Splash({
-      text:__("Starting game..."),
-      delay: 2000,
-      overlay: true,
-      after: function() {
-        self.game.restart(function() {
-          self.playing = true;
-          self.paused = false;
+    this.game.startGamePrompt(function() {
+        self.game.start(function() {
+          self.playing = true
+          self.paused = false
           self.updateUI()
-          self.showTab("gameTab")  
+          self.showTab("gameTab")
         })
-      }
-    })
-  },
+      })
+    },
     activateSelected: function() {
       var target = $(this.selectChain.current())
       $(target).click()
     },
     onVirtualControl: function(evt) {
       var self = this
-      switch(evt.control) {
-        case "home":
-          this.goToHomePage()
-          break;
-        case "up":
-          this.selectChain.selectPrevious()
-          break;
-        case "down":
-          this.selectChain.selectNext()
-          break;
-        case "select":
-          this.activateSelected()
-          break;
+      if(this.playing) {
+        // ingame controller...
+        this.game.onVirtualControl(evt)
+      } else {
+        switch(evt.control) {
+          case "home":
+            this.goToHomePage()
+            break;
+          case "up":
+            this.selectChain.selectPrevious()
+            break;
+          case "down":
+            this.selectChain.selectNext()
+            break;
+          case "select":
+            this.activateSelected()
+            break;
+        }
       }
     }
 	})
