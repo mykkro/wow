@@ -191,7 +191,21 @@ var SelectChain = require("../../js/selectchain")($, Base)
               self.gameSettings();
             })    
 
-
+            $(".game-viewport").resize(function() {
+              var el = $(this)
+              var w = el.width()
+              var h = el.height()
+              var tw = 740
+              var th = 480
+              var cover = false
+              var scale = cover ? Math.max(w/tw, h/th) : Math.min(w/tw, h/th)
+              var ww = tw*scale
+              var hh = th*scale
+              var x = 0//(w-tw)/2
+              var y = 0//(h-th)/2
+              var mtr = "matrix("+scale+",0,0,"+scale+","+x+","+y+")"
+              el.children("div").css("-webkit-transform", mtr)
+            }).resize()
 
             self.buttons = buttons
 
@@ -201,9 +215,8 @@ var SelectChain = require("../../js/selectchain")($, Base)
               self.paused = false
               self.updateUI()
               self.showGameInfo()
-
+              $(".game-viewport").resize()
               self.selectChain.select(buttons.newGameButton.element)
-              //$(".container").zoomTo({targetsize: 1, duration:1});
             })
 
 				/* continue when finished */

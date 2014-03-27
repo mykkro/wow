@@ -3464,13 +3464,13 @@
      inkscape:label="Layer03"
      style="display:inline"
      sodipodi:insensitive="true">
-	<text id="MeteoIcon" x="470" y="430" class="meteo">R</text>
+	<text id="MeteoIcon" x="470" y="430" class="meteo"></text>
     <text
        x="540"
        y="278.52701"
        style="font-size:100px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;text-anchor:middle">
-<tspan id="MeteoTemperature">10</tspan>
-<tspan id="MeteoUnit" dx="-20" class="meteo" style="font-size:100px;">C</tspan></text>
+<tspan id="MeteoTemperature"></tspan>
+<tspan id="MeteoUnit" dx="-20" class="meteo" style="font-size:100px;"></tspan></text>
     <text
        xml:space="preserve"
        style="font-size:25px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#28166f;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"

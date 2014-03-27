@@ -139,6 +139,7 @@ module.exports = function (grunt) {
         "js/vendor/jquery.svg.min.js",
         "js/vendor/jquery.svgdom.min.js",
         "js/vendor/jquery.zoomooz.min.js",
+        "js/vendor/jquery.ba-resize.js",
         "js/vendor/svgjs/svg.min.js",
         "js/vendor/svgjs/svg.easing.min.js",
         "js/vendor/svgjs/svg.filter.js",
@@ -207,7 +208,7 @@ module.exports = function (grunt) {
         main: {
           options: {
             // TODO how to get this filename by appending version number from package.json?
-            archive: 'dist/wow-0.8.4.zip'
+            archive: 'dist/wow-0.8.7.zip'
           },
           files: [
             {src: ['assets/**', 'css/**', 'fonts/**', 'js/**', 'lib/**', 'locales/**', 'media/**', 'pages/**', 'public/**', 'routes/**', 'templates/**', 'views/**']},

@@ -1,4 +1,4 @@
-<wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
+<wow:image src="/assets/backgrounds/radio.svg" width="960" height="600"></wow:image>
 <wow:image src="/assets/previews/RetroRadioPage_cleaned.svg" width="960" height="600" embed="true"></wow:image>
 <g transform="translate(840, 20)">
     <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
