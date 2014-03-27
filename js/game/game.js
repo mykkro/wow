@@ -41,15 +41,8 @@ var Game = Base.extend({
     this.log("status", "quit")
     this.stop(cb)
   },
-  setController: function(controller) {
-    var self = this
-    this.controller = controller
-    this.controller.addListener(function(name, eventType) {
-      self.controllerEvent(name, eventType)
-    })
-  },
-  controllerEvent: function(name, eventType) {
-    console.log("Game controller: "+name+","+eventType)
+  onVirtualControl: function(evt) {
+    console.log("Controller Event: ", evt)    
   },
   availableLogs: function() {
     return {
@@ -76,6 +69,29 @@ var Game = Base.extend({
         if(cb) cb()
       }
     })
+  },
+  startGamePrompt: function(cb) {
+    new Splash({
+        text:__("Starting game..."),
+        delay: 2000,
+        overlay: true,
+        after: function() {
+          if(cb) cb()
+        }
+      })
+  },
+  pauseGamePrompt: function(cb) {
+    new Splash({
+      text:__("Paused"),
+      overlay: true,
+      hideOnClick: true,
+      after: function() {
+        if(cb) cb()
+      }
+    })
+  },
+  hidePrompt: function() {
+    Splash.removeAll()    
   }  
 })
 

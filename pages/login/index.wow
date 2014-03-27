@@ -5,3 +5,7 @@
 <wow:image src="/assets/logos/CE.jpg" width="146" height="27"></wow:image></g>
 <g transform="translate(36,18)">
 <wow:image src="/assets/logos/SPES_logo_OK.svg" width="230" height="57"></wow:image></g>
+
+<g transform="translate(810, 426)" style="pointer-events:none;">
+<wow:image src="/assets/buttons/settings.svg" width="100" height="100"></wow:image></g>
+
