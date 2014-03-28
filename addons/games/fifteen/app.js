@@ -4,29 +4,27 @@ var Fifteen = Game.extend({
   shuffleSteps: 20,
 
   init: function(cb) {
-
-    this.container = $("<div>").addClass("fifteen").appendTo($("#tab-game"))
+    var root = this.root
+    this.container = $("<div>").addClass("fifteen")
+    root.html(this.container)
 
     if(cb) cb()
 
   },
-  controllerEvent: function(name, eventType) {
-      if(eventType=="down") {
-        var dirs = {right:[-1,0],left:[1,0],up:[0,1],down:[0,-1]}
-        var dir = dirs[name]
-        if(dir) {
-          console.log(dir,this.emptyIndex)
-          var x = this.emptyIndex&0x03
-          var y = this.emptyIndex>>2
-          x+= dir[0]
-          y+= dir[1]
-          if(x>=0 && x<4 && y>=0 && y<4) {
-            var tile = this.tiles[x+4*y]
-            console.log(tile)
-            this.tryToMoveTile(tile)
-          }
-        }
+  onVirtualControl: function(evt) {
+    var name = evt.control
+    var dirs = {right:[-1,0],left:[1,0],up:[0,1],down:[0,-1]}
+    var dir = dirs[name]
+    if(dir) {
+      var x = this.emptyIndex&0x03
+      var y = this.emptyIndex>>2
+      x+= dir[0]
+      y+= dir[1]
+      if(x>=0 && x<4 && y>=0 && y<4) {
+        var tile = this.tiles[x+4*y]
+        this.tryToMoveTile(tile)
       }
+    }
   },
   start: function(cb) {
     var self = this
@@ -65,9 +63,6 @@ var Fifteen = Game.extend({
         for(var i=0; i<dirs.length; i++) {
           var dir = dirs[i]
           var newIndex = canMove(self.emptyIndex, dir[0], dir[1])
-          console.log(newIndex)
-          console.log(newIndex>=0?self.tiles[newIndex]:"")
-          console.log(tile)
           if(newIndex >= 0 && (self.tiles[newIndex].originalIndex == tile.originalIndex)) {
             // empty space can trade places with this tile
             move(dir[0], dir[1], true)
@@ -111,9 +106,13 @@ var Fifteen = Game.extend({
         updateView()
         /* moved - we can test order */
         if(checkFinished && isSolved()) {
-          alertify.success("Congratulations!")
+          //alertify.success("Congratulations!")
           // TODO event
-        }
+          self.prompt(__("Well done!"), {}, function() {
+              // restart game...
+              self.start()
+          })
+              }
       }
     }
     var isSolved = function() {
@@ -140,8 +139,6 @@ var Fifteen = Game.extend({
     shuffle()
     
     //updateView()
-    
-    console.log(self.tiles)
 
     if(cb) cb()
   },

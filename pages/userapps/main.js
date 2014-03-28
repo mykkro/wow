@@ -17,8 +17,18 @@ module.exports = function(Wow) {
 			if(widget.type == "iconbutton") {
 				target.click()
 			} else {
-				var targetName = target.find(".youtube-result").data("name")
-				if(targetName) this.goToImportPage(targetName)
+				this.followLink(target.find(".youtube-result"))
+			}
+		},
+		followLink: function(tgt) {
+			var targetName = tgt.data("name")
+			var targetApptype = tgt.data("apptype")
+			if(targetName) {
+				if(targetApptype == "wow/app/game") {
+					this.goToGameAppPage(targetName)
+				} else {
+					this.goToImportPage(targetName)
+				}
 			}
 		},
 		createControls: function(data) {
@@ -53,10 +63,10 @@ module.exports = function(Wow) {
 						_.each(results, function(w) {
 							/* attach events... */
 							self.selectChain.append(w.element)					
-							var name = $(w.element).find(".youtube-result").data("name")
-							if(name) {
+							var tgt = $(w.element).find(".youtube-result")
+							if(tgt.data("name")) {
 								$(w.element).click(function() {
-									self.goToImportPage(name)			
+									self.followLink(tgt)
 								})
 							}
 						})
@@ -86,6 +96,7 @@ module.exports = function(Wow) {
 				var txt = SvgHelper.text(label, {x:97, y: 170, "text-anchor":"middle"})
 				items = [rect, thumb, txt]
 				obj['data-name'] = data.importName
+				obj['data-apptype'] = data.apptype
 			} else {
 				obj["class"] += " disabled"
 			}

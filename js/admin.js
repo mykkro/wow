@@ -216,6 +216,15 @@
 					}
 				}
 			},
+			goTo: function(url) {
+				window.location.href = url
+			},
+			goToImportPage: function(name) {
+				this.goTo("/pages/app?importname="+name+"&lang=de&showquitbutton=no")
+			},
+			goToGameAppPage: function(name) {
+				this.goTo("/pages/game?importname="+name+"&lang=de")
+			},			
 			showItem: function(item) {
 				console.log(item)
 				// TODO use mustache
@@ -229,7 +238,11 @@
 						"height":100,
 						"src": previewUri
 					}).click(function() {
-						window.location.href= "/pages/app?importname="+item.importName
+						if(item.apptype == "wow/app/game") {
+							self.goToGameAppPage(item.importName)
+						} else {
+							self.goToImportPage(item.importName)
+						}
 					}),
 					$("<button>").text("Remove").click(function() {
 						self.showRemoveDialog(function() {
