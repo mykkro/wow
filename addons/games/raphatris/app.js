@@ -2,11 +2,14 @@ var Raphatris = Game.extend({
 
   init: function(cb) {
     var self = this
+    var root = this.root
     self.state = 0
     self.timerSpeed = 700
     self.paused = false
 
-    var paperDiv = $("<div>").attr("id", "paper").appendTo($("#tab-game"))
+    var paperDiv = $("<div>").attr("id", "paper")
+    this.container = paperDiv
+    root.html(this.container)
       var 
           paper = Raphael("paper", 700, 484),
           s = 23,
@@ -308,10 +311,11 @@ var Raphatris = Game.extend({
       self.tick = tick
 
       
-      self.controllerEvent = function(name, eventType) {
-          if(self.state == 2 && eventType=="down") {
+      self.onVirtualControl = function(evt) {
+          if(self.state == 2) {
+            var name = evt.control
             switch (name) {
-                  case "activate": // space
+                  case "select": // space
                       // drop
                       while(moveMe(0,1)) {}
                       break;
