@@ -36,7 +36,7 @@
       rgba(200, 200, 100, 0.45), 
       rgba(200, 200, 100, 0.45)
     ),
-    url(../media/backgrounds/games-448.png);
+    url(media/backgrounds/games-448.png);
   background-repeat: no-repeat;
   background-size: 448px 448px;
   background-opacity: 0.5;

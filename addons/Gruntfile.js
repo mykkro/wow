@@ -106,13 +106,6 @@ module.exports = function (grunt) {
             {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/raphatris/lang/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/raphatris/' },
 
-            {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/fifteen/js/' },
-            {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/fifteen/css/' },
-            {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/fifteen/media/' },
-            {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/fifteen/templates/' },
-            {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/fifteen/lang/' },
-            {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/fifteen/' },
-
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/pexeso/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/pexeso/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/pexeso/media/' },
@@ -160,9 +153,6 @@ module.exports = function (grunt) {
         raphatris: {
         },
         raphanoid: {
-
-        },
-        fifteen: {
 
         },
         pexeso: {

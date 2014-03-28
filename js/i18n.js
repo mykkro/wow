@@ -7,7 +7,6 @@ var locdata = {
 	de: JSON.parse(fs.readFileSync(__dirname + "/../locales/de.js")),
 	en: JSON.parse(fs.readFileSync(__dirname + "/../locales/en.js"))
 }
-console.log(locdata)
 
 var i18n = function(data) {	
 	this.locales = data.locales

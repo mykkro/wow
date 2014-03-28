@@ -24,8 +24,7 @@ var SelectChain = require("../../js/selectchain")($, Base)
 			var server = this.wtr.rpc
 			var self = this
 			var appName = data.query.importname
-			//var appUrl = "/imports/"+ appName+ "/"
-			/**/var appUrl = "/test/samplegame/"
+			var appUrl = "/imports/"+ appName+ "/"
 		    var locale = data.query.lang || 'en'
 		    var defaultLocaleUrl = "lang/labels."+locale+".json"
 		    var localeUrl = "lang/"+locale+".json"
@@ -41,6 +40,7 @@ var SelectChain = require("../../js/selectchain")($, Base)
 			
 			var buttons = _.object(_.map([
 				"homeButton",
+        "backButton",
 				"newGameButton",
 				"pauseButton",
 				"restartButton",
@@ -152,6 +152,10 @@ var SelectChain = require("../../js/selectchain")($, Base)
             buttons.homeButton.click(function() {
               self.selectChain.select(buttons.homeButton.element)
               self.goToHomePage()
+            })
+            buttons.backButton.click(function() {
+              self.selectChain.select(buttons.backButton.element)
+              self.goBack()
             })
             buttons.newGameButton.click(function() {
               self.selectChain.select(buttons.newGameButton.element)

@@ -47,8 +47,13 @@ var BasePage = BasicLayer.extend({
 	goToNextPage: function() {
 		this.goTo(this.getQueryString(1))
 	},
+	// TODO take lang info from this page's query string
+	// or i18n object
 	goToImportPage: function(name) {
-		this.goTo("/pages/app?importname="+name)
+		this.goTo("/pages/app?importname="+name+"&lang=de")
+	},
+	goToGameAppPage: function(name) {
+		this.goTo("/pages/game?importname="+name+"&lang=de")
 	},
 	goToHomePage: function() {
 		this.goTo("/pages/home")
