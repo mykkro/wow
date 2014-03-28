@@ -155,7 +155,7 @@ var SelectChain = require("../../js/selectchain")($, Base)
             })
             buttons.newGameButton.click(function() {
               self.selectChain.select(buttons.newGameButton.element)
-              self.startGame()
+              self.playGame()
             })
             buttons.pauseButton.click(function() {
               self.selectChain.select(buttons.pauseButton.element)
@@ -222,7 +222,7 @@ var SelectChain = require("../../js/selectchain")($, Base)
   updateUI: function() {
     var playing = this.playing
     var paused = this.paused
-    this.buttons.newGameButton.setEnabled(!(playing && !paused))
+    this.buttons.newGameButton.setEnabled(!playing || paused)
     this.buttons.quitGameButton.setEnabled(playing)
     this.buttons.pauseButton.setEnabled(!(paused || !playing))
     this.buttons.restartButton.setEnabled(playing)
@@ -258,6 +258,13 @@ var SelectChain = require("../../js/selectchain")($, Base)
   gameSettings: function() {
     this.game.hidePrompt()
     this.showTab("settingsTab")
+  },
+  playGame: function() {
+      if(!this.playing) {
+        this.startGame()
+      } else if(this.paused) {
+        this.resumeGame()
+      }
   },
   startGame: function() {
     var self = this
@@ -325,11 +332,29 @@ var SelectChain = require("../../js/selectchain")($, Base)
     },
     onVirtualControl: function(evt) {
       var self = this
-      if(this.playing) {
-        // ingame controller...
-        this.game.onVirtualControl(evt)
+      if(this.playing && !this.paused) {
+        switch(evt.control) {
+          case "pause":
+            this.pauseGame()
+            break;
+          case "stop":
+            this.quitGame()
+            break;
+          default:
+            // ingame controller...
+            this.game.onVirtualControl(evt)
+            break;
+          }
       } else {
         switch(evt.control) {
+          case "play":
+            if(this.playing && this.paused) {
+              this.resumeGame()
+            }
+            break;
+          case "stop":
+            if(this.playing) this.quitGame()
+            break;
           case "home":
             this.goToHomePage()
             break;
