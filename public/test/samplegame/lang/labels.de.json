@@ -2,7 +2,7 @@
 	"name": "de",
 	"lang": "de",
 	"labels": {
-		"New Game":"Spielen",
+		"Play":"Spielen",
 		"Pause":"Pause",
 		"Restart":"Neustart",
 		"Quit Game":"Verlassen",
