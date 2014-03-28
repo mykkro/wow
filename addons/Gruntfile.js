@@ -99,13 +99,6 @@ module.exports = function (grunt) {
             {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/raphanoid/lang/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/raphanoid/' },
 
-            {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/raphatris/js/' },
-            {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/raphatris/css/' },
-            {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/raphatris/media/' },
-            {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/raphatris/templates/' },
-            {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/raphatris/lang/' },
-            {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/raphatris/' },
-
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/pexeso/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/pexeso/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/pexeso/media/' },
@@ -150,8 +143,6 @@ module.exports = function (grunt) {
         }
       },
       generateindex: {
-        raphatris: {
-        },
         raphanoid: {
 
         },

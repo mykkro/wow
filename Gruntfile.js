@@ -155,6 +155,8 @@ module.exports = function (grunt) {
     },
     game: {
       src: [
+        "js/vendor/raphael-min.js",
+        "js/vendor/raphaelicious-1.0.js",
         "js/game/game.js",
         "js/game/minilog.js",
         "js/game/splash.js",
