@@ -15,12 +15,18 @@ var Raphatris = Game.extend({
     self.blox = null
     self.pid = null
     self.pcount = 1
+    self.linecnt = 0
+    self.score = 0
+    self.next = null
+    self.px = 0
+    self.py = 0
+    self.defpx = Math.floor(self.stageW/2)
+    self.defpy = 2
     this.container = $("<div>").attr("id", "paper")
     root.html(this.container)
     self.paper = Raphael("paper", 700, 484)
-    var
-          colors = ["red", "blue", "green", "orange", "cyan", "yellow", "purple", "#666"],
-          bricks = [
+    self.colors = ["red", "blue", "green", "orange", "cyan", "yellow", "purple", "#666"]
+    self.bricks = [
               [[-1,0],[0,0],[1,0],[2,0]],
               [[-1,0],[0,0],[1,0],[0,1]],
               [[-1,0],[0,0],[1,0],[1,1]],
@@ -28,107 +34,58 @@ var Raphatris = Game.extend({
               [[-1,0],[0,0],[0,1],[1,1]],
               [[-1,1],[0,1],[0,0],[1,0]],
               [[0,0],[0,1],[1,0],[1,1]]
-          ],
+          ]
 
-          score, linecnt, next, px, py, defpx=Math.floor(self.stageW/2), defpy=2,
-          blocksToRemove = {},
-          started,
+    
+      self.blocksToRemove = {}
+      self.started = false
 
-      init = function() {
+      var continued
+      
+      var init = function() {
           self.blox = {}
-          score = 0
-          self.log("score", score)
-          linecnt = 0
+          self.score = 0
+          self.log("score", self.score)
+          self.linecnt = 0
           self.pid = null
-          next = null
+          self.next = null
           // background
           self.drawBrick(0, 0, self.stageW, self.stageH).attr("fill","#ccc")
           self.drawBrick(2+self.stageW, 0, 5, 5).attr("fill", "#ccc")
           self.stage = self.paper.set()
           self.preview = self.paper.set()
-          nextBlock()
+          self.nextBlock()
           self.bmp_update()
-      },
-      scanLines = function() {
-          var lines = self.fullLines()
-          linecnt += lines
-          score += lines.length*10
-          self.log("score", score)            
-          var brix = self.bricksOnLines(lines);
-          if(!self.isEmpty(brix)) {
-              var newBricks = {}
-              for(var id in brix) self.explode(self.blox[id], newBricks)
-              self.killBlocks(brix, newBricks)
-              return self.bricksOnLines(lines);
-          }
-      },
-      nextBlock = function() {
-          next = {"color": self.rand(colors), "bricks": self.rand(bricks) }
-          var rot = self.rnd(4)
-          for(var i=0; i<rot; i++) next = self.rotated(next)
-          // draw preview...
-          if(self.preview) self.preview.remove()
-          self.preview = self.drawBlock(self.moved(next, 2, 2)).transform("T" + (self.stageW+3)*self.s + " " + self.s)
-      },
-      /* summon new brick to be controlled by player */
-      summon = function() {
-          var block = next
-          block = self.moved(block, defpx, defpy)
-          if(self.canPut(block, null)) {
-              self.pid = self.pcount++
-              self.blox[self.pid] = block
-              px = defpx
-              py = defpy
-              nextBlock()
-              return block
-          } 
-      },
-      alterMe = function(brick) {
-          if(self.canPut(brick, self.pid)) {
-              self.blox[self.pid] = brick
-              self.draw()        
-              return true
-          }
-      },
-      moveMe = function(dx, dy) {
-          if(alterMe(self.moved(self.blox[self.pid], dx, dy))) {                
-              px += dx;
-              py += dy;
-              return true
-          }
-      },
-      rotateMe = function() {
-          return alterMe(self.moved(self.rotated(self.moved(self.blox[self.pid], -px, -py)), px, py))
       },
       go = function(s) {
           switch(s) {
               case 0: //"init"
                   init()                
                   //self.promptStart = self.prompt(__("Click to start"), {}, function() {
-                    started = true
+                    self.started = true
                   //})
                   //started = false
                   return 1
               case 1: //"start" - waiting for S key...
-                  if(started) {
+                  if(self.started) {
                       return 6
                   } else return 1
               case 2: //"drop"
-                  return moveMe(0,1) ? 2 : 3
+                  return self.moveMe(0,1) ? 2 : 3
               case 3: //"select"
                   // add player block to bitmap
                   self.pid = null
                   self.bmp_update()
-                  blocksToRemove = scanLines()
-                  if(blocksToRemove) {
-                      self.selectBlocks(blocksToRemove)
+                  self.blocksToRemove = self.scanLines()
+                  if(self.blocksToRemove) {
+                      self.selectBlocks(self.blocksToRemove)
                       self.draw()
                       return 4
                   } else {
                       return 6
                   }
               case 4: //"remove"
-                  self.killBlocks(blocksToRemove, {})
+                  self.killBlocks(self.blocksToRemove, {})
                   self.draw()
                   return 5
               case 5: //"fall"
@@ -137,7 +94,7 @@ var Raphatris = Game.extend({
                       return 5
                   } else return 3
               case 6: //"summon":
-                  if(summon()) {
+                  if(self.summon()) {
                       self.draw()
                       return 2
                   } else {
@@ -170,38 +127,94 @@ var Raphatris = Game.extend({
       self.clock = null
       self.tick = tick
 
-      
-      self.onVirtualControl = function(evt) {
-          if(self.state == 2) {
-            var name = evt.control
-            switch (name) {
-                  case "select": // space
-                      // drop
-                      while(moveMe(0,1)) {}
-                      break;
-              case "up":
-                      // rotate left
-                      rotateMe()
-                break;
-              case "down":
-                      // rotate right
-                      rotateMe()
-                      rotateMe()
-                      rotateMe()
-                break;
-              case "left":
-                      // move left
-                      moveMe(-1,0);
-                break;
-              case "right":
-                      // move right
-                      moveMe(1,0);
-                break;
-            }
-          }
-      }
-                              
       if(cb) cb()
+  },
+  onVirtualControl: function(evt) {
+      var self = this
+      if(self.state == 2) {
+        var name = evt.control
+        switch (name) {
+              case "select": // space
+                  // drop
+                  while(self.moveMe(0,1)) {}
+                  break;
+          case "up":
+                  // rotate left
+                  self.rotateMe()
+            break;
+          case "down":
+                  // rotate right
+                  self.rotateMe()
+                  self.rotateMe()
+                  self.rotateMe()
+            break;
+          case "left":
+                  // move left
+                  self.moveMe(-1,0);
+            break;
+          case "right":
+                  // move right
+                  self.moveMe(1,0);
+            break;
+        }
+      }
+  },
+  /* summon new brick to be controlled by player */
+  summon: function() {
+      var self = this
+      var block = self.next
+      block = self.moved(block, self.defpx, self.defpy)
+      if(self.canPut(block, null)) {
+          self.pid = self.pcount++
+          self.blox[self.pid] = block
+          self.px = self.defpx
+          self.py = self.defpy
+          self.nextBlock()
+          return block
+      } 
+  },
+  alterMe: function(brick) {
+      var self = this
+      if(self.canPut(brick, self.pid)) {
+          self.blox[self.pid] = brick
+          self.draw()        
+          return true
+      }
+  },
+  moveMe: function(dx, dy) {
+      var self = this
+      if(self.alterMe(self.moved(self.blox[self.pid], dx, dy))) {                
+          self.px += dx;
+          self.py += dy;
+          return true
+      }
+  },
+  rotateMe: function() {
+      var self = this
+      return self.alterMe(self.moved(self.rotated(self.moved(self.blox[self.pid], -self.px, -self.py)), self.px, self.py))
+  },
+  nextBlock: function() {
+      var self = this
+      self.next = {"color": self.rand(self.colors), "bricks": self.rand(self.bricks) }
+      var rot = self.rnd(4)
+      for(var i=0; i<rot; i++) self.next = self.rotated(self.next)
+      // draw preview...
+      if(self.preview) self.preview.remove()
+      self.preview = self.drawBlock(self.moved(self.next, 2, 2)).transform("T" + (self.stageW+3)*self.s + " " + self.s)
+  },
+  scanLines: function() {
+      var self = this
+      var lines = self.fullLines()
+      self.linecnt += lines
+      self.score += lines.length*10
+      self.log("score", self.score)            
+      var brix = self.bricksOnLines(lines);
+      if(!self.isEmpty(brix)) {
+          var newBricks = {}
+          for(var id in brix) self.explode(self.blox[id], newBricks)
+          self.killBlocks(brix, newBricks)
+          return self.bricksOnLines(lines);
+      }
   },
   fallBlocks: function() {
       var self = this
