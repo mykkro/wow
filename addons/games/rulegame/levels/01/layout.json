@@ -1,0 +1,133 @@
+{
+  "$type": "level-layout",
+  "items": {
+    "Ax": {
+      "name": "Ax",
+      "type": "int",
+      "value": 2,
+      "show": false
+    },
+    "Ay": {
+      "name": "Ay",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Px": {
+      "name": "Px",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Py": {
+      "name": "Py",
+      "type": "int",
+      "value": 0,
+      "show": false
+    }
+  },
+  "matrices": {
+    "STATE": [
+      {
+        "type": "string",
+        "name": "STATE",
+        "width": 4,
+        "height": 4,
+        "rows": [
+          [
+            "Number12",
+            "Number13",
+            "Empty",
+            "Number09"
+          ],
+          [
+            "Number06",
+            "Number05",
+            "Number02",
+            "Number08"
+          ],
+          [
+            "Number11",
+            "Number07",
+            "Number03",
+            "Number01"
+          ],
+          [
+            "Number15",
+            "Number10",
+            "Number04",
+            "Number14"
+          ]
+        ]
+      }
+    ],
+    "FINAL": [
+      {
+        "type": "string",
+        "name": "FINAL",
+        "width": 4,
+        "height": 4,
+        "rows": [
+          [
+            "Number01",
+            "Number02",
+            "Number03",
+            "Number04"
+          ],
+          [
+            "Number05",
+            "Number06",
+            "Number07",
+            "Number08"
+          ],
+          [
+            "Number09",
+            "Number10",
+            "Number11",
+            "Number12"
+          ],
+          [
+            "Number13",
+            "Number14",
+            "Number15",
+            "Empty"
+          ]
+        ]
+      }
+    ],
+    "VALID": [
+      {
+        "type": "boolean",
+        "name": "VALID",
+        "width": 4,
+        "height": 4,
+        "rows": [
+          [
+            false,
+            true,
+            false,
+            true
+          ],
+          [
+            false,
+            false,
+            true,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ]
+      }
+    ]
+  }
+}

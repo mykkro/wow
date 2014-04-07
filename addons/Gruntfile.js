@@ -30,6 +30,11 @@ module.exports = function (grunt) {
           cwd: 'games/tictactoe/',
           src: ['games/tictactoe/**'],
           dest: 'dist/tictactoe.zip'
+        },
+        rulegame: {
+          cwd: 'games/rulegame/',
+          src: ['games/rulegame/**'],
+          dest: 'dist/rulegame.zip'
         }
       },
       concat: {

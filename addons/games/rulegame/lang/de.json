@@ -1,0 +1,9 @@
+{
+	"name": "de",
+	"lang": "de",
+	"title": "Tetris",
+	"info": "Tetris ist ein klassisches Videospiel. Es ist ein einfaches Puzzle-Spiel mit verschiedenen Konfigurationen der Blöcke nach unten fallen. Sie steuern den Ort, die Blöcke fallen, und sicherzustellen, dass sie ineinander passen. Die Blöcke fallen bei schneller und schneller Raten mit jedem Level.",
+	"rules":"",
+	"labels": {
+	}
+}

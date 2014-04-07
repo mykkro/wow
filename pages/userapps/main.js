@@ -23,13 +23,7 @@ module.exports = function(Wow) {
 		followLink: function(tgt) {
 			var targetName = tgt.data("name")
 			var targetApptype = tgt.data("apptype")
-			if(targetName) {
-				if(targetApptype == "wow/app/game") {
-					this.goToGameAppPage(targetName)
-				} else {
-					this.goToImportPage(targetName)
-				}
-			}
+			this.goToAppPage(targetName, targetApptype)
 		},
 		createControls: function(data) {
 			var self = this

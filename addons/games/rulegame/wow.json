@@ -1,0 +1,10 @@
+{
+	"name": "wow-contrib-games-rilegame",
+	"apptype": "wow/app/rulegame",
+	"title": "Rulegame",
+	"description": "Generic rule based game",
+	"className": "RuleGame",
+	"version": "0.2",
+	"author": "Myrousz",
+	"langs": ["en"]
+}
