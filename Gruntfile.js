@@ -106,6 +106,11 @@ module.exports = function (grunt) {
             dest: 'public/js/pages/game.js',
             options: { alias: [ './pages/game/main.js:pagescript' ], transform: ['brfs']}
           },
+          pg_rulegame: {
+            src: ['./pages/rulegame/main.js'],
+            dest: 'public/js/pages/rulegame.js',
+            options: { alias: [ './pages/rulegame/main.js:pagescript' ], transform: ['brfs']}
+          },
           pg_enter: {
             src: ['./pages/entertainment/main.js'],
             dest: 'public/js/pages/entertainment.js',
@@ -140,6 +145,7 @@ module.exports = function (grunt) {
         "js/vendor/jquery.svgdom.min.js",
         "js/vendor/jquery.zoomooz.min.js",
         "js/vendor/jquery.ba-resize.js",
+        "js/vendor/d3.v3.min.js",
         "js/vendor/svgjs/svg.min.js",
         "js/vendor/svgjs/svg.easing.min.js",
         "js/vendor/svgjs/svg.filter.js",

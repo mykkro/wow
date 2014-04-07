@@ -1,0 +1,9 @@
+{
+  "$type": "game-levels",
+  "levels": [
+    {
+      "name": "01",
+      "uri": "levels/01/description.json"
+    }
+  ]
+}

@@ -55,6 +55,22 @@ var BasePage = BasicLayer.extend({
 	goToGameAppPage: function(name) {
 		this.goTo("/pages/game?importname="+name+"&lang=de")
 	},
+	goToRuleGamePage: function(name) {
+		this.goTo("/pages/rulegame?importname="+name+"&lang=de")
+	},
+	goToAppPage: function(name, apptype) {
+		var targetName = name
+		var targetApptype = apptype
+		if(targetName) {
+			if(targetApptype == "wow/app/game") {
+				this.goToGameAppPage(targetName)
+			} else if(targetApptype == "wow/app/rulegame") {
+				this.goToRuleGamePage(targetName)
+			} else {
+				this.goToImportPage(targetName)
+			}
+		}
+	},
 	goToHomePage: function() {
 		this.goTo("/pages/home")
 	},
