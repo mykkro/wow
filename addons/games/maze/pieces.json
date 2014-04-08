@@ -1,0 +1,25 @@
+{
+  "$type": "game-pieces",
+  "pieces": {
+    "Path": {
+      "picture": "Path.png",
+      "uri": "pieces/Path.png",
+      "showBorder": false
+    },
+    "Wall": {
+      "picture": "Wall.png",
+      "uri": "pieces/Wall.png",
+      "showBorder": false
+    },
+    "Home": {
+      "picture": "Home.png",
+      "uri": "pieces/Home.png",
+      "showBorder": false
+    },
+    "Avatar": {
+      "picture": "Avatar",
+      "uri": "/assets/misc/avatar.png",
+      "showBorder": false
+    }
+  }
+}

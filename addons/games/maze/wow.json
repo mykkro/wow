@@ -1,0 +1,11 @@
+{
+  "name": "wow-contrib-games-rulegame-maze",
+  "apptype": "wow/app/rulegame",
+  "title": "Bludiště",
+  "description": "",
+  "className": "RuleGame",
+  "version": "0.2",
+  "langs": [
+    "cz"
+  ]
+}

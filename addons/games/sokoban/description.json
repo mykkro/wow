@@ -1,0 +1,14 @@
+{
+  "$type": "game-description",
+  "version": "1.0",
+  "name": "Sokoban",
+  "rules": "Dopravte všechny krabice na nůžky a tím je otevřete. Přes nůžky můžete volně přecházet. Stejně tak můžete již umístěnou krabici z nůžek odsunout, pak se ale opět zavře. Nelze přesouvat dvě krabice najednou, stejně tak není možné krabici zatlačenou do rohu nebo vysvobodit a je pak nutné začít hru od začátku.",
+  "levelTakeTime": "5 minut",
+  "difficulty": "středně těžká",
+  "category": "logická",
+  "piecesUri": "pieces.json",
+  "rulesUri": "rules.json",
+  "settingsUri": "settings.json",
+  "levelsUri": "levels.json",
+  "thumbnailUri": "preview.png"
+}

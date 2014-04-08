@@ -1,0 +1,11 @@
+{
+  "name": "wow-contrib-games-rulegame-loyds15",
+  "apptype": "wow/app/rulegame",
+  "title": "Loydova patnáctka",
+  "description": "",
+  "className": "RuleGame",
+  "version": "0.2",
+  "langs": [
+    "cz"
+  ]
+}

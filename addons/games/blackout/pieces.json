@@ -1,0 +1,155 @@
+{
+  "$type": "game-pieces",
+  "pieces": {
+    "Number0": {
+      "picture": "Number0.png",
+      "uri": "pieces/Number0.png",
+      "showBorder": true
+    },
+    "Number1": {
+      "picture": "Number1.png",
+      "uri": "pieces/Number1.png",
+      "showBorder": true
+    },
+    "Number2": {
+      "picture": "Number2.png",
+      "uri": "pieces/Number2.png",
+      "showBorder": true
+    },
+    "Number3": {
+      "picture": "Number3.png",
+      "uri": "pieces/Number3.png",
+      "showBorder": true
+    },
+    "Number4": {
+      "picture": "Number4.png",
+      "uri": "pieces/Number4.png",
+      "showBorder": true
+    },
+    "Number5": {
+      "picture": "Number5.png",
+      "uri": "pieces/Number5.png",
+      "showBorder": true
+    },
+    "Number6": {
+      "picture": "Number6.png",
+      "uri": "pieces/Number6.png",
+      "showBorder": true
+    },
+    "Number7": {
+      "picture": "Number7.png",
+      "uri": "pieces/Number7.png",
+      "showBorder": true
+    },
+    "Number8": {
+      "picture": "Number8.png",
+      "uri": "pieces/Number8.png",
+      "showBorder": true
+    },
+    "Number9": {
+      "picture": "Number9.png",
+      "uri": "pieces/Number9.png",
+      "showBorder": true
+    },
+    "Plus": {
+      "picture": "Plus.png",
+      "uri": "pieces/Plus.png",
+      "showBorder": true
+    },
+    "Minus": {
+      "picture": "Minus.png",
+      "uri": "pieces/Minus.png",
+      "showBorder": true
+    },
+    "Multiplicator": {
+      "picture": "Multiplicator.png",
+      "uri": "pieces/Multiplicator.png",
+      "showBorder": true
+    },
+    "Division": {
+      "picture": "Division.png",
+      "uri": "pieces/Division.png",
+      "showBorder": true
+    },
+    "Number0Filled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "Number1Filled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "Number2Filled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "Number3Filled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "Number4Filled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "Number5Filled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "Number6Filled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "Number7Filled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "Number8Filled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "Number9Filled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "PlusFilled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "MinusFilled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "MultiplicatorFilled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "DivisionFilled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    },
+    "Equal": {
+      "picture": "Equal.png",
+      "uri": "pieces/Equal.png",
+      "showBorder": true
+    },
+    "Space": {
+      "picture": "Space.png",
+      "uri": "pieces/Space.png",
+      "showBorder": false
+    }
+  }
+}

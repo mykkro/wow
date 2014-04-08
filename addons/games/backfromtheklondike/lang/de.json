@@ -1,0 +1,8 @@
+{
+  "name": "de",
+  "lang": "de",
+  "title": "Návrat z Klondiku",
+  "info": "",
+  "rules": "Nacházíte se uprostřed Klondiku (označení srdcem). Vaším úkolem je dostat se těsně za jeho hranice. V každém kole můžete táhnout v libovolném z osmi směrů (S, J, V, Z, SV, SZ, JV, JZ) o takový počet kroků, jako má hodnotu číslo, na němž právě stojíte.\r\nAbyste Klondike opustili, musíte skončit přesně jeden krok za hranicemi.",
+  "labels": {}
+}

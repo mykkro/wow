@@ -1,0 +1,30 @@
+{
+	"name": "en",
+	"lang": "en",
+	"labels": {
+		"Play":"Play",
+		"Pause":"Pause",
+		"Restart":"Restart",
+		"Quit":"Quit",
+		"Info":"Info",
+		"Rules":"Rules",
+		"Scores":"Scores",
+		"Score":"Score",
+		"Settings":"Settings",
+		"GeneralInformation":"General Information",
+		"Starting game...":"Starting game...",
+		"Paused":"Paused",
+		"Status":"Status",
+		"Game over":"Game over",
+		"Well done!":"Well done!",
+		"Difficulty":"Difficulty",
+		"Easy":"Easy",
+		"Medium":"Medium",
+		"Hard":"Hard",
+		"GameSettings":"Game Settings",
+		"Submit": "Apply",
+		"Reset": "Reset",
+		"Lives":"Lives",
+		"Level":"Level"
+	}
+}

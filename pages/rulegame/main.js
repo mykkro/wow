@@ -42,10 +42,11 @@ var MyGame = GameWithRules.extend({
             var hh = height/rows
             var xx = j*ww
             var yy = i*hh
-            var picUrl = self.appUrl + gamedata.pieces[col].uri
-            board.append("image").attr({"xlink:href":picUrl, width:ww, height:ww, x:xx, y:yy})
+            var uri = gamedata.pieces[col].uri
+            var picUrl = (uri.charAt(0)=="/") ? uri : self.appUrl + uri
+            board.append("image").attr({"xlink:href":picUrl, width:ww, height:hh, x:xx, y:yy, preserveAspectRatio:"none"})
             if(valid.rows[i][j]) {
-              board.append("rect").attr({width:ww, height:ww, x:xx, y:yy, "fill": "cyan", "fill-opacity":0.5}).on("click", function() {
+              board.append("rect").attr({width:ww, height:hh, x:xx, y:yy, "fill": "cyan", "fill-opacity":0.5}).on("click", function() {
                 console.log("Click!")
                 self.cellSelected(j, i)
               })

@@ -1,0 +1,117 @@
+{
+  "$type": "game-rules",
+  "rules": [
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ComputerA1)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ComputerA2;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ComputerA2)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ComputerA3;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ComputerA3)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ComputerA4;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ComputerA4)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ComputerA1;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == PipeB1)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = PipeB2;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == PipeB2)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = PipeB1;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == PipeC1)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = PipeC2;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == PipeC2)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = PipeC3;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == PipeC3)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = PipeC4;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == PipeC4)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = PipeC1;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == PipeD1)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = PipeD2;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == PipeD2)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = PipeD3;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == PipeD3)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = PipeD4;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == PipeD4)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = PipeD1;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ServerA1)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ServerA2;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ServerA2)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ServerA3;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ServerA3)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ServerA4;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ServerA4)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ServerA1;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == SeverB1)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = SeverB2;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == SeverB2)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = SeverB1;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ServerC1)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ServerC2;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ServerC2)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ServerC3;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ServerC3)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ServerC4;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ServerC4)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ServerC1;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ServerD1)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ServerD2;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ServerD2)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ServerD3;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ServerD3)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ServerD4;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == ServerD4)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = ServerD1;\r\n\t}\r\n    ",
+      "break": true
+    }
+  ]
+}

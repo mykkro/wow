@@ -1,0 +1,250 @@
+{
+  "$type": "level-layout",
+  "items": {
+    "Ax": {
+      "name": "Ax",
+      "type": "int",
+      "value": 3,
+      "show": false
+    },
+    "Ay": {
+      "name": "Ay",
+      "type": "int",
+      "value": 5,
+      "show": false
+    },
+    "Px": {
+      "name": "Px",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Py": {
+      "name": "Py",
+      "type": "int",
+      "value": 0,
+      "show": false
+    }
+  },
+  "matrices": {
+    "STATE": [
+      {
+        "type": "string",
+        "name": "STATE",
+        "width": 7,
+        "height": 7,
+        "rows": [
+          [
+            "Empty",
+            "Wall",
+            "Wall",
+            "Wall",
+            "Wall",
+            "Wall",
+            "Wall"
+          ],
+          [
+            "Wall",
+            "Wall",
+            "Empty",
+            "Empty",
+            "Scissors",
+            "Empty",
+            "Wall"
+          ],
+          [
+            "Wall",
+            "Empty",
+            "BoxClosed",
+            "Empty",
+            "Wall",
+            "Empty",
+            "Wall"
+          ],
+          [
+            "Wall",
+            "Empty",
+            "Scissors",
+            "BoxClosed",
+            "Empty",
+            "Empty",
+            "Wall"
+          ],
+          [
+            "Wall",
+            "Empty",
+            "Empty",
+            "Wall",
+            "BoxClosed",
+            "Wall",
+            "Wall"
+          ],
+          [
+            "Wall",
+            "Scissors",
+            "Empty",
+            "Avatar",
+            "Empty",
+            "Wall",
+            "Empty"
+          ],
+          [
+            "Wall",
+            "Wall",
+            "Wall",
+            "Wall",
+            "Wall",
+            "Wall",
+            "Empty"
+          ]
+        ]
+      }
+    ],
+    "FINAL": [
+      {
+        "type": "string",
+        "name": "FINAL",
+        "width": 7,
+        "height": 7,
+        "rows": [
+          [
+            "Empty",
+            "Wall",
+            "Wall",
+            "Wall",
+            "Wall",
+            "Wall",
+            "Wall"
+          ],
+          [
+            "Wall",
+            "Wall",
+            "?",
+            "?",
+            "BoxOpened",
+            "?",
+            "Wall"
+          ],
+          [
+            "Wall",
+            "?",
+            "?",
+            "?",
+            "Wall",
+            "?",
+            "Wall"
+          ],
+          [
+            "Wall",
+            "?",
+            "BoxOpened",
+            "?",
+            "?",
+            "?",
+            "Wall"
+          ],
+          [
+            "Wall",
+            "?",
+            "?",
+            "Wall",
+            "?",
+            "Wall",
+            "Wall"
+          ],
+          [
+            "Wall",
+            "BoxOpened",
+            "?",
+            "?",
+            "?",
+            "Wall",
+            "Empty"
+          ],
+          [
+            "Wall",
+            "Wall",
+            "Wall",
+            "Wall",
+            "Wall",
+            "Wall",
+            "Empty"
+          ]
+        ]
+      }
+    ],
+    "VALID": [
+      {
+        "type": "boolean",
+        "name": "VALID",
+        "width": 7,
+        "height": 7,
+        "rows": [
+          [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            true,
+            false,
+            true,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        ]
+      }
+    ]
+  }
+}

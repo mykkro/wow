@@ -31,10 +31,25 @@ module.exports = function (grunt) {
           src: ['games/tictactoe/**'],
           dest: 'dist/tictactoe.zip'
         },
-        rulegame: {
-          cwd: 'games/rulegame/',
-          src: ['games/rulegame/**'],
-          dest: 'dist/rulegame.zip'
+        sokoban: {
+          cwd: 'games/sokoban/',
+          src: ['games/sokoban/**'],
+          dest: 'dist/sokoban.zip'
+        },
+        maze: {
+          cwd: 'games/maze/',
+          src: ['games/maze/**'],
+          dest: 'dist/maze.zip'
+        },
+        makeover: {
+          cwd: 'games/makeover/',
+          src: ['games/makeover/**'],
+          dest: 'dist/makeover.zip'
+        },
+        lightsout: {
+          cwd: 'games/lightsout/',
+          src: ['games/lightsout/**'],
+          dest: 'dist/lightsout.zip'
         }
       },
       concat: {
