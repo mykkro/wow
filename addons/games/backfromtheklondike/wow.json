@@ -1,0 +1,11 @@
+{
+  "name": "wow-contrib-games-rulegame-backfromtheklondike",
+  "apptype": "wow/app/rulegame",
+  "title": "Návrat z Klondiku",
+  "description": "",
+  "className": "RuleGame",
+  "version": "0.2",
+  "langs": [
+    "cz"
+  ]
+}

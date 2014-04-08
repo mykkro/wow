@@ -1,0 +1,8 @@
+{
+  "name": "en",
+  "lang": "en",
+  "title": "Netwalk",
+  "info": "",
+  "rules": "Propojte všechny počítače se serverem. Žádná z \"datových rour\" nesmí ústit do prázdna.\r\nPo vybrání jednotlivé části rotují proti směru hodinových ručiček, tím měníte cestu \"datového toku\".\r\nPro nejtěžší úrovně mohou trubky přecházet přes hranici pole a navázat spojení na opačné straně.",
+  "labels": {}
+}

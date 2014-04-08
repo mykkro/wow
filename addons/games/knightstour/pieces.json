@@ -1,0 +1,55 @@
+{
+  "$type": "game-pieces",
+  "pieces": {
+    "Black": {
+      "picture": "Black.png",
+      "uri": "pieces/Black.png",
+      "showBorder": false
+    },
+    "White": {
+      "picture": "White.png",
+      "uri": "pieces/White.png",
+      "showBorder": false
+    },
+    "KnightOnBlack": {
+      "picture": "KnightOnBlack.png",
+      "uri": "pieces/KnightOnBlack.png",
+      "showBorder": false
+    },
+    "KnightOnWhite": {
+      "picture": "KnightOnWhite.png",
+      "uri": "pieces/KnightOnWhite.png",
+      "showBorder": false
+    },
+    "VisitedBlack": {
+      "picture": "VisitedBlack.png",
+      "uri": "pieces/VisitedBlack.png",
+      "showBorder": false
+    },
+    "VisitedWhite": {
+      "picture": "VisitedWhite.png",
+      "uri": "pieces/VisitedWhite.png",
+      "showBorder": false
+    },
+    "BlackStart": {
+      "picture": "BlackStart.png",
+      "uri": "pieces/BlackStart.png",
+      "showBorder": false
+    },
+    "WhiteStart": {
+      "picture": "WhiteStart.png",
+      "uri": "pieces/WhiteStart.png",
+      "showBorder": false
+    },
+    "KnightOnWhiteStart": {
+      "picture": "KnightOnWhite.png",
+      "uri": "pieces/KnightOnWhite.png",
+      "showBorder": false
+    },
+    "KnightOnBlackStart": {
+      "picture": "KnightOnBlack.png",
+      "uri": "pieces/KnightOnBlack.png",
+      "showBorder": false
+    }
+  }
+}

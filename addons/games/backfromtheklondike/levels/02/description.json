@@ -1,0 +1,8 @@
+{
+  "$type": "level-description",
+  "id": "02",
+  "name": "Opravená verze, korekturu provedl John Hallyburton. Jedinou změnou je záměna čísla 2 za číslo 1 na pozici [-1,-5] od středu.",
+  "difficulty": "těžká",
+  "minNoOfMoves": "9",
+  "layoutUri": "levels/02/layout.json"
+}

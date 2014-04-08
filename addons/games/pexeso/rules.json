@@ -1,0 +1,169 @@
+{
+  "$type": "game-rules",
+  "rules": [
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 01Back)\r\n\t{\r\n\t\tBefore = 01Back;\r\n\t\tSTATE[A.x, A.y] = 01Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 02Back)\r\n\t{\r\n\t\tBefore = 02Back;\r\n\t\tSTATE[A.x, A.y] = 02Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 03Back)\r\n\t{\r\n\t\tBefore = 03Back;\r\n\t\tSTATE[A.x, A.y] = 03Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 04Back)\r\n\t{\r\n\t\tBefore = 04Back;\r\n\t\tSTATE[A.x, A.y] = 04Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 05Back)\r\n\t{\r\n\t\tBefore = 05Back;\r\n\t\tSTATE[A.x, A.y] = 05Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 06Back)\r\n\t{\r\n\t\tBefore = 06Back;\r\n\t\tSTATE[A.x, A.y] = 06Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 07Back)\r\n\t{\r\n\t\tBefore = 07Back;\r\n\t\tSTATE[A.x, A.y] = 07Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 08Back)\r\n\t{\r\n\t\tBefore = 08Back;\r\n\t\tSTATE[A.x, A.y] = 08Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 09Back)\r\n\t{\r\n\t\tBefore = 09Back;\r\n\t\tSTATE[A.x, A.y] = 09Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 10Back)\r\n\t{\r\n\t\tBefore = 10Back;\r\n\t\tSTATE[A.x, A.y] = 10Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 11Back)\r\n\t{\r\n\t\tBefore = 11Back;\r\n\t\tSTATE[A.x, A.y] = 11Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 12Back)\r\n\t{\r\n\t\tBefore = 12Back;\r\n\t\tSTATE[A.x, A.y] = 12Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 13Back)\r\n\t{\r\n\t\tBefore = 13Back;\r\n\t\tSTATE[A.x, A.y] = 13Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 14Back)\r\n\t{\r\n\t\tBefore = 14Back;\r\n\t\tSTATE[A.x, A.y] = 14Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 15Back)\r\n\t{\r\n\t\tBefore = 15Back;\r\n\t\tSTATE[A.x, A.y] = 15Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 16Back)\r\n\t{\r\n\t\tBefore = 16Back;\r\n\t\tSTATE[A.x, A.y] = 16Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 17Back)\r\n\t{\r\n\t\tBefore = 17Back;\r\n\t\tSTATE[A.x, A.y] = 17Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 18Back)\r\n\t{\r\n\t\tBefore = 18Back;\r\n\t\tSTATE[A.x, A.y] = 18Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 19Back)\r\n\t{\r\n\t\tBefore = 19Back;\r\n\t\tSTATE[A.x, A.y] = 19Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 20Back)\r\n\t{\r\n\t\tBefore = 20Back;\r\n\t\tSTATE[A.x, A.y] = 20Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 21Back)\r\n\t{\r\n\t\tBefore = 21Back;\r\n\t\tSTATE[A.x, A.y] = 21Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 22Back)\r\n\t{\r\n\t\tBefore = 22Back;\r\n\t\tSTATE[A.x, A.y] = 22Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 23Back)\r\n\t{\r\n\t\tBefore = 23Back;\r\n\t\tSTATE[A.x, A.y] = 23Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 24Back)\r\n\t{\r\n\t\tBefore = 24Back;\r\n\t\tSTATE[A.x, A.y] = 24Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 25Back)\r\n\t{\r\n\t\tBefore = 25Back;\r\n\t\tSTATE[A.x, A.y] = 25Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 26Back)\r\n\t{\r\n\t\tBefore = 26Back;\r\n\t\tSTATE[A.x, A.y] = 26Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 27Back)\r\n\t{\r\n\t\tBefore = 27Back;\r\n\t\tSTATE[A.x, A.y] = 27Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 28Back)\r\n\t{\r\n\t\tBefore = 28Back;\r\n\t\tSTATE[A.x, A.y] = 28Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 29Back)\r\n\t{\r\n\t\tBefore = 29Back;\r\n\t\tSTATE[A.x, A.y] = 29Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 30Back)\r\n\t{\r\n\t\tBefore = 30Back;\r\n\t\tSTATE[A.x, A.y] = 30Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 31Back)\r\n\t{\r\n\t\tBefore = 31Back;\r\n\t\tSTATE[A.x, A.y] = 31Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == 32Back)\r\n\t{\r\n\t\tBefore = 32Back;\r\n\t\tSTATE[A.x, A.y] = 32Front;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (FirstValue == nothing)\r\n\t{\r\n\t\tFirstBefore = Before;\r\n\t\tFirstValue = STATE[A.x, A.y];\r\n\t\tFirstX = A.x;\r\n\t\tFirstY = A.y;\r\n\t\tVALID[A.x, A.y] = false;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (SecondValue == nothing)\r\n\t{\r\n\t\tSecondBefore = Before;\r\n\t\tSecondValue = STATE[A.x, A.y];\r\n\t\tSecondX = A.x;\r\n\t\tSecondY = A.y;\r\n\t\tVALID[A.x, A.y] = false;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (FirstValue == SecondValue)\r\n\t{\r\n\t\tBody = Body + 10;\r\n\t\tSTATE[FirstX, FirstY] = Empty;\r\n\t\tSTATE[SecondX, SecondY] = Empty;\r\n\t}\r\n\telse\r\n\t{\r\n\t\tBody = Body - 1;\r\n\t\tSTATE[FirstX, FirstY] = FirstBefore;\r\n\t\tSTATE[SecondX, SecondY] = SecondBefore;\r\n\t\tVALID[FirstX, FirstY] = true;\r\n\t\tVALID[SecondX, SecondY] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tFirstBefore = Before;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tFirstValue = STATE[A.x, A.y];\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tFirstX = A.x;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tFirstY = A.Y;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[A.x, A.y] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tSecondValue = nothing;\r\n    ",
+      "break": false
+    }
+  ]
+}

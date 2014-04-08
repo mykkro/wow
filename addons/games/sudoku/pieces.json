@@ -1,0 +1,155 @@
+{
+  "$type": "game-pieces",
+  "pieces": {
+    "Corner1": {
+      "picture": "Corner1.png",
+      "uri": "pieces/Corner1.png",
+      "showBorder": false
+    },
+    "Corner2": {
+      "picture": "Corner2.png",
+      "uri": "pieces/Corner2.png",
+      "showBorder": false
+    },
+    "Corner3": {
+      "picture": "Corner3.png",
+      "uri": "pieces/Corner3.png",
+      "showBorder": false
+    },
+    "Corner4": {
+      "picture": "Corner4.png",
+      "uri": "pieces/Corner4.png",
+      "showBorder": false
+    },
+    "T1": {
+      "picture": "T1.png",
+      "uri": "pieces/T1.png",
+      "showBorder": false
+    },
+    "T2": {
+      "picture": "T2.png",
+      "uri": "pieces/T2.png",
+      "showBorder": false
+    },
+    "T3": {
+      "picture": "T3.png",
+      "uri": "pieces/T3.png",
+      "showBorder": false
+    },
+    "T4": {
+      "picture": "T4.png",
+      "uri": "pieces/T4.png",
+      "showBorder": false
+    },
+    "Cross": {
+      "picture": "Cross.png",
+      "uri": "pieces/Cross.png",
+      "showBorder": false
+    },
+    "Horizontal": {
+      "picture": "Horizontal.png",
+      "uri": "pieces/Horizontal.png",
+      "showBorder": false
+    },
+    "Vertical": {
+      "picture": "Vertical.png",
+      "uri": "pieces/Vertical.png",
+      "showBorder": false
+    },
+    "Empty": {
+      "picture": "Empty.png",
+      "uri": "pieces/Empty.png",
+      "showBorder": true
+    },
+    "FixedNumber1": {
+      "picture": "FixedNumber1.png",
+      "uri": "pieces/FixedNumber1.png",
+      "showBorder": true
+    },
+    "FixedNumber2": {
+      "picture": "FixedNumber2.png",
+      "uri": "pieces/FixedNumber2.png",
+      "showBorder": true
+    },
+    "FixedNumber3": {
+      "picture": "FixedNumber3.png",
+      "uri": "pieces/FixedNumber3.png",
+      "showBorder": true
+    },
+    "FixedNumber4": {
+      "picture": "FixedNumber4.png",
+      "uri": "pieces/FixedNumber4.png",
+      "showBorder": true
+    },
+    "FixedNumber5": {
+      "picture": "FixedNumber5.png",
+      "uri": "pieces/FixedNumber5.png",
+      "showBorder": true
+    },
+    "FixedNumber6": {
+      "picture": "FixedNumber6.png",
+      "uri": "pieces/FixedNumber6.png",
+      "showBorder": true
+    },
+    "FixedNumber7": {
+      "picture": "FixedNumber7.png",
+      "uri": "pieces/FixedNumber7.png",
+      "showBorder": true
+    },
+    "FixedNumber8": {
+      "picture": "FixedNumber8.png",
+      "uri": "pieces/FixedNumber8.png",
+      "showBorder": true
+    },
+    "FixedNumber9": {
+      "picture": "FixedNumber9.png",
+      "uri": "pieces/FixedNumber9.png",
+      "showBorder": true
+    },
+    "OwnNumber1": {
+      "picture": "OwnNumber1.png",
+      "uri": "pieces/OwnNumber1.png",
+      "showBorder": true
+    },
+    "OwnNumber2": {
+      "picture": "OwnNumber2.png",
+      "uri": "pieces/OwnNumber2.png",
+      "showBorder": true
+    },
+    "OwnNumber3": {
+      "picture": "OwnNumber3.png",
+      "uri": "pieces/OwnNumber3.png",
+      "showBorder": true
+    },
+    "OwnNumber4": {
+      "picture": "OwnNumber4.png",
+      "uri": "pieces/OwnNumber4.png",
+      "showBorder": true
+    },
+    "OwnNumber5": {
+      "picture": "OwnNumber5.png",
+      "uri": "pieces/OwnNumber5.png",
+      "showBorder": true
+    },
+    "OwnNumber6": {
+      "picture": "OwnNumber6.png",
+      "uri": "pieces/OwnNumber6.png",
+      "showBorder": true
+    },
+    "OwnNumber7": {
+      "picture": "OwnNumber7.png",
+      "uri": "pieces/OwnNumber7.png",
+      "showBorder": true
+    },
+    "OwnNumber8": {
+      "picture": "OwnNumber8.png",
+      "uri": "pieces/OwnNumber8.png",
+      "showBorder": true
+    },
+    "OwnNumber9": {
+      "picture": "OwnNumber9.png",
+      "uri": "pieces/OwnNumber9.png",
+      "showBorder": true
+    }
+  }
+}

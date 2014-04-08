@@ -1,0 +1,11 @@
+{
+  "name": "wow-contrib-games-rulegame-blackout",
+  "apptype": "wow/app/rulegame",
+  "title": "Temné rovnice",
+  "description": "",
+  "className": "RuleGame",
+  "version": "0.2",
+  "langs": [
+    "cz"
+  ]
+}
