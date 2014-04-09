@@ -20,7 +20,7 @@ module.exports = function(Wow) {
 		  { "name": "Radio ZUSA", "src": "http://stream.radio-zusa.net:8000/zusa-hifi.ogg"},
 		  { "name": "Kronhit 90sDance", "src": "http://onair.krone.at/kronehit-90sdance.mp3"} 
 		],
-		currentTrack: 6,
+		currentTrack: 0,
 		playPreviousTrack: function() {
 			this.stopPlaying()
 			this.currentTrack = (this.currentTrack + this.radios.length - 1) % this.radios.length;

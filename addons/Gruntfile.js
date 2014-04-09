@@ -50,6 +50,36 @@ module.exports = function (grunt) {
           cwd: 'games/lightsout/',
           src: ['games/lightsout/**'],
           dest: 'dist/lightsout.zip'
+        },
+        blackout: {
+          cwd: 'games/blackout/',
+          src: ['games/blackout/**'],
+          dest: 'dist/blackout.zip'
+        },
+        knightstour: {
+          cwd: 'games/knightstour/',
+          src: ['games/knightstour/**'],
+          dest: 'dist/knightstour.zip'
+        },
+        netwalk: {
+          cwd: 'games/netwalk/',
+          src: ['games/netwalk/**'],
+          dest: 'dist/netwalk.zip'
+        },
+        kidsudoku: {
+          cwd: 'games/kidsudoku/',
+          src: ['games/kidsudoku/**'],
+          dest: 'dist/kidsudoku.zip'
+        },
+        backfromtheklondike: {
+          cwd: 'games/backfromtheklondike/',
+          src: ['games/backfromtheklondike/**'],
+          dest: 'dist/backfromtheklondike.zip'
+        },
+        loyds15: {
+          cwd: 'games/loyds15/',
+          src: ['games/loyds15/**'],
+          dest: 'dist/loyds15.zip'
         }
       },
       concat: {

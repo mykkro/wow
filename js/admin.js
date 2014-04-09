@@ -225,6 +225,9 @@
 			goToGameAppPage: function(name) {
 				this.goTo("/pages/game?importname="+name+"&lang=de")
 			},			
+			goToRuleGamePage: function(name) {
+				this.goTo("/pages/rulegame?importname="+name+"&lang=de")
+			},			
 			showItem: function(item) {
 				console.log(item)
 				// TODO use mustache
@@ -240,6 +243,8 @@
 					}).click(function() {
 						if(item.apptype == "wow/app/game") {
 							self.goToGameAppPage(item.importName)
+						} else if(item.apptype == "wow/app/rulegame") {
+							self.goToRuleGamePage(item.importName)
 						} else {
 							self.goToImportPage(item.importName)
 						}
