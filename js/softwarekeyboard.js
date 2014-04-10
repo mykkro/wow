@@ -14,7 +14,7 @@ var SoftwareKeyboard = Overlay.extend({
 		this.size = 60
 		this.gap = 5
 		this.selectChain = new SelectChain()
-		this.useLayout("Deutsch")		
+		this.useLayout("DeutschColor")		
 	},
 	useLayout: function(layoutName) {
 		this.layout = SoftwareKeyboard.layouts[layoutName]
@@ -305,10 +305,22 @@ var SoftwareKeyboard = Overlay.extend({
 			[{x:0.5,f:8},"\n\n\n\n\n\nQ","\n\n\n\n\n\nW","\n\n\n\n\n\nE","\n\n\n\n\n\nR","\n\n\n\n\n\nT","\n\n\n\n\n\nZ","\n\n\n\n\n\nU","\n\n\n\n\n\nI","\n\n\n\n\n\nO","\n\n\n\n\n\nP","\n\n\n\n\n\nÜ",{x:0.25,f:9,w:1.25,h:2,w2:1.5,h2:1,x2:-0.25},"\n\n\n\n\n\n↵"],
 			[{x:0.75,f:8},"\n\n\n\n\n\nA","\n\n\n\n\n\nS","\n\n\n\n\n\nD","\n\n\n\n\n\nF","\n\n\n\n\n\nG","\n\n\n\n\n\nH","\n\n\n\n\n\nJ","\n\n\n\n\n\nK","\n\n\n\n\n\nL","\n\n\n\n\n\nÖ","\n\n\n\n\n\nÄ"],
 			[{x:1.25},"\n\n\n\n\n\nY","\n\n\n\n\n\nX","\n\n\n\n\n\nC","\n\n\n\n\n\nV","\n\n\n\n\n\nB","\n\n\n\n\n\nN","\n\n\n\n\n\nM",{x:0.25,a:4,f:9,w:0.75},"\n,",{w:0.75},"\n.",{a:5,f:8},"←","→",{f:6},"\n\n\n\n\n\nEntf"],
-			[{x:3.75,a:4,f:3,w:6.25},""]]
+			[{x:3.75,a:4,f:3,w:6.25},""]],
+		"DeutschColor": [
+			[{c:"#CD96CD",a:5,f:8},"\n\n\n\n\n\n1","\n\n\n\n\n\n2","\n\n\n\n\n\n3","\n\n\n\n\n\n4","\n\n\n\n\n\n5","\n\n\n\n\n\n6","\n\n\n\n\n\n7","\n\n\n\n\n\n9","\n\n\n\n\n\n0",{c:"#FFD39B"},"\n\n\n\n\n\nß",{c:"#FF6A6A",f:9,w:3},"←\n←\n\n\n\n\n←"],
+			[{x:0.5,c:"#FFD39B",f:8},"\n\n\n\n\n\nQ","\n\n\n\n\n\nW","\n\n\n\n\n\nE","\n\n\n\n\n\nR","\n\n\n\n\n\nT","\n\n\n\n\n\nZ","\n\n\n\n\n\nU","\n\n\n\n\n\nI","\n\n\n\n\n\nO","\n\n\n\n\n\nP","\n\n\n\n\n\nÜ",{x:0.25,c:"#32CD32",f:9,w:1.25,h:2,w2:1.5,h2:1,x2:-0.25},"\n\n\n\n\n\n↵"],
+			[{x:0.75,c:"#FFD39B",f:8},"\n\n\n\n\n\nA","\n\n\n\n\n\nS","\n\n\n\n\n\nD","\n\n\n\n\n\nF","\n\n\n\n\n\nG","\n\n\n\n\n\nH","\n\n\n\n\n\nJ","\n\n\n\n\n\nK","\n\n\n\n\n\nL","\n\n\n\n\n\nÖ","\n\n\n\n\n\nÄ"],
+			[{x:1.25},"\n\n\n\n\n\nY","\n\n\n\n\n\nX","\n\n\n\n\n\nC","\n\n\n\n\n\nV","\n\n\n\n\n\nB","\n\n\n\n\n\nN","\n\n\n\n\n\nM",{x:0.25,a:4,f:9,w:0.75},"\n,",{w:0.75},"\n.",{c:"#79CDCD",a:5,f:8},"←","→",{c:"#FF6A6A",f:6},"\n\n\n\n\n\nEntf"],
+			[{x:3.75,c:"#FFD39B",a:4,f:3,w:6.25},""]]
 	},
 	mappings: {
 		"Deutsch": {
+			"\n\n\n\n\n\nEntf": "escape",
+			"←\n←\n\n\n\n\n←" : "backspace",
+			"\n\n\n\n\n\n↵": "enter",
+			"": "space"
+		},
+		"DeutschColor": {
 			"\n\n\n\n\n\nEntf": "escape",
 			"←\n←\n\n\n\n\n←" : "backspace",
 			"\n\n\n\n\n\n↵": "enter",
