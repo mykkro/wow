@@ -16,6 +16,11 @@ module.exports = function (grunt) {
           src: ['games/pexeso/**'],
           dest: 'dist/pexeso.zip'
         },
+        pexeso2: {
+          cwd: 'games/pexeso2/',
+          src: ['games/pexeso2/**'],
+          dest: 'dist/pexeso2.zip'
+        },
         raphatris: {
           cwd: 'games/raphatris/',
           src: ['games/raphatris/**'],
@@ -196,7 +201,7 @@ module.exports = function (grunt) {
         raphanoid: {
 
         },
-        pexeso: {
+        pexeso2: {
 
         },
         tictactoe: {
