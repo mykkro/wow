@@ -8,17 +8,19 @@ var GameWithRules = Base.extend({
 		// initializing symbol table...
 		this.gameData = gameData
 		this.symbols = {}
+	},
 
+	start: function() {
+		console.log("Starting game...")
+		var gameData = this.gameData
 		var layout = gameData.currentLevel.layout
+		this.symbols = {}
 		for(var key in layout.items) {
 			this.symbols[key] = layout.items[key]
 		}
 		// we expect there is only one state and valid matrix
 		this.symbols.STATE = layout.matrices.STATE[0]
 		this.symbols.VALID = layout.matrices.VALID[0]
-	},
-
-	start: function() {
 		this.setLastPosition()
 		this.updateBoard(this.symbols.STATE, this.symbols.VALID)
 	},
