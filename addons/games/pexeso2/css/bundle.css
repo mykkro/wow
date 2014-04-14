@@ -1,0 +1,894 @@
+/*! normalize.css v2.1.2 | MIT License | git.io/normalize */
+
+/* ==========================================================================
+   HTML5 display definitions
+   ========================================================================== */
+
+/**
+ * Correct `block` display not defined in IE 8/9.
+ */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+    display: block;
+}
+
+/**
+ * Correct `inline-block` display not defined in IE 8/9.
+ */
+
+audio,
+canvas,
+video {
+    display: inline-block;
+}
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+
+[hidden] {
+    display: none;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+
+html {
+    font-family: sans-serif; /* 1 */
+    -ms-text-size-adjust: 100%; /* 2 */
+    -webkit-text-size-adjust: 100%; /* 2 */
+}
+
+/**
+ * Remove default margin.
+ */
+
+body {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Links
+   ========================================================================== */
+
+/**
+ * Address `outline` inconsistency between Chrome and other browsers.
+ */
+
+a:focus {
+    outline: thin dotted;
+}
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+/**
+ * Address variable `h1` font-size and margin within `section` and `article`
+ * contexts in Firefox 4+, Safari 5, and Chrome.
+ */
+
+h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+}
+
+/**
+ * Address styling not present in IE 8/9, Safari 5, and Chrome.
+ */
+
+abbr[title] {
+    border-bottom: 1px dotted;
+}
+
+/**
+ * Address style set to `bolder` in Firefox 4+, Safari 5, and Chrome.
+ */
+
+b,
+strong {
+    font-weight: bold;
+}
+
+/**
+ * Address styling not present in Safari 5 and Chrome.
+ */
+
+dfn {
+    font-style: italic;
+}
+
+/**
+ * Address differences between Firefox and other browsers.
+ */
+
+hr {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 0;
+}
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+
+mark {
+    background: #ff0;
+    color: #000;
+}
+
+/**
+ * Correct font family set oddly in Safari 5 and Chrome.
+ */
+
+code,
+kbd,
+pre,
+samp {
+    font-family: monospace, serif;
+    font-size: 1em;
+}
+
+/**
+ * Improve readability of pre-formatted text in all browsers.
+ */
+
+pre {
+    white-space: pre-wrap;
+}
+
+/**
+ * Set consistent quote types.
+ */
+
+q {
+    quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+
+small {
+    font-size: 80%;
+}
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sup {
+    top: -0.5em;
+}
+
+sub {
+    bottom: -0.25em;
+}
+
+/* ==========================================================================
+   Embedded content
+   ========================================================================== */
+
+/**
+ * Remove border when inside `a` element in IE 8/9.
+ */
+
+img {
+    border: 0;
+}
+
+/**
+ * Correct overflow displayed oddly in IE 9.
+ */
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   Figures
+   ========================================================================== */
+
+/**
+ * Address margin not present in IE 8/9 and Safari 5.
+ */
+
+figure {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+
+fieldset {
+    border: 1px solid #c0c0c0;
+    margin: 0 2px;
+    padding: 0.35em 0.625em 0.75em;
+}
+
+/**
+ * 1. Correct `color` not being inherited in IE 8/9.
+ * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+ */
+
+legend {
+    border: 0; /* 1 */
+    padding: 0; /* 2 */
+}
+
+/**
+ * 1. Correct font family not being inherited in all browsers.
+ * 2. Correct font size not being inherited in all browsers.
+ * 3. Address margins set differently in Firefox 4+, Safari 5, and Chrome.
+ */
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit; /* 1 */
+    font-size: 100%; /* 2 */
+    margin: 0; /* 3 */
+}
+
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+
+button,
+input {
+    line-height: normal;
+}
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Chrome, Safari 5+, and IE 8+.
+ * Correct `select` style inheritance in Firefox 4+ and Opera.
+ */
+
+button,
+select {
+    text-transform: none;
+}
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+
+button,
+html input[type="button"], /* 1 */
+input[type="reset"],
+input[type="submit"] {
+    -webkit-appearance: button; /* 2 */
+    cursor: pointer; /* 3 */
+}
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+
+button[disabled],
+html input[disabled] {
+    cursor: default;
+}
+
+/**
+ * 1. Address box sizing set to `content-box` in IE 8/9.
+ * 2. Remove excess padding in IE 8/9.
+ */
+
+input[type="checkbox"],
+input[type="radio"] {
+    box-sizing: border-box; /* 1 */
+    padding: 0; /* 2 */
+}
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome
+ *    (include `-moz` to future-proof).
+ */
+
+input[type="search"] {
+    -webkit-appearance: textfield; /* 1 */
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box; /* 2 */
+    box-sizing: content-box;
+}
+
+/**
+ * Remove inner padding and search cancel button in Safari 5 and Chrome
+ * on OS X.
+ */
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+
+/**
+ * Remove inner padding and border in Firefox 4+.
+ */
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+/**
+ * 1. Remove default vertical scrollbar in IE 8/9.
+ * 2. Improve readability and alignment in all browsers.
+ */
+
+textarea {
+    overflow: auto; /* 1 */
+    vertical-align: top; /* 2 */
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+/**
+ * Remove most spacing between table cells.
+ */
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/*---------------------------------------------------
+    LESS Elements 0.9
+  ---------------------------------------------------
+    A set of useful LESS mixins
+    More info at: http://lesselements.com
+  ---------------------------------------------------*/
+.icon.arrow-cycle {
+  background-image: url(../media/icons/arrow_cycle.png);
+}
+.icon.exit {
+  background-image: url(../media/icons/exit.png);
+}
+.icon.arrow_diagleft {
+  background-image: url(../media/icons/arrow_diagleft.png);
+}
+.icon.arrow_diagright {
+  background-image: url(../media/icons/arrow_diagright.png);
+}
+.icon.no_entry {
+  background-image: url(../media/icons/no_entry.png);
+}
+.icon.arrow_down {
+  background-image: url(../media/icons/arrow_down.png);
+}
+.icon.pause {
+  background-image: url(../media/icons/pause.png);
+}
+.icon.arrow_leftdown {
+  background-image: url(../media/icons/arrow_leftdown.png);
+}
+.icon.plus {
+  background-image: url(../media/icons/plus.png);
+}
+.icon.arrow_left {
+  background-image: url(../media/icons/arrow_left.png);
+}
+.icon.quit {
+  background-image: url(../media/icons/quit.png);
+}
+.icon.arrow_leftright {
+  background-image: url(../media/icons/arrow_leftright.png);
+}
+.icon.restart {
+  background-image: url(../media/icons/restart.png);
+}
+.icon.arrow_rightdown {
+  background-image: url(../media/icons/arrow_rightdown.png);
+}
+.icon.run {
+  background-image: url(../media/icons/run.png);
+}
+.icon.arrow_right {
+  background-image: url(../media/icons/arrow_right.png);
+}
+.icon.scores {
+  background-image: url(../media/icons/scores.png);
+}
+.icon.arrow_updown {
+  background-image: url(../media/icons/arrow_updown.png);
+}
+.icon.settings {
+  background-image: url(../media/icons/settings.png);
+}
+.icon.arrow_up {
+  background-image: url(../media/icons/arrow_up.png);
+}
+.icon.star {
+  background-image: url(../media/icons/star.png);
+}
+.icon.checkmark {
+  background-image: url(../media/icons/checkmark.png);
+}
+.icon.warning {
+  background-image: url(../media/icons/warning.png);
+}
+.icon.chess {
+  background-image: url(../media/icons/chess.png);
+}
+.icon.web_search {
+  background-image: url(../media/icons/web_search.png);
+}
+.icon.comment_plain {
+  background-image: url(../media/icons/comment_plain.png);
+}
+.icon.yield {
+  background-image: url(../media/icons/yield.png);
+}
+.icon.cross {
+  background-image: url(../media/icons/cross.png);
+}
+body {
+  background-color: #eee;
+}
+.hidden {
+  display: none;
+}
+.container {
+  width: 958px;
+  height: 598px;
+  margin: 0;
+  padding: 0;
+  background-color: #eed;
+  border: 1px solid #333;
+}
+.container .info {
+  background-color: none;
+  text-align: center;
+  width: 760px;
+  margin: 0px 0px 0px 200px;
+  padding: 0;
+}
+.container .info .title {
+  padding: 5px;
+  font-size: 32px;
+  font-weight: bold;
+}
+.container .info .logs {
+  padding: 10px;
+  font-size: 28px;
+}
+.container .info .log {
+  display: inline-block;
+  margin: 0px 10px;
+}
+.container .info .log.hidden {
+  display: none;
+}
+.container .nav {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  padding: 70px 0px 0px 0px;
+  width: 200px;
+  height: 530px;
+}
+.container .nav label {
+  display: block;
+  padding: 5px;
+}
+.container .nav label span {
+  font-size: 20px;
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.container .nav label button {
+  display: inline-block;
+  vertical-align: middle;
+}
+.container .tabs {
+  display: block;
+  vertical-align: top;
+  margin-left: 200px;
+  background-color: #ddc;
+  width: 758px;
+  height: 496px;
+  background-color: #dec;
+  border-top-left-radius: 10px;
+  -moz-border-top-left-radius: 10px;
+  -webkit-border-top-left-radius: 10px;
+}
+.container .tabs .tab {
+  padding: 10px;
+}
+.container .tabs .tab h3 {
+  padding: 8px 0px;
+  margin: 0px;
+}
+button.game {
+  border: 0;
+  width: 56px;
+  height: 56px;
+  color: transparent;
+  background: none;
+}
+button.game:disabled {
+  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+  /* Firefox 10+, Firefox on Android */
+  filter: gray;
+  /* IE6-9 */
+  -webkit-filter: grayscale(100%);
+  /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+}
+button.game-new {
+  background-image: url(../media/icons/run.png);
+  background-size: 100% auto;
+}
+button.game-quit {
+  background-image: url(../media/icons/quit.png);
+  background-size: 100% auto;
+}
+button.game-restart {
+  background-image: url(../media/icons/restart.png);
+  background-size: 100% auto;
+}
+button.game-pause {
+  background-image: url(../media/icons/pause.png);
+  background-size: 100% auto;
+}
+button.game-info {
+  background-image: url(../media/icons/info.png);
+  background-size: 100% auto;
+}
+button.game-rules {
+  background-image: url(../media/icons/chess.png);
+  background-size: 100% auto;
+}
+button.game-scores {
+  background-image: url(../media/icons/scores.png);
+  background-size: 100% auto;
+}
+button.game-settings {
+  background-image: url(../media/icons/settings.png);
+  background-size: 100% auto;
+}
+.splash {
+  position: absolute;
+  width: 400px;
+  height: 40px;
+  background-color: #cde;
+  top: 50%;
+  left: 50%;
+  margin-left: -210px;
+  margin-top: -30px;
+  padding: 10px;
+  font-size: 40px;
+  text-align: center;
+  border: 1px solid #333;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow: 0 0 5px 5px #888;
+  -webkit-box-shadow: 0 0 5px 5px#888;
+  box-shadow: 0 0 5px 5px #888;
+}
+.splash-overlay {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-color: rgba(208, 208, 192, 0.8);
+  width: 960px;
+  height: 600px;
+}
+/*  bar for showing up to 5 lives */
+.lifebar {
+  width: 0px;
+  height: 32px;
+  background-image: url(../media/icons/heart.png);
+  background-repeat: repeat-x;
+}
+.lifebar-wrapper {
+  width: 160px;
+  height: 32px;
+  display: inline-block;
+}
+
+.alertify,
+.alertify-show,
+.alertify-log {
+	-webkit-transition: all 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
+	   -moz-transition: all 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
+	    -ms-transition: all 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
+	     -o-transition: all 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
+	        transition: all 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275); /* easeOutBack */
+}
+.alertify-hide {
+	-webkit-transition: all 250ms cubic-bezier(0.600, -0.280, 0.735, 0.045);
+	   -moz-transition: all 250ms cubic-bezier(0.600, -0.280, 0.735, 0.045);
+	    -ms-transition: all 250ms cubic-bezier(0.600, -0.280, 0.735, 0.045);
+	     -o-transition: all 250ms cubic-bezier(0.600, -0.280, 0.735, 0.045);
+	        transition: all 250ms cubic-bezier(0.600, -0.280, 0.735, 0.045); /* easeInBack */
+}
+.alertify-log-hide {
+	-webkit-transition: all 500ms cubic-bezier(0.600, -0.280, 0.735, 0.045);
+	   -moz-transition: all 500ms cubic-bezier(0.600, -0.280, 0.735, 0.045);
+	    -ms-transition: all 500ms cubic-bezier(0.600, -0.280, 0.735, 0.045);
+	     -o-transition: all 500ms cubic-bezier(0.600, -0.280, 0.735, 0.045);
+	        transition: all 500ms cubic-bezier(0.600, -0.280, 0.735, 0.045); /* easeInBack */
+}
+.alertify-cover {
+	position: fixed; z-index: 99999;
+	top: 0; right: 0; bottom: 0; left: 0;
+	background-color:white;
+	filter:alpha(opacity=0);
+	opacity:0;
+}
+	.alertify-cover-hidden {
+		display: none;
+	}
+.alertify {
+	position: fixed; z-index: 99999;
+	top: 50px; left: 50%;
+	width: 550px;
+	margin-left: -275px;
+	opacity: 1;
+}
+	.alertify-hidden {
+		-webkit-transform: translate(0,-150px);
+		   -moz-transform: translate(0,-150px);
+		    -ms-transform: translate(0,-150px);
+		     -o-transform: translate(0,-150px);
+		        transform: translate(0,-150px);
+		opacity: 0;
+		display: none;
+	}
+	/* overwrite display: none; for everything except IE6-8 */
+	:root *> .alertify-hidden {
+		display: block;
+		visibility: hidden;
+	}
+.alertify-logs {
+	position: fixed;
+	z-index: 5000;
+	bottom: 10px;
+	right: 10px;
+	width: 300px;
+}
+.alertify-logs-hidden {
+	display: none;
+}
+	.alertify-log {
+		display: block;
+		margin-top: 10px;
+		position: relative;
+		right: -300px;
+		opacity: 0;
+	}
+	.alertify-log-show {
+		right: 0;
+		opacity: 1;
+	}
+	.alertify-log-hide {
+		-webkit-transform: translate(300px, 0);
+		   -moz-transform: translate(300px, 0);
+		    -ms-transform: translate(300px, 0);
+		     -o-transform: translate(300px, 0);
+		        transform: translate(300px, 0);
+		opacity: 0;
+	}
+	.alertify-dialog {
+		padding: 25px;
+	}
+		.alertify-resetFocus {
+			border: 0;
+			clip: rect(0 0 0 0);
+			height: 1px;
+			margin: -1px;
+			overflow: hidden;
+			padding: 0;
+			position: absolute;
+			width: 1px;
+		}
+		.alertify-inner {
+			text-align: center;
+		}
+		.alertify-text {
+			margin-bottom: 15px;
+			width: 100%;
+			-webkit-box-sizing: border-box;
+			   -moz-box-sizing: border-box;
+			        box-sizing: border-box;
+			font-size: 100%;
+		}
+		.alertify-buttons {
+		}
+			.alertify-button,
+			.alertify-button:hover,
+			.alertify-button:active,
+			.alertify-button:visited {
+				background: none;
+				text-decoration: none;
+				border: none;
+				/* line-height and font-size for input button */
+				line-height: 1.5;
+				font-size: 100%;
+				display: inline-block;
+				cursor: pointer;
+				margin-left: 5px;
+			}
+
+@media only screen and (max-width: 680px) {
+	.alertify,
+	.alertify-logs {
+		width: 90%;
+		-webkit-box-sizing: border-box;
+		   -moz-box-sizing: border-box;
+		        box-sizing: border-box;
+	}
+	.alertify {
+		left: 5%;
+		margin: 0;
+	}
+}
+
+/**
+ * Default Look and Feel
+ */
+.alertify,
+.alertify-log {
+	font-family: sans-serif;
+}
+.alertify {
+	background: #FFF;
+	border: 10px solid #333; /* browsers that don't support rgba */
+	border: 10px solid rgba(0,0,0,.7);
+	border-radius: 8px;
+	box-shadow: 0 3px 3px rgba(0,0,0,.3);
+	-webkit-background-clip: padding;     /* Safari 4? Chrome 6? */
+	   -moz-background-clip: padding;     /* Firefox 3.6 */
+	        background-clip: padding-box; /* Firefox 4, Safari 5, Opera 10, IE 9 */
+}
+	.alertify-text {
+		border: 1px solid #CCC;
+		padding: 10px;
+		border-radius: 4px;
+	}
+	.alertify-button {
+		border-radius: 4px;
+		color: #FFF;
+		font-weight: bold;
+		padding: 6px 15px;
+		text-decoration: none;
+		text-shadow: 1px 1px 0 rgba(0,0,0,.5);
+		box-shadow: inset 0 1px 0 0 rgba(255,255,255,.5);
+		background-image: -webkit-linear-gradient(top, rgba(255,255,255,.3), rgba(255,255,255,0));
+		background-image:    -moz-linear-gradient(top, rgba(255,255,255,.3), rgba(255,255,255,0));
+		background-image:     -ms-linear-gradient(top, rgba(255,255,255,.3), rgba(255,255,255,0));
+		background-image:      -o-linear-gradient(top, rgba(255,255,255,.3), rgba(255,255,255,0));
+		background-image:         linear-gradient(top, rgba(255,255,255,.3), rgba(255,255,255,0));
+	}
+	.alertify-button:hover,
+	.alertify-button:focus {
+		outline: none;
+		background-image: -webkit-linear-gradient(top, rgba(0,0,0,.1), rgba(0,0,0,0));
+		background-image:    -moz-linear-gradient(top, rgba(0,0,0,.1), rgba(0,0,0,0));
+		background-image:     -ms-linear-gradient(top, rgba(0,0,0,.1), rgba(0,0,0,0));
+		background-image:      -o-linear-gradient(top, rgba(0,0,0,.1), rgba(0,0,0,0));
+		background-image:         linear-gradient(top, rgba(0,0,0,.1), rgba(0,0,0,0));
+	}
+	.alertify-button:focus {
+		box-shadow: 0 0 15px #2B72D5;
+	}
+	.alertify-button:active {
+		position: relative;
+		box-shadow: inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05);
+	}
+		.alertify-button-cancel,
+		.alertify-button-cancel:hover,
+		.alertify-button-cancel:focus {
+			background-color: #FE1A00;
+			border: 1px solid #D83526;
+		}
+		.alertify-button-ok,
+		.alertify-button-ok:hover,
+		.alertify-button-ok:focus {
+			background-color: #5CB811;
+			border: 1px solid #3B7808;
+		}
+
+.alertify-log {
+	background: #1F1F1F;
+	background: rgba(0,0,0,.9);
+	padding: 15px;
+	border-radius: 4px;
+	color: #FFF;
+	text-shadow: -1px -1px 0 rgba(0,0,0,.5);
+}
+	.alertify-log-error {
+		background: #FE1A00;
+		background: rgba(254,26,0,.9);
+	}
+	.alertify-log-success {
+		background: #5CB811;
+		background: rgba(92,184,17,.9);
+	}
+/*!
+Alpaca Version 1.1.1
+
+Copyright 2013 Gitana Software, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License. 
+
+You may obtain a copy of the License at 
+	http://www.apache.org/licenses/LICENSE-2.0 
+
+Unless required by applicable law or agreed to in writing, software 
+distributed under the License is distributed on an "AS IS" BASIS, 
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+See the License for the specific language governing permissions and 
+limitations under the License. 
+
+For more information, please contact Gitana Software, Inc. at this
+address:
+
+  info@gitanasoftware.com
+*/.alpaca-clear{clear:both}.alpaca-controlfield{display:block;padding:2px;margin:2px}.alpaca-controlfield-container{display:block;padding-top:4px;padding-bottom:4px}.alpaca-controlfield-label{font-size:1.0em;font-weight:bold;text-align:left;margin-left:1px}.alpaca-controlfield-helper{font-size:.75em;margin-top:2px}.alpaca-controlfield-message{font-size:.85em}.alpaca-controlfield-message-hidden{display:none}.alpaca-field-required span.ui-icon-star{float:left;margin-right:.3em}.alpaca-controlfield-helper>span.ui-icon,.alpaca-controlfield-message>span.ui-icon{float:left;margin-right:.3em}input,textarea,select{border:1px solid #555;padding:2px;font-size:1em;border-radius:2px;-khtml-border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px;-webkit-box-shadow:0 1px 2px rgba(0,0,0,.2);-moz-box-shadow:0 1px 2px rgba(0,0,0,.2);box-shadow:0 1px 2px rgba(0,0,0,.2)}input[type="checkbox"],input[type="radio"]{border:0}input[type="file"]{border:0;box-shadow:none}select{min-width:150px}input:focus,textarea:focus{outline:0;border:1px solid #058cf5}.alpaca-field-readonly input,.alpaca-field-readonly textarea,input[readonly],textarea[readonly]{background-color:#dcdcdc;cursor:default}DIV.alpaca-controlfield-text .twitter-typeahead .tt-dropdown-menu{background-color:white;border:1px #777 solid;padding-left:10px;margin-left:2px;padding-right:10px;color:#ccc}DIV.alpaca-controlfield-text .twitter-typeahead .tt-dropdown-menu P{font-size:1em}.tt-suggestion.tt-is-under-cursor{background-color:#ccc;color:#333}.alpaca-controlfield-email>span.ui-icon,.alpaca-controlfield-date>span.ui-icon,.alpaca-controlfield-phone>span.ui-icon{float:right;margin-left:.3em}.alpaca-controlfield-helper .alpaca-controlfield-helper-text,.alpaca-controlfield-message .alpaca-controlfield-message-text,.alpaca-controlfield-email>input,.alpaca-controlfield-date>input,.alpaca-controlfield-phone>input{line-height:16px}.alpaca-controlfield-address-mapcanvas{height:300px;width:300px;margin:10px}.alpaca-controlfield-checkbox{padding-top:.4em}.alpaca-controlfield-checkbox input{margin-right:1em}.alpaca-controlfield-checkbox{*padding-top:0}.alpaca-controlfield-radio{padding-top:.5em}.alpaca-controlfield-radio input{margin-right:.3em}.alpaca-controlfield-radio-label{margin-right:.3em}.alpaca-controlfield-file-custom-input{position:absolute;height:100px;cursor:pointer;background:transparent;border:0;opacity:0;-moz-opacity:0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity = 0);z-index:999}.alpaca-controlfield-file-custom{width:350px;cursor:pointer;overflow:hidden;padding:2px;position:relative}.alpaca-controlfield-file-custom-disabled{opacity:.5;filter:progid:DXImageTransform.Microsoft.Alpha(opacity = 0);cursor:default}.alpaca-controlfield-file-custom-feedback{display:block;margin:1px 1px 1px 5px;font-style:italic;padding:.3em .6em}.alpaca-controlfield-file-custom-feedback-populated{font-style:normal;font-weight:bold;padding-left:20px}.alpaca-controlfield-editor{position:relative;width:100%;height:300px;border:1px #ccc solid}.alpaca-controlfield-editor .control-field-editor-el{position:absolute;top:0;bottom:0;left:0;right:0}.alpaca-controlfield .alpaca-controlfield-json textarea{font-family:"Courier New";font-size:.9em;font-style:italic}.alpaca-controlfield-hidden{display:none}.alpaca-fieldset{padding:4px;margin:4px;overflow:auto;position:relative}fieldset.alpaca-fieldset{margin-top:.5em;margin-right:0;margin-left:0;margin-bottom:.5em}legend.alpaca-fieldset-legend{font-size:1.1em;text-align:left;bottom:-1px}.alpaca-fieldset-legend{font-size:1.0em;font-weight:bold;text-align:left}.alpaca-fieldset-helper{padding-top:10px;padding-bottom:5px;clear:both}.alpaca-fieldset-items-container{padding-top:5px;clear:both}.alpaca-fieldset-legend-link{float:left;margin-right:.3em}.alpaca-fieldset-array-item-toolbar{padding:1px;margin:0 2px 0 2px;font-size:.75em}.alpaca-fieldset-array-toolbar{padding:10px 4px}.alpaca-fieldset-array-item-toolbar-disabled{opacity:.5}.alpaca-form{margin-top:15px;margin-left:15px}.alpaca-form-buttons-container{clear:both;display:block;margin:5px 0 5px 0}.alpaca-form-button-view-switcher{position:absolute;float:left;font-size:1em;padding:8px 3px 3px;zIndex:999999}.alpaca-form-button-view-switcher ul{listStyle:none;margin:0;padding:0;overflow:auto}.alpaca-form-button-view-switcher ul li{padding:2px;margin:1px;clear:left;float:left}.alpaca-form-button-view-switcher ul li a{text-decoration:none}.alpaca-form-buttons-container input{margin-right:4px}.alpaca-form-buttons-container input.alpaca-form-button:hover{background:#ffc}div.alpaca-fieldset{display:block;border:0;margin:1.5em 1em 1em 0}.alpaca-data-container{margin:5px 5px 5px 5px;padding:5px 5px 5px 5px;display:block}.alpaca-data{text-align:left;padding-left:10px}.alpaca-data-label{float:left;min-width:100px;clear:both;font-weight:bold;display:block}.alpaca-wizard-status-bar{list-style:none;overflow:hidden;margin:10px 0 10px 0;padding:0;counter-reset:step;float:left}.alpaca-wizard-status-bar li{float:left}.alpaca-wizard-status-bar li span{display:block;font-size:1.2em}.alpaca-wizard-status-bar li div{display:block;position:relative;padding:2px 25px 2px 30px}.alpaca-wizard-status-bar li div:before{font-size:1em;position:absolute;top:50%;left:5px;margin-top:-8px;text-align:center;font-weight:bold;padding:2px 6px;counter-increment:step;content:counter(step)}.alpaca-wizard-status-bar li div strong{font-weight:normal}.alpaca-wizard-title{font-size:1.2em;margin:0;padding:10px 0;font-weight:bold}.alpaca-wizard-desc{font-size:.9em;margin:0;padding:5px 0}.alpaca-wizard-step-title{font-size:1em;margin:0;padding:10px 0;text-decoration:underline;font-weight:bold}.alpaca-wizard-nav-bar{clear:both;float:right}fieldset.alpaca-view-web-list{border-left:none;border-bottom:0;border-right:0;padding-right:3em}fieldset.alpaca-view-web-list.fieldset-collapsed{border:solid 1px}.alpaca-view-web-list .alpaca-controlfield-label{display:inline-block;vertical-align:top;padding-top:.5em}.alpaca-view-web-list .alpaca-controlfield-label{width:130px}fieldset.alpaca-view-list legend{font-size:1.01em}.alpaca-controlfield.alpaca-view-web-list{display:inline-block}SPAN.alpaca-view-web-list label.alpaca-controlfield-label{font-size:1.0em;font-weight:bold!important;text-align:left;white-space:nowrap}.alpaca-view-web-list DIV.alpaca-controlfield-container{display:inline-block}.alpaca-controlfield-label-list-view{width:100px;display:inline-block;vertical-align:top;padding-top:.5em}.alpaca-fieldset-message-list-view{float:left;margin-right:.3em}.alpaca-controlfield-item-label-list-view{width:100px;display:inline-block;vertical-align:top;padding-top:.25em}ol.alpaca-fieldset-itemscontainer-list-view-top{padding-left:0}li.alpaca-fieldset-itemcontainer-list-view-top{list-style:none}.alpaca-fieldset-items-container-empty{padding-top:0;padding-bottom:0}.alpaca-layout-two-column-mask{overflow:auto;width:100%;min-width:600px;display:inline-block}.alpaca-layout-two-column-left{overflow:auto;display:inline-block;padding:5px;vertical-align:top}.alpaca-layout-two-column-right{overflow:auto;display:inline-block;padding:5px;vertical-align:top}fieldset.alpaca-fieldset-no-legend{border:0}fieldset.alpaca-view-web-edit-yaml.alpaca-fieldset{border:solid 1px;border-radius:5px;margin:1px 0 0 0;padding-top:4px;padding-bottom:2px}fieldset.alpaca-view-web-edit-yaml legend.alpaca-fieldset-legend span{display:none}fieldset.alpaca-view-web-edit-yaml legend.alpaca-fieldset-legend{font-size:1em}fieldset.alpaca-view-web-edit-yaml.fieldset-collapsed{border:0;margin:1px 1px 1px 1px}fieldset.alpaca-view-web-edit-yaml legend.alpaca-fieldset-legend.legend-expanded:after{content:url("./images/down.png");padding-left:5px}fieldset.alpaca-view-web-edit-yaml legend.alpaca-fieldset-legend.legend-collapsed:after{content:url("./images/left.png");padding-left:5px}fieldset.alpaca-view-web-edit-yaml span:not(.alpaca-field-focused) div.alpaca-controlfield-text input{background:0;border:0;box-shadow:none;margin-top:2px;margin-left:2px;margin-bottom:2px;margin-right:2px}fieldset.alpaca-view-web-edit-yaml{font-family:courier;padding-right:1em;padding-top:0}fieldset.alpaca-view-web-edit-yaml div.alpaca-controlfield-checkbox{margin-top:4px;margin-bottom:4px}fieldset.alpaca-view-web-edit-yaml div.alpaca-controlfield-select{margin-bottom:1px}fieldset.alpaca-view-web-edit-yaml div.alpaca-controlfield-radio div.alpaca-controlfield-radio{padding-top:3px;padding-bottom:4px}fieldset.alpaca-view-web-edit-yaml>input,fieldset.alpaca-view-web-edit-yaml>select,fieldset.alpaca-view-web-edit-yaml>label{font-family:courier}span.alpaca-view-web-edit-yaml .alpaca-controlfield-label{width:175px;padding-top:3px;padding-left:3px;display:inline-block;vertical-align:top}span.alpaca-view-web-edit-yaml div.alpaca-controlfield-container{padding-top:0;padding-bottom:0}span.alpaca-view-web-edit-yaml div.alpaca-controlfield-container>input,span.alpaca-view-web-edit-yaml div.alpaca-controlfield-container>select{padding:1px 1px 1px 1px}fieldset.alpaca-view-web-edit-yaml span.alpaca-field{padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0}fieldset.alpaca-view-web-edit-yaml ol.alpaca-fieldset-items-container{margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0}fieldset.alpaca-view-web-edit-yaml div.alpaca-fieldset-array-item-toolbar{position:absolute;z-index:99999;right:15px}fieldset.alpaca-view-web-edit-yaml .ui-button-icon-only .ui-button-text,.ui-button-icons-only .ui-button-text{padding:2px}.alpaca-inline .alpaca-inline-item-container{float:left}.alpaca-inline-item-container .alpaca-inline .alpaca-fieldset,.alpaca-inline-item-container .alpaca-fieldset.alpaca-inline{margin:0 1.5em;padding:0}.alpaca-inline-item-container .alpaca-fieldset-array-item-toolbar{width:60px;float:right;margin-top:.7em}.alpaca-inline .alpaca-fieldset-items-container{margin:0 1em;padding:0}.alpaca-inline select{min-width:0}#module-settings input:focus,textarea:focus{border-width:1px}
