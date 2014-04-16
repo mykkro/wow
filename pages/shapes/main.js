@@ -1,10 +1,10 @@
 module.exports = function(Wow) {
 
-	var BasePage = require("../../js/basepage")
+    var BasePage = require("../../js/basepage")
 
-	return BasePage.extend({
-		init: function(data, next) {
-			if(next) next(this)
-		}
-	})
+    return BasePage.extend({
+        init: function(data, next) {
+            if (next) next(this)
+        }
+    })
 }
