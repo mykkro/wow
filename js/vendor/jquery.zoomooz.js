@@ -24,20 +24,20 @@
 // DEALINGS IN THE SOFTWARE.
 
 var Sylvester = {
-  version: '0.1.3',
-  precision: 1e-6
+    version: '0.1.3',
+    precision: 1e-6
 };
 
 function Matrix() {}
 Matrix.prototype = {
 
-  // Returns a copy of the matrix
-  dup: function() {
-    return Matrix.create(this.elements);
-  },
+    // Returns a copy of the matrix
+    dup: function() {
+        return Matrix.create(this.elements);
+    },
 
-  // Maps the matrix to another matrix (of the same dimensions) according to the given function
-  /*map: function(fn) {
+    // Maps the matrix to another matrix (of the same dimensions) according to the given function
+    /*map: function(fn) {
     var els = [], ni = this.elements.length, ki = ni, i, nj, kj = this.elements[0].length, j;
     do { i = ki - ni;
       nj = kj;
@@ -49,197 +49,262 @@ Matrix.prototype = {
     return Matrix.create(els);
   },*/
 
-  // Returns true iff the matrix can multiply the argument from the left
-  canMultiplyFromLeft: function(matrix) {
-    var M = matrix.elements || matrix;
-    if (typeof(M[0][0]) == 'undefined') { M = Matrix.create(M).elements; }
-    // this.columns should equal matrix.rows
-    return (this.elements[0].length == M.length);
-  },
+    // Returns true iff the matrix can multiply the argument from the left
+    canMultiplyFromLeft: function(matrix) {
+        var M = matrix.elements || matrix;
+        if (typeof(M[0][0]) == 'undefined') {
+            M = Matrix.create(M).elements;
+        }
+        // this.columns should equal matrix.rows
+        return (this.elements[0].length == M.length);
+    },
 
-  // Returns the result of multiplying the matrix from the right by the argument.
-  // If the argument is a scalar then just multiply all the elements. If the argument is
-  // a vector, a vector is returned, which saves you having to remember calling
-  // col(1) on the result.
-  multiply: function(matrix) {
-    /*if (!matrix.elements) {
+    // Returns the result of multiplying the matrix from the right by the argument.
+    // If the argument is a scalar then just multiply all the elements. If the argument is
+    // a vector, a vector is returned, which saves you having to remember calling
+    // col(1) on the result.
+    multiply: function(matrix) {
+        /*if (!matrix.elements) {
       return this.map(function(x) { return x * matrix; });
     }*/
 
-    var returnVector = matrix.modulus ? true : false;
-    var M = matrix.elements || matrix;
-    if (typeof(M[0][0]) == 'undefined') { M = Matrix.create(M).elements; }
-    if (!this.canMultiplyFromLeft(M)) { return null; }
-    var ni = this.elements.length, ki = ni, i, nj, kj = M[0].length, j;
-    var cols = this.elements[0].length, elements = [], sum, nc, c;
-    do { i = ki - ni;
-      elements[i] = [];
-      nj = kj;
-      do { j = kj - nj;
-        sum = 0;
-        nc = cols;
-        do { c = cols - nc;
-          sum += this.elements[i][c] * M[c][j];
-        } while (--nc);
-        elements[i][j] = sum;
-      } while (--nj);
-    } while (--ni);
+        var returnVector = matrix.modulus ? true : false;
+        var M = matrix.elements || matrix;
+        if (typeof(M[0][0]) == 'undefined') {
+            M = Matrix.create(M).elements;
+        }
+        if (!this.canMultiplyFromLeft(M)) {
+            return null;
+        }
+        var ni = this.elements.length,
+            ki = ni,
+            i, nj, kj = M[0].length,
+            j;
+        var cols = this.elements[0].length,
+            elements = [],
+            sum, nc, c;
+        do {
+            i = ki - ni;
+            elements[i] = [];
+            nj = kj;
+            do {
+                j = kj - nj;
+                sum = 0;
+                nc = cols;
+                do {
+                    c = cols - nc;
+                    sum += this.elements[i][c] * M[c][j];
+                } while (--nc);
+                elements[i][j] = sum;
+            } while (--nj);
+        } while (--ni);
 
-    M = Matrix.create(elements);
-    return returnVector ? M.col(1) : M;
-  },
+        M = Matrix.create(elements);
+        return returnVector ? M.col(1) : M;
+    },
 
-  // Returns true iff the matrix is square
-  isSquare: function() {
-    return (this.elements.length == this.elements[0].length);
-  },
+    // Returns true iff the matrix is square
+    isSquare: function() {
+        return (this.elements.length == this.elements[0].length);
+    },
 
-  // Make the matrix upper (right) triangular by Gaussian elimination.
-  // This method only adds multiples of rows to other rows. No rows are
-  // scaled up or switched, and the determinant is preserved.
-  toRightTriangular: function() {
-    var M = this.dup(), els;
-    var n = this.elements.length, k = n, i, np, kp = this.elements[0].length, p;
-    do { i = k - n;
-      if (M.elements[i][i] === 0) {
-        for (j = i + 1; j < k; j++) {
-          if (M.elements[j][i] !== 0) {
-            els = []; np = kp;
-            do { p = kp - np;
-              els.push(M.elements[i][p] + M.elements[j][p]);
+    // Make the matrix upper (right) triangular by Gaussian elimination.
+    // This method only adds multiples of rows to other rows. No rows are
+    // scaled up or switched, and the determinant is preserved.
+    toRightTriangular: function() {
+        var M = this.dup(),
+            els;
+        var n = this.elements.length,
+            k = n,
+            i, np, kp = this.elements[0].length,
+            p;
+        do {
+            i = k - n;
+            if (M.elements[i][i] === 0) {
+                for (j = i + 1; j < k; j++) {
+                    if (M.elements[j][i] !== 0) {
+                        els = [];
+                        np = kp;
+                        do {
+                            p = kp - np;
+                            els.push(M.elements[i][p] + M.elements[j][p]);
+                        } while (--np);
+                        M.elements[i] = els;
+                        break;
+                    }
+                }
+            }
+            if (M.elements[i][i] !== 0) {
+                for (j = i + 1; j < k; j++) {
+                    var multiplier = M.elements[j][i] / M.elements[i][i];
+                    els = [];
+                    np = kp;
+                    do {
+                        p = kp - np;
+                        // Elements with column numbers up to an including the number
+                        // of the row that we're subtracting can safely be set straight to
+                        // zero, since that's the point of this routine and it avoids having
+                        // to loop over and correct rounding errors later
+                        els.push(p <= i ? 0 : M.elements[j][p] - M.elements[i][p] * multiplier);
+                    } while (--np);
+                    M.elements[j] = els;
+                }
+            }
+        } while (--n);
+        return M;
+    },
+
+    // Returns the determinant for square matrices
+    determinant: function() {
+        if (!this.isSquare()) {
+            return null;
+        }
+        var M = this.toRightTriangular();
+        var det = M.elements[0][0],
+            n = M.elements.length - 1,
+            k = n,
+            i;
+        do {
+            i = k - n + 1;
+            det = det * M.elements[i][i];
+        } while (--n);
+        return det;
+    },
+
+    // Returns true iff the matrix is singular
+    isSingular: function() {
+        return (this.isSquare() && this.determinant() === 0);
+    },
+
+    // Returns the result of attaching the given argument to the right-hand side of the matrix
+    augment: function(matrix) {
+        var M = matrix.elements || matrix;
+        if (typeof(M[0][0]) == 'undefined') {
+            M = Matrix.create(M).elements;
+        }
+        var T = this.dup(),
+            cols = T.elements[0].length;
+        var ni = T.elements.length,
+            ki = ni,
+            i, nj, kj = M[0].length,
+            j;
+        if (ni != M.length) {
+            return null;
+        }
+        do {
+            i = ki - ni;
+            nj = kj;
+            do {
+                j = kj - nj;
+                T.elements[i][cols + j] = M[i][j];
+            } while (--nj);
+        } while (--ni);
+        return T;
+    },
+
+    // Returns the inverse (if one exists) using Gauss-Jordan
+    inverse: function() {
+        if (!this.isSquare() || this.isSingular()) {
+            return null;
+        }
+        var ni = this.elements.length,
+            ki = ni,
+            i, j;
+        var M = this.augment(Matrix.I(ni)).toRightTriangular();
+        var np, kp = M.elements[0].length,
+            p, els, divisor;
+        var inverse_elements = [],
+            new_element;
+        // Matrix is non-singular so there will be no zeros on the diagonal
+        // Cycle through rows from last to first
+        do {
+            i = ni - 1;
+            // First, normalise diagonal elements to 1
+            els = [];
+            np = kp;
+            inverse_elements[i] = [];
+            divisor = M.elements[i][i];
+            do {
+                p = kp - np;
+                new_element = M.elements[i][p] / divisor;
+                els.push(new_element);
+                // Shuffle of the current row of the right hand side into the results
+                // array as it will not be modified by later runs through this loop
+                if (p >= ki) {
+                    inverse_elements[i].push(new_element);
+                }
             } while (--np);
             M.elements[i] = els;
-            break;
-          }
+            // Then, subtract this row from those above it to
+            // give the identity matrix on the left hand side
+            for (j = 0; j < i; j++) {
+                els = [];
+                np = kp;
+                do {
+                    p = kp - np;
+                    els.push(M.elements[j][p] - M.elements[i][p] * M.elements[j][i]);
+                } while (--np);
+                M.elements[j] = els;
+            }
+        } while (--ni);
+        return Matrix.create(inverse_elements);
+    },
+
+    // Set the matrix's elements from an array. If the argument passed
+    // is a vector, the resulting matrix will be a single column.
+    setElements: function(els) {
+        var i, elements = els.elements || els;
+        if (typeof(elements[0][0]) != 'undefined') {
+            var ni = elements.length,
+                ki = ni,
+                nj, kj, j;
+            this.elements = [];
+            do {
+                i = ki - ni;
+                nj = elements[i].length;
+                kj = nj;
+                this.elements[i] = [];
+                do {
+                    j = kj - nj;
+                    this.elements[i][j] = elements[i][j];
+                } while (--nj);
+            } while (--ni);
+            return this;
         }
-      }
-      if (M.elements[i][i] !== 0) {
-        for (j = i + 1; j < k; j++) {
-          var multiplier = M.elements[j][i] / M.elements[i][i];
-          els = []; np = kp;
-          do { p = kp - np;
-            // Elements with column numbers up to an including the number
-            // of the row that we're subtracting can safely be set straight to
-            // zero, since that's the point of this routine and it avoids having
-            // to loop over and correct rounding errors later
-            els.push(p <= i ? 0 : M.elements[j][p] - M.elements[i][p] * multiplier);
-          } while (--np);
-          M.elements[j] = els;
-        }
-      }
-    } while (--n);
-    return M;
-  },
-
-  // Returns the determinant for square matrices
-  determinant: function() {
-    if (!this.isSquare()) { return null; }
-    var M = this.toRightTriangular();
-    var det = M.elements[0][0], n = M.elements.length - 1, k = n, i;
-    do { i = k - n + 1;
-      det = det * M.elements[i][i];
-    } while (--n);
-    return det;
-  },
-
-  // Returns true iff the matrix is singular
-  isSingular: function() {
-    return (this.isSquare() && this.determinant() === 0);
-  },
-
-  // Returns the result of attaching the given argument to the right-hand side of the matrix
-  augment: function(matrix) {
-    var M = matrix.elements || matrix;
-    if (typeof(M[0][0]) == 'undefined') { M = Matrix.create(M).elements; }
-    var T = this.dup(), cols = T.elements[0].length;
-    var ni = T.elements.length, ki = ni, i, nj, kj = M[0].length, j;
-    if (ni != M.length) { return null; }
-    do { i = ki - ni;
-      nj = kj;
-      do { j = kj - nj;
-        T.elements[i][cols + j] = M[i][j];
-      } while (--nj);
-    } while (--ni);
-    return T;
-  },
-
-  // Returns the inverse (if one exists) using Gauss-Jordan
-  inverse: function() {
-    if (!this.isSquare() || this.isSingular()) { return null; }
-    var ni = this.elements.length, ki = ni, i, j;
-    var M = this.augment(Matrix.I(ni)).toRightTriangular();
-    var np, kp = M.elements[0].length, p, els, divisor;
-    var inverse_elements = [], new_element;
-    // Matrix is non-singular so there will be no zeros on the diagonal
-    // Cycle through rows from last to first
-    do { i = ni - 1;
-      // First, normalise diagonal elements to 1
-      els = []; np = kp;
-      inverse_elements[i] = [];
-      divisor = M.elements[i][i];
-      do { p = kp - np;
-        new_element = M.elements[i][p] / divisor;
-        els.push(new_element);
-        // Shuffle of the current row of the right hand side into the results
-        // array as it will not be modified by later runs through this loop
-        if (p >= ki) { inverse_elements[i].push(new_element); }
-      } while (--np);
-      M.elements[i] = els;
-      // Then, subtract this row from those above it to
-      // give the identity matrix on the left hand side
-      for (j = 0; j < i; j++) {
-        els = []; np = kp;
-        do { p = kp - np;
-          els.push(M.elements[j][p] - M.elements[i][p] * M.elements[j][i]);
-        } while (--np);
-        M.elements[j] = els;
-      }
-    } while (--ni);
-    return Matrix.create(inverse_elements);
-  },
-
-  // Set the matrix's elements from an array. If the argument passed
-  // is a vector, the resulting matrix will be a single column.
-  setElements: function(els) {
-    var i, elements = els.elements || els;
-    if (typeof(elements[0][0]) != 'undefined') {
-      var ni = elements.length, ki = ni, nj, kj, j;
-      this.elements = [];
-      do { i = ki - ni;
-        nj = elements[i].length; kj = nj;
-        this.elements[i] = [];
-        do { j = kj - nj;
-          this.elements[i][j] = elements[i][j];
-        } while (--nj);
-      } while(--ni);
-      return this;
+        var n = elements.length,
+            k = n;
+        this.elements = [];
+        do {
+            i = k - n;
+            this.elements.push([elements[i]]);
+        } while (--n);
+        return this;
     }
-    var n = elements.length, k = n;
-    this.elements = [];
-    do { i = k - n;
-      this.elements.push([elements[i]]);
-    } while (--n);
-    return this;
-  }
 };
 
 // Constructor function
 Matrix.create = function(elements) {
-  var M = new Matrix();
-  return M.setElements(elements);
+    var M = new Matrix();
+    return M.setElements(elements);
 };
 
 // Identity matrix of size n
 Matrix.I = function(n) {
-  var els = [], k = n, i, nj, j;
-  do { i = k - n;
-    els[i] = []; nj = k;
-    do { j = k - nj;
-      els[i][j] = (i == j) ? 1 : 0;
-    } while (--nj);
-  } while (--n);
-  return Matrix.create(els);
-};;/*
+    var els = [],
+        k = n,
+        i, nj, j;
+    do {
+        i = k - n;
+        els[i] = [];
+        nj = k;
+        do {
+            j = k - nj;
+            els[i][j] = (i == j) ? 1 : 0;
+        } while (--nj);
+    } while (--n);
+    return Matrix.create(els);
+};;
+/*
  * purecssmatrix.js, version 0.10, part of:
  * http://janne.aukia.com/zoomooz
  *
@@ -253,7 +318,7 @@ Matrix.I = function(n) {
  *
  */
 
- PureCSSMatrix = (function() {
+PureCSSMatrix = (function() {
     "use strict";
 
     //**********************************//
@@ -270,8 +335,8 @@ Matrix.I = function(n) {
     //**********************************//
 
     function CssMatrix(trans) {
-        if(trans && trans !== null && trans!="none") {
-            if(trans instanceof Matrix) {
+        if (trans && trans !== null && trans != "none") {
+            if (trans instanceof Matrix) {
                 this.setMatrix(trans);
             } else {
                 this.setMatrixValue(trans);
@@ -287,8 +352,8 @@ Matrix.I = function(n) {
 
     function rawRotationToRadians(raw) {
         var rot = parseFloat(filterNumber(raw));
-        if(raw.match(regexp_is_deg)) {
-            rot = (2*Math.PI)*rot/360.0;
+        if (raw.match(regexp_is_deg)) {
+            rot = (2 * Math.PI) * rot / 360.0;
         }
         return rot;
     }
@@ -296,34 +361,40 @@ Matrix.I = function(n) {
     CssMatrix.prototype.setMatrixValue = function(transString) {
         var mtr = Matrix.I(3);
         var items;
-        while((items = regexp_trans_splitter.exec(transString)) !== null) {
+        while ((items = regexp_trans_splitter.exec(transString)) !== null) {
             var action = items[1].toLowerCase();
             var val = items[2].split(",");
             var trans;
-            if(action=="matrix") {
-                trans = Matrix.create([[parseFloat(val[0]),parseFloat(val[2]),parseFloat(filterNumber(val[4]))],
-                               [parseFloat(val[1]),parseFloat(val[3]),parseFloat(filterNumber(val[5]))],
-                               [                0,                0,                              1]]);
-            } else if(action=="translate") {
+            if (action == "matrix") {
+                trans = Matrix.create([
+                    [parseFloat(val[0]), parseFloat(val[2]), parseFloat(filterNumber(val[4]))],
+                    [parseFloat(val[1]), parseFloat(val[3]), parseFloat(filterNumber(val[5]))],
+                    [0, 0, 1]
+                ]);
+            } else if (action == "translate") {
                 trans = Matrix.I(3);
                 trans.elements[0][2] = parseFloat(filterNumber(val[0]));
                 trans.elements[1][2] = parseFloat(filterNumber(val[1]));
-            } else if(action=="scale") {
+            } else if (action == "scale") {
                 var sx = parseFloat(val[0]);
                 var sy;
-                if(val.length>1) {
+                if (val.length > 1) {
                     sy = parseFloat(val[1]);
                 } else {
                     sy = sx;
                 }
-                trans = Matrix.create([[sx, 0, 0], [0, sy, 0], [0, 0, 1]]);
-            } else if(action=="rotate") {
+                trans = Matrix.create([
+                    [sx, 0, 0],
+                    [0, sy, 0],
+                    [0, 0, 1]
+                ]);
+            } else if (action == "rotate") {
                 trans = Matrix.RotationZ(rawRotationToRadians(val[0]));
-            } else if(action=="skew" || action=="skewx") {
+            } else if (action == "skew" || action == "skewx") {
                 // TODO: supports only one parameter skew
                 trans = Matrix.I(3);
                 trans.elements[0][1] = Math.tan(rawRotationToRadians(val[0]));
-            } else if(action=="skewy") {
+            } else if (action == "skewy") {
                 // TODO: test that this works (or unit test them all!)
                 trans = Matrix.I(3);
                 trans.elements[1][0] = Math.tan(rawRotationToRadians(val[0]));
@@ -342,22 +413,26 @@ Matrix.I = function(n) {
     };
 
     CssMatrix.prototype.inverse = function() {
-        if(Math.abs(this.m.elements[0][0])<0.000001) {
+        if (Math.abs(this.m.elements[0][0]) < 0.000001) {
             /* fixes a weird displacement problem with 90 deg rotations */
             this.m.elements[0][0] = 0;
         }
         return new CssMatrix(this.m.inverse());
     };
 
-    CssMatrix.prototype.translate = function(x,y) {
+    CssMatrix.prototype.translate = function(x, y) {
         var trans = Matrix.I(3);
         trans.elements[0][2] = x;
         trans.elements[1][2] = y;
         return new CssMatrix(this.m.multiply(trans));
     };
 
-    CssMatrix.prototype.scale = function(sx,sy) {
-        var trans = Matrix.create([[sx, 0, 0], [0, sy, 0], [0, 0, 1]]);
+    CssMatrix.prototype.scale = function(sx, sy) {
+        var trans = Matrix.create([
+            [sx, 0, 0],
+            [0, sy, 0],
+            [0, 0, 1]
+        ]);
         return new CssMatrix(this.m.multiply(trans));
     };
 
@@ -369,12 +444,12 @@ Matrix.I = function(n) {
     CssMatrix.prototype.toString = function() {
         var e = this.m.elements;
         var pxstr = "";
-        if($.browser.mozilla || $.browser.opera) {
+        if ($.browser.mozilla || $.browser.opera) {
             pxstr = "px";
         }
-        return "matrix("+printFixedNumber(e[0][0])+", "+printFixedNumber(e[1][0])+", "+
-                         printFixedNumber(e[0][1])+", "+printFixedNumber(e[1][1])+", "+
-                         printFixedNumber(e[0][2])+pxstr+", "+printFixedNumber(e[1][2])+pxstr+")";
+        return "matrix(" + printFixedNumber(e[0][0]) + ", " + printFixedNumber(e[1][0]) + ", " +
+            printFixedNumber(e[0][1]) + ", " + printFixedNumber(e[1][1]) + ", " +
+            printFixedNumber(e[0][2]) + pxstr + ", " + printFixedNumber(e[1][2]) + pxstr + ")";
     };
 
     //****************************************//
@@ -384,8 +459,14 @@ Matrix.I = function(n) {
 
     CssMatrix.prototype.elements = function() {
         var mv = this.m.elements;
-        return {"a":mv[0][0],"b":mv[1][0],"c":mv[0][1],
-                "d":mv[1][1],"e":mv[0][2],"f":mv[1][2]};
+        return {
+            "a": mv[0][0],
+            "b": mv[1][0],
+            "c": mv[0][1],
+            "d": mv[1][1],
+            "e": mv[0][2],
+            "f": mv[1][2]
+        };
     };
 
     //**********************************//
@@ -401,7 +482,8 @@ Matrix.I = function(n) {
     }
 
     return CssMatrix;
-})();;/*
+})();;
+/*
  * jquery.zoomooz-helpers.js, part of:
  * http://janne.aukia.com/zoomooz
  *
@@ -415,28 +497,28 @@ Matrix.I = function(n) {
 
 /*jslint sub: true */
 
-if(!$.zoomooz) {
+if (!$.zoomooz) {
     $.zoomooz = {};
 }
 
- $.zoomooz.helpers = (function($, ns) {
+$.zoomooz.helpers = (function($, ns) {
     "use strict";
 
     //**********************************//
     //***  Variables                 ***//
     //**********************************//
 
-    var browser_prefixes = ["-moz-","-webkit-","-o-","-ms-"];
+    var browser_prefixes = ["-moz-", "-webkit-", "-o-", "-ms-"];
 
     //**********************************//
     //***  Helpers                   ***//
     //**********************************//
 
-    ns.forEachPrefix = function(func,includeNoPrefix) {
-        for(var i=0;i<browser_prefixes.length;i++) {
+    ns.forEachPrefix = function(func, includeNoPrefix) {
+        for (var i = 0; i < browser_prefixes.length; i++) {
             func(browser_prefixes[i]);
         }
-        if(includeNoPrefix) {
+        if (includeNoPrefix) {
             func("");
         }
     };
@@ -444,14 +526,15 @@ if(!$.zoomooz) {
     ns.getElementTransform = function(elem) {
         var retVal;
         ns.forEachPrefix(function(prefix) {
-            retVal = retVal || $(elem).css(prefix+"transform");
-        },true);
+            retVal = retVal || $(elem).css(prefix + "transform");
+        }, true);
         return retVal;
     };
 
     return ns;
 
-})(jQuery, {});;/*
+})(jQuery, {});;
+/*
  * jquery.zoomooz-anim.js, part of:
  * http://janne.aukia.com/zoomooz
  *
@@ -506,13 +589,13 @@ if(!$.zoomooz) {
     //**********************************//
 
     jQuery.cssHooks["MsTransform"] = {
-        set: function( elem, value ) {
+        set: function(elem, value) {
             elem.style.msTransform = value;
         }
     };
 
     jQuery.cssHooks["MsTransformOrigin"] = {
-        set: function( elem, value ) {
+        set: function(elem, value) {
             elem.style.msTransformOrigin = value;
         }
     };
@@ -525,26 +608,26 @@ if(!$.zoomooz) {
         settings = jQuery.extend({}, default_settings, settings);
 
         // FIXME: what would be the best way to handle leftover animations?
-        if(endCallbackTimeout) {
+        if (endCallbackTimeout) {
             clearTimeout(endCallbackTimeout);
             endCallbackTimeout = null;
         }
 
-        if(settings.nativeanimation && animateEndCallback) {
+        if (settings.nativeanimation && animateEndCallback) {
             endCallbackTimeout = setTimeout(animateEndCallback, settings.duration);
         }
 
         this.each(function() {
             var $target = $(this);
 
-            if(!transformation) transformation = new PureCSSMatrix();
+            if (!transformation) transformation = new PureCSSMatrix();
 
             var current_affine = constructAffineFixingRotation($target, posOffset);
             var final_affine = fixRotationToSameLap(current_affine, affineTransformDecompose(transformation));
 
-            if(settings.nativeanimation) {
+            if (settings.nativeanimation) {
                 $target.css(constructZoomRootCssTransform(matrixCompose(final_affine), settings.duration, settings.easing));
-                if(animateStartedCallback) {
+                if (animateStartedCallback) {
                     animateStartedCallback();
                 }
             } else {
@@ -570,17 +653,17 @@ if(!$.zoomooz) {
         var propMap = {};
 
         helpers.forEachPrefix(function(prefix) {
-            propMap[prefix+"transform"] = trans;
-        },true);
+            propMap[prefix + "transform"] = trans;
+        }, true);
 
-        if(duration) {
-            var transdur = roundNumber(duration/1000,6)+"s";
+        if (duration) {
+            var transdur = roundNumber(duration / 1000, 6) + "s";
             propMap["-webkit-transition-duration"] = transdur;
             propMap["-o-transition-duration"] = transdur;
             propMap["-moz-transition-duration"] = transdur;
         }
 
-        if(easing) {
+        if (easing) {
             var transtiming = constructEasingCss(easing);
             propMap["-webkit-transition-timing-function"] = transtiming;
             propMap["-o-transition-timing-function"] = transtiming;
@@ -596,44 +679,46 @@ if(!$.zoomooz) {
 
     function animateTransition($target, st, et, settings, animateEndCallback, animateStartedCallback) {
 
-        if(!st) {
+        if (!st) {
             st = affineTransformDecompose(new PureCSSMatrix());
         }
         animation_start_time = (new Date()).getTime();
-        if(animation_interval_timer) {
+        if (animation_interval_timer) {
             clearInterval(animation_interval_timer);
             animation_interval_timer = null;
         }
-        if(settings.easing) {
+        if (settings.easing) {
             settings.easingfunction = constructEasingFunction(settings.easing, settings.duration);
         }
 
         // first step
         animationStep($target, st, et, settings, animateEndCallback);
 
-        if(animateStartedCallback) {
+        if (animateStartedCallback) {
             animateStartedCallback();
         }
 
-        animation_interval_timer = setInterval(function() { animationStep($target, st, et, settings, animateEndCallback); }, 1);
+        animation_interval_timer = setInterval(function() {
+            animationStep($target, st, et, settings, animateEndCallback);
+        }, 1);
     }
 
     function animationStep($target, affine_start, affine_end, settings, animateEndCallback) {
         var current_time = (new Date()).getTime() - animation_start_time;
         var time_value;
-        if(settings.easingfunction) {
-            time_value = settings.easingfunction(current_time/settings.duration);
+        if (settings.easingfunction) {
+            time_value = settings.easingfunction(current_time / settings.duration);
         } else {
-            time_value = current_time/settings.duration;
+            time_value = current_time / settings.duration;
         }
 
         $target.css(constructZoomRootCssTransform(matrixCompose(interpolateArrays(affine_start, affine_end, time_value))));
 
-        if(current_time>settings.duration) {
+        if (current_time > settings.duration) {
             clearInterval(animation_interval_timer);
             animation_interval_timer = null;
-            time_value=1.0;
-            if(animateEndCallback) {
+            time_value = 1.0;
+            if (animateEndCallback) {
                 animateEndCallback();
             }
         }
@@ -645,29 +730,35 @@ if(!$.zoomooz) {
      */
     function affineTransformDecompose(matrix) {
         var m = matrix.elements();
-        var a=m.a, b=m.b, c=m.c, d=m.d, e=m.e, f=m.f;
+        var a = m.a,
+            b = m.b,
+            c = m.c,
+            d = m.d,
+            e = m.e,
+            f = m.f;
 
-        if(Math.abs(a*d-b*c)<0.01) {
+        if (Math.abs(a * d - b * c) < 0.01) {
             console.log("fail!");
             return;
         }
 
-        var tx = e, ty = f;
+        var tx = e,
+            ty = f;
 
-        var sx = Math.sqrt(a*a+b*b);
-        a = a/sx;
-        b = b/sx;
+        var sx = Math.sqrt(a * a + b * b);
+        a = a / sx;
+        b = b / sx;
 
-        var k = a*c+b*d;
-        c -= a*k;
-        d -= b*k;
+        var k = a * c + b * d;
+        c -= a * k;
+        d -= b * k;
 
-        var sy = Math.sqrt(c*c+d*d);
-        c = c/sy;
-        d = d/sy;
-        k = k/sy;
+        var sy = Math.sqrt(c * c + d * d);
+        c = c / sy;
+        d = d / sy;
+        k = k / sy;
 
-        if((a*d-b*c)<0.0) {
+        if ((a * d - b * c) < 0.0) {
             a = -a;
             b = -b;
             c = -c;
@@ -676,17 +767,24 @@ if(!$.zoomooz) {
             sy = -sy;
         }
 
-        var r = Math.atan2(b,a);
-        return {"tx":tx, "ty":ty, "r":r, "k":Math.atan(k), "sx":sx, "sy":sy};
+        var r = Math.atan2(b, a);
+        return {
+            "tx": tx,
+            "ty": ty,
+            "r": r,
+            "k": Math.atan(k),
+            "sx": sx,
+            "sy": sy
+        };
     }
 
     function matrixCompose(ia) {
         var ret = "";
         /* this probably made safari 5.1.1. + os 10.6.8 + non-unibody mac? */
         //ret += "translateZ(0) ";
-        ret += "translate("+roundNumber(ia.tx,6)+"px,"+roundNumber(ia.ty,6)+"px) ";
-        ret += "rotate("+roundNumber(ia.r,6)+"rad) skewX("+roundNumber(ia.k,6)+"rad) ";
-        ret += "scale("+roundNumber(ia.sx,6)+","+roundNumber(ia.sy,6)+")";
+        ret += "translate(" + roundNumber(ia.tx, 6) + "px," + roundNumber(ia.ty, 6) + "px) ";
+        ret += "rotate(" + roundNumber(ia.r, 6) + "rad) skewX(" + roundNumber(ia.k, 6) + "rad) ";
+        ret += "scale(" + roundNumber(ia.sx, 6) + "," + roundNumber(ia.sy, 6) + ")";
         return ret;
     }
 
@@ -695,9 +793,9 @@ if(!$.zoomooz) {
     //**********************************//
 
     function constructEasingCss(input) {
-        if((input instanceof Array)) {
-            return "cubic-bezier("+roundNumber(input[0],6)+","+roundNumber(input[1],6)+","+
-                                   roundNumber(input[2],6)+","+roundNumber(input[3],6)+")";
+        if ((input instanceof Array)) {
+            return "cubic-bezier(" + roundNumber(input[0], 6) + "," + roundNumber(input[1], 6) + "," +
+                roundNumber(input[2], 6) + "," + roundNumber(input[3], 6) + ")";
         } else {
             return input;
         }
@@ -705,15 +803,25 @@ if(!$.zoomooz) {
 
     function constructEasingFunction(input, dur) {
         var params = [];
-        if((input instanceof Array)) {
+        if ((input instanceof Array)) {
             params = input;
         } else {
-            switch(input) {
-                case "linear": params = [0.0,0.0,1.0,1.0]; break;
-                case "ease": params = [0.25,0.1,0.25,1.0]; break;
-                case "ease-in": params = [0.42,0.0,1.0,1.0]; break;
-                case "ease-out": params = [0.0,0.0,0.58,1.0]; break;
-                case "ease-in-out": params = [0.42,0.0,0.58,1.0]; break;
+            switch (input) {
+                case "linear":
+                    params = [0.0, 0.0, 1.0, 1.0];
+                    break;
+                case "ease":
+                    params = [0.25, 0.1, 0.25, 1.0];
+                    break;
+                case "ease-in":
+                    params = [0.42, 0.0, 1.0, 1.0];
+                    break;
+                case "ease-out":
+                    params = [0.0, 0.0, 0.58, 1.0];
+                    break;
+                case "ease-in-out":
+                    params = [0.42, 0.0, 0.58, 1.0];
+                    break;
             }
         }
 
@@ -725,38 +833,101 @@ if(!$.zoomooz) {
     }
 
     // From: http://www.netzgesta.de/dev/cubic-bezier-timing-function.html
-    function cubicBezierAtPosition(t,P1x,P1y,P2x,P2y) {
-        var x,y,k=((1-t)*(1-t)*(1-t));
-        x=P1x*(3*t*t*(1-t))+P2x*(3*t*(1-t)*(1-t))+k;
-        y=P1y*(3*t*t*(1-t))+P2y*(3*t*(1-t)*(1-t))+k;
-        return {x:Math.abs(x),y:Math.abs(y)};
+    function cubicBezierAtPosition(t, P1x, P1y, P2x, P2y) {
+        var x, y, k = ((1 - t) * (1 - t) * (1 - t));
+        x = P1x * (3 * t * t * (1 - t)) + P2x * (3 * t * (1 - t) * (1 - t)) + k;
+        y = P1y * (3 * t * t * (1 - t)) + P2y * (3 * t * (1 - t) * (1 - t)) + k;
+        return {
+            x: Math.abs(x),
+            y: Math.abs(y)
+        };
     }
 
     // From: http://www.netzgesta.de/dev/cubic-bezier-timing-function.html
     // 1:1 conversion to js from webkit source files
     // UnitBezier.h, WebCore_animation_AnimationBase.cpp
-    function cubicBezierAtTime(t,p1x,p1y,p2x,p2y,duration) {
-        var ax=0,bx=0,cx=0,ay=0,by=0,cy=0;
+    function cubicBezierAtTime(t, p1x, p1y, p2x, p2y, duration) {
+        var ax = 0,
+            bx = 0,
+            cx = 0,
+            ay = 0,
+            by = 0,
+            cy = 0;
         // `ax t^3 + bx t^2 + cx t' expanded using Horner's rule.
-        function sampleCurveX(t) {return ((ax*t+bx)*t+cx)*t;}
-        function sampleCurveY(t) {return ((ay*t+by)*t+cy)*t;}
-        function sampleCurveDerivativeX(t) {return (3.0*ax*t+2.0*bx)*t+cx;}
+        function sampleCurveX(t) {
+            return ((ax * t + bx) * t + cx) * t;
+        }
+
+        function sampleCurveY(t) {
+            return ((ay * t + by) * t + cy) * t;
+        }
+
+        function sampleCurveDerivativeX(t) {
+            return (3.0 * ax * t + 2.0 * bx) * t + cx;
+        }
         // The epsilon value to pass given that the animation is going to run over |dur| seconds. The longer the
         // animation, the more precision is needed in the timing function result to avoid ugly discontinuities.
-        function solveEpsilon(duration) {return 1.0/(200.0*duration);}
-        function solve(x,epsilon) {return sampleCurveY(solveCurveX(x,epsilon));}
+        function solveEpsilon(duration) {
+            return 1.0 / (200.0 * duration);
+        }
+
+        function solve(x, epsilon) {
+            return sampleCurveY(solveCurveX(x, epsilon));
+        }
         // Given an x value, find a parametric value it came from.
-        function solveCurveX(x,epsilon) {var t0,t1,t2,x2,d2,i;
-            function fabs(n) {if(n>=0) {return n;}else {return 0-n;}}
+        function solveCurveX(x, epsilon) {
+            var t0, t1, t2, x2, d2, i;
+
+            function fabs(n) {
+                if (n >= 0) {
+                    return n;
+                } else {
+                    return 0 - n;
+                }
+            }
             // First try a few iterations of Newton's method -- normally very fast.
-            for(t2=x, i=0; i<8; i++) {x2=sampleCurveX(t2)-x; if(fabs(x2)<epsilon) {return t2;} d2=sampleCurveDerivativeX(t2); if(fabs(d2)<1e-6) {break;} t2=t2-x2/d2;}
+            for (t2 = x, i = 0; i < 8; i++) {
+                x2 = sampleCurveX(t2) - x;
+                if (fabs(x2) < epsilon) {
+                    return t2;
+                }
+                d2 = sampleCurveDerivativeX(t2);
+                if (fabs(d2) < 1e-6) {
+                    break;
+                }
+                t2 = t2 - x2 / d2;
+            }
             // Fall back to the bisection method for reliability.
-            t0=0.0; t1=1.0; t2=x; if(t2<t0) {return t0;} if(t2>t1) {return t1;}
-            while(t0<t1) {x2=sampleCurveX(t2); if(fabs(x2-x)<epsilon) {return t2;} if(x>x2) {t0=t2;}else {t1=t2;} t2=(t1-t0)*0.5+t0;}
+            t0 = 0.0;
+            t1 = 1.0;
+            t2 = x;
+            if (t2 < t0) {
+                return t0;
+            }
+            if (t2 > t1) {
+                return t1;
+            }
+            while (t0 < t1) {
+                x2 = sampleCurveX(t2);
+                if (fabs(x2 - x) < epsilon) {
+                    return t2;
+                }
+                if (x > x2) {
+                    t0 = t2;
+                } else {
+                    t1 = t2;
+                }
+                t2 = (t1 - t0) * 0.5 + t0;
+            }
             return t2; // Failure.
         }
         // Calculate the polynomial coefficients, implicit first and last control points are (0,0) and (1,1).
-        cx=3.0*p1x; bx=3.0*(p2x-p1x)-cx; ax=1.0-cx-bx; cy=3.0*p1y; by=3.0*(p2y-p1y)-cy; ay=1.0-cy-by;
+        cx = 3.0 * p1x;
+        bx = 3.0 * (p2x - p1x) - cx;
+        ax = 1.0 - cx - bx;
+        cy = 3.0 * p1y;
+        by = 3.0 * (p2y - p1y) - cy;
+        ay = 1.0 - cy - by;
         // Convert from input time to parametric value in curve, then from that to output time.
         return solve(t, solveEpsilon(duration));
     }
@@ -768,14 +939,14 @@ if(!$.zoomooz) {
     function constructAffineFixingRotation(elem, posOffset) {
         var rawTrans = helpers.getElementTransform(elem);
         var matr;
-        if(!rawTrans) {
+        if (!rawTrans) {
             matr = new PureCSSMatrix();
         } else {
             matr = new PureCSSMatrix(rawTrans);
         }
 
-        if(posOffset) {
-            matr = matr.translate(posOffset.x,posOffset.y);
+        if (posOffset) {
+            matr = matr.translate(posOffset.x, posOffset.y);
         }
 
         var current_affine = affineTransformDecompose(matr);
@@ -786,17 +957,17 @@ if(!$.zoomooz) {
     function getTotalRotation(transString) {
         var totalRot = 0;
         var items;
-        while((items = regexp_trans_splitter.exec(transString)) !== null) {
+        while ((items = regexp_trans_splitter.exec(transString)) !== null) {
             var action = items[1].toLowerCase();
             var val = items[2].split(",");
-            if(action=="matrix") {
-                var recomposedTransItem = action+"("+items[2]+")";
+            if (action == "matrix") {
+                var recomposedTransItem = action + "(" + items[2] + ")";
                 totalRot += affineTransformDecompose(new PureCSSMatrix(recomposedTransItem)).r;
-            } else if(action=="rotate") {
+            } else if (action == "rotate") {
                 var raw = val[0];
                 var rot = parseFloat(filterNumber(raw));
-                if(raw.match(regexp_is_deg)) {
-                    rot = (2*Math.PI)*rot/360.0;
+                if (raw.match(regexp_is_deg)) {
+                    rot = (2 * Math.PI) * rot / 360.0;
                 }
                 totalRot += rot;
             }
@@ -807,14 +978,14 @@ if(!$.zoomooz) {
     // TODO: use modulo instead of loops
     function fixRotationToSameLap(current_affine, final_affine) {
 
-        if(Math.abs(current_affine.r-final_affine.r)>Math.PI) {
-            if(final_affine.r<current_affine.r) {
-                while(Math.abs(current_affine.r-final_affine.r)>Math.PI) {
-                    final_affine.r+=(2*Math.PI);
+        if (Math.abs(current_affine.r - final_affine.r) > Math.PI) {
+            if (final_affine.r < current_affine.r) {
+                while (Math.abs(current_affine.r - final_affine.r) > Math.PI) {
+                    final_affine.r += (2 * Math.PI);
                 }
             } else {
-                while(Math.abs(current_affine.r-final_affine.r)>Math.PI) {
-                    final_affine.r-=(2*Math.PI);
+                while (Math.abs(current_affine.r - final_affine.r) > Math.PI) {
+                    final_affine.r -= (2 * Math.PI);
                 }
             }
         }
@@ -827,25 +998,26 @@ if(!$.zoomooz) {
 
     function interpolateArrays(st, et, pos) {
         var it = {};
-        for(var i in st) {
+        for (var i in st) {
             if (st.hasOwnProperty(i)) {
-                it[i] = st[i]+(et[i]-st[i])*pos;
+                it[i] = st[i] + (et[i] - st[i]) * pos;
             }
         }
         return it;
     }
 
     function roundNumber(number, precision) {
-        precision = Math.abs(parseInt(precision,10)) || 0;
+        precision = Math.abs(parseInt(precision, 10)) || 0;
         var coefficient = Math.pow(10, precision);
-        return Math.round(number*coefficient)/coefficient;
+        return Math.round(number * coefficient) / coefficient;
     }
 
     function filterNumber(x) {
         return x.match(regexp_filter_number);
     }
 
-})(jQuery);;/*
+})(jQuery);;
+/*
  * jquery.zoomooz-core.js, part of:
  * http://janne.aukia.com/zoomooz
  *
@@ -917,7 +1089,7 @@ if(!$.zoomooz) {
     //***  jQuery functions          ***//
     //**********************************//
 
-    if(!$.zoomooz) {
+    if (!$.zoomooz) {
         $.zoomooz = {};
     }
 
@@ -941,21 +1113,21 @@ if(!$.zoomooz) {
         this.each(function() {
             var $this = $(this);
 
-            if(!skipElementSettings) {
+            if (!skipElementSettings) {
                 settings = $this.zoomSettings(settings);
             }
 
             zoomTo($this, settings);
 
-            if(settings.debug) {
-                if($("#debug").length===0) {
+            if (settings.debug) {
+                if ($("#debug").length === 0) {
                     $(settings.root).append('<div id="debug"><div>');
                 } else {
                     $("#debug").html("");
                 }
-                showDebug($this,settings);
+                showDebug($this, settings);
             } else {
-                if($("#debug").length!==0) {
+                if ($("#debug").length !== 0) {
                     $("#debug").html("");
                 }
             }
@@ -972,16 +1144,16 @@ if(!$.zoomooz) {
 
         var settings = jQuery.extend({}, baseSettings);
 
-        if(!$.zoomooz.defaultSettings) {
+        if (!$.zoomooz.defaultSettings) {
             $.zoomooz.setup();
         }
 
         var defaultSettings = $.zoomooz.defaultSettings;
-        var elementSettings = jQuery.extend({},settings);
+        var elementSettings = jQuery.extend({}, settings);
 
         var key;
 
-        for(key in defaultSettings) {
+        for (key in defaultSettings) {
             if (defaultSettings.hasOwnProperty(key) && !elementSettings[key]) {
                 elementSettings[key] = $elem.data(key);
             }
@@ -989,9 +1161,9 @@ if(!$.zoomooz) {
 
         // FIXME: it would be better, that the animationSettings
         // would come from the jquery.zoomooz-anim file somehow
-        for(var i=0;i<animationSettings.length;i++) {
+        for (var i = 0; i < animationSettings.length; i++) {
             key = animationSettings[i];
-            if(!elementSettings[key]) {
+            if (!elementSettings[key]) {
                 elementSettings[key] = $elem.data(key);
             }
         }
@@ -1007,20 +1179,20 @@ if(!$.zoomooz) {
 
         var transformOrigin = "";
         helpers.forEachPrefix(function(prefix) {
-            transformOrigin += prefix+"transform-origin: 0 0;";
-        },true);
+            transformOrigin += prefix + "transform-origin: 0 0;";
+        }, true);
 
         // FIXME: how to remove the html height requirement?
         // FIXME: how to remove the transform origin?
         style.innerHTML = "html {height:100%;}" +
-                          ".noScroll{overflow:hidden !important;}" +
-                          "* {"+transformOrigin+"}";
+            ".noScroll{overflow:hidden !important;}" +
+            "* {" + transformOrigin + "}";
 
         document.getElementsByTagName('head')[0].appendChild(style);
 
         $(document).ready(function() {
             var scrollBarWidth = window.innerWidth - $("body").width();
-            style.innerHTML += "body.noScroll,html.noScroll body{margin-right:"+scrollBarWidth+"px;}";
+            style.innerHTML += "body.noScroll,html.noScroll body{margin-right:" + scrollBarWidth + "px;}";
         });
 
     }
@@ -1059,12 +1231,12 @@ if(!$.zoomooz) {
             var $root = settings.root;
             var $scroll = $root.parent();
 
-            if(elem[0] === $root[0]) {
+            if (elem[0] === $root[0]) {
                 scrollData = getExistingScrollData($root, $scroll);
-            } else if(!$root.data("original-scroll")) {
+            } else if (!$root.data("original-scroll")) {
                 startedZoomFromScroll = true;
                 scrollData = storeNewScrollData($root, $scroll, useScrollResetBeforeZoom);
-            } else if(!useScrollResetBeforeZoom) {
+            } else if (!useScrollResetBeforeZoom) {
                 scrollData = getExistingScrollData($root, $scroll);
             }
         }());
@@ -1076,16 +1248,16 @@ if(!$.zoomooz) {
 
         var animScrollData = null;
 
-        if(elem[0] !== settings.root[0]) {
+        if (elem[0] !== settings.root[0]) {
             var inv = computeTotalTransformation(elem, settings.root).inverse();
 
-            if(!useScrollResetBeforeZoom) {
+            if (!useScrollResetBeforeZoom) {
                 animScrollData = scrollData;
             }
 
             rootTransformation = computeViewportTransformation(elem, inv, animScrollData, settings);
 
-            if(settings.animationendcallback) {
+            if (settings.animationendcallback) {
                 animationendcallback = function() {
                     settings.animationendcallback.call(elem[0]);
                 };
@@ -1093,8 +1265,8 @@ if(!$.zoomooz) {
 
         } else {
 
-            if(useScrollResetBeforeZoom) {
-                rootTransformation = (new PureCSSMatrix()).translate(-scrollData.x,-scrollData.y);
+            if (useScrollResetBeforeZoom) {
+                rootTransformation = (new PureCSSMatrix()).translate(-scrollData.x, -scrollData.y);
             }
 
             animationendcallback = function() {
@@ -1104,16 +1276,16 @@ if(!$.zoomooz) {
                 $scroll.removeClass("noScroll");
 
                 $root.setTransformation(new PureCSSMatrix());
-                $root.data("original-scroll",null);
+                $root.data("original-scroll", null);
 
                 $(document).off("touchmove");
 
-                if(useScrollResetBeforeZoom) {
+                if (useScrollResetBeforeZoom) {
 
                     // this needs to be after the setTransformation and
                     // done with window.scrollTo to not have iPhone repaints
-                    if($scroll[0]==document.body || $scroll[0]==window) {
-                        window.scrollTo(scrollData.x,scrollData.y);
+                    if ($scroll[0] == document.body || $scroll[0] == window) {
+                        window.scrollTo(scrollData.x, scrollData.y);
                     } else {
                         $scroll.scrollLeft(scrollData.x);
                         $scroll.scrollTop(scrollData.y);
@@ -1121,18 +1293,18 @@ if(!$.zoomooz) {
 
                 }
 
-                if(settings.animationendcallback) {
+                if (settings.animationendcallback) {
                     settings.animationendcallback.call(elem[0]);
                 }
             };
         }
 
         var animationstartedcallback = null;
-        if(useScrollResetBeforeZoom && scrollData && scrollData.animationstartedcallback) {
+        if (useScrollResetBeforeZoom && scrollData && scrollData.animationstartedcallback) {
             animationstartedcallback = scrollData.animationstartedcallback;
         }
 
-        if(!startedZoomFromScroll) {
+        if (!startedZoomFromScroll) {
             animScrollData = false;
         }
 
@@ -1144,58 +1316,66 @@ if(!$.zoomooz) {
     //**********************************//
 
 
-        function getExistingScrollData($root, $scroll) {
-            var scrollData = $root.data("original-scroll");
-            if(!scrollData) {
-                scrollData = {"elem": $scroll, "x":0,"y:":0};
-            }
-            return scrollData;
+    function getExistingScrollData($root, $scroll) {
+        var scrollData = $root.data("original-scroll");
+        if (!scrollData) {
+            scrollData = {
+                "elem": $scroll,
+                "x": 0,
+                "y:": 0
+            };
+        }
+        return scrollData;
+    }
+
+    function storeNewScrollData($root, $scroll, useScrollResetBeforeZoom) {
+        // safari
+        var scrollY = $root.scrollTop();
+        var scrollX = $root.scrollLeft();
+        var elem = $root;
+
+        // moz
+        if (!scrollY) {
+            scrollY = $scroll.scrollTop();
+            scrollX = $scroll.scrollLeft();
+            elem = $scroll;
         }
 
-        function storeNewScrollData($root, $scroll, useScrollResetBeforeZoom) {
-            // safari
-            var scrollY = $root.scrollTop();
-            var scrollX = $root.scrollLeft();
-            var elem = $root;
+        var scrollData = {
+            "elem": elem,
+            "x": scrollX,
+            "y": scrollY
+        };
+        $root.data("original-scroll", scrollData);
 
-            // moz
-            if(!scrollY) {
-                scrollY = $scroll.scrollTop();
-                scrollX = $scroll.scrollLeft();
-                elem = $scroll;
-            }
+        $(document).on("touchmove", function(e) {
+            e.preventDefault();
+        });
 
-            var scrollData = {"elem":elem,"x":scrollX,"y":scrollY};
-            $root.data("original-scroll",scrollData);
+        var transformStr = "translate(-" + scrollX + "px,-" + scrollY + "px)";
+        helpers.forEachPrefix(function(prefix) {
+            $root.css(prefix + "transform", transformStr);
+        });
 
-            $(document).on("touchmove", function(e) {
-                e.preventDefault();
-            });
+        elem.addClass("noScroll");
 
-            var transformStr = "translate(-"+scrollX+"px,-"+scrollY+"px)";
-            helpers.forEachPrefix(function(prefix) {
-                $root.css(prefix+"transform", transformStr);
-            });
+        if (useScrollResetBeforeZoom) {
+            scrollData.animationstartedcallback = function() {
 
-            elem.addClass("noScroll");
+                // this needs to be after the setTransformation and
+                // done with window.scrollTo to not have iPhone repaints
+                if (elem[0] == document.body || elem[0] == document) {
+                    window.scrollTo(0, 0);
+                } else {
+                    elem.scrollLeft(0);
+                    elem.scrollTop(0);
+                }
 
-            if(useScrollResetBeforeZoom) {
-                scrollData.animationstartedcallback = function() {
-
-                    // this needs to be after the setTransformation and
-                    // done with window.scrollTo to not have iPhone repaints
-                    if(elem[0]==document.body || elem[0]==document) {
-                        window.scrollTo(0,0);
-                    } else {
-                        elem.scrollLeft(0);
-                        elem.scrollTop(0);
-                    }
-
-                };
-            }
-
-            return scrollData;
+            };
         }
+
+        return scrollData;
+    }
 
     //**********************************//
     //***  Element positioning       ***//
@@ -1207,13 +1387,13 @@ if(!$.zoomooz) {
         var dw = zoomViewport.width();
         var dh = zoomViewport.height();
 
-        var xrotorigin = dw/2.0;
-        var yrotorigin = dh/2.0;
+        var xrotorigin = dw / 2.0;
+        var yrotorigin = dh / 2.0;
 
-        var offsetStr = printFixedNumber(xrotorigin)+"px "+printFixedNumber(yrotorigin)+"px";
+        var offsetStr = printFixedNumber(xrotorigin) + "px " + printFixedNumber(yrotorigin) + "px";
 
         helpers.forEachPrefix(function(prefix) {
-             zoomParent.css(prefix+"transform-origin", offsetStr);
+            zoomParent.css(prefix + "transform-origin", offsetStr);
         });
     }
 
@@ -1226,28 +1406,28 @@ if(!$.zoomooz) {
         var dw = zoomViewport.width();
         var dh = zoomViewport.height();
 
-        var relw = dw/elem.outerWidth();
-        var relh = dh/elem.outerHeight();
+        var relw = dw / elem.outerWidth();
+        var relh = dh / elem.outerHeight();
 
         var scale;
-        if(zoomMode=="width") {
-            scale = zoomAmount*relw;
-        } else if(zoomMode=="height") {
-            scale = zoomAmount*relh;
-        } else if(zoomMode=="both") {
-            scale = zoomAmount*Math.min(relw,relh);
-        } else if(zoomMode=="scale") {
+        if (zoomMode == "width") {
+            scale = zoomAmount * relw;
+        } else if (zoomMode == "height") {
+            scale = zoomAmount * relh;
+        } else if (zoomMode == "both") {
+            scale = zoomAmount * Math.min(relw, relh);
+        } else if (zoomMode == "scale") {
             scale = zoomAmount;
         } else {
             console.log("wrong zoommode");
             return;
         }
 
-        var xoffset = (dw-elem.outerWidth()*scale)/2.0;
-        var yoffset = (dh-elem.outerHeight()*scale)/2.0;
+        var xoffset = (dw - elem.outerWidth() * scale) / 2.0;
+        var yoffset = (dh - elem.outerHeight() * scale) / 2.0;
 
-        var xrotorigin = dw/2.0;
-        var yrotorigin = dh/2.0;
+        var xrotorigin = dw / 2.0;
+        var yrotorigin = dh / 2.0;
 
         /* fix for body margins, hope that this does not break anything .. */
         /* see also the part of the fix that is in computeTotalTransformation! */
@@ -1255,18 +1435,18 @@ if(!$.zoomooz) {
         var ymarginfix = -parseFloat(zoomParent.css("margin-top")) || 0;
 
         var initTransformation = (new PureCSSMatrix());
-        if(scrollData) {
-            initTransformation = initTransformation.translate(scrollData.x,scrollData.y);
+        if (scrollData) {
+            initTransformation = initTransformation.translate(scrollData.x, scrollData.y);
         }
 
         var viewportTransformation =
             initTransformation
-            .translate(xmarginfix,ymarginfix)
-            .translate(-xrotorigin,-yrotorigin)
-            .translate(xoffset,yoffset)
-            .scale(scale,scale)
+            .translate(xmarginfix, ymarginfix)
+            .translate(-xrotorigin, -yrotorigin)
+            .translate(xoffset, yoffset)
+            .scale(scale, scale)
             .multiply(endtrans)
-            .translate(xrotorigin,yrotorigin);
+            .translate(xrotorigin, yrotorigin);
 
         return viewportTransformation;
     }
@@ -1275,22 +1455,22 @@ if(!$.zoomooz) {
     //***  Debugging positioning     ***//
     //**********************************//
 
-    function calcPoint(e,x,y) {
-        return [e.a*x+e.c*y+e.e,e.b*x+e.d*y+e.f];
+    function calcPoint(e, x, y) {
+        return [e.a * x + e.c * y + e.e, e.b * x + e.d * y + e.f];
     }
 
     function showDebug(elem, settings) {
         var e = computeTotalTransformation(elem, settings.root).elements();
-        displayLabel(calcPoint(e,0,0));
-        displayLabel(calcPoint(e,0,elem.outerHeight()));
-        displayLabel(calcPoint(e,elem.outerWidth(),elem.outerHeight()));
-        displayLabel(calcPoint(e,elem.outerWidth(),0));
+        displayLabel(calcPoint(e, 0, 0));
+        displayLabel(calcPoint(e, 0, elem.outerHeight()));
+        displayLabel(calcPoint(e, elem.outerWidth(), elem.outerHeight()));
+        displayLabel(calcPoint(e, elem.outerWidth(), 0));
     }
 
     function displayLabel(pos) {
         var labelStyle = "width:4px;height:4px;background-color:red;position:absolute;margin-left:-2px;margin-top:-2px;";
-        labelStyle += 'left:'+pos[0]+'px;top:'+pos[1]+'px;';
-        var label = '<div class="debuglabel" style="'+labelStyle+'"></div>';
+        labelStyle += 'left:' + pos[0] + 'px;top:' + pos[1] + 'px;';
+        var label = '<div class="debuglabel" style="' + labelStyle + '"></div>';
         $("#debug").append(label);
     }
 
@@ -1304,15 +1484,15 @@ if(!$.zoomooz) {
      */
     function computeTotalTransformation(input, transformationRootElement) {
         var elem = input[0];
-        if( !elem || !elem.ownerDocument ) {
+        if (!elem || !elem.ownerDocument) {
             return null;
         }
 
         var totalTransformation = new PureCSSMatrix();
 
         var trans;
-        if ( elem === elem.ownerDocument.body ) {
-            var bOffset = jQuery.offset.bodyOffset( elem );
+        if (elem === elem.ownerDocument.body) {
+            var bOffset = jQuery.offset.bodyOffset(elem);
             trans = new PureCSSMatrix();
             trans = trans.translate(bOffset.left, bOffset.top);
             totalTransformation = totalTransformation.multiply(trans);
@@ -1320,13 +1500,13 @@ if(!$.zoomooz) {
         }
 
         var support;
-        if(jQuery.offset.initialize) {
+        if (jQuery.offset.initialize) {
             jQuery.offset.initialize();
             support = {
-                fixedPosition:jQuery.offset.supportsFixedPosition,
-                doesNotAddBorder:jQuery.offset.doesNotAddBorder,
-                doesAddBorderForTableAndCells:jQuery.support.doesAddBorderForTableAndCells,
-                subtractsBorderForOverflowNotVisible:jQuery.offset.subtractsBorderForOverflowNotVisible
+                fixedPosition: jQuery.offset.supportsFixedPosition,
+                doesNotAddBorder: jQuery.offset.doesNotAddBorder,
+                doesAddBorderForTableAndCells: jQuery.support.doesAddBorderForTableAndCells,
+                subtractsBorderForOverflowNotVisible: jQuery.offset.subtractsBorderForOverflowNotVisible
             };
         } else {
             support = jQuery.support;
@@ -1340,8 +1520,8 @@ if(!$.zoomooz) {
         var root = transformationRootElement[0];
         var defaultView = doc.defaultView;
         var prevComputedStyle;
-        if(defaultView) {
-            prevComputedStyle = defaultView.getComputedStyle( elem, null );
+        if (defaultView) {
+            prevComputedStyle = defaultView.getComputedStyle(elem, null);
         } else {
             prevComputedStyle = elem.currentStyle;
         }
@@ -1362,39 +1542,40 @@ if(!$.zoomooz) {
         var top = elem.offsetTop;
         var left = elem.offsetLeft;
 
-        var transformation = constructTransformation().translate(left,top);
+        var transformation = constructTransformation().translate(left, top);
         transformation = transformation.multiply(constructTransformation(elem));
         totalTransformation = transformation.multiply((totalTransformation));
         // loop from node down to root
-        while ( (elem = elem.parentNode) && elem !== root) {
-            top = 0; left = 0;
-            if ( support.fixedPosition && prevComputedStyle.position === "fixed" ) {
+        while ((elem = elem.parentNode) && elem !== root) {
+            top = 0;
+            left = 0;
+            if (support.fixedPosition && prevComputedStyle.position === "fixed") {
                 break;
             }
             computedStyle = defaultView ? defaultView.getComputedStyle(elem, null) : elem.currentStyle;
-            top  -= elem.scrollTop;
+            top -= elem.scrollTop;
             left -= elem.scrollLeft;
-            if ( elem === offsetParent ) {
-                top  += elem.offsetTop;
+            if (elem === offsetParent) {
+                top += elem.offsetTop;
                 left += elem.offsetLeft;
-                if ( support.doesNotAddBorder && !(support.doesAddBorderForTableAndCells && /^t(able|d|h)$/i.test(elem.nodeName)) ) {
-                    top  += parseFloat( computedStyle.borderTopWidth  ) || 0;
-                    left += parseFloat( computedStyle.borderLeftWidth ) || 0;
+                if (support.doesNotAddBorder && !(support.doesAddBorderForTableAndCells && /^t(able|d|h)$/i.test(elem.nodeName))) {
+                    top += parseFloat(computedStyle.borderTopWidth) || 0;
+                    left += parseFloat(computedStyle.borderLeftWidth) || 0;
                 }
                 offsetParent = elem.offsetParent;
             }
-            if ( support.subtractsBorderForOverflowNotVisible && computedStyle.overflow !== "visible" ) {
-                top  += parseFloat( computedStyle.borderTopWidth  ) || 0;
-                left += parseFloat( computedStyle.borderLeftWidth ) || 0;
+            if (support.subtractsBorderForOverflowNotVisible && computedStyle.overflow !== "visible") {
+                top += parseFloat(computedStyle.borderTopWidth) || 0;
+                left += parseFloat(computedStyle.borderLeftWidth) || 0;
             }
             prevComputedStyle = computedStyle;
 
-            if(elem.offsetParent==root) {
+            if (elem.offsetParent == root) {
                 top -= parseFloat($(elem.offsetParent).css("margin-top")) || 0;
                 left -= parseFloat($(elem.offsetParent).css("margin-left")) || 0;
             }
 
-            transformation = constructTransformation().translate(left,top);
+            transformation = constructTransformation().translate(left, top);
             transformation = transformation.multiply(constructTransformation(elem));
             totalTransformation = transformation.multiply(totalTransformation);
 
@@ -1404,16 +1585,16 @@ if(!$.zoomooz) {
         left = 0;
 
         // fixme: should disable these for non-body roots?
-        if ( prevComputedStyle.position === "relative" || prevComputedStyle.position === "static" ) {
-            top  += body.offsetTop;
+        if (prevComputedStyle.position === "relative" || prevComputedStyle.position === "static") {
+            top += body.offsetTop;
             left += body.offsetLeft;
         }
-        if ( support.fixedPosition && prevComputedStyle.position === "fixed" ) {
-            top  += Math.max( docElem.scrollTop, body.scrollTop );
-            left += Math.max( docElem.scrollLeft, body.scrollLeft );
+        if (support.fixedPosition && prevComputedStyle.position === "fixed") {
+            top += Math.max(docElem.scrollTop, body.scrollTop);
+            left += Math.max(docElem.scrollLeft, body.scrollLeft);
         }
 
-        var itertrans = (new PureCSSMatrix()).translate(left,top);
+        var itertrans = (new PureCSSMatrix()).translate(left, top);
         totalTransformation = totalTransformation.multiply(itertrans);
 
         return totalTransformation;
@@ -1430,14 +1611,15 @@ if(!$.zoomooz) {
 
     function constructTransformation(elem) {
         var rawTrans = helpers.getElementTransform(elem);
-        if(!rawTrans) {
+        if (!rawTrans) {
             return new PureCSSMatrix();
         } else {
             return new PureCSSMatrix(rawTrans);
         }
     }
 
-})(jQuery);;/*
+})(jQuery);;
+/*
  * jquery.zoomooz-zoomTarget.js, part of:
  * http://janne.aukia.com/zoomooz
  *
@@ -1454,7 +1636,7 @@ if(!$.zoomooz) {
 (function($) {
     "use strict";
 
-    if(!$.zoomooz) {
+    if (!$.zoomooz) {
         $.zoomooz = {};
     }
 
@@ -1471,7 +1653,7 @@ if(!$.zoomooz) {
     $.fn.zoomTarget = function(baseSettings) {
         this.each(function() {
             var settings = $(this).zoomSettings(baseSettings);
-            setupClickHandler($(this),$(this),settings);
+            setupClickHandler($(this), $(this), settings);
         });
     };
 
@@ -1482,8 +1664,8 @@ if(!$.zoomooz) {
     function setupClickHandler(clickTarget, zoomTarget, settings) {
         clickTarget.addClass("zoomTarget");
 
-        if(!settings.animationendcallback) {
-            if(!settings.closeclick) {
+        if (!settings.animationendcallback) {
+            if (!settings.closeclick) {
                 settings.animationendcallback = function() {
                     $(".selectedZoomTarget").removeClass("selectedZoomTarget zoomNotClickable");
                     clickTarget.addClass("selectedZoomTarget zoomNotClickable");
@@ -1497,13 +1679,13 @@ if(!$.zoomooz) {
         }
 
         var zoomContainer = zoomTarget.closest(".zoomContainer");
-        if(zoomContainer.length!==0) {
+        if (zoomContainer.length !== 0) {
             settings.root = zoomContainer;
         }
 
         var $root = settings.root;
 
-        if(!$root.hasClass("zoomTarget")) {
+        if (!$root.hasClass("zoomTarget")) {
 
             var rootSettings = $root.zoomSettings({});
 
@@ -1514,8 +1696,8 @@ if(!$.zoomooz) {
                 $elem.parent().addClass("selectedZoomTarget zoomNotClickable");
             };
 
-            setupClickHandler($root,$root,rootSettings);
-            setupClickHandler($root.parent(),$root,rootSettings);
+            setupClickHandler($root, $root, rootSettings);
+            setupClickHandler($root.parent(), $root, rootSettings);
 
             // FIXME: there could be many of these called simultaneously,
             // don't know what would happen then
@@ -1525,7 +1707,7 @@ if(!$.zoomooz) {
         clickTarget.on("click", function(evt) {
 
             // closeclick not available here...
-            if(settings.closeclick && zoomTarget.hasClass("selectedZoomTarget")) {
+            if (settings.closeclick && zoomTarget.hasClass("selectedZoomTarget")) {
                 settings.root.click();
             } else {
                 zoomTarget.zoomTo(settings);
@@ -1545,21 +1727,21 @@ if(!$.zoomooz) {
         style.type = 'text/css';
 
         function setupSelectionCss(enabled) {
-            var selectionString = "-webkit-touch-callout: "+(enabled?"default":"none")+";";
+            var selectionString = "-webkit-touch-callout: " + (enabled ? "default" : "none") + ";";
             helpers.forEachPrefix(function(prefix) {
-                selectionString += prefix+"user-select:"+(enabled?"text":"none")+";";
-            },true);
+                selectionString += prefix + "user-select:" + (enabled ? "text" : "none") + ";";
+            }, true);
             return selectionString;
         }
 
         // FIXME: how to remove the html height requirement?
         // FIXME: how to remove the transform origin?
-        style.innerHTML = ".zoomTarget{"+setupSelectionCss(false)+"}"+
-                          ".zoomTarget:hover{cursor:pointer!important;}"+
-                          ".zoomNotClickable{"+setupSelectionCss(true)+"}"+
-                          ".zoomNotClickable:hover{cursor:auto!important;}"+
-                          /* padding to fix margin collapse issues */
-                          ".zoomContainer{position:relative;padding:1px;margin:-1px;}";
+        style.innerHTML = ".zoomTarget{" + setupSelectionCss(false) + "}" +
+            ".zoomTarget:hover{cursor:pointer!important;}" +
+            ".zoomNotClickable{" + setupSelectionCss(true) + "}" +
+            ".zoomNotClickable:hover{cursor:auto!important;}" +
+        /* padding to fix margin collapse issues */
+        ".zoomContainer{position:relative;padding:1px;margin:-1px;}";
 
         document.getElementsByTagName('head')[0].appendChild(style);
     }
@@ -1576,8 +1758,8 @@ if(!$.zoomooz) {
         $(".zoomTarget").zoomTarget();
     });
 
-})(jQuery);
-;/*
+})(jQuery);;
+/*
  * jquery.zoomooz-zoomContainer.js, part of:
  * http://janne.aukia.com/zoomooz
  *
@@ -1594,7 +1776,7 @@ if(!$.zoomooz) {
 (function($) {
     "use strict";
 
-    if(!$.zoomooz) {
+    if (!$.zoomooz) {
         $.zoomooz = {};
     }
 
@@ -1629,8 +1811,8 @@ if(!$.zoomooz) {
         $(".zoomContainer").zoomContainer();
     });
 
-})(jQuery);
-;/*
+})(jQuery);;
+/*
  * jquery.zoomooz-zoomButton.js, part of:
  * http://janne.aukia.com/zoomooz
  *
@@ -1646,7 +1828,7 @@ if(!$.zoomooz) {
 
 (function($) {
 
-    if(!$.zoomooz) {
+    if (!$.zoomooz) {
         $.zoomooz = {};
     }
 
@@ -1662,8 +1844,8 @@ if(!$.zoomooz) {
 
     $.fn.zoomButton = function(baseSettings) {
         this.each(function() {
-            var settings = setupZoomButtonSettings($(this),baseSettings);
-            setupClickHandler($(this),settings);
+            var settings = setupZoomButtonSettings($(this), baseSettings);
+            setupClickHandler($(this), settings);
         });
     };
 
@@ -1674,13 +1856,13 @@ if(!$.zoomooz) {
     function setupZoomButtonSettings($elem, settings) {
 
         var defaultSettings = constructDefaultSettings();
-        var elementSettings = jQuery.extend({},settings);
+        var elementSettings = jQuery.extend({}, settings);
 
         // FIXME: could move the core declarative stuff to a separate lib or file
 
-        for(var key in defaultSettings) {
+        for (var key in defaultSettings) {
             if (defaultSettings.hasOwnProperty(key) && !elementSettings[key]) {
-                if(defaultSettings[key] instanceof jQuery) {
+                if (defaultSettings[key] instanceof jQuery) {
                     elementSettings[key] = $($elem.data(key));
                 } else {
                     elementSettings[key] = $elem.data(key);
@@ -1709,7 +1891,7 @@ if(!$.zoomooz) {
 
         var $root;
 
-        if(settings.root.hasClass("zoomContainer")) {
+        if (settings.root.hasClass("zoomContainer")) {
             $root = settings.root;
         } else {
             $root = settings.root.find(".zoomContainer");
@@ -1723,8 +1905,8 @@ if(!$.zoomooz) {
             }
 
             function _getNext(elem) {
-                var index = _getIndex(elem)+1;
-                if(index<listData.length && index!==0) {
+                var index = _getIndex(elem) + 1;
+                if (index < listData.length && index !== 0) {
                     return listData[index];
                 } else {
                     return null;
@@ -1732,8 +1914,8 @@ if(!$.zoomooz) {
             }
 
             function _getPrev(elem) {
-                var index = _getIndex(elem)-1;
-                if(index<0) {
+                var index = _getIndex(elem) - 1;
+                if (index < 0) {
                     return null;
                 } else {
                     return listData[index];
@@ -1745,7 +1927,7 @@ if(!$.zoomooz) {
             }
 
             function _getLast() {
-                return listData[listData.length-1];
+                return listData[listData.length - 1];
             }
 
             return {
@@ -1763,14 +1945,14 @@ if(!$.zoomooz) {
 
             var $selected = $root.find(".selectedZoomTarget");
 
-            if($selected.length===0) {
+            if ($selected.length === 0) {
                 $selected = displayList.first();
             }
 
-            if(settings.type.indexOf("prev")===0) {
+            if (settings.type.indexOf("prev") === 0) {
                 target = displayList.prev($selected[0]);
-                if(target === null) {
-                    if(settings.wrap) {
+                if (target === null) {
+                    if (settings.wrap) {
                         target = displayList.last();
                     } else {
                         performZoom = false;
@@ -1778,8 +1960,8 @@ if(!$.zoomooz) {
                 }
             } else {
                 target = displayList.next($selected[0]);
-                if(target === null) {
-                    if(settings.wrap) {
+                if (target === null) {
+                    if (settings.wrap) {
                         target = displayList.first();
                     } else {
                         performZoom = false;
@@ -1787,7 +1969,7 @@ if(!$.zoomooz) {
                 }
             }
 
-            if(performZoom) {
+            if (performZoom) {
                 // not this easy! would need to read the data fields
                 //target.zoomTo();
 

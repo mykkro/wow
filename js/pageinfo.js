@@ -8,12 +8,12 @@ module.exports = function(window) {
     var hash = parsedUrl.hash
 
     return {
-      query: query,
-      hash: hash,
-      baseUrl: url.format({
-        protocol:parsedUrl.protocol, 
-        pathname:parsedUrl.pathname
-      })
+        query: query,
+        hash: hash,
+        baseUrl: url.format({
+            protocol: parsedUrl.protocol,
+            pathname: parsedUrl.pathname
+        })
     }
 
 }
