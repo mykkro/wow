@@ -99,8 +99,6 @@ var GameWithRules = Game.extend({
     },
 
     compareMatrix: function(mt1, mt2) {
-        console.log("Comparing matrices")
-        console.log(mt1, mt2)
         if ((mt1.width != mt2.width) || (mt1.height != mt2.height) || (mt1.type != mt2.type)) return false
         for (var i = 0; i < mt1.height; i++) {
             for (var j = 0; j < mt1.width; j++) {
@@ -109,7 +107,6 @@ var GameWithRules = Game.extend({
                 }
             }
         }
-        console.log("Equal!")
         return true
     },
 
