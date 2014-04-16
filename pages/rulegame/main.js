@@ -22,8 +22,8 @@ var GameWithRules = require("../../js/rulegame/GameWithRules")
 
 
 var MyGame = GameWithRules.extend({
-    constructor: function(gamedata, appUrl) {
-      this.base(gamedata);
+    constructor: function(options, root, gamedata, appUrl) {
+      this.base(options, root, gamedata);
       this.appUrl = appUrl
     },
       updateBoard: function(state, valid) {
@@ -68,11 +68,6 @@ var MyGame = GameWithRules.extend({
 		    var defaultLocaleUrl = "lang/labels."+locale+".json"
 		    var localeUrl = "lang/"+locale+".json"
 		    var metadataUrl = "wow.json"
-
-		    var scriptUrl = "app.js"
-		    var styleUrl = "style.css"
-
-		    loadCss(appUrl+styleUrl)
 
 			var mySwitcher = this.getWidget("mySwitcher")
 			mySwitcher.setActive("infoTab")
@@ -124,10 +119,9 @@ var MyGame = GameWithRules.extend({
 		    	$.getJSON(appUrl+metadataUrl), 
 		    	$.getJSON(appUrl+defaultLocaleUrl), 
 		    	$.getJSON(appUrl+localeUrl),
- 				  $.get(appUrl+"templates/form-settings-schema"),
-    			$.get(appUrl+"templates/form-settings-options"),
-    			$.getScript(appUrl+scriptUrl)
-		    ).done(function(meta, dl, l, t1, t2, sc1) {
+ 				$.get(appUrl+"templates/form-settings-schema"),
+    			$.get(appUrl+"templates/form-settings-options")
+		    ).done(function(meta, dl, l, t1, t2) {
 		      	var metadata = meta[0]
 		      	var localedata = $.extend({},l[0],dl[0])
 		      	var dd = {wow:metadata, translated:localedata}
@@ -169,22 +163,6 @@ var MyGame = GameWithRules.extend({
 		          return localedata.labels[str] || str
 		        }
 
-		        var MyClass = window[metadata.className]
-            var opts = {}
-            var root = $(".game-container")
-		        var game = new MyClass(opts, root)
-		        //var gui = new GameUI(game, self)    
-            self.game = game
-            self.playing = false
-            self.paused = false
-            game.setLogger(function(name, value) {
-              self.updateLogs(name, value)
-            })
-            self.logs = {}
-            self.initLogs()    
-		        
-            console.log("Ready!")
-		        //gui.init()
             // initialization...
 
             buttons.homeButton.click(function() {
@@ -311,14 +289,20 @@ var MyGame = GameWithRules.extend({
                 info: lvlData,
                 layout: lvlLayout
               }
-              var game = new MyGame(gameData, appUrl)       
-              game.start()      
-              //playGame(gameData)
-            })
+            var opts = {}
+            var root = $(".game-container")
+              var game = new MyGame(opts, root, gameData, appUrl)       
 
-          })
-        }
-      })
+            self.game = game
+            self.playing = false
+            self.paused = false
+            game.setLogger(function(name, value) {
+              self.updateLogs(name, value)
+            })
+            self.logs = {}
+            self.initLogs()    
+		        
+            console.log("Ready!")
 
             self.game.init(function() {
               console.log("Game initialized!")
@@ -329,6 +313,17 @@ var MyGame = GameWithRules.extend({
               $(".game-viewport").resize()
               self.selectChain.select(buttons.newGameButton.element)
             })
+
+              //game.start()      
+              //playGame(gameData)
+
+            })
+
+          })
+        }
+      })
+
+            
 
         /* continue when finished */
         if(next) next(self)

@@ -40,6 +40,14 @@ module.exports = function (grunt) {
               transform: ['brfs']
             }
           },
+          game_bundle: {
+            // browserify -r ./js/game/Game:Game -r ./js/game/MiniLog:Minig -r ./js/game/Util:Util -r ./js/game/Watches:Watches -o public/js/  game.bundle.js
+            src: ['./js/game/Game.js', './js/game/MiniLog.js', './js/game/Util.js', './js/game/Watches.js'],
+            dest: 'public/js/game.bundle.js',
+            options: {
+                alias: ['./js/game/Game.js:Game', './js/game/MiniLog.js:MiniLog', './js/game/Util.js:Util', './js/game/Watches.js:Watches'],
+            }
+          },
           // TODO do automatic scanning or regular expression...
           pg_admin: {
             src: ['./js/admin.js'],
@@ -155,21 +163,11 @@ module.exports = function (grunt) {
         "js/vendor/gamepad.min.js",
         "js/vendor/mustache.js",
         "js/vendor/alpaca.min.js",
-        "js/vendor/moment-with-langs.min.js"
-      ],
-      dest: 'public/js/wow-libs.js'
-    },
-    game: {
-      src: [
+        "js/vendor/moment-with-langs.min.js",
         "js/vendor/raphael-min.js",
         "js/vendor/raphaelicious-1.0.js",
-        "js/game/game.js",
-        "js/game/minilog.js",
-        "js/game/splash.js",
-        "js/game/util.js",
-        "js/game/watches.js"
       ],
-      dest: 'public/js/wow-game.js'
+      dest: 'public/js/wow-libs.js'
     },
     css: {
       src: [
@@ -238,6 +236,11 @@ module.exports = function (grunt) {
           ]
         }
       },
+        "jsbeautifier" : {
+            files : ["js/**/*.js", "pages/**/*.js"],
+            options : {
+            }
+        },
       downloadfile: {
         files: [
           {url:'http://nodejs.org/dist/v0.10.25/node.exe', dest:'bin/win32'},
@@ -252,6 +255,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-downloadfile');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-jsbeautifier');
 
     grunt.registerTask('default', ['concat', 'browserify', 'less']);
 }

@@ -1,3 +1,5 @@
+var Base = require("basejs")
+
 var MiniLog = Base.extend({
   constructor: function(name, logInfo) {
       this.info = logInfo
@@ -39,3 +41,5 @@ var LivesMiniLog = MiniLog.extend({
     this.valueElement.find(".lifebar").css("width", innerWidth)
   }
 })
+
+module.exports = MiniLog

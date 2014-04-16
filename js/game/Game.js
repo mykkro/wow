@@ -1,3 +1,6 @@
+var Base = require("basejs")
+var Splash = require("./Splash")
+
 var Game = Base.extend({
   // options
   constructor: function(options, root) {
@@ -95,4 +98,4 @@ var Game = Base.extend({
   }  
 })
 
-
+module.exports = Game

@@ -1,7 +1,10 @@
 var Base = require("basejs")
 
-var GameWithRules = Base.extend({
-	constructor: function(gameData) {
+var Game = require("../game/Game")
+
+var GameWithRules = Game.extend({
+	constructor: function(options, root, gameData) {
+        this.base(options, root)
 		console.log("Initializing game...")
 		console.log(gameData)
 

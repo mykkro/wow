@@ -30,3 +30,5 @@ Splash.prototype.hide = function() {
 Splash.removeAll = function() {
 	$(".splash-overlay").remove()
 }
+
+module.exports = Splash
