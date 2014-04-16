@@ -1,11 +1,9 @@
-var Base = require("basejs")
-
 var Game = require("../game/Game")
 
 var GameWithRules = Game.extend({
     constructor: function(options, root, gameData) {
         this.base(options, root)
-        console.log("Initializing game...")
+        console.log("Initializing rule-based game...")
         console.log(gameData)
 
         // initializing symbol table...
@@ -13,19 +11,21 @@ var GameWithRules = Game.extend({
         this.symbols = {}
     },
 
-    start: function() {
-        console.log("Starting game...")
+    start: function(cb) {
+        console.log("Starting rule-based game...")
         var gameData = this.gameData
         var layout = gameData.currentLevel.layout
         this.symbols = {}
         for (var key in layout.items) {
-            this.symbols[key] = layout.items[key]
+            this.symbols[key] = $.extend(true, {}, layout.items[key])
         }
         // we expect there is only one state and valid matrix
-        this.symbols.STATE = layout.matrices.STATE[0]
-        this.symbols.VALID = layout.matrices.VALID[0]
+        // we need to do a deep copy of arrays...
+        this.symbols.STATE = $.extend(true, {}, layout.matrices.STATE[0]);
+        this.symbols.VALID = $.extend(true, {}, layout.matrices.VALID[0]);
         this.setLastPosition()
         this.updateBoard(this.symbols.STATE, this.symbols.VALID)
+        this.base(cb)
     },
 
     updateBoard: function(state, valid) {
