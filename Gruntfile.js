@@ -213,7 +213,7 @@ module.exports = function (grunt) {
         main: {
           options: {
             // TODO how to get this filename by appending version number from package.json?
-            archive: 'dist/wow-0.8.9.zip'
+            archive: 'dist/wow-0.9.0.zip'
           },
           files: [
             {src: ['assets/**', 'css/**', 'fonts/**', 'js/**', 'lib/**', 'locales/**', 'media/**', 'pages/**', 'public/**', 'routes/**', 'templates/**', 'views/**']},
@@ -232,12 +232,13 @@ module.exports = function (grunt) {
               '!node_modules/grunt-downloadfile/**',
               '!node_modules/node-chrome/**',
               '!node_modules/pouchdb/**',
+	      '!tools/**'
               ]}
           ]
         }
       },
         "jsbeautifier" : {
-            files : ["js/**/*.js", "pages/**/*.js"],
+            files : ["js/**/*.js", "pages/**/*.js", "!js/vendor/**/*.js"],
             options : {
             }
         },
