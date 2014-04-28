@@ -1,0 +1,10 @@
+{
+  "$type": "game-pieces",
+  "pieces": {
+    "": {
+      "picture": "",
+      "uri": "pieces/",
+      "showBorder": false
+    }
+  }
+}

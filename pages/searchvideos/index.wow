@@ -1,44 +1,24 @@
-<svg 
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:wow="http://example.org/wow"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    unselectable="on" 
-    style="-webkit-user-select: none;"
-    id="svg"
-	tabindex='1'
-	viewBox="0 0 960 600"
-	width="100%"
-	height="100%"
-	preserveAspectRatio="none"
-    >
-    <wow:image src="/assets/backgrounds/waves.svg" width="960" height="600"></wow:image>
-	<wow:image src="/assets/previews/YouTubePage.svg" width="960" height="600" embed="true"></wow:image>
-    <a xlink:href="/pages/favvideos">
-    <g transform="translate(840, 20)">
-        <wow:iconbutton id="favVidButton" name="favVidButton" src="favoritevideos"></wow:iconbutton>
-    </g>
-    </a>
-    <a xlink:href="/pages/uservideos">
-    <g transform="translate(840, 144)">
-        <wow:iconbutton id="userVidButton" name="userVidButton" src="uservideos"></wow:iconbutton>
-    </g>
-    </a>
-    <g transform="translate(20, 20)">
-        <wow:iconbutton name="homeButton" src="home"></wow:iconbutton>
-    </g>
-    <g transform="translate(20, 334)">
-        <wow:iconbutton name="leftButton" src="lefthand"></wow:iconbutton>
-    </g>
-    <g transform="translate(840, 334)">
-        <wow:iconbutton name="rightButton" src="righthand"></wow:iconbutton>
-    </g>
-    <g transform="translate(768, 472)">
-        <wow:iconbutton name="searchButton" src="search"></wow:iconbutton>
-    </g>
-    <g transform="translate(284, 533)">
-        <wow:textbox name="searchTextbox" maxchars=50 width="394" height="30"></wow:textbox>
-    </g>
+<wow:image src="/assets/backgrounds/waves.svg" width="960" height="600"></wow:image>
+<wow:image src="/assets/previews/YouTubePage.svg" width="960" height="600" embed="true"></wow:image>
+<g transform="translate(840, 20)">
+    <wow:iconbutton id="favVidButton" name="favVidButton" src="favoritevideos"></wow:iconbutton>
+</g>
+<g transform="translate(840, 144)">
+    <wow:iconbutton id="userVidButton" name="userVidButton" src="uservideos"></wow:iconbutton>
+</g>
+<g transform="translate(20, 20)">
+    <wow:iconbutton name="homeButton" src="home"></wow:iconbutton>
+</g>
+<g transform="translate(20, 334)">
+    <wow:iconbutton name="leftButton" src="lefthand"></wow:iconbutton>
+</g>
+<g transform="translate(840, 334)">
+    <wow:iconbutton name="rightButton" src="righthand"></wow:iconbutton>
+</g>
+<g transform="translate(768, 472)">
+    <wow:iconbutton name="searchButton" src="search"></wow:iconbutton>
+</g>
+<g transform="translate(284, 533)">
+    <wow:textbox name="searchTextbox" maxchars=50 width="394" height="30"></wow:textbox>
+</g>
 		
-	<g id="tempgroup" style="display:none;"></g>
-</svg>

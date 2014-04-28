@@ -1,0 +1,45 @@
+{
+  "$type": "game-rules",
+  "rules": [
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Empty)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = OwnNumber1;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == OwnNumber1)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = OwnNumber2;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == OwnNumber2)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = OwnNumber3;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == OwnNumber3)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = OwnNumber4;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == OwnNumber4)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = OwnNumber5;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == OwnNumber5)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = OwnNumber6;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == OwnNumber6)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = OwnNumber7;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == OwnNumber7)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = OwnNumber8;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == OwnNumber8)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = OwnNumber9;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == OwnNumber9)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Empty;\r\n\t}\r\n    ",
+      "break": true
+    }
+  ]
+}

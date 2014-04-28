@@ -1,0 +1,106 @@
+{
+  "$type": "level-layout",
+  "items": {
+    "Ax": {
+      "name": "Ax",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Ay": {
+      "name": "Ay",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Px": {
+      "name": "Px",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Py": {
+      "name": "Py",
+      "type": "int",
+      "value": 0,
+      "show": false
+    }
+  },
+  "matrices": {
+    "STATE": [
+      {
+        "type": "string",
+        "name": "STATE",
+        "width": 3,
+        "height": 3,
+        "rows": [
+          [
+            "On",
+            "Off",
+            "On"
+          ],
+          [
+            "Off",
+            "Off",
+            "On"
+          ],
+          [
+            "On",
+            "On",
+            "Off"
+          ]
+        ]
+      }
+    ],
+    "FINAL": [
+      {
+        "type": "string",
+        "name": "FINAL",
+        "width": 3,
+        "height": 3,
+        "rows": [
+          [
+            "Off",
+            "Off",
+            "Off"
+          ],
+          [
+            "Off",
+            "Off",
+            "Off"
+          ],
+          [
+            "Off",
+            "Off",
+            "Off"
+          ]
+        ]
+      }
+    ],
+    "VALID": [
+      {
+        "type": "boolean",
+        "name": "VALID",
+        "width": 3,
+        "height": 3,
+        "rows": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ]
+      }
+    ]
+  }
+}

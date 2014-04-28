@@ -1,0 +1,14 @@
+{
+  "$type": "game-description",
+  "version": "1.0",
+  "name": "Viktoriánský hlavolam",
+  "rules": "Vyměňte červené a modré kameny. Kameny můžete posunovat pouze na sousední volné pole, a to i za pomoci přeskoku přes jiný kámen (jakékoli barvy), za nímž je další pole volné. Povoleny jsou pouze tahy v ortogonálním směru (přímo doleva, doprava, nahoru a dolů od volného pole).",
+  "levelTakeTime": "10 minut",
+  "difficulty": "středně těžká",
+  "category": "logická",
+  "piecesUri": "pieces.json",
+  "rulesUri": "rules.json",
+  "settingsUri": "settings.json",
+  "levelsUri": "levels.json",
+  "thumbnailUri": "preview.png"
+}

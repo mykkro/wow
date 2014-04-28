@@ -1,0 +1,250 @@
+{
+  "$type": "level-layout",
+  "items": {
+    "Ax": {
+      "name": "Ax",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Ay": {
+      "name": "Ay",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Px": {
+      "name": "Px",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Py": {
+      "name": "Py",
+      "type": "int",
+      "value": 0,
+      "show": false
+    }
+  },
+  "matrices": {
+    "STATE": [
+      {
+        "type": "string",
+        "name": "STATE",
+        "width": 7,
+        "height": 7,
+        "rows": [
+          [
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty"
+          ],
+          [
+            "Empty",
+            "PipeC3",
+            "PipeD4",
+            "PipeB2",
+            "PipeC3",
+            "ComputerA2",
+            "Empty"
+          ],
+          [
+            "Empty",
+            "PipeB1",
+            "ComputerA2",
+            "ComputerA1",
+            "ServerC1",
+            "PipeD2",
+            "Empty"
+          ],
+          [
+            "Empty",
+            "PipeB1",
+            "PipeC2",
+            "PipeD2",
+            "PipeC2",
+            "ComputerA4",
+            "Empty"
+          ],
+          [
+            "Empty",
+            "PipeC4",
+            "PipeC3",
+            "ComputerA1",
+            "PipeB1",
+            "ComputerA2",
+            "Empty"
+          ],
+          [
+            "Empty",
+            "ComputerA4",
+            "PipeB2",
+            "PipeD1",
+            "PipeD4",
+            "PipeC3",
+            "Empty"
+          ],
+          [
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty"
+          ]
+        ]
+      }
+    ],
+    "FINAL": [
+      {
+        "type": "string",
+        "name": "FINAL",
+        "width": 7,
+        "height": 7,
+        "rows": [
+          [
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty"
+          ],
+          [
+            "Empty",
+            "PipeC4",
+            "PipeD3",
+            "PipeB2",
+            "PipeC3",
+            "ComputerA3",
+            "Empty"
+          ],
+          [
+            "Empty",
+            "PipeB1",
+            "ComputerA1",
+            "ComputerA3",
+            "ServerC1",
+            "PipeD2",
+            "Empty"
+          ],
+          [
+            "Empty",
+            "PipeB1",
+            "PipeC4",
+            "PipeD1",
+            "PipeC3",
+            "ComputerA1",
+            "Empty"
+          ],
+          [
+            "Empty",
+            "PipeC1",
+            "PipeC2",
+            "ComputerA3",
+            "PipeB1",
+            "ComputerA3",
+            "Empty"
+          ],
+          [
+            "Empty",
+            "ComputerA4",
+            "PipeB2",
+            "PipeD1",
+            "PipeD1",
+            "PipeC2",
+            "Empty"
+          ],
+          [
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty",
+            "Empty"
+          ]
+        ]
+      }
+    ],
+    "VALID": [
+      {
+        "type": "boolean",
+        "name": "VALID",
+        "width": 7,
+        "height": 7,
+        "rows": [
+          [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        ]
+      }
+    ]
+  }
+}

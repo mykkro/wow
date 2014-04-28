@@ -1,0 +1,10 @@
+{
+	"name": "wow-contrib-games-pexeso-alt",
+	"apptype": "wow/game",
+	"title": "Pexeso",
+	"description": "Pexeso aka Memory Game",
+	"className": "Pexeso",
+	"version": "0.1",
+	"author": "Myrousz",
+	"langs": ["en","de","cz"]
+}

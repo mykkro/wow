@@ -1,0 +1,15 @@
+{
+  "$type": "game-pieces",
+  "pieces": {
+    "Off": {
+      "picture": "Off.png",
+      "uri": "pieces/Off.png",
+      "showBorder": false
+    },
+    "On": {
+      "picture": "On.png",
+      "uri": "pieces/On.png",
+      "showBorder": false
+    }
+  }
+}

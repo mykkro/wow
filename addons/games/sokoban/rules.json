@@ -1,0 +1,117 @@
+{
+  "$type": "game-rules",
+  "rules": [
+    {
+      "contents": "\r\n\tVALID[P.x + 1, P.y] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x - 1, P.y] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x, P.y + 1] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x, P.y - 1] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == Empty) AND (STATE[P.x, P.y] == Avatar))\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Avatar;\r\n\t\tSTATE[P.x, P.y] = Empty;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == Scissors) AND (STATE[P.x, P.y] == Avatar))\r\n\t{\r\n\t\tSTATE[A.x, A.y] = AvatarOnScissors;\r\n\t\tSTATE[P.x, P.y] = Empty;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == Empty) AND (STATE[P.x, P.y] == AvatarOnScissors))\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Avatar;\r\n\t\tSTATE[P.x, P.y] = Scissors;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == Scissors) AND (STATE[P.x, P.y] == AvatarOnScissors))\r\n\t{\r\n\t\tSTATE[A.x, A.y] = AvatarOnScissors;\r\n\t\tSTATE[P.x, P.y] = Scissors;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == Avatar) AND (STATE[A.x, A.y] == BoxClosed) AND (STATE[A.x + A.x - P.x, A.y + A.y - P.y] == Empty))\r\n\t{\r\n\t\tSTATE[P.x, P.y] = Empty;\r\n\t\tSTATE[A.x, A.y] = Avatar;\r\n\t\tSTATE[A.x + A.x - P.x, A.y + A.y - P.y] = BoxClosed;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == AvatarOnScissors) AND (STATE[A.x, A.y] == BoxClosed) AND (STATE[A.x + A.x - P.x, A.y + A.y - P.y] == Empty))\r\n\t{\r\n\t\tSTATE[P.x, P.y] = Scissors;\r\n\t\tSTATE[A.x, A.y] = Avatar;\r\n\t\tSTATE[A.x + A.x - P.x, A.y + A.y - P.y] = BoxClosed;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == Avatar) AND (STATE[A.x, A.y] == BoxOpened) AND (STATE[A.x + A.x - P.x, A.y + A.y - P.y] == Empty))\r\n\t{\r\n\t\tSTATE[P.x, P.y] = Empty;\r\n\t\tSTATE[A.x, A.y] = AvatarOnScissors;\r\n\t\tSTATE[A.x + A.x - P.x, A.y + A.y - P.y] = BoxClosed;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == Avatar) AND (STATE[A.x, A.y] == BoxClosed) AND (STATE[A.x + A.x - P.x, A.y + A.y - P.y] == Scissors))\r\n\t{\r\n\t\tSTATE[P.x, P.y] = Empty;\r\n\t\tSTATE[A.x, A.y] = Avatar;\r\n\t\tSTATE[A.x + A.x - P.x, A.y + A.y - P.y] = BoxOpened;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == AvatarOnScissors) AND (STATE[A.x, A.y] == BoxOpened) AND (STATE[A.x + A.x - P.x, A.y + A.y - P.y] == Empty))\r\n\t{\r\n\t\tSTATE[P.x, P.y] = Scissors;\r\n\t\tSTATE[A.x, A.y] = AvatarOnScissors;\r\n\t\tSTATE[A.x + A.x - P.x, A.y + A.y - P.y] = BoxClosed;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == Avatar) AND (STATE[A.x, A.y] == BoxOpened) AND (STATE[A.x + A.x - P.x, A.y + A.y - P.y] == Scissors))\r\n\t{\r\n\t\tSTATE[P.x, P.y] = Empty;\r\n\t\tSTATE[A.x, A.y] = AvatarOnScissors;\r\n\t\tSTATE[A.x + A.x - P.x, A.y + A.y - P.y] = BoxOpened;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == AvatarOnScissors) AND (STATE[A.x, A.y] == BoxClosed) AND (STATE[A.x + A.x - P.x, A.y + A.y - P.y] == Scissors))\r\n\t{\r\n\t\tSTATE[P.x, P.y] = Scissors;\r\n\t\tSTATE[A.x, A.y] = Avatar;\r\n\t\tSTATE[A.x + A.x - P.x, A.y + A.y - P.y] = BoxOpened;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == AvatarOnScissors) AND (STATE[A.x, A.y] == BoxOpened) AND (STATE[A.x + A.x - P.x, A.y + A.y - P.y] == Scissors))\r\n\t{\r\n\t\tSTATE[P.x, P.y] = Scissors;\r\n\t\tSTATE[A.x, A.y] = AvatarOnScissors;\r\n\t\tSTATE[A.x + A.x - P.x, A.y + A.y - P.y] = BoxOpened;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x + 1, A.y] == Empty) OR (STATE[A.x + 1, A.y] == Scissors))\r\n\t{\r\n\t\tVALID[A.x + 1, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x - 1, A.y] == Empty) OR (STATE[A.x - 1, A.y] == Scissors))\r\n\t{\r\n\t\tVALID[A.x - 1, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y + 1] == Empty) OR (STATE[A.x, A.y + 1] == Scissors))\r\n\t{\r\n\t\tVALID[A.x, A.y + 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y - 1] == Empty) OR (STATE[A.x, A.y - 1] == Scissors))\r\n\t{\r\n\t\tVALID[A.x, A.y - 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x + 1, A.y] == BoxClosed) AND (STATE[A.x + 2, A.y] != Wall) AND (STATE[A.x + 2, A.y] != BoxClosed) AND (STATE[A.x + 2, A.y] != BoxOpened))\r\n\t{\r\n\t\tVALID[A.x + 1, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x + 1, A.y] == BoxOpened) AND (STATE[A.x + 2, A.y] != Wall) AND (STATE[A.x + 2, A.y] != BoxClosed) AND (STATE[A.x + 2, A.y] != BoxOpened))\r\n\t{\r\n\t\tVALID[A.x + 1, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x - 1, A.y] == BoxClosed) AND (STATE[A.x - 2, A.y] != Wall) AND (STATE[A.x - 2, A.y] != BoxClosed) AND (STATE[A.x - 2, A.y] != BoxOpened))\r\n\t{\r\n\t\tVALID[A.x - 1, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x - 1, A.y] == BoxOpened) AND (STATE[A.x - 2, A.y] != Wall) AND (STATE[A.x - 2, A.y] != BoxClosed) AND (STATE[A.x - 2, A.y] != BoxOpened))\r\n\t{\r\n\t\tVALID[A.x - 1, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y + 1] == BoxClosed) AND (STATE[A.x, A.y + 2] != Wall) AND (STATE[A.x, A.y + 2] != BoxClosed) AND (STATE[A.x, A.y + 2] != BoxOpened))\r\n\t{\r\n\t\tVALID[A.x, A.y + 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y + 1] == BoxOpened) AND (STATE[A.x, A.y + 2] != Wall) AND (STATE[A.x, A.y + 2] != BoxClosed) AND (STATE[A.x, A.y + 2] != BoxOpened))\r\n\t{\r\n\t\tVALID[A.x, A.y + 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y - 1] == BoxClosed) AND (STATE[A.x, A.y - 2] != Wall) AND (STATE[A.x, A.y - 2] != BoxClosed) AND (STATE[A.x, A.y - 2] != BoxOpened))\r\n\t{\r\n\t\tVALID[A.x, A.y - 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y - 1] == BoxOpened) AND (STATE[A.x, A.y - 2] != Wall) AND (STATE[A.x, A.y - 2] != BoxClosed) AND (STATE[A.x, A.y - 2] != BoxOpened))\r\n\t{\r\n\t\tVALID[A.x, A.y - 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    }
+  ]
+}

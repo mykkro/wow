@@ -1,0 +1,150 @@
+{
+  "$type": "game-pieces",
+  "pieces": {
+    "Empty": {
+      "picture": "Empty.png",
+      "uri": "pieces/Empty.png",
+      "showBorder": false
+    },
+    "ComputerA1": {
+      "picture": "ComputerA1.png",
+      "uri": "pieces/ComputerA1.png",
+      "showBorder": false
+    },
+    "ComputerA2": {
+      "picture": "ComputerA2.png",
+      "uri": "pieces/ComputerA2.png",
+      "showBorder": false
+    },
+    "ComputerA3": {
+      "picture": "ComputerA3.png",
+      "uri": "pieces/ComputerA3.png",
+      "showBorder": false
+    },
+    "ComputerA4": {
+      "picture": "ComputerA4.png",
+      "uri": "pieces/ComputerA4.png",
+      "showBorder": false
+    },
+    "PipeB1": {
+      "picture": "PipeB1.png",
+      "uri": "pieces/PipeB1.png",
+      "showBorder": false
+    },
+    "PipeB2": {
+      "picture": "PipeB2.png",
+      "uri": "pieces/PipeB2.png",
+      "showBorder": false
+    },
+    "PipeC1": {
+      "picture": "PipeC1.png",
+      "uri": "pieces/PipeC1.png",
+      "showBorder": false
+    },
+    "PipeC2": {
+      "picture": "PipeC2.png",
+      "uri": "pieces/PipeC2.png",
+      "showBorder": false
+    },
+    "PipeC3": {
+      "picture": "PipeC3.png",
+      "uri": "pieces/PipeC3.png",
+      "showBorder": false
+    },
+    "PipeC4": {
+      "picture": "PipeC4.png",
+      "uri": "pieces/PipeC4.png",
+      "showBorder": false
+    },
+    "PipeD1": {
+      "picture": "PipeD1.png",
+      "uri": "pieces/PipeD1.png",
+      "showBorder": false
+    },
+    "PipeD2": {
+      "picture": "PipeD2.png",
+      "uri": "pieces/PipeD2.png",
+      "showBorder": false
+    },
+    "PipeD3": {
+      "picture": "PipeD3.png",
+      "uri": "pieces/PipeD3.png",
+      "showBorder": false
+    },
+    "PipeD4": {
+      "picture": "PipeD4.png",
+      "uri": "pieces/PipeD4.png",
+      "showBorder": false
+    },
+    "ServerA1": {
+      "picture": "ServerA1.png",
+      "uri": "pieces/ServerA1.png",
+      "showBorder": false
+    },
+    "ServerA2": {
+      "picture": "ServerA2.png",
+      "uri": "pieces/ServerA2.png",
+      "showBorder": false
+    },
+    "ServerA3": {
+      "picture": "ServerA3.png",
+      "uri": "pieces/ServerA3.png",
+      "showBorder": false
+    },
+    "ServerA4": {
+      "picture": "ServerA4.png",
+      "uri": "pieces/ServerA4.png",
+      "showBorder": false
+    },
+    "ServerB1": {
+      "picture": "ServerB1.png",
+      "uri": "pieces/ServerB1.png",
+      "showBorder": false
+    },
+    "ServerB2": {
+      "picture": "ServerB2.png",
+      "uri": "pieces/ServerB2.png",
+      "showBorder": false
+    },
+    "ServerC1": {
+      "picture": "ServerC1.png",
+      "uri": "pieces/ServerC1.png",
+      "showBorder": false
+    },
+    "ServerC2": {
+      "picture": "ServerC2.png",
+      "uri": "pieces/ServerC2.png",
+      "showBorder": false
+    },
+    "ServerC3": {
+      "picture": "ServerC3.png",
+      "uri": "pieces/ServerC3.png",
+      "showBorder": false
+    },
+    "ServerC4": {
+      "picture": "ServerC4.png",
+      "uri": "pieces/ServerC4.png",
+      "showBorder": false
+    },
+    "ServerD1": {
+      "picture": "ServerD1.png",
+      "uri": "pieces/ServerD1.png",
+      "showBorder": false
+    },
+    "ServerD2": {
+      "picture": "ServerD2.png",
+      "uri": "pieces/ServerD2.png",
+      "showBorder": false
+    },
+    "ServerD3": {
+      "picture": "ServerD3.png",
+      "uri": "pieces/ServerD3.png",
+      "showBorder": false
+    },
+    "ServerD4": {
+      "picture": "ServerD4.png",
+      "uri": "pieces/ServerD4.png",
+      "showBorder": false
+    }
+  }
+}

@@ -15,11 +15,37 @@ module.exports = function (grunt) {
       },
       browserify: {
         basic: {
-            src: ['./js/widgetizer.js', './js/i18n.js', './js/pageinfo.js', './js/dialogs.js'],
+            src: [
+              './js/widgetizer.js', 
+              './js/i18n.js', 
+              './js/pageinfo.js', 
+              './js/dialogs.js',
+              './js/mygamepad.js',
+              './js/basepage.js',
+              './js/eventtarget.js',
+              './js/virtualcontrol.js'
+            ],
             dest: 'public/js/bundle.js',
             options: {
-              alias: ['./js/widgetizer.js:widgetizer', './js/i18n.js:i18n', './js/pageinfo.js:pageinfo', './js/dialogs.js:dialogs'],
+              alias: [
+                './js/widgetizer.js:widgetizer', 
+                './js/i18n.js:i18n', 
+                './js/pageinfo.js:pageinfo', 
+                './js/dialogs.js:dialogs',
+                './js/mygamepad.js:mygamepad',
+                './js/basepage.js:basepage',
+                './js/eventtarget.js:eventtarget',
+                './js/virtualcontrol.js:virtualcontrol'
+              ],
               transform: ['brfs']
+            }
+          },
+          game_bundle: {
+            // browserify -r ./js/game/Game:Game -r ./js/game/MiniLog:Minig -r ./js/game/Util:Util -r ./js/game/Watches:Watches -o public/js/  game.bundle.js
+            src: ['./js/game/Game.js', './js/game/MiniLog.js', './js/game/Util.js', './js/game/Watches.js'],
+            dest: 'public/js/game.bundle.js',
+            options: {
+                alias: ['./js/game/Game.js:Game', './js/game/MiniLog.js:MiniLog', './js/game/Util.js:Util', './js/game/Watches.js:Watches'],
             }
           },
           // TODO do automatic scanning or regular expression...
@@ -83,6 +109,16 @@ module.exports = function (grunt) {
             dest: 'public/js/pages/app.js',
             options: { alias: [ './pages/app/main.js:pagescript' ], transform: ['brfs']}
           },
+          pg_game: {
+            src: ['./pages/game/main.js'],
+            dest: 'public/js/pages/game.js',
+            options: { alias: [ './pages/game/main.js:pagescript' ], transform: ['brfs']}
+          },
+          pg_rulegame: {
+            src: ['./pages/rulegame/main.js'],
+            dest: 'public/js/pages/rulegame.js',
+            options: { alias: [ './pages/rulegame/main.js:pagescript' ], transform: ['brfs']}
+          },
           pg_enter: {
             src: ['./pages/entertainment/main.js'],
             dest: 'public/js/pages/entertainment.js',
@@ -104,13 +140,54 @@ module.exports = function (grunt) {
             options: { alias: [ './pages/netradio/main.js:pagescript' ], transform: ['brfs']}
           }
       },
+   concat: {
+    options: {
+      separator: ';',
+    },
+    dist: {
+      src: [
+        "js/vendor/underscore-min.js",
+        "js/vendor/jquery-2.0.3.min.js",
+        "js/vendor/jquery.history.min.js",
+        "js/vendor/jquery.svg.min.js",
+        "js/vendor/jquery.svgdom.min.js",
+        "js/vendor/jquery.zoomooz.min.js",
+        "js/vendor/jquery.ba-resize.js",
+        "js/vendor/d3.v3.min.js",
+        "js/vendor/svgjs/svg.min.js",
+        "js/vendor/svgjs/svg.easing.min.js",
+        "js/vendor/svgjs/svg.filter.js",
+        "js/vendor/soundmanager2.js",
+        "js/vendor/jquery.playable.js",
+        "js/vendor/jquery.youtubedrop.js",
+        "js/vendor/gamepad.min.js",
+        "js/vendor/mustache.js",
+        "js/vendor/alpaca.min.js",
+        "js/vendor/moment-with-langs.min.js",
+        "js/vendor/raphael-min.js",
+        "js/vendor/raphaelicious-1.0.js",
+      ],
+      dest: 'public/js/wow-libs.js'
+    },
+    css: {
+      src: [
+        "public/css/normalize.css",
+        "js/vendor/alpaca.min.css"
+      ],
+      dest: 'public/css/wow-libs.css'
+    }
+  },      
       less: {
         development: {
           options: {
             paths: ["./css"]
           },
           files: {
-            "public/css/bundle.css": "less/style.less"
+            "public/css/bundle.css": [
+              "public/css/wow-libs.css",
+              "less/style.less",
+              "less/game.less"
+              ]
           }
         },
         production: {
@@ -119,7 +196,11 @@ module.exports = function (grunt) {
             cleancss: true
           },
           files: {
-            "public/css/bundle.min.css": "less/style.less"
+            "public/css/bundle.min.css": [
+              "public/css/wow-libs.css",
+              "less/style.less",
+              "less/game.less"
+              ]
           }
         }
       },
@@ -132,11 +213,11 @@ module.exports = function (grunt) {
         main: {
           options: {
             // TODO how to get this filename by appending version number from package.json?
-            archive: 'dist/wow-0.7.2.zip'
+            archive: 'dist/wow-0.9.0.zip'
           },
           files: [
             {src: ['assets/**', 'css/**', 'fonts/**', 'js/**', 'lib/**', 'locales/**', 'media/**', 'pages/**', 'public/**', 'routes/**', 'templates/**', 'views/**']},
-            {src: ['run.bat', 'run.js', 'server.js', 'package.json', 'main.js']},
+            {src: ['run.bat', 'run7.bat', 'run.js', 'server.js', 'package.json', 'main.js']},
             {src: ['bin/win32/**']},
             {src: ['addons/dist/**']},
             {src: ['node_modules/**', 
@@ -151,10 +232,16 @@ module.exports = function (grunt) {
               '!node_modules/grunt-downloadfile/**',
               '!node_modules/node-chrome/**',
               '!node_modules/pouchdb/**',
+	      '!tools/**'
               ]}
           ]
         }
       },
+        "jsbeautifier" : {
+            files : ["js/**/*.js", "pages/**/*.js", "!js/vendor/**/*.js"],
+            options : {
+            }
+        },
       downloadfile: {
         files: [
           {url:'http://nodejs.org/dist/v0.10.25/node.exe', dest:'bin/win32'},
@@ -168,6 +255,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-execute');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-downloadfile');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-jsbeautifier');
 
-    grunt.registerTask('default', ['browserify', 'less']);
+    grunt.registerTask('default', ['concat', 'browserify', 'less']);
 }

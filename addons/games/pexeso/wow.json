@@ -1,10 +1,11 @@
 {
-	"name": "wow-contrib-games-pexeso",
-	"apptype": "wow/game",
-	"title": "Pexeso",
-	"description": "Pexeso aka Memory Game",
-	"className": "Pexeso",
-	"version": "0.1",
-	"author": "Myrousz",
-	"langs": ["en","de","cz"]
+  "name": "wow-contrib-games-rulegame-pexeso",
+  "apptype": "wow/app/rulegame",
+  "title": "Pexeso",
+  "description": "",
+  "className": "RuleGame",
+  "version": "0.2",
+  "langs": [
+    "cz"
+  ]
 }

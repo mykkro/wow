@@ -1,0 +1,765 @@
+{
+  "$type": "game-rules",
+  "rules": [
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == BlackNumber1Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = BlackNumber1;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == BlackNumber2Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = BlackNumber2;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == BlackNumber3Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = BlackNumber3;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == BlackNumber4Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = BlackNumber4;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == BlackNumber5Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = BlackNumber5;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == BlackNumber6Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = BlackNumber6;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == BlackNumber7Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = BlackNumber7;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == BlackNumber8Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = BlackNumber8;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == BlackNumber9Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = BlackNumber9;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == WhiteNumber1Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = WhiteNumber1;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == WhiteNumber2Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = WhiteNumber2;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == WhiteNumber3Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = WhiteNumber3;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == WhiteNumber4Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = WhiteNumber4;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == WhiteNumber5Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = WhiteNumber5;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == WhiteNumber6Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = WhiteNumber6;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == WhiteNumber7Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = WhiteNumber7;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == WhiteNumber8Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = WhiteNumber8;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[P.x, P.y] == WhiteNumber9Visited)\r\n\t{\r\n\t\tSTATE[P.x, P.y] = WhiteNumber9;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == BlackNumber1) OR (STATE[P.x, P.y] == WhiteNumber1))\r\n\t{\r\n\t\tVALID[P.x + 1, P.y] = false;\r\n\t\tVALID[P.x - 1, P.y] = false;\r\n\t\tVALID[P.x, P.y + 1] = false;\r\n\t\tVALID[P.x, P.y - 1] = false;\r\n\t\tVALID[P.x + 1, P.y + 1] = false;\r\n\t\tVALID[P.x + 1, P.y - 1] = false;\r\n\t\tVALID[P.x - 1, P.y + 1] = false;\r\n\t\tVALID[P.x - 1, P.y - 1] = false;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == BlackNumber2) OR (STATE[P.x, P.y] == WhiteNumber2))\r\n\t{\r\n\t\tVALID[P.x + 2, P.y] = false;\r\n\t\tVALID[P.x - 2, P.y] = false;\r\n\t\tVALID[P.x, P.y + 2] = false;\r\n\t\tVALID[P.x, P.y - 2] = false;\r\n\t\tVALID[P.x + 2, P.y + 2] = false;\r\n\t\tVALID[P.x + 2, P.y - 2] = false;\r\n\t\tVALID[P.x - 2, P.y + 2] = false;\r\n\t\tVALID[P.x - 2, P.y - 2] = false;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == BlackNumber3) OR (STATE[P.x, P.y] == WhiteNumber3))\r\n\t{\r\n\t\tVALID[P.x + 3, P.y] = false;\r\n\t\tVALID[P.x - 3, P.y] = false;\r\n\t\tVALID[P.x, P.y + 3] = false;\r\n\t\tVALID[P.x, P.y - 3] = false;\r\n\t\tVALID[P.x + 3, P.y + 3] = false;\r\n\t\tVALID[P.x + 3, P.y - 3] = false;\r\n\t\tVALID[P.x - 3, P.y + 3] = false;\r\n\t\tVALID[P.x - 3, P.y - 3] = false;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == BlackNumber4) OR (STATE[P.x, P.y] == WhiteNumber4))\r\n\t{\r\n\t\tVALID[P.x + 4, P.y] = false;\r\n\t\tVALID[P.x - 4, P.y] = false;\r\n\t\tVALID[P.x, P.y + 4] = false;\r\n\t\tVALID[P.x, P.y - 4] = false;\r\n\t\tVALID[P.x + 4, P.y + 4] = false;\r\n\t\tVALID[P.x + 4, P.y - 4] = false;\r\n\t\tVALID[P.x - 4, P.y + 4] = false;\r\n\t\tVALID[P.x - 4, P.y - 4] = false;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == BlackNumber5) OR (STATE[P.x, P.y] == WhiteNumber5))\r\n\t{\r\n\t\tVALID[P.x + 5, P.y] = false;\r\n\t\tVALID[P.x - 5, P.y] = false;\r\n\t\tVALID[P.x, P.y + 5] = false;\r\n\t\tVALID[P.x, P.y - 5] = false;\r\n\t\tVALID[P.x + 5, P.y + 5] = false;\r\n\t\tVALID[P.x + 5, P.y - 5] = false;\r\n\t\tVALID[P.x - 5, P.y + 5] = false;\r\n\t\tVALID[P.x - 5, P.y - 5] = false;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == BlackNumber6) OR (STATE[P.x, P.y] == WhiteNumber6))\r\n\t{\r\n\t\tVALID[P.x + 6, P.y] = false;\r\n\t\tVALID[P.x - 6, P.y] = false;\r\n\t\tVALID[P.x, P.y + 6] = false;\r\n\t\tVALID[P.x, P.y - 6] = false;\r\n\t\tVALID[P.x + 6, P.y + 6] = false;\r\n\t\tVALID[P.x + 6, P.y - 6] = false;\r\n\t\tVALID[P.x - 6, P.y + 6] = false;\r\n\t\tVALID[P.x - 6, P.y - 6] = false;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == BlackNumber7) OR (STATE[P.x, P.y] == WhiteNumber7))\r\n\t{\r\n\t\tVALID[P.x + 7, P.y] = false;\r\n\t\tVALID[P.x - 7, P.y] = false;\r\n\t\tVALID[P.x, P.y + 7] = false;\r\n\t\tVALID[P.x, P.y - 7] = false;\r\n\t\tVALID[P.x + 7, P.y + 7] = false;\r\n\t\tVALID[P.x + 7, P.y - 7] = false;\r\n\t\tVALID[P.x - 7, P.y + 7] = false;\r\n\t\tVALID[P.x - 7, P.y - 7] = false;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == BlackNumber8) OR (STATE[P.x, P.y] == WhiteNumber8))\r\n\t{\r\n\t\tVALID[P.x + 8, P.y] = false;\r\n\t\tVALID[P.x - 8, P.y] = false;\r\n\t\tVALID[P.x, P.y + 8] = false;\r\n\t\tVALID[P.x, P.y - 8] = false;\r\n\t\tVALID[P.x + 8, P.y + 8] = false;\r\n\t\tVALID[P.x + 8, P.y - 8] = false;\r\n\t\tVALID[P.x - 8, P.y + 8] = false;\r\n\t\tVALID[P.x - 8, P.y - 8] = false;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[P.x, P.y] == BlackNumber9) OR (STATE[P.x, P.y] == WhiteNumber9))\r\n\t{\r\n\t\tVALID[P.x + 9, P.y] = false;\r\n\t\tVALID[P.x - 9, P.y] = false;\r\n\t\tVALID[P.x, P.y + 9] = false;\r\n\t\tVALID[P.x, P.y - 9] = false;\r\n\t\tVALID[P.x + 9, P.y + 9] = false;\r\n\t\tVALID[P.x + 9, P.y - 9] = false;\r\n\t\tVALID[P.x - 9, P.y + 9] = false;\r\n\t\tVALID[P.x - 9, P.y - 9] = false;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber1) AND (STATE[A.x + 1, A.y] != Empty))\r\n\t{\r\n\t\tVALID[A.x + 1, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber1) AND (STATE[A.x - 1, A.y] != Empty))\r\n\t{\r\n\t\tVALID[A.x - 1, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber1) AND (STATE[A.x, A.y + 1] != Empty))\r\n\t{\r\n\t\tVALID[A.x, A.y + 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber1) AND (STATE[A.x, A.y - 1] != Empty))\r\n\t{\r\n\t\tVALID[A.x, A.y - 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber1) AND (STATE[A.x + 1, A.y + 1] != Empty))\r\n\t{\r\n\t\tVALID[A.x + 1, A.y + 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber1) AND (STATE[A.x + 1, A.y - 1] != Empty))\r\n\t{\r\n\t\tVALID[A.x + 1, A.y - 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber1) AND (STATE[A.x - 1, A.y + 1] != Empty))\r\n\t{\r\n\t\tVALID[A.x - 1, A.y + 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber1) AND (STATE[A.x - 1, A.y - 1] != Empty))\r\n\t{\r\n\t\tVALID[A.x - 1, A.y - 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber2) AND (STATE[A.x + 2, A.y] != Empty) AND (STATE[A.x + 1, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 2, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber2) AND (STATE[A.x - 2, A.y] != Empty) AND (STATE[A.x - 1, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 2, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber2) AND (STATE[A.x, A.y + 2] != Empty) AND (STATE[A.x, A.y + 1] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber2) AND (STATE[A.x, A.y - 2] != Empty) AND (STATE[A.x, A.y - 1] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber2) AND (STATE[A.x + 2, A.y + 2] != Empty) AND (STATE[A.x + 1, A.y + 1] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 2, A.y + 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber2) AND (STATE[A.x + 2, A.y - 2] != Empty) AND (STATE[A.x + 1, A.y - 1] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 2, A.y - 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber2) AND (STATE[A.x - 2, A.y + 2] != Empty) AND (STATE[A.x - 1, A.y + 1] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 2, A.y + 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber2) AND (STATE[A.x - 2, A.y - 2] != Empty) AND (STATE[A.x - 1, A.y - 1] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 2, A.y - 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber3) AND (STATE[A.x + 3, A.y] != Empty) AND (STATE[A.x + 2, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 3, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber3) AND (STATE[A.x - 3, A.y] != Empty) AND (STATE[A.x - 2, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 3, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber3) AND (STATE[A.x, A.y + 3] != Empty) AND (STATE[A.x, A.y + 2] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 3] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber3) AND (STATE[A.x, A.y - 3] != Empty) AND (STATE[A.x, A.y - 2] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 3] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber3) AND (STATE[A.x + 3, A.y + 3] != Empty) AND (STATE[A.x + 2, A.y + 2] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 3, A.y + 3] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber3) AND (STATE[A.x + 3, A.y - 3] != Empty) AND (STATE[A.x + 2, A.y - 2] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 3, A.y - 3] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber3) AND (STATE[A.x - 3, A.y + 3] != Empty) AND (STATE[A.x - 2, A.y + 2] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 3, A.y + 3] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber3) AND (STATE[A.x - 3, A.y - 3] != Empty) AND (STATE[A.x - 2, A.y - 2] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 3, A.y - 3] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber4) AND (STATE[A.x + 4, A.y] != Empty) AND (STATE[A.x + 3, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 4, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber4) AND (STATE[A.x - 4, A.y] != Empty) AND (STATE[A.x - 3, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 4, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber4) AND (STATE[A.x, A.y + 4] != Empty) AND (STATE[A.x, A.y + 3] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 4] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber4) AND (STATE[A.x, A.y - 4] != Empty) AND (STATE[A.x, A.y - 3] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 4] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber4) AND (STATE[A.x + 4, A.y + 4] != Empty) AND (STATE[A.x + 3, A.y + 3] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 4, A.y + 4] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber4) AND (STATE[A.x + 4, A.y - 4] != Empty) AND (STATE[A.x + 3, A.y - 3] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 4, A.y - 4] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber4) AND (STATE[A.x - 4, A.y + 4] != Empty) AND (STATE[A.x - 3, A.y + 3] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 4, A.y + 4] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber4) AND (STATE[A.x - 4, A.y - 4] != Empty) AND (STATE[A.x - 3, A.y - 3] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 4, A.y - 4] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber5) AND (STATE[A.x + 5, A.y] != Empty) AND (STATE[A.x + 4, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 5, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber5) AND (STATE[A.x - 5, A.y] != Empty) AND (STATE[A.x - 4, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 5, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber5) AND (STATE[A.x, A.y + 5] != Empty) AND (STATE[A.x, A.y + 4] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 5] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber5) AND (STATE[A.x, A.y - 5] != Empty) AND (STATE[A.x, A.y - 4] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 5] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber5) AND (STATE[A.x + 5, A.y + 5] != Empty) AND (STATE[A.x + 4, A.y + 4] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 5, A.y + 5] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber5) AND (STATE[A.x + 5, A.y - 5] != Empty) AND (STATE[A.x + 4, A.y - 4] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 5, A.y - 5] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber5) AND (STATE[A.x - 5, A.y + 5] != Empty) AND (STATE[A.x - 4, A.y + 4] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 5, A.y + 5] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber5) AND (STATE[A.x - 5, A.y - 5] != Empty) AND (STATE[A.x - 4, A.y - 4] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 5, A.y - 5] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber6) AND (STATE[A.x + 6, A.y] != Empty) AND (STATE[A.x + 5, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 6, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber6) AND (STATE[A.x - 6, A.y] != Empty) AND (STATE[A.x - 5, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 6, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber6) AND (STATE[A.x, A.y + 6] != Empty) AND (STATE[A.x, A.y + 5] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 6] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber6) AND (STATE[A.x, A.y - 6] != Empty) AND (STATE[A.x, A.y - 5] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 6] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber6) AND (STATE[A.x + 6, A.y + 6] != Empty) AND (STATE[A.x + 5, A.y + 5] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 6, A.y + 6] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber6) AND (STATE[A.x + 6, A.y - 6] != Empty) AND (STATE[A.x + 5, A.y - 5] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 6, A.y - 6] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber6) AND (STATE[A.x - 6, A.y + 6] != Empty) AND (STATE[A.x - 5, A.y + 5] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 6, A.y + 6] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber6) AND (STATE[A.x - 6, A.y - 6] != Empty) AND (STATE[A.x - 5, A.y - 5] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 6, A.y - 6] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber7) AND (STATE[A.x + 7, A.y] != Empty) AND (STATE[A.x + 6, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 7, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber7) AND (STATE[A.x - 7, A.y] != Empty) AND (STATE[A.x - 6, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 7, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber7) AND (STATE[A.x, A.y + 7] != Empty) AND (STATE[A.x, A.y + 6] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 7] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber7) AND (STATE[A.x, A.y - 7] != Empty) AND (STATE[A.x, A.y - 6] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 7] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber7) AND (STATE[A.x + 7, A.y + 7] != Empty) AND (STATE[A.x + 6, A.y + 6] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 7, A.y + 7] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber7) AND (STATE[A.x + 7, A.y - 7] != Empty) AND (STATE[A.x + 6, A.y - 6] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 7, A.y - 7] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber7) AND (STATE[A.x - 7, A.y + 7] != Empty) AND (STATE[A.x - 6, A.y + 6] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 7, A.y + 7] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber7) AND (STATE[A.x - 7, A.y - 7] != Empty) AND (STATE[A.x - 6, A.y - 6] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 7, A.y - 7] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber8) AND (STATE[A.x + 8, A.y] != Empty) AND (STATE[A.x + 7, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 8, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber8) AND (STATE[A.x - 8, A.y] != Empty) AND (STATE[A.x - 7, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 8, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber8) AND (STATE[A.x, A.y + 8] != Empty) AND (STATE[A.x, A.y + 7] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 8] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber8) AND (STATE[A.x, A.y - 8] != Empty) AND (STATE[A.x, A.y - 7] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 8] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber8) AND (STATE[A.x + 8, A.y + 8] != Empty) AND (STATE[A.x + 7, A.y + 7] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 8, A.y + 8] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber8) AND (STATE[A.x + 8, A.y - 8] != Empty) AND (STATE[A.x + 7, A.y - 7] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 8, A.y - 8] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber8) AND (STATE[A.x - 8, A.y + 8] != Empty) AND (STATE[A.x - 7, A.y + 7] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 8, A.y + 8] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber8) AND (STATE[A.x - 8, A.y - 8] != Empty) AND (STATE[A.x - 7, A.y - 7] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 8, A.y - 8] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber9) AND (STATE[A.x + 9, A.y] != Empty) AND (STATE[A.x + 8, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 9, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber9) AND (STATE[A.x - 9, A.y] != Empty) AND (STATE[A.x - 8, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 9, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber9) AND (STATE[A.x, A.y + 9] != Empty) AND (STATE[A.x, A.y + 8] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 9] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber9) AND (STATE[A.x, A.y - 9] != Empty) AND (STATE[A.x, A.y - 8] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 9] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber9) AND (STATE[A.x + 9, A.y + 9] != Empty) AND (STATE[A.x + 8, A.y + 8] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 9, A.y + 9] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber9) AND (STATE[A.x + 9, A.y - 9] != Empty) AND (STATE[A.x + 8, A.y - 8] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 9, A.y - 9] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber9) AND (STATE[A.x - 9, A.y + 9] != Empty) AND (STATE[A.x - 8, A.y + 8] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 9, A.y + 9] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == WhiteNumber9) AND (STATE[A.x - 9, A.y - 9] != Empty) AND (STATE[A.x - 8, A.y - 8] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 9, A.y - 9] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber1) AND (STATE[A.x + 1, A.y] != Empty))\r\n\t{\r\n\t\tVALID[A.x + 1, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber1) AND (STATE[A.x - 1, A.y] != Empty))\r\n\t{\r\n\t\tVALID[A.x - 1, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber1) AND (STATE[A.x, A.y + 1] != Empty))\r\n\t{\r\n\t\tVALID[A.x, A.y + 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber1) AND (STATE[A.x, A.y - 1] != Empty))\r\n\t{\r\n\t\tVALID[A.x, A.y - 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber1) AND (STATE[A.x + 1, A.y + 1] != Empty))\r\n\t{\r\n\t\tVALID[A.x + 1, A.y + 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber1) AND (STATE[A.x + 1, A.y - 1] != Empty))\r\n\t{\r\n\t\tVALID[A.x + 1, A.y - 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber1) AND (STATE[A.x - 1, A.y + 1] != Empty))\r\n\t{\r\n\t\tVALID[A.x - 1, A.y + 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber1) AND (STATE[A.x - 1, A.y - 1] != Empty))\r\n\t{\r\n\t\tVALID[A.x - 1, A.y - 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber2) AND (STATE[A.x + 2, A.y] != Empty) AND (STATE[A.x + 1, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 2, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber2) AND (STATE[A.x - 2, A.y] != Empty) AND (STATE[A.x - 1, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 2, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber2) AND (STATE[A.x, A.y + 2] != Empty) AND (STATE[A.x, A.y + 1] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber2) AND (STATE[A.x, A.y - 2] != Empty) AND (STATE[A.x, A.y - 1] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber2) AND (STATE[A.x + 2, A.y + 2] != Empty) AND (STATE[A.x + 1, A.y + 1] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 2, A.y + 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber2) AND (STATE[A.x + 2, A.y - 2] != Empty) AND (STATE[A.x + 1, A.y - 1] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 2, A.y - 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber2) AND (STATE[A.x - 2, A.y + 2] != Empty) AND (STATE[A.x - 1, A.y + 1] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 2, A.y + 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber2) AND (STATE[A.x - 2, A.y - 2] != Empty) AND (STATE[A.x - 1, A.y - 1] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 2, A.y - 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber3) AND (STATE[A.x + 3, A.y] != Empty) AND (STATE[A.x + 2, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 3, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber3) AND (STATE[A.x - 3, A.y] != Empty) AND (STATE[A.x - 2, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 3, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber3) AND (STATE[A.x, A.y + 3] != Empty) AND (STATE[A.x, A.y + 2] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 3] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber3) AND (STATE[A.x, A.y - 3] != Empty) AND (STATE[A.x, A.y - 2] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 3] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber3) AND (STATE[A.x + 3, A.y + 3] != Empty) AND (STATE[A.x + 2, A.y + 2] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 3, A.y + 3] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber3) AND (STATE[A.x + 3, A.y - 3] != Empty) AND (STATE[A.x + 2, A.y - 2] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 3, A.y - 3] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber3) AND (STATE[A.x - 3, A.y + 3] != Empty) AND (STATE[A.x - 2, A.y + 2] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 3, A.y + 3] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber3) AND (STATE[A.x - 3, A.y - 3] != Empty) AND (STATE[A.x - 2, A.y - 2] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 3, A.y - 3] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber4) AND (STATE[A.x + 4, A.y] != Empty) AND (STATE[A.x + 3, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 4, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber4) AND (STATE[A.x - 4, A.y] != Empty) AND (STATE[A.x - 3, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 4, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber4) AND (STATE[A.x, A.y + 4] != Empty) AND (STATE[A.x, A.y + 3] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 4] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber4) AND (STATE[A.x, A.y - 4] != Empty) AND (STATE[A.x, A.y - 3] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 4] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber4) AND (STATE[A.x + 4, A.y + 4] != Empty) AND (STATE[A.x + 3, A.y + 3] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 4, A.y + 4] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber4) AND (STATE[A.x + 4, A.y - 4] != Empty) AND (STATE[A.x + 3, A.y - 3] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 4, A.y - 4] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber4) AND (STATE[A.x - 4, A.y + 4] != Empty) AND (STATE[A.x - 3, A.y + 3] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 4, A.y + 4] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber4) AND (STATE[A.x - 4, A.y - 4] != Empty) AND (STATE[A.x - 3, A.y - 3] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 4, A.y - 4] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber5) AND (STATE[A.x + 5, A.y] != Empty) AND (STATE[A.x + 4, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 5, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber5) AND (STATE[A.x - 5, A.y] != Empty) AND (STATE[A.x - 4, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 5, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber5) AND (STATE[A.x, A.y + 5] != Empty) AND (STATE[A.x, A.y + 4] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 5] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber5) AND (STATE[A.x, A.y - 5] != Empty) AND (STATE[A.x, A.y - 4] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 5] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber5) AND (STATE[A.x + 5, A.y + 5] != Empty) AND (STATE[A.x + 4, A.y + 4] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 5, A.y + 5] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber5) AND (STATE[A.x + 5, A.y - 5] != Empty) AND (STATE[A.x + 4, A.y - 4] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 5, A.y - 5] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber5) AND (STATE[A.x - 5, A.y + 5] != Empty) AND (STATE[A.x - 4, A.y + 4] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 5, A.y + 5] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber5) AND (STATE[A.x - 5, A.y - 5] != Empty) AND (STATE[A.x - 4, A.y - 4] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 5, A.y - 5] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber6) AND (STATE[A.x + 6, A.y] != Empty) AND (STATE[A.x + 5, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 6, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber6) AND (STATE[A.x - 6, A.y] != Empty) AND (STATE[A.x - 5, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 6, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber6) AND (STATE[A.x, A.y + 6] != Empty) AND (STATE[A.x, A.y + 5] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 6] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber6) AND (STATE[A.x, A.y - 6] != Empty) AND (STATE[A.x, A.y - 5] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 6] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber6) AND (STATE[A.x + 6, A.y + 6] != Empty) AND (STATE[A.x + 5, A.y + 5] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 6, A.y + 6] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber6) AND (STATE[A.x + 6, A.y - 6] != Empty) AND (STATE[A.x + 5, A.y - 5] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 6, A.y - 6] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber6) AND (STATE[A.x - 6, A.y + 6] != Empty) AND (STATE[A.x - 5, A.y + 5] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 6, A.y + 6] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber6) AND (STATE[A.x - 6, A.y - 6] != Empty) AND (STATE[A.x - 5, A.y - 5] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 6, A.y - 6] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber7) AND (STATE[A.x + 7, A.y] != Empty) AND (STATE[A.x + 6, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 7, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber7) AND (STATE[A.x - 7, A.y] != Empty) AND (STATE[A.x - 6, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 7, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber7) AND (STATE[A.x, A.y + 7] != Empty) AND (STATE[A.x, A.y + 6] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 7] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber7) AND (STATE[A.x, A.y - 7] != Empty) AND (STATE[A.x, A.y - 6] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 7] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber7) AND (STATE[A.x + 7, A.y + 7] != Empty) AND (STATE[A.x + 6, A.y + 6] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 7, A.y + 7] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber7) AND (STATE[A.x + 7, A.y - 7] != Empty) AND (STATE[A.x + 6, A.y - 6] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 7, A.y - 7] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber7) AND (STATE[A.x - 7, A.y + 7] != Empty) AND (STATE[A.x - 6, A.y + 6] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 7, A.y + 7] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber7) AND (STATE[A.x - 7, A.y - 7] != Empty) AND (STATE[A.x - 6, A.y - 6] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 7, A.y - 7] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber8) AND (STATE[A.x + 8, A.y] != Empty) AND (STATE[A.x + 7, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 8, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber8) AND (STATE[A.x - 8, A.y] != Empty) AND (STATE[A.x - 7, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 8, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber8) AND (STATE[A.x, A.y + 8] != Empty) AND (STATE[A.x, A.y + 7] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 8] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber8) AND (STATE[A.x, A.y - 8] != Empty) AND (STATE[A.x, A.y - 7] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 8] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber8) AND (STATE[A.x + 8, A.y + 8] != Empty) AND (STATE[A.x + 7, A.y + 7] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 8, A.y + 8] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber8) AND (STATE[A.x + 8, A.y - 8] != Empty) AND (STATE[A.x + 7, A.y - 7] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 8, A.y - 8] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber8) AND (STATE[A.x - 8, A.y + 8] != Empty) AND (STATE[A.x - 7, A.y + 7] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 8, A.y + 8] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber8) AND (STATE[A.x - 8, A.y - 8] != Empty) AND (STATE[A.x - 7, A.y - 7] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 8, A.y - 8] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber9) AND (STATE[A.x + 9, A.y] != Empty) AND (STATE[A.x + 8, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 9, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber9) AND (STATE[A.x - 9, A.y] != Empty) AND (STATE[A.x - 8, A.y] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 9, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber9) AND (STATE[A.x, A.y + 9] != Empty) AND (STATE[A.x, A.y + 8] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y + 9] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber9) AND (STATE[A.x, A.y - 9] != Empty) AND (STATE[A.x, A.y - 8] != Destination))\r\n\t{\r\n\t\tVALID[A.x, A.y - 9] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber9) AND (STATE[A.x + 9, A.y + 9] != Empty) AND (STATE[A.x + 8, A.y + 8] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 9, A.y + 9] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber9) AND (STATE[A.x + 9, A.y - 9] != Empty) AND (STATE[A.x + 8, A.y - 8] != Destination))\r\n\t{\r\n\t\tVALID[A.x + 9, A.y - 9] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber9) AND (STATE[A.x - 9, A.y + 9] != Empty) AND (STATE[A.x - 8, A.y + 8] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 9, A.y + 9] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == BlackNumber9) AND (STATE[A.x - 9, A.y - 9] != Empty) AND (STATE[A.x - 8, A.y - 8] != Destination))\r\n\t{\r\n\t\tVALID[A.x - 9, A.y - 9] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == BlackNumber1)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = BlackNumber1Visited;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == BlackNumber2)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = BlackNumber2Visited;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == BlackNumber3)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = BlackNumber3Visited;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == BlackNumber4)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = BlackNumber4Visited;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == BlackNumber5)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = BlackNumber5Visited;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == BlackNumber6)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = BlackNumber6Visited;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == BlackNumber7)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = BlackNumber7Visited;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == BlackNumber8)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = BlackNumber8Visited;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == BlackNumber9)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = BlackNumber9Visited;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == WhiteNumber1)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = WhiteNumber1Visited;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == WhiteNumber2)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = WhiteNumber2Visited;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == WhiteNumber3)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = WhiteNumber3Visited;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == WhiteNumber4)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = WhiteNumber4Visited;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == WhiteNumber5)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = WhiteNumber5Visited;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == WhiteNumber6)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = WhiteNumber6Visited;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == WhiteNumber7)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = WhiteNumber7Visited;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == WhiteNumber8)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = WhiteNumber8Visited;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == WhiteNumber9)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = WhiteNumber9Visited;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Destination)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = DestinationVisited;\r\n\t}\r\n    ",
+      "break": true
+    }
+  ]
+}

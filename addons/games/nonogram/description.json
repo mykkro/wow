@@ -1,0 +1,14 @@
+{
+  "$type": "game-description",
+  "version": "1.0",
+  "name": "Nonogramy",
+  "rules": "Odhalte obrázek, který je zakódovaný do čísel na začátku řádků a v záhlaví sloupců. Každé číslo udává počet za sebou jdoucích vyplněných čtverečků. Pokud je v jednom řádku nebo sloupci více čísel, je mezi těmito úseky alespoň jedno prázdné políčko. Mezi okrajem a prvním, či posledním úsekem mezery být mohou, ale nemusí.\r\nPo každém vybrání čtverečku se změní jeho obsah. Od prázdného přes označené tečkou až po vyplněné. Bílá barva značí ještě neurčené pole, tečkou si označte ta pole, kde má být mezera a černá pak značí vyplněné pole. Abyste obrázek úspěšně dokončili, nesmí na hrací ploše zbýt žádné neurčené pole, musíte tedy tečkou označit všechny mezery.",
+  "levelTakeTime": "15 minut",
+  "difficulty": "střední",
+  "category": "logická",
+  "piecesUri": "pieces.json",
+  "rulesUri": "rules.json",
+  "settingsUri": "settings.json",
+  "levelsUri": "levels.json",
+  "thumbnailUri": "preview.png"
+}

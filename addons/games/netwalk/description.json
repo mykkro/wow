@@ -1,0 +1,14 @@
+{
+  "$type": "game-description",
+  "version": "1.0",
+  "name": "Netwalk",
+  "rules": "Propojte všechny počítače se serverem. Žádná z \"datových rour\" nesmí ústit do prázdna.\r\nPo vybrání jednotlivé části rotují proti směru hodinových ručiček, tím měníte cestu \"datového toku\".\r\nPro nejtěžší úrovně mohou trubky přecházet přes hranici pole a navázat spojení na opačné straně.",
+  "levelTakeTime": "5 minut",
+  "difficulty": "lehká",
+  "category": "logická",
+  "piecesUri": "pieces.json",
+  "rulesUri": "rules.json",
+  "settingsUri": "settings.json",
+  "levelsUri": "levels.json",
+  "thumbnailUri": "preview.png"
+}
