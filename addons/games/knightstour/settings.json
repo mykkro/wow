@@ -1,0 +1,22 @@
+{
+  "$type": "game-settings",
+  "MoveMode": "WithOptions",
+  "MoveModeChange": "true",
+  "InvalidPieceFocusBehavior": "Skip",
+  "InvalidPieceFocusBehaviorChange": "true",
+  "BoundaryBehavior": "Jump",
+  "BoundaryBehaviorChange": "false",
+  "PositionHighlight": "false",
+  "PositionHighlightChange": "true",
+  "ValidsHighlight": "true",
+  "ValidsHighlightChange": "true",
+  "FocusedHighlight": "true",
+  "FocusedHighlightChange": "true",
+  "MarginWidth": "20",
+  "BorderWidth": "30",
+  "PaddingWidth": "0",
+  "BorderColorChange": "true",
+  "BoardColorChange": "false",
+  "BorderColor": "SaddleBrown",
+  "BoardColor": "Black"
+}

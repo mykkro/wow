@@ -15,5 +15,6 @@
 	"year":"year",
 	"Radio":"Radio",
 	"Apps":"Apps",
+	"Entertainment":"Entertainment",
 	"Videos":"Videos"
 }

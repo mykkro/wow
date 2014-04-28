@@ -1,0 +1,8 @@
+{
+  "name": "de",
+  "lang": "de",
+  "title": "Sokoban",
+  "info": "",
+  "rules": "Dopravte všechny krabice na nůžky a tím je otevřete. Přes nůžky můžete volně přecházet. Stejně tak můžete již umístěnou krabici z nůžek odsunout, pak se ale opět zavře. Nelze přesouvat dvě krabice najednou, stejně tak není možné krabici zatlačenou do rohu nebo vysvobodit a je pak nutné začít hru od začátku.",
+  "labels": {}
+}

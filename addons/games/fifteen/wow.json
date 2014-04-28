@@ -1,6 +1,6 @@
 {
 	"name": "wow-contrib-games-fifteen",
-	"apptype": "wow/game",
+	"apptype": "wow/app/game",
 	"title": "Sliding Puzzle",
 	"description": "Sliding Puzzle aka 15 Game",
 	"className": "Fifteen",

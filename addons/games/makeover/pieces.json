@@ -1,0 +1,25 @@
+{
+  "$type": "game-pieces",
+  "pieces": {
+    "Wood": {
+      "picture": "Wood.png",
+      "uri": "pieces/Wood.png",
+      "showBorder": false
+    },
+    "Empty": {
+      "picture": "Empty.png",
+      "uri": "pieces/Empty.png",
+      "showBorder": false
+    },
+    "Red": {
+      "picture": "Red.png",
+      "uri": "pieces/Red.png",
+      "showBorder": false
+    },
+    "Blue": {
+      "picture": "Blue.png",
+      "uri": "pieces/Blue.png",
+      "showBorder": false
+    }
+  }
+}

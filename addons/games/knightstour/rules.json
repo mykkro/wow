@@ -1,0 +1,85 @@
+{
+  "$type": "game-rules",
+  "rules": [
+    {
+      "contents": "\r\n\tVALID[P.x + 1, P.y - 2] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x + 2, P.y - 1] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x + 2, P.y + 1] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x + 1, P.y + 2] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x - 1, P.y + 2] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x - 2, P.y + 1] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x - 2, P.y - 1] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x - 1, P.y - 2] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x + 1, A.y - 2] == Black) OR (STATE[A.x + 1, A.y - 2] == White))\r\n\t{\r\n\t\tVALID[A.x + 1, A.y - 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x + 2, A.y - 1] == Black) OR (STATE[A.x + 2, A.y - 1] == White))\r\n\t{\r\n\t\tVALID[A.x + 2, A.y - 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x + 2, A.y + 1] == Black) OR (STATE[A.x + 2, A.y + 1] == White))\r\n\t{\r\n\t\tVALID[A.x + 2, A.y + 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x + 1, A.y + 2] == Black) OR (STATE[A.x + 1, A.y + 2] == White))\r\n\t{\r\n\t\tVALID[A.x + 1, A.y + 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x - 1, A.y + 2] == Black) OR (STATE[A.x - 1, A.y + 2] == White))\r\n\t{\r\n\t\tVALID[A.x - 1, A.y + 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x - 2, A.y + 1] == Black) OR (STATE[A.x - 2, A.y + 1] == White))\r\n\t{\r\n\t\tVALID[A.x - 2, A.y + 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x - 2, A.y - 1] == Black) OR (STATE[A.x - 2, A.y - 1] == White))\r\n\t{\r\n\t\tVALID[A.x - 2, A.y - 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x - 1, A.y - 2] == Black) OR (STATE[A.x - 1, A.y - 2] == White))\r\n\t{\r\n\t\tVALID[A.x - 1, A.y - 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == Black) AND (STATE[P.x, P.y] == KnightOnWhiteStart))\r\n\t{\r\n\t\tSTATE[P.x, P.y] = WhiteStart;\r\n\t\tSTATE[A.x, A.y] = KnightOnBlack;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == Black) AND (STATE[P.x, P.y] != KnightOnWhiteStart))\r\n\t{\r\n\t\tSTATE[P.x, P.y] = VisitedWhite;\r\n\t\tSTATE[A.x, A.y] = KnightOnBlack;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == White) AND (STATE[P.x, P.y] == KnightOnBlackStart))\r\n\t{\r\n\t\tSTATE[P.x, P.y] = BlackStart;\r\n\t\tSTATE[A.x, A.y] = KnightOnWhite;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y] == White) AND (STATE[P.x, P.y] != KnightOnBlackStart))\r\n\t{\r\n\t\tSTATE[P.x, P.y] = VisitedBlack;\r\n\t\tSTATE[A.x, A.y] = KnightOnWhite;\r\n\t}\r\n    ",
+      "break": false
+    }
+  ]
+}

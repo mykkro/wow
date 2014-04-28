@@ -1,0 +1,330 @@
+{
+  "$type": "game-pieces",
+  "pieces": {
+    "01Front": {
+      "picture": "01Front.gif",
+      "uri": "pieces/01Front.gif",
+      "showBorder": false
+    },
+    "02Front": {
+      "picture": "02Front.gif",
+      "uri": "pieces/02Front.gif",
+      "showBorder": false
+    },
+    "03Front": {
+      "picture": "03Front.gif",
+      "uri": "pieces/03Front.gif",
+      "showBorder": false
+    },
+    "04Front": {
+      "picture": "04Front.gif",
+      "uri": "pieces/04Front.gif",
+      "showBorder": false
+    },
+    "05Front": {
+      "picture": "05Front.gif",
+      "uri": "pieces/05Front.gif",
+      "showBorder": false
+    },
+    "06Front": {
+      "picture": "06Front.gif",
+      "uri": "pieces/06Front.gif",
+      "showBorder": false
+    },
+    "07Front": {
+      "picture": "07Front.gif",
+      "uri": "pieces/07Front.gif",
+      "showBorder": false
+    },
+    "08Front": {
+      "picture": "08Front.gif",
+      "uri": "pieces/08Front.gif",
+      "showBorder": false
+    },
+    "09Front": {
+      "picture": "09Front.gif",
+      "uri": "pieces/09Front.gif",
+      "showBorder": false
+    },
+    "10Front": {
+      "picture": "10Front.gif",
+      "uri": "pieces/10Front.gif",
+      "showBorder": false
+    },
+    "11Front": {
+      "picture": "11Front.gif",
+      "uri": "pieces/11Front.gif",
+      "showBorder": false
+    },
+    "12Front": {
+      "picture": "12Front.gif",
+      "uri": "pieces/12Front.gif",
+      "showBorder": false
+    },
+    "13Front": {
+      "picture": "13Front.gif",
+      "uri": "pieces/13Front.gif",
+      "showBorder": false
+    },
+    "14Front": {
+      "picture": "14Front.gif",
+      "uri": "pieces/14Front.gif",
+      "showBorder": false
+    },
+    "15Front": {
+      "picture": "15Front.gif",
+      "uri": "pieces/15Front.gif",
+      "showBorder": false
+    },
+    "16Front": {
+      "picture": "16Front.gif",
+      "uri": "pieces/16Front.gif",
+      "showBorder": false
+    },
+    "17Front": {
+      "picture": "17Front.gif",
+      "uri": "pieces/17Front.gif",
+      "showBorder": false
+    },
+    "18Front": {
+      "picture": "18Front.gif",
+      "uri": "pieces/18Front.gif",
+      "showBorder": false
+    },
+    "19Front": {
+      "picture": "19Front.gif",
+      "uri": "pieces/19Front.gif",
+      "showBorder": false
+    },
+    "20Front": {
+      "picture": "20Front.gif",
+      "uri": "pieces/20Front.gif",
+      "showBorder": false
+    },
+    "21Front": {
+      "picture": "21Front.gif",
+      "uri": "pieces/21Front.gif",
+      "showBorder": false
+    },
+    "22Front": {
+      "picture": "22Front.gif",
+      "uri": "pieces/22Front.gif",
+      "showBorder": false
+    },
+    "23Front": {
+      "picture": "23Front.gif",
+      "uri": "pieces/23Front.gif",
+      "showBorder": false
+    },
+    "24Front": {
+      "picture": "24Front.gif",
+      "uri": "pieces/24Front.gif",
+      "showBorder": false
+    },
+    "25Front": {
+      "picture": "25Front.gif",
+      "uri": "pieces/25Front.gif",
+      "showBorder": false
+    },
+    "26Front": {
+      "picture": "26Front.gif",
+      "uri": "pieces/26Front.gif",
+      "showBorder": false
+    },
+    "27Front": {
+      "picture": "27Front.gif",
+      "uri": "pieces/27Front.gif",
+      "showBorder": false
+    },
+    "28Front": {
+      "picture": "28Front.gif",
+      "uri": "pieces/28Front.gif",
+      "showBorder": false
+    },
+    "29Front": {
+      "picture": "29Front.gif",
+      "uri": "pieces/29Front.gif",
+      "showBorder": false
+    },
+    "30Front": {
+      "picture": "30Front.gif",
+      "uri": "pieces/30Front.gif",
+      "showBorder": false
+    },
+    "31Front": {
+      "picture": "31Front.gif",
+      "uri": "pieces/31Front.gif",
+      "showBorder": false
+    },
+    "32Front": {
+      "picture": "32Front.gif",
+      "uri": "pieces/32Front.gif",
+      "showBorder": false
+    },
+    "01Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "02Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "03Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "04Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "05Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "06Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "07Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "08Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "09Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "10Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "11Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "12Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "13Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "14Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "15Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "16Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "17Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "18Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "19Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "20Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "21Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "22Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "23Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "24Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "25Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "26Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "27Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "28Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "29Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "30Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "31Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "32Back": {
+      "picture": "Back.gif",
+      "uri": "pieces/Back.gif",
+      "showBorder": false
+    },
+    "Empty": {
+      "picture": "Empty.png",
+      "uri": "pieces/Empty.png",
+      "showBorder": false
+    }
+  }
+}

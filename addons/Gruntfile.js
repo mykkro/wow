@@ -16,6 +16,11 @@ module.exports = function (grunt) {
           src: ['games/pexeso/**'],
           dest: 'dist/pexeso.zip'
         },
+        pexeso2: {
+          cwd: 'games/pexeso2/',
+          src: ['games/pexeso2/**'],
+          dest: 'dist/pexeso2.zip'
+        },
         raphatris: {
           cwd: 'games/raphatris/',
           src: ['games/raphatris/**'],
@@ -30,6 +35,56 @@ module.exports = function (grunt) {
           cwd: 'games/tictactoe/',
           src: ['games/tictactoe/**'],
           dest: 'dist/tictactoe.zip'
+        },
+        sokoban: {
+          cwd: 'games/sokoban/',
+          src: ['games/sokoban/**'],
+          dest: 'dist/sokoban.zip'
+        },
+        maze: {
+          cwd: 'games/maze/',
+          src: ['games/maze/**'],
+          dest: 'dist/maze.zip'
+        },
+        makeover: {
+          cwd: 'games/makeover/',
+          src: ['games/makeover/**'],
+          dest: 'dist/makeover.zip'
+        },
+        lightsout: {
+          cwd: 'games/lightsout/',
+          src: ['games/lightsout/**'],
+          dest: 'dist/lightsout.zip'
+        },
+        blackout: {
+          cwd: 'games/blackout/',
+          src: ['games/blackout/**'],
+          dest: 'dist/blackout.zip'
+        },
+        knightstour: {
+          cwd: 'games/knightstour/',
+          src: ['games/knightstour/**'],
+          dest: 'dist/knightstour.zip'
+        },
+        netwalk: {
+          cwd: 'games/netwalk/',
+          src: ['games/netwalk/**'],
+          dest: 'dist/netwalk.zip'
+        },
+        kidsudoku: {
+          cwd: 'games/kidsudoku/',
+          src: ['games/kidsudoku/**'],
+          dest: 'dist/kidsudoku.zip'
+        },
+        backfromtheklondike: {
+          cwd: 'games/backfromtheklondike/',
+          src: ['games/backfromtheklondike/**'],
+          dest: 'dist/backfromtheklondike.zip'
+        },
+        loyds15: {
+          cwd: 'games/loyds15/',
+          src: ['games/loyds15/**'],
+          dest: 'dist/loyds15.zip'
         }
       },
       concat: {
@@ -99,20 +154,6 @@ module.exports = function (grunt) {
             {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/raphanoid/lang/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/raphanoid/' },
 
-            {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/raphatris/js/' },
-            {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/raphatris/css/' },
-            {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/raphatris/media/' },
-            {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/raphatris/templates/' },
-            {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/raphatris/lang/' },
-            {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/raphatris/' },
-
-            {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/fifteen/js/' },
-            {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/fifteen/css/' },
-            {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/fifteen/media/' },
-            {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/fifteen/templates/' },
-            {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/fifteen/lang/' },
-            {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/fifteen/' },
-
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/pexeso/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/pexeso/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/pexeso/media/' },
@@ -157,15 +198,10 @@ module.exports = function (grunt) {
         }
       },
       generateindex: {
-        raphatris: {
-        },
         raphanoid: {
 
         },
-        fifteen: {
-
-        },
-        pexeso: {
+        pexeso2: {
 
         },
         tictactoe: {

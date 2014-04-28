@@ -1,0 +1,11 @@
+{
+  "name": "wow-contrib-games-rulegame-kidsudoku",
+  "apptype": "wow/app/rulegame",
+  "title": "Sudoku pro děti",
+  "description": "",
+  "className": "RuleGame",
+  "version": "0.2",
+  "langs": [
+    "cz"
+  ]
+}

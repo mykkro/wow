@@ -1,0 +1,77 @@
+{
+  "$type": "game-rules",
+  "rules": [
+    {
+      "contents": "\r\n\tSTATE[P.x, P.y] = STATE[A.x, A.y];\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tSTATE[A.x, A.y] = Empty;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x + 1, P.y] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x + 2, P.y] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x - 1, P.y] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x - 2, P.y] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x, P.y + 1] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x, P.y + 2] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x, P.y - 1] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tVALID[P.x, P.y - 2] = false;\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x + 1, A.y] == Blue) OR (STATE[A.x + 1, A.y] == Red))\r\n\t{\r\n\t\tVALID[A.x + 1, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x + 2, A.y] == Blue) OR (STATE[A.x + 2, A.y] == Red))\r\n\t{\r\n\t\tVALID[A.x + 2, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x - 1, A.y] == Blue) OR (STATE[A.x - 1, A.y] == Red))\r\n\t{\r\n\t\tVALID[A.x - 1, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x - 2, A.y] == Blue) OR (STATE[A.x - 2, A.y] == Red))\r\n\t{\r\n\t\tVALID[A.x - 2, A.y] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y + 1] == Blue) OR (STATE[A.x, A.y + 1] == Red))\r\n\t{\r\n\t\tVALID[A.x, A.y + 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y + 2] == Blue) OR (STATE[A.x, A.y + 2] == Red))\r\n\t{\r\n\t\tVALID[A.x, A.y + 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y - 1] == Blue) OR (STATE[A.x, A.y - 1] == Red))\r\n\t{\r\n\t\tVALID[A.x, A.y - 1] = true;\r\n\t}\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n\tif ((STATE[A.x, A.y - 2] == Blue) OR (STATE[A.x, A.y - 2] == Red))\r\n\t{\r\n\t\tVALID[A.x, A.y - 2] = true;\r\n\t}\r\n    ",
+      "break": false
+    }
+  ]
+}

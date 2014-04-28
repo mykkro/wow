@@ -1,0 +1,17 @@
+{
+  "$type": "game-rules",
+  "rules": [
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Empty)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Point;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Point)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Filled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Filled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Empty;\r\n\t}\r\n    ",
+      "break": true
+    }
+  ]
+}

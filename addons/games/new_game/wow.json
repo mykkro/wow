@@ -1,0 +1,11 @@
+{
+  "name": "wow-contrib-games-rulegame-new_game",
+  "apptype": "wow/app/rulegame",
+  "title": "",
+  "description": "",
+  "className": "RuleGame",
+  "version": "0.2",
+  "langs": [
+    "cz"
+  ]
+}
