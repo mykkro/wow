@@ -147,6 +147,14 @@ module.exports = function(Wow) {
                 game.setLogger(function(name, value) {
                     self.updateLogs(name, value)
                 })
+                game.onGameOver = function() {
+                    console.log("game.js onGameOver")
+                    self.quitGame()
+                }
+                game.onFinished = function() {
+                    console.log("game.js onFinished")
+                    self.quitGame()
+                }
                 self.logs = {}
                 self.initLogs()
 

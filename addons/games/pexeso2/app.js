@@ -58,7 +58,7 @@ var Pexeso = Game.extend({
             }
             self.turnedCards = {}
             if(self.howMany(self.foundTiles) == self.totalCards) {
-              alert("Congratulations, you win!")
+              self.levelUp()
             } else {
               /* enable flipping */
               self.cardFlipping = true
@@ -75,6 +75,19 @@ var Pexeso = Game.extend({
           }, self.cardCoupleShowDuration);
       }
     } 
+  },
+  levelUp: function() {
+    var self = this
+    self.finished = true
+    self.finishedPrompt = self.levelUpPrompt(function() {
+        // quit the game...
+        console.log("Finished the level!")
+        self.finished = false
+        self.finishedPrompt = null
+        if(self.onFinished) {
+            self.onFinished()
+        }
+    })
   },
   init: function(cb) {
     var self = this;
@@ -96,11 +109,28 @@ var Pexeso = Game.extend({
     })
 
   },
+  getTile: function(row, col) {
+    return this.playground[col+row*this.columns]
+  },
+  toggleTile: function(row, col) {
+    var tile = this.getTile(row, col)
+    var ndx = row*this.columns + col
+    this.gridCtl.select(row, col)
+    if(this.cardFlipping) {
+      if(tile.tile.hasClass("flipped")) {
+        this.turnCardUp(ndx)
+      } else {
+        this.turnCardDown(ndx)
+      }
+    }
+  },
   drawTile: function(tileObj, j) {
       var self = this
       var blk = function(klass, attrs) {
         return $("<div>").addClass(klass).attr(attrs||{})
       }
+      var row = Math.floor(j/this.columns)
+      var col = j%this.columns
       var tile = blk("tile")
           .css({"background-image": "url("+this.tilesetBaseUrl + tileObj.url+")"})
       var card = blk("card").addClass("flipped").append(
@@ -108,13 +138,13 @@ var Pexeso = Game.extend({
         blk("tcf")
           .html(tile)
           .click(function() {
-            if(self.cardFlipping) self.turnCardDown(j)
+            self.toggleTile(row, col)
           }),
         /* back */
         blk("tcb")
           .css({"background-image": "url("+self.tileBackUrl+")"})
           .click(function(){
-            if(self.cardFlipping) self.turnCardUp(j)
+            self.toggleTile(row, col)
           })
       )
       return card
@@ -146,32 +176,55 @@ var Pexeso = Game.extend({
       /* shuffle... */
       this.playground = this.shuffle(this.playground);
       console.log(this.playground);
-      /* display board */
-      this.drawBoard()
       this.gridCtl = new GridController({
           width: this.columns,
           height: this.rows,
           changed: function(row, col) {
-              self.updateSelection(col, row)
+              self.updateSelection(row, col)
           },
           selected: function(row, col) {
-              self.cellSelected(col, row)
+              self.cellSelected(row, col)
           }
       })
+      /* display board */
+      this.drawBoard()
       // call this to trigger change event to draw selection box
       this.gridCtl.select(0,0)
 
       // game started callback...
       if(cb) cb();    
   },
-  updateSelection: function(col, row) {
+  isGameOver: function() {
+    return false
+  },
+  isFinished: function() {
+    return this.finished
+  },
+  onVirtualControl: function(evt) {
+    if(this.gridCtl) {
+      if(this.isGameOver()) {
+          if(evt.type=="press" && evt.control=="select") {
+              // kill prompt...
+              this.gameOverPrompt.hide()
+          }
+      } else if(this.isFinished()) {
+          if(evt.type=="press" && evt.control=="select") {
+              // kill prompt...
+              this.finishedPrompt.hide()
+          }
+      } else {
+          this.gridCtl.onVirtualControl(evt)
+      }
+    }
+  },
+  updateSelection: function(row, col) {
     $("#board .card").removeClass("selected")
-    var tile = this.playground[col+row*this.columns]
+    var tile = this.getTile(row, col)
+    // console.log("TILE: ", tile, row, col, this.playground)
     tile.tile.addClass("selected")
   },
-  cellSelected: function(col, row) {
-    var tile = this.playground[col+row*this.columns]
-    tile.tile.click()
+  cellSelected: function(row, col) {
+    this.toggleTile(row, col)
   },
   restart: function(cb) {
     this.start(cb)
