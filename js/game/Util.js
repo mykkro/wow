@@ -1,3 +1,5 @@
+"use strict";
+
 var Util = {
     /**
      * Finds whether line enters x>value halfplane

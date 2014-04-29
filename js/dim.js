@@ -1,11 +1,12 @@
-  var Base = require("basejs")
+'use strict';
 
-   var Dim = Base.extend({
-      constructor: function(w, h) {
-          this.width = w
-          this.height = h
-      }
-  })
+var Base = require("basejs")
 
+var Dim = Base.extend({
+  constructor: function(w, h) {
+      this.width = w
+      this.height = h
+  }
+})
 
-   module.exports = Dim
+module.exports = Dim

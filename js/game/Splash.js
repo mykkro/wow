@@ -1,3 +1,5 @@
+"use strict";
+
 var Splash = function(options) {
     this.options = options
     this.overlay = $("<div>").addClass("splash-overlay")

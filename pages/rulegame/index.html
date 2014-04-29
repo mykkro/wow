@@ -13,6 +13,21 @@
     border: 1px solid #333;    
 }
 
+.svgselector {
+    fill: black;
+    fill-opacity: 0.2;
+    stroke: black;
+    stroke-width: 10;
+    stroke-opacity: 0.5;
+    pointer-events: none;
+    -webkit-animation: pulse 1.5s ease infinite;
+}
+
+.svgselector.valid {
+    fill: green;
+    stroke: green;
+}
+
 .svgboard > rect {
     pointer-events: auto;
 }
@@ -21,6 +36,11 @@
     pointer-events: none;
 }
 
+@-webkit-keyframes pulse {
+  0%   { fill-opacity: 0.1; }
+  50% { fill-opacity: 0.5; }
+  100% { fill-opacity: 0.1; }
+}
 </style>
 <svg 
     version="1.1"

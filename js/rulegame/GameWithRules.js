@@ -28,6 +28,10 @@ var GameWithRules = Game.extend({
         this.base(cb)
     },
 
+    onVirtualControl: function(evt) {
+        console.log("Rule game controller event: ", evt)
+    },
+
     updateBoard: function(state, valid) {
         // to be implemented in subclasses
     },
