@@ -1,4 +1,6 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/9Q6Zj":[function(require,module,exports){
+"use strict";
+
 var Base = require("basejs")
 var Splash = require("./Splash")
 
@@ -114,6 +116,8 @@ module.exports = Game
 },{"./Splash":5,"basejs":10}],"Game":[function(require,module,exports){
 module.exports=require('/9Q6Zj');
 },{}],"0D1Aa+":[function(require,module,exports){
+"use strict";
+
 var Base = require("basejs")
 
 var MiniLog = Base.extend({
@@ -163,6 +167,8 @@ module.exports = MiniLog
 },{"basejs":10}],"MiniLog":[function(require,module,exports){
 module.exports=require('0D1Aa+');
 },{}],5:[function(require,module,exports){
+"use strict";
+
 var Splash = function(options) {
     this.options = options
     this.overlay = $("<div>").addClass("splash-overlay")
@@ -200,6 +206,8 @@ Splash.removeAll = function() {
 module.exports = Splash
 
 },{}],"8RkSAW":[function(require,module,exports){
+"use strict";
+
 var Util = {
     /**
      * Finds whether line enters x>value halfplane
@@ -240,6 +248,8 @@ module.exports = Util
 },{}],"Util":[function(require,module,exports){
 module.exports=require('8RkSAW');
 },{}],"JnjsU8":[function(require,module,exports){
+"use strict";
+
 var Base = require("basejs")
 
 var Watches = Base.extend({

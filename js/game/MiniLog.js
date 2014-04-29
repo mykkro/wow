@@ -1,3 +1,5 @@
+"use strict";
+
 var Base = require("basejs")
 
 var MiniLog = Base.extend({

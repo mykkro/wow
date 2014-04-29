@@ -17,14 +17,74 @@ module.exports = function(Wow) {
         constructor: function(options, root, gamedata, appUrl) {
             this.base(options, root, gamedata);
             this.appUrl = appUrl
+            this.selectedRow = 0
+            this.selectedColumn = 0
+            this.boardWidth = 1000
+            this.boardHeight = 1000
+        },
+        start: function(cb) {
+            console.log("Starting custom rule-based game...")
+            this.base(cb)
+            this.boardRows = this.symbols.VALID.height
+            this.boardColumns = this.symbols.VALID.width
+            this.updateSelection(this.symbols.VALID)
+        },
+        onVirtualControl: function(evt) {
+            console.log("MyGame controller event: ", evt)
+            var r = this.selectedRow
+            var c = this.selectedColumn
+            if(evt.type=="press") {
+                switch(evt.control) {
+                    case 'up': 
+                        r = (r+this.boardRows-1)%this.boardRows
+                        break
+                    case 'down': 
+                        r = (r+1)%this.boardRows
+                        break
+                    case 'left': 
+                        c = (c+this.boardColumns-1)%this.boardColumns
+                        break
+                    case 'right': 
+                        c = (c+1)%this.boardColumns
+                        break
+                    case 'select': 
+                        this.cellSelected(c, r)
+                        return
+                }
+            }
+            this.selectedRow = r
+            this.selectedColumn = c
+            this.updateSelection(this.symbols.VALID)
+        },
+        isValidSelection: function(valid) {
+            return valid.rows[this.selectedRow][this.selectedColumn]
+        },
+        updateSelection: function(valid) {
+            var rows = valid.height
+            var cols = valid.width
+            var width = this.boardWidth
+            var height = this.boardHeight
+            var ww = width / cols
+            var hh = height / rows
+            console.log("Updating selection...")
+            var mainsvg = d3.select("#svgmain")
+            mainsvg.selectAll(".svgselector").remove()
+            mainsvg.append("rect").attr({   
+                    'class': 'svgselector' + (this.isValidSelection(valid) ? ' valid' : ''),
+                    x: ww*this.selectedColumn,
+                    y: hh*this.selectedRow,
+                    width: ww,
+                    height: hh
+                })
+
         },
         updateBoard: function(state, valid) {
             var self = this
             var gamedata = this.gameData
             var mainsvg = d3.select("#svgmain")
             mainsvg.selectAll(".svgboard").remove();
-            var width = 1000
-            var height = 1000
+            var width = this.boardWidth
+            var height = this.boardHeight
             var rows = state.height
             var cols = state.width
             var board = mainsvg.append("g").attr("class", "svgboard")
@@ -54,11 +114,15 @@ module.exports = function(Wow) {
                             "fill-opacity": 0.5
                         }).on("click", function() {
                             console.log("Click!")
+                            self.selectedRow = i
+                            self.selectedColumn = j
+                            self.updateSelection(valid)
                             self.cellSelected(j, i)
                         })
                     }
                 })
             })
+            this.updateSelection(valid)
         }
     })
 
