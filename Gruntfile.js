@@ -42,10 +42,22 @@ module.exports = function (grunt) {
           },
           game_bundle: {
             // browserify -r ./js/game/Game:Game -r ./js/game/MiniLog:Minig -r ./js/game/Util:Util -r ./js/game/Watches:Watches -o public/js/  game.bundle.js
-            src: ['./js/game/Game.js', './js/game/MiniLog.js', './js/game/Util.js', './js/game/Watches.js'],
+            src: [
+              './js/game/Game.js', 
+              './js/game/GridController.js', 
+              './js/game/MiniLog.js', 
+              './js/game/Util.js', 
+              './js/game/Watches.js'
+            ],
             dest: 'public/js/game.bundle.js',
             options: {
-                alias: ['./js/game/Game.js:Game', './js/game/MiniLog.js:MiniLog', './js/game/Util.js:Util', './js/game/Watches.js:Watches'],
+                alias: [
+                  './js/game/Game.js:Game', 
+                  './js/game/GridController.js:GridController', 
+                  './js/game/MiniLog.js:MiniLog', 
+                  './js/game/Util.js:Util', 
+                  './js/game/Watches.js:Watches'
+                ],
             }
           },
           // TODO do automatic scanning or regular expression...
