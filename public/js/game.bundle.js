@@ -1,4 +1,6 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/9Q6Zj":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"Game":[function(require,module,exports){
+module.exports=require('/9Q6Zj');
+},{}],"/9Q6Zj":[function(require,module,exports){
 "use strict";
 
 var Base = require("basejs")
@@ -123,8 +125,67 @@ var Game = Base.extend({
 
 module.exports = Game
 
-},{"./Splash":5,"basejs":10}],"Game":[function(require,module,exports){
-module.exports=require('/9Q6Zj');
+},{"./Splash":7,"basejs":12}],"Qz+ab4":[function(require,module,exports){
+var Base = require("basejs")
+
+var GridController = Base.extend({
+    constructor: function(opts) {
+        this.width = opts.width || 10
+        this.height = opts.height || 10
+        this.selected = opts.selected
+        this.changed = opts.changed,
+        this.row = opts.row || 0
+        this.col = opts.col || 0
+    },
+    select: function(row, col) {
+        this.row = row
+        this.col = col
+        this.onSelectionChanged(row, col)
+    },
+    onVirtualControl: function(evt) {
+        var r = this.row
+        var c = this.col
+        if(evt.type=="press") {
+            switch(evt.control) {
+                case 'up': 
+                    r = (r+this.height-1)%this.height
+                    break
+                case 'down': 
+                    r = (r+1)%this.height
+                    break
+                case 'left': 
+                    c = (c+this.width-1)%this.width
+                    break
+                case 'right': 
+                    c = (c+1)%this.width
+                    break
+                case 'select': 
+                    this.onSelect(r, c)
+                    return
+            }
+        }
+        this.row = r
+        this.col = c
+        this.onSelectionChanged(r, c)
+    },
+    onSelectionChanged: function(row, col) {
+        console.log("selection changed!")
+        if(this.changed) {
+            this.changed(row, col)
+        }
+    },
+    onSelect: function(row, col) {
+        console.log("selected! row="+row+" col="+col)
+        if(this.selected) {
+            this.selected(row, col)
+        }
+    }
+})
+
+
+module.exports = GridController
+},{"basejs":12}],"GridController":[function(require,module,exports){
+module.exports=require('Qz+ab4');
 },{}],"0D1Aa+":[function(require,module,exports){
 "use strict";
 
@@ -174,9 +235,9 @@ var LivesMiniLog = MiniLog.extend({
 
 module.exports = MiniLog
 
-},{"basejs":10}],"MiniLog":[function(require,module,exports){
+},{"basejs":12}],"MiniLog":[function(require,module,exports){
 module.exports=require('0D1Aa+');
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 var Splash = function(options) {
@@ -215,6 +276,8 @@ Splash.removeAll = function() {
 
 module.exports = Splash
 
+},{}],"Util":[function(require,module,exports){
+module.exports=require('8RkSAW');
 },{}],"8RkSAW":[function(require,module,exports){
 "use strict";
 
@@ -255,8 +318,8 @@ var Util = {
 
 module.exports = Util
 
-},{}],"Util":[function(require,module,exports){
-module.exports=require('8RkSAW');
+},{}],"Watches":[function(require,module,exports){
+module.exports=require('JnjsU8');
 },{}],"JnjsU8":[function(require,module,exports){
 "use strict";
 
@@ -287,9 +350,7 @@ var Watches = Base.extend({
 
 module.exports = Watches
 
-},{"basejs":10}],"Watches":[function(require,module,exports){
-module.exports=require('JnjsU8');
-},{}],10:[function(require,module,exports){
+},{"basejs":12}],12:[function(require,module,exports){
 /*
   Based on Base.js 1.1a (c) 2006-2010, Dean Edwards
   Updated to pass JSHint and converted into a module by Kenneth Powers
@@ -436,4 +497,4 @@ module.exports=require('JnjsU8');
   return Base;
 });
 
-},{}]},{},["/9Q6Zj","0D1Aa+","8RkSAW","JnjsU8"])
+},{}]},{},["/9Q6Zj","Qz+ab4","0D1Aa+","8RkSAW","JnjsU8"])
