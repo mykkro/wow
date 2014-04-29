@@ -2,8 +2,8 @@ var Game = require("../game/Game")
 var GridController = require("../game/GridController")
 
 var GameWithRules = Game.extend({
-    constructor: function(options, root, gameData) {
-        this.base(options, root)
+    constructor: function(options, root, gameData, appUrl) {
+        this.base(options, root, appUrl)
         console.log("Initializing rule-based game...")
         console.log(gameData)
 

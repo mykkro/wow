@@ -1,6 +1,6 @@
 {
 	"name": "wow-contrib-games-pexeso-alt",
-	"apptype": "wow/game",
+	"apptype": "wow/app/game",
 	"title": "Pexeso",
 	"description": "Pexeso aka Memory Game",
 	"className": "Pexeso",

@@ -154,13 +154,6 @@ module.exports = function (grunt) {
             {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/raphanoid/lang/' },
             {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/raphanoid/' },
 
-            {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/pexeso/js/' },
-            {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/pexeso/css/' },
-            {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/pexeso/media/' },
-            {expand: true, cwd: 'shared/templates/', src: ['**'], dest: 'games/pexeso/templates/' },
-            {expand: true, cwd: 'shared/lang/', src: ['**'], dest: 'games/pexeso/lang/' },
-            {expand: true, cwd: 'shared/', src: ['index.html'], dest: 'games/pexeso/' },
-
             {expand: true, cwd: 'shared/js/', src: ['bundle.js'], dest: 'games/tictactoe/js/' },
             {expand: true, cwd: 'shared/css/', src: ['bundle.css'], dest: 'games/tictactoe/css/' },
             {expand: true, cwd: 'shared/media/', src: ['**'], dest: 'games/tictactoe/media/' },
