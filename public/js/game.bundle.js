@@ -6,9 +6,10 @@ var Splash = require("./Splash")
 
 var Game = Base.extend({
     // options
-    constructor: function(options, root) {
+    constructor: function(options, root, appUrl) {
         this.options = options || {}
         this.root = root
+        this.appUrl = appUrl
         this.controller = null
     },
     init: function(cb) {
@@ -49,6 +50,9 @@ var Game = Base.extend({
     },
     onVirtualControl: function(evt) {
         console.log("Controller Event: ", evt)
+    },
+    getResourceUri: function(uri) {
+        return (uri && uri.charAt(0) == "/") ? uri : this.appUrl + uri
     },
     availableLogs: function() {
         return {

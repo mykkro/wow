@@ -1,64 +1,10 @@
 var Base = require("basejs")
 var GameWithRules = require("../../js/rulegame/GameWithRules")
-
-var GridController = Base.extend({
-    constructor: function(opts) {
-        this.width = opts.width || 10
-        this.height = opts.height || 10
-        this.selected = opts.selected
-        this.changed = opts.changed,
-        this.row = opts.row || 0
-        this.col = opts.col || 0
-    },
-    select: function(row, col) {
-        this.row = row
-        this.col = col
-        this.onSelectionChanged(row, col)
-    },
-    onVirtualControl: function(evt) {
-        var r = this.row
-        var c = this.col
-        if(evt.type=="press") {
-            switch(evt.control) {
-                case 'up': 
-                    r = (r+this.height-1)%this.height
-                    break
-                case 'down': 
-                    r = (r+1)%this.height
-                    break
-                case 'left': 
-                    c = (c+this.width-1)%this.width
-                    break
-                case 'right': 
-                    c = (c+1)%this.width
-                    break
-                case 'select': 
-                    this.onSelect(r, c)
-                    return
-            }
-        }
-        this.row = r
-        this.col = c
-        this.onSelectionChanged(r, c)
-    },
-    onSelectionChanged: function(row, col) {
-        console.log("selection changed!")
-        if(this.changed) {
-            this.changed(row, col)
-        }
-    },
-    onSelect: function(row, col) {
-        console.log("selected! row="+row+" col="+col)
-        if(this.selected) {
-            this.selected(row, col)
-        }
-    }
-})
+var GridController = require("../../js/game/GridController.js")
 
 var MyGame = GameWithRules.extend({
     constructor: function(options, root, gamedata, appUrl) {
-        this.base(options, root, gamedata);
-        this.appUrl = appUrl
+        this.base(options, root, gamedata, appUrl);
         this.boardWidth = 1000
         this.boardHeight = 1000
     },
@@ -101,6 +47,8 @@ var MyGame = GameWithRules.extend({
     isValidSelection: function(valid) {
         return valid.rows[this.gridCtl.row][this.gridCtl.col]
     },
+    // show selection box    
+    // parameters: grid size, position, valid?
     updateSelection: function(valid) {
         var rows = valid.height
         var cols = valid.width
@@ -137,7 +85,7 @@ var MyGame = GameWithRules.extend({
                 var xx = j * ww
                 var yy = i * hh
                 var uri = gamedata.pieces[col].uri
-                var picUrl = (uri.charAt(0) == "/") ? uri : self.appUrl + uri
+                var picUrl = getResourceUri(uri)
                 board.append("image").attr({
                     "xlink:href": picUrl,
                     width: ww,

@@ -1,6 +1,10 @@
-var Pexeso = Game.extend({
+var Pexeso = Game.extend({  
   // options
   cardCoupleShowDuration: 1500,
+  constructor: function(options, root, appUrl) {
+      this.base(options, root, appUrl)
+      console.log("Initializing Pexeso game")
+  },
 
   //+ Jonas Raoni Soares Silva
   //@ http://jsfromhell.com/array/shuffle [v1.0]
@@ -74,73 +78,14 @@ var Pexeso = Game.extend({
   },
   init: function(cb) {
     var self = this;
-    this.tilesetBaseUrl = "media/tilesets/sampleTileset/"
+    this.tilesetBaseUrl = this.getResourceUri("media/tilesets/sampleTileset/")
     this.tileBackUrl = this.tilesetBaseUrl+"assets/tileback.png"
 
-    //$.getJSON(this.tilesetBaseUrl + "metadata.json").done(function(d) {
-    //  console.log("Tileset metadata loaded.")
-      self.tileset = {
-        "$type": "playonweb-tileset",
-        "name": "sampleTileset",
-        "title": "Sample Tileset",
-        "version": "1.0",
-        "width": 256,
-        "height": 256,
-        "tiles": [
-          {
-            "name": "tile1",
-            "url": "assets/baseball_ball.png"
-          },
-          {
-            "name": "tile2",
-            "url": "assets/basketball_ball.png"
-          },
-          {
-            "name": "tile3",
-            "url": "assets/boxing_gloves.png"
-          },
-          {
-            "name": "tile5",
-            "url": "assets/football_ball.png"
-          },
-          {
-            "name": "tile4",
-            "url": "assets/volleyball_ball.png"
-          },
-          {
-            "name": "tile6",
-            "url": "assets/golf_ball.png"
-          },
-          {
-            "name": "tile7",
-            "url": "assets/hockey_iceskate.png"
-          },
-          {
-            "name": "tile8",
-            "url": "assets/motorsport_helmet.png"
-          },
-          {
-            "name": "tile9",
-            "url": "assets/skateboard.png"
-          },
-          {
-            "name": "tile10",
-            "url": "assets/soccer_ball.png"
-          },
-          {
-            "name": "tile11",
-            "url": "assets/tennis_ball.png"
-          },
-          {
-            "name": "tile12",
-            "url": "assets/tennis.png"
-          },
-          {
-            "name": "tileBackground",
-            "url": "assets/tileback.png"
-          }
-        ]
-      }
+    // create empty board...
+    $(".game-container").html($("<div>").attr("id","board"))
+    // load tileset...
+    $.getJSON(this.tilesetBaseUrl + "metadata.json").done(function(d) {
+      self.tileset = d      
       /* start with a set of cards.. */
       self.cards = []
       _.each(self.tileset.tiles, function(ttt) {
@@ -148,8 +93,7 @@ var Pexeso = Game.extend({
       })
       // callback...
       if(cb) cb()
-//    })
-    $("<div>").attr("id","board").appendTo($("#tab-game"))
+    })
 
   },
   start: function(cb) {
