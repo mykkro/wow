@@ -31,30 +31,42 @@ module.exports = function(Wow) {
         },
         onVirtualControl: function(evt) {
             console.log("MyGame controller event: ", evt)
-            var r = this.selectedRow
-            var c = this.selectedColumn
-            if(evt.type=="press") {
-                switch(evt.control) {
-                    case 'up': 
-                        r = (r+this.boardRows-1)%this.boardRows
-                        break
-                    case 'down': 
-                        r = (r+1)%this.boardRows
-                        break
-                    case 'left': 
-                        c = (c+this.boardColumns-1)%this.boardColumns
-                        break
-                    case 'right': 
-                        c = (c+1)%this.boardColumns
-                        break
-                    case 'select': 
-                        this.cellSelected(c, r)
-                        return
+            if(this.isGameOver()) {
+                if(evt.type=="press" && evt.control=="select") {
+                    // kill prompt...
+                    this.gameOverPrompt.hide()
                 }
+            } else if(this.isFinished()) {
+                if(evt.type=="press" && evt.control=="select") {
+                    // kill prompt...
+                    this.finishedPrompt.hide()
+                }
+            } else {
+                var r = this.selectedRow
+                var c = this.selectedColumn
+                if(evt.type=="press") {
+                    switch(evt.control) {
+                        case 'up': 
+                            r = (r+this.boardRows-1)%this.boardRows
+                            break
+                        case 'down': 
+                            r = (r+1)%this.boardRows
+                            break
+                        case 'left': 
+                            c = (c+this.boardColumns-1)%this.boardColumns
+                            break
+                        case 'right': 
+                            c = (c+1)%this.boardColumns
+                            break
+                        case 'select': 
+                            this.cellSelected(c, r)
+                            return
+                    }
+                }
+                this.selectedRow = r
+                this.selectedColumn = c
+                this.updateSelection(this.symbols.VALID)
             }
-            this.selectedRow = r
-            this.selectedColumn = c
-            this.updateSelection(this.symbols.VALID)
         },
         isValidSelection: function(valid) {
             return valid.rows[this.selectedRow][this.selectedColumn]
@@ -111,7 +123,7 @@ module.exports = function(Wow) {
                             x: xx,
                             y: yy,
                             "fill": "cyan",
-                            "fill-opacity": 0.5
+                            "fill-opacity": 0.3
                         }).on("click", function() {
                             console.log("Click!")
                             self.selectedRow = i
@@ -380,6 +392,14 @@ module.exports = function(Wow) {
                                     game.setLogger(function(name, value) {
                                         self.updateLogs(name, value)
                                     })
+                                    game.onGameOver = function() {
+                                        console.log("rulegame.js onGameOver")
+                                        self.quitGame()
+                                    }
+                                    game.onFinished = function() {
+                                        console.log("rulegame.js onFinished")
+                                        self.quitGame()
+                                    }
                                     self.logs = {}
                                     self.initLogs()
 

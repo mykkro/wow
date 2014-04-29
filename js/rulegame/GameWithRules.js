@@ -23,6 +23,8 @@ var GameWithRules = Game.extend({
         // we need to do a deep copy of arrays...
         this.symbols.STATE = $.extend(true, {}, layout.matrices.STATE[0]);
         this.symbols.VALID = $.extend(true, {}, layout.matrices.VALID[0]);
+        this.gameover = false
+        this.finished = false
         this.setLastPosition()
         this.updateBoard(this.symbols.STATE, this.symbols.VALID)
         this.base(cb)
@@ -34,6 +36,14 @@ var GameWithRules = Game.extend({
 
     updateBoard: function(state, valid) {
         // to be implemented in subclasses
+    },
+
+    onGameOver: function() {
+        console.log("Game over!")
+    },
+
+    onFinished: function() {
+        console.log("Finished!")
     },
 
     cellSelected: function(x, y) {
@@ -56,6 +66,7 @@ var GameWithRules = Game.extend({
         var gamedata = this.gameData
         var symbols = this.symbols
         var rules = gamedata.rules
+        var self = this
         console.log("Processing rules")
         for (var i = 0; i < rules.length; i++) {
             var rule = rules[i]
@@ -67,11 +78,43 @@ var GameWithRules = Game.extend({
         this.updateBoard(symbols.STATE, symbols.VALID)
         // compare state with some of final states...
         var finished = this.testFinalState()
-        if (finished) alert("congratulations!")
+        if (finished) {
+            self.finished = true
+            self.finishedPrompt = self.levelUpPrompt(function() {
+                // quit the game...
+                console.log("Finished the level!")
+                self.finished = false
+                self.finishedPrompt = null
+                if(self.onFinished) {
+                    self.onFinished()
+                }
+            })
+        }
         var hasValidMoves = this.testValidMoves()
-        if (!hasValidMoves) alert("game over!")
-        this.setLastPosition()
+        if (!hasValidMoves) {
+            // alert("game over!")
+            self.gameover = true
+            self.gameOverPrompt = self.quitGamePrompt(function() {
+                // quit the game...
+                console.log("Quitting the game!")
+                self.gameover = false
+                self.gameOverPrompt = null
+                if(self.onGameOver) {
+                    self.onGameOver()
+                }
+            })
+        } else {
+            this.setLastPosition()
+        }
 
+    },
+
+    isGameOver: function() {
+        return this.gameover
+    },
+
+    isFinished: function() {
+        return this.finished
     },
 
     testValidMoves: function() {
