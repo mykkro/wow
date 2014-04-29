@@ -1,4 +1,5 @@
 var Game = require("../game/Game")
+var GridController = require("../game/GridController")
 
 var GameWithRules = Game.extend({
     constructor: function(options, root, gameData) {
@@ -239,6 +240,10 @@ var GameWithRules = Game.extend({
         var symbols = this.symbols
         symbols.Px.value = symbols.Ax.value
         symbols.Py.value = symbols.Ay.value
+    },
+
+    getCurrentPosition: function() {
+        return { x: this.symbols.Ax.value, y: this.symbols.Ay.value }
     },
 
     // values that can be found in index expressions (always integers)
