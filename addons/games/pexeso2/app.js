@@ -96,6 +96,40 @@ var Pexeso = Game.extend({
     })
 
   },
+  drawTile: function(tileObj, j) {
+      var self = this
+      var blk = function(klass, attrs) {
+        return $("<div>").addClass(klass).attr(attrs||{})
+      }
+      var tile = blk("tile")
+          .css({"background-image": "url("+this.tilesetBaseUrl + tileObj.url+")"})
+      var card = blk("card").addClass("flipped").append(
+        /* face */
+        blk("tcf")
+          .html(tile)
+          .click(function() {
+            if(self.cardFlipping) self.turnCardDown(j)
+          }),
+        /* back */
+        blk("tcb")
+          .css({"background-image": "url("+self.tileBackUrl+")"})
+          .click(function(){
+            if(self.cardFlipping) self.turnCardUp(j)
+          })
+      )
+      return card
+  },
+  drawBoard: function() {
+      $("#board").empty()
+      for(var i=0; i<this.playground.length; i++) {
+          var card = this.drawTile(this.playground[i], i)
+          $("#board").append(card) 
+          this.playground[i].tile = card
+      }
+  },
+  drawBoardSVG: function() {
+
+  },
   start: function(cb) {
       var self = this
       /* use only first ten... */
@@ -113,35 +147,7 @@ var Pexeso = Game.extend({
       this.playground = this.shuffle(this.playground);
       console.log(this.playground);
       /* display board */
-      $("#board").empty()
-      var blk = function(klass, attrs) {
-        return $("<div>").addClass(klass).attr(attrs||{})
-      }
-      
-      for(var i=0; i<this.playground.length; i++) {
-        var tile = blk("tile")
-            .css({"background-image": "url("+this.tilesetBaseUrl + this.playground[i].url+")"})
-        var fun = function(){
-            var j = i
-            var card = blk("card").addClass("flipped").append(
-              /* face */
-              blk("tcf")
-                .html(tile)
-                .click(function() {
-                  if(self.cardFlipping) self.turnCardDown(j)
-                }),
-              /* back */
-              blk("tcb")
-                .css({"background-image": "url("+self.tileBackUrl+")"})
-                .click(function(){
-                  if(self.cardFlipping) self.turnCardUp(j)
-                })
-            )
-            $("#board").append(card) 
-            self.playground[j].tile = card
-        };
-        fun()
-      }
+      this.drawBoard()
       // game started callback...
       if(cb) cb();    
   },
