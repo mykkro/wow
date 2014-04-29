@@ -85,7 +85,7 @@ var MyGame = GameWithRules.extend({
                 var xx = j * ww
                 var yy = i * hh
                 var uri = gamedata.pieces[col].uri
-                var picUrl = getResourceUri(uri)
+                var picUrl = self.getResourceUri(uri)
                 board.append("image").attr({
                     "xlink:href": picUrl,
                     width: ww,
