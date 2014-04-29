@@ -87,7 +87,7 @@ var Game = Base.extend({
         })
     },
     startGamePrompt: function(cb) {
-        new Splash({
+        return new Splash({
             text: __("Starting game..."),
             delay: 2000,
             overlay: true,
@@ -97,7 +97,7 @@ var Game = Base.extend({
         })
     },
     pauseGamePrompt: function(cb) {
-        new Splash({
+        return new Splash({
             text: __("Paused"),
             overlay: true,
             hideOnClick: true,
@@ -105,6 +105,12 @@ var Game = Base.extend({
                 if (cb) cb()
             }
         })
+    },
+    quitGamePrompt: function(cb) {
+      return this.prompt(__("Game over"), {}, cb)
+    },
+    levelUpPrompt: function(cb) {
+      return this.prompt(__("Well done!"), {}, cb)
     },
     hidePrompt: function() {
         Splash.removeAll()
