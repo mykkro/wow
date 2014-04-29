@@ -127,13 +127,13 @@ var Pexeso = Game.extend({
           this.playground[i].tile = card
       }
   },
-  drawBoardSVG: function() {
-
-  },
   start: function(cb) {
       var self = this
       /* use only first ten... */
       this.totalCards = 10;
+      /* arranged to a grid with 4 rows and 5 columns */
+      this.rows = 4
+      this.columns = 5
       this.playground = []
       this.turnedCards = {}
       this.foundTiles = {}
@@ -148,8 +148,30 @@ var Pexeso = Game.extend({
       console.log(this.playground);
       /* display board */
       this.drawBoard()
+      this.gridCtl = new GridController({
+          width: this.columns,
+          height: this.rows,
+          changed: function(row, col) {
+              self.updateSelection(col, row)
+          },
+          selected: function(row, col) {
+              self.cellSelected(col, row)
+          }
+      })
+      // call this to trigger change event to draw selection box
+      this.gridCtl.select(0,0)
+
       // game started callback...
       if(cb) cb();    
+  },
+  updateSelection: function(col, row) {
+    $("#board .card").removeClass("selected")
+    var tile = this.playground[col+row*this.columns]
+    tile.tile.addClass("selected")
+  },
+  cellSelected: function(col, row) {
+    var tile = this.playground[col+row*this.columns]
+    tile.tile.click()
   },
   restart: function(cb) {
     this.start(cb)

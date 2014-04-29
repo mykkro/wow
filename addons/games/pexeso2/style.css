@@ -24,6 +24,10 @@
   cursor:pointer;
   color:white;
   display: inline-block;
+  border: #0000 3px solid;
+}
+.card.selected {
+  border: green 3px solid;
 }
 .card>div {
   width:100px;
