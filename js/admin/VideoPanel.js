@@ -2,62 +2,50 @@ module.exports = function(Widgetizer, i18n, dialogs) {
 
 	var Base = require('basejs');
     var mustache = require('mustache');
-    
+	var Panel = require("./Panel")(Widgetizer, i18n, dialogs)
+
 	var server = Widgetizer.rpc
 
-    var VideoPanel = Base.extend({
+    var VideoPanel = Panel.extend({
         constructor: function(adminId) {
+        	this.base($("#video-list"))
         	this.adminId = adminId
+        	this.searchArgs = {
+                page: 1,
+                adminId: adminId
+            }
             var self = this
             $("#add-video-btn").click(function() {
                 self.addUserVideo()
             })
-            self.refreshVideosView()
         },
-        getVideos: function(cb) {
-        	var page = 1
-            server("userVideosList", {
-                adminId: this.adminId,
-                page: page
-            }, cb)
+        getItemsDB: function(args, next) {
+            server("userVideosList", args, next)
         },
-        showVideos: function(data) {
-            var root = $("#video-list").empty()
-            if (data && data.items) {
-                for (var i = 0; i < data.items.length; i++) {
-                    root.append(this.showVideo(data.items[i]))
-                }
-            }
+        showItems: function(data) {
+            console.log("VideoPanel.showItems", data)
+            // we need only the array part...
+            this.base(data.items)
         },
-        showVideo: function(item) {
+        showItem: function(item) {
+        	console.log("VideoPanel.showItem", item)
             var self = this
-            var tpl = '<h3>{{title}}</h3><img width="120" height="90" src="http://img.youtube.com/vi/{{id}}/default.jpg"><button>Remove</button>'
+            var tpl = '<h3>{{title}}</h3><img width="120" height="90" src="http://img.youtube.com/vi/{{id}}/default.jpg">'
             var html = mustache.to_html(tpl, item)
-            var previewUri = "http://img.youtube.com/vi/" + item.id + "/default.jpg"
             var out = $("<div>").html(html)
+            out.append(this.makeRemoveButton(item._id, out))
             out.find("img").click(function() {
                 window.location.href = "/pages/video?id=" + item.id
             })
-            out.find("button").click(function() {
-                self.showRemoveDialog(function() {
-                    // confirmed...
-                    self.removeVideo(userId, item.id, out)
-                })
-            })
             return out
         },
-        removeVideo: function(userId, videoId, div) {
+        removeItemDB: function(id, next) {
             // remove record from database...
             server("userVideosRemove", {
                 adminId: this.adminId,
-                userId: userId,
-                videoId: videoId
-            }, function(err, res) {
-                if (err) console.error(err);
-                else {
-                    div.fadeOut("slow")
-                }
-            })
+                userId: 555, /// TODO!
+                videoId: id
+            }, next)
         },
         addUserVideo: function() {
             var userId = $("#videouser-textfield").val()
@@ -76,23 +64,11 @@ module.exports = function(Widgetizer, i18n, dialogs) {
                             title: data.result.title
                         }, function(err, res) {
                             console.log(res)
-                            self.refreshVideosView()
+                            self.refreshView()
                         })
                     }
                 })
             }
-        },
-        showRemoveDialog: function(cb) {
-            dialogs.removeDialog(function(reallyRemove) {
-                if (reallyRemove) cb()
-            })
-        },
-        refreshVideosView: function() {
-            var self = this
-            self.getVideos(function(err, data) {
-                console.log(data)
-                if (!err) self.showVideos(data.result)
-            })
         }
     })
 

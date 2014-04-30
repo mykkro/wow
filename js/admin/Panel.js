@@ -13,7 +13,7 @@ module.exports = function(Widgetizer, i18n, dialogs) {
         refreshView: function() {
             var self = this
             self.getItemsDB(self.searchArgs, function(err, data) {
-                self.showItems(data.result)
+                if(!err) self.showItems(data.result)
             })            
         },
         showItems: function(data) {
