@@ -1,6 +1,4 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"Game":[function(require,module,exports){
-module.exports=require('/9Q6Zj');
-},{}],"/9Q6Zj":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/9Q6Zj":[function(require,module,exports){
 "use strict";
 
 var Base = require("basejs")
@@ -125,7 +123,9 @@ var Game = Base.extend({
 
 module.exports = Game
 
-},{"./Splash":7,"basejs":12}],"Qz+ab4":[function(require,module,exports){
+},{"./Splash":7,"basejs":12}],"Game":[function(require,module,exports){
+module.exports=require('/9Q6Zj');
+},{}],"Qz+ab4":[function(require,module,exports){
 var Base = require("basejs")
 
 var GridController = Base.extend({
@@ -318,8 +318,6 @@ var Util = {
 
 module.exports = Util
 
-},{}],"Watches":[function(require,module,exports){
-module.exports=require('JnjsU8');
 },{}],"JnjsU8":[function(require,module,exports){
 "use strict";
 
@@ -350,7 +348,9 @@ var Watches = Base.extend({
 
 module.exports = Watches
 
-},{"basejs":12}],12:[function(require,module,exports){
+},{"basejs":12}],"Watches":[function(require,module,exports){
+module.exports=require('JnjsU8');
+},{}],12:[function(require,module,exports){
 /*
   Based on Base.js 1.1a (c) 2006-2010, Dean Edwards
   Updated to pass JSHint and converted into a module by Kenneth Powers

@@ -1,0 +1,115 @@
+.ui-tabs {
+  zoom: 1;
+}
+.ui-tabs .ui-tabs-nav {
+  list-style: none;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+.ui-tabs .ui-tabs-nav li {
+  position: relative;
+  float: left;
+  margin: 0 3px -2px 0;
+  padding: 0;
+}
+.ui-tabs .ui-tabs-nav li a {
+  display: block;
+  padding: 10px 20px;
+  background: #f0f0f0;
+  border: 2px #ccc solid;
+  border-bottom-color: #ccc;
+  outline: none;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
+  padding: 10px 20px 12px 20px;
+  background: #fff;
+  border-bottom-style: none;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a,
+.ui-tabs .ui-tabs-nav li.ui-state-disabled a,
+.ui-tabs .ui-tabs-nav li.ui-state-processing a {
+  cursor: default;
+}
+.ui-tabs .ui-tabs-nav li a,
+.ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
+  cursor: pointer;
+}
+.ui-tabs .ui-tabs-panel {
+  display: block;
+  clear: both;
+  border: 2px #ccc solid;
+  padding: 10px;
+}
+.ui-tabs .ui-tabs-hide {
+  display: none;
+}
+#top-wrapper {
+  overflow: auto;
+}
+.dropzone {
+  background-color: #fce;
+  border: 2px dashed #ccc;
+}
+.dropzone.error {
+  background-color: salmon;
+}
+.dropzone.accepted {
+  background-color: greenyellow;
+}
+#video-dropzone {
+  width: 124px;
+  height: 94px;
+}
+#radio-dropzone {
+  padding: 20px;
+  display: inline-block;
+}
+#radiotitle-textfield {
+  width: 400px;
+}
+#radiourl-textfield {
+  width: 400px;
+}
+.admin {
+  margin: 10px;
+}
+.admin h1 {
+  padding: 8px;
+  margin: 0px;
+}
+.admin .admin-nav {
+  padding: 10px;
+}
+.admin .admin-nav a {
+  text-decoration: none;
+}
+.admin .admin-body {
+  margin: 0px;
+  padding: 10px;
+}
+.admin .admin-body .panel {
+  background-color: red;
+  margin: 20px 0px;
+  padding: 0px;
+  -webkit-border-radius: 12px;
+}
+.admin .admin-body .panel > h2 {
+  background-color: #cee;
+  padding: 8px;
+  margin: 0px;
+  -webkit-border-radius: 10px 10px 0px 0px;
+}
+.admin .admin-body .panel > .panel-body {
+  background-color: #ded;
+  margin: 0px;
+  padding: 10px 20px;
+  -webkit-border-radius: 0px 0px 10px 10px;
+}
+.admin .admin-body .panel > .panel-body label > span {
+  display: inline-block;
+  width: 160px;
+}
+.admin .admin-body .panel > .panel-body .buttons {
+  padding: 10px;
+}
