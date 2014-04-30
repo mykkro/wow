@@ -1,123 +1,133 @@
-<style>
-#top-wrapper {
-	overflow: auto;
-}
-</style>
+<link rel="stylesheet" href="/css/admin.bundle.css" type="text/css" /> 
+<script type="text/javascript" src="/js/wow-admin.js"></script>
 <script type="text/javascript" src="/js/pages/admin.js"></script>
 
-  <div class="admin">
-  <div class="admin">
+<div class="admin">
 
 	<h1>Admin Page</h1>
 	<div class="admin-nav">
 		<a href="index.html">Back to login page</a>
 	</div>
 	<div class="admin-body">
-		<div class="importapp panel">
-			<h2>Import App</h2>
-			<div class="panel-body">
-				<div>
-					<form method='post' action='/fileupload' enctype='multipart/form-data'>
-						<label>Import app packaged in .zip archive:</label>
-						<input type='file' name='archive'/>
-						<input type='submit' />
-					</form>
-				</div>
-			</div>
-		</div>
-		<div class="importedapps panel">
-			<h2>Imported Apps</h2>
-			<ul class="panel-body" id="import-list">
-			</ul>
-		</div>
-		<div class="addvideo panel">
-			<h2>Add YouTube Video</h2>
-			<div class="panel-body">
-				<div>
-			        <div id="video-dropzone" class="dropzone">
-			            Drop YouTube video here
-			        </div>
 
-				</div>
-				<div>
-					<label><span>YouTube VideoID: </span><input type="text" id="videoid-textfield"/></label>
-				</div>
-				<div>
-					<label><span>UserID: </span><input type="text" disabled id="videouser-textfield" value="555"/></label>
-				</div>
-				<div class="buttons">
-					<button id="add-video-btn">Add to list</button>
-				</div>
-			</div>
-		</div>
-		<div class="uservideos panel">
-			<h2>User Videos</h2>
-			<ul class="panel-body" id="video-list">
-			</ul>
-		</div>
-		<div class="addradio panel">
-			<h2>Add Internet Radio</h2>
-			<div class="panel-body">
-				<div>
-			        <div id="radio-dropzone" class="dropzone">
-			            Drop Internet Radio URL here (raw streams like .mp3 or .ogg are accepted)
-			        </div>
 
+		<div id="tabs-container-1" class="ui-tabs">
+			<ul id="tabs-container-1-nav" class="ui-tabs-nav">
+				<li><a href="#tabs-1">Imports</a></li>
+				<li><a href="#tabs-2">Videos</a></li>
+				<li><a href="#tabs-3">Radios</a></li>
+				<li><a href="#tabs-4">Users</a></li>
+			</ul>
+			<div id="tabs-1" class="ui-tabs-panel">
+				<h2>Imports</h2>
+				<div class="importapp panel">
+					<h2>Import App</h2>
+					<div class="panel-body">
+						<div>
+							<form method='post' action='/fileupload' enctype='multipart/form-data'>
+								<label>Import app packaged in .zip archive:</label>
+								<input type='file' name='archive'/>
+								<input type='submit' />
+							</form>
+						</div>
+					</div>
 				</div>
-				<div>
-					<label><span>Internet Radio Name: </span><input type="text" id="radiotitle-textfield"/></label>
+				<div class="importedapps panel">
+					<h2>Imported Apps</h2>
+					<ul class="panel-body" id="import-list">
+					</ul>
 				</div>
-				<div>
-					<label><span>Internet Radio URL: </span><input type="text" id="radiourl-textfield"/></label>
+			</div>
+			<div id="tabs-2" class="ui-tabs-panel">
+				<h2>Videos</h2>
+				<div class="addvideo panel">
+					<h2>Add YouTube Video</h2>
+					<div class="panel-body">
+						<div>
+					        <div id="video-dropzone" class="dropzone">
+					            Drop YouTube video here
+					        </div>
+
+						</div>
+						<div>
+							<label><span>YouTube VideoID: </span><input type="text" id="videoid-textfield"/></label>
+						</div>
+						<div>
+							<label><span>UserID: </span><input type="text" disabled id="videouser-textfield" value="555"/></label>
+						</div>
+						<div class="buttons">
+							<button id="add-video-btn">Add to list</button>
+						</div>
+					</div>
 				</div>
-				<div>
-					<label><span>UserID: </span><input type="text" disabled id="radiouser-textfield" value="555"/></label>
+				<div class="uservideos panel">
+					<h2>User Videos</h2>
+					<ul class="panel-body" id="video-list">
+					</ul>
 				</div>
-				<div class="buttons">
-					<button id="add-radio-btn">Add to list</button>
+			</div>
+			<div id="tabs-3" class="ui-tabs-panel">
+				<h2>Radios</h2>
+				<div class="addradio panel">
+					<h2>Add Internet Radio</h2>
+					<div class="panel-body">
+						<div>
+					        <div id="radio-dropzone" class="dropzone">
+					            Drop Internet Radio URL here (raw streams like .mp3 or .ogg are accepted)
+					        </div>
+
+						</div>
+						<div>
+							<label><span>Internet Radio Name: </span><input type="text" id="radiotitle-textfield"/></label>
+						</div>
+						<div>
+							<label><span>Internet Radio URL: </span><input type="text" id="radiourl-textfield"/></label>
+						</div>
+						<div>
+							<label><span>UserID: </span><input type="text" disabled id="radiouser-textfield" value="555"/></label>
+						</div>
+						<div class="buttons">
+							<button id="add-radio-btn">Add to list</button>
+						</div>
+					</div>
+				</div>
+				<div class="radios panel">
+					<h2>Internet Radios</h2>
+					<ul class="panel-body" id="radio-list">
+					</ul>
+				</div>
+			</div>
+			<div id="tabs-4" class="ui-tabs-panel">
+				<h2>Users</h2>
+				<div class="adduser panel">
+					<h2>Add User</h2>
+					<div class="panel-body">
+						<div>
+							<div>
+								<label><span>Full name: </span><input type="text" id="userfullname-tf"/></label>
+							</div>
+							<div>
+								<label><span>Description: </span><textarea id="userdescr-ta"></textarea></label>
+							</div>
+							<div class="buttons">
+								<button id="adduser-btn">Add new user</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="listusers panel">
+					<h2>User List</h2>
+					<ul class="panel-body" id="user-list">
+					</ul>
 				</div>
 			</div>
 		</div>
-		<div class="radios panel">
-			<h2>Internet Radios</h2>
-			<ul class="panel-body" id="radio-list">
-			</ul>
-		</div>
+
+
 	</div>	
 </div>	
 </div>
 
- 		<style type="text/css">
-            .dropzone {
-            	background-color: #fce;
-                border: 2px dashed #ccc;
-            }
-            .dropzone.error {
-            	background-color: salmon;
-            }
-            .dropzone.accepted {
-            	background-color: greenyellow;
-            }
-            #video-dropzone {
-                width: 124px;
-                height: 94px;
-            }
-            #radio-dropzone {
-            	padding: 20px;
-            	display: inline-block;
-            }
-            #radiotitle-textfield {
-            	width: 400px;
-            }
-            #radiourl-textfield {
-            	width: 400px;
-            }
-        </style>
-
-
-	<script>
-
-	</script>
 <!-- we need this element so widgetizer does not complain... -->
 <div style="display:none;">
 <svg 

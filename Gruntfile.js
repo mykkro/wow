@@ -156,7 +156,7 @@ module.exports = function (grunt) {
     options: {
       separator: ';',
     },
-    dist: {
+    appjs: {
       src: [
         "js/vendor/underscore-min.js",
         "js/vendor/jquery-2.0.3.min.js",
@@ -178,10 +178,17 @@ module.exports = function (grunt) {
         "js/vendor/moment-with-langs.min.js",
         "js/vendor/raphael-min.js",
         "js/vendor/raphaelicious-1.0.js",
+        "js/vendor/yetii.js"
       ],
       dest: 'public/js/wow-libs.js'
     },
-    css: {
+    adminjs: {
+      src: [
+        // "js/vendor/jquery.ui/jquery-ui-1.10.4.min.js"
+      ],
+      dest: 'public/js/wow-admin.js'
+    },
+    appcss: {
       src: [
         "public/css/normalize.css",
         "js/vendor/alpaca.min.css"
@@ -199,9 +206,13 @@ module.exports = function (grunt) {
               "public/css/wow-libs.css",
               "less/style.less",
               "less/game.less"
+              ],
+            "public/css/admin.bundle.css": [
+              "less/admin.less"
               ]
           }
-        },
+        }
+        /*
         production: {
           options: {
             paths: ["./css"],
@@ -215,6 +226,7 @@ module.exports = function (grunt) {
               ]
           }
         }
+        */
       },
       execute: {
           target: {
