@@ -5,10 +5,13 @@ module.exports = function(Widgetizer, i18n, dialogs) {
     var Panel = require("./Panel")(Widgetizer, i18n, dialogs)
 
     var server = Widgetizer.rpc
+    var fs = require("fs")
+    // TODO use path module?
+    var template = fs.readFileSync(__dirname + "/../../templates/previews/youtubevideo.html")
 
-    var VideoPanel = Panel.extend({
+    var YouTubeVideoPanel = Panel.extend({
         constructor: function(adminId) {
-            this.base($("#video-list"))
+            this.base($("#video-list"), template)
             this.adminId = adminId
             this.searchArgs = {
                 page: 1,
@@ -17,6 +20,12 @@ module.exports = function(Widgetizer, i18n, dialogs) {
             var self = this
             $("#add-video-btn").click(function() {
                 self.addUserVideo()
+            })
+            $('#video-dropzone').youTubeDrop({
+                dropped: function(videoId) {
+                    console.log("Dropped!", videoId)
+                    $("#videoid-textfield").val(videoId)
+                }
             })
         },
         getItemsDB: function(args, next) {
@@ -28,11 +37,7 @@ module.exports = function(Widgetizer, i18n, dialogs) {
             this.base(data.items)
         },
         showItem: function(item) {
-            console.log("VideoPanel.showItem", item)
-            var self = this
-            var tpl = '<h3>{{title}}</h3><img width="120" height="90" src="http://img.youtube.com/vi/{{id}}/default.jpg">'
-            var html = mustache.to_html(tpl, item)
-            var out = $("<div>").html(html)
+            var out = this.base(item)
             out.append(this.makeRemoveButton(item._id, out))
             out.find("img").click(function() {
                 window.location.href = "/pages/video?id=" + item.id
@@ -72,5 +77,5 @@ module.exports = function(Widgetizer, i18n, dialogs) {
         }
     })
 
-    return VideoPanel
+    return YouTubeVideoPanel
 }

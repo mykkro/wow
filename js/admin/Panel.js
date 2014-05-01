@@ -1,10 +1,15 @@
 module.exports = function(Widgetizer, i18n, dialogs) {
 
     var Base = require('basejs');
+    var fs = require("fs")
+    // TODO use path module?
+    var template = fs.readFileSync(__dirname + "/../../templates/previews/generic.html")
+    var mustache = require('mustache');
 
     var Panel = Base.extend({
-        constructor: function(root) {
+        constructor: function(root, previewTpl) {
             this.root = root
+            this.previewTpl = previewTpl
             this.searchArgs = {
                 page: 1
             }
@@ -65,17 +70,10 @@ module.exports = function(Widgetizer, i18n, dialogs) {
             next("Panel.removeItemDB: not implemented yet")
         },
         showItem: function(item) {
-            // to be overridden by subclasses...
-            console.log("Panel.showItem", item)
-            var self = this
-            var out = $("<div>")
-            out.append(
-                $("<h3>").text(item.title),
-                $("<div>").text("Created: " + item.created),
-                this.makeRemoveButton(item._id, out)
-            )
-            return out
-        }
+            var html = mustache.to_html(this.previewTpl, item)
+            var out = $("<div>").addClass("item").html(html)
+            this.makeRemoveButton(item._id, out)            
+            return out        }
 
     })
 

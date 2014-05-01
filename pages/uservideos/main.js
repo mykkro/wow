@@ -2,7 +2,7 @@ module.exports = function(Wow) {
     var $ = Wow.$
     var i18n = Wow.i18n
     var userId = '555'
-    var VideosPage = require("../../js/videospage")(Wow)
+    var VideosPage = require("../../js/VideosPage")(Wow)
 
     var UserVideosPage = VideosPage.extend({
         createControls: function(data) {
