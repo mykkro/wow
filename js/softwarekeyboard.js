@@ -41,7 +41,7 @@ var SoftwareKeyboard = Overlay.extend({
         var grp = this.paper.group()
         var rect = grp.rect().attr("rx", this.gap).attr("ry", this.gap)
         var keys = []
-        // layout is array of rows (lines)
+            // layout is array of rows (lines)
         var x = 0
         var y = 0
         var w = 1

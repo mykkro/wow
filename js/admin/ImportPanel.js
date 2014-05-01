@@ -1,13 +1,13 @@
 module.exports = function(Widgetizer, i18n, dialogs) {
 
-	var Base = require('basejs');
+    var Base = require('basejs');
     var mustache = require('mustache');
     var ImageUtil = require("./ImageUtil")
     var Panel = require("./Panel")(Widgetizer, i18n, dialogs)
 
-	var server = Widgetizer.rpc
+    var server = Widgetizer.rpc
 
-   var ImportPanel = Panel.extend({
+    var ImportPanel = Panel.extend({
         constructor: function() {
             this.base($("#import-list"))
         },
@@ -63,5 +63,5 @@ module.exports = function(Widgetizer, i18n, dialogs) {
     })
 
 
-	return ImportPanel
+    return ImportPanel
 }

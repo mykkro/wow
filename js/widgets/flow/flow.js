@@ -13,7 +13,7 @@ module.exports = function(Widgetizer) {
         var direction = $(element).attr("direction") || "right"
         var gap = parseInt($(element).attr("gap") || 0)
         var anchor = $(element).attr("anchor") || "middle"
-        // we must find topmost widgets...
+            // we must find topmost widgets...
         var nodes = Widgetizer.findWidgetizedNodes(element, [], true)
         subwidgets = _.map(nodes, function(e) {
             return Widgetizer.widgets[e.getAttribute("id")]
@@ -35,12 +35,12 @@ module.exports = function(Widgetizer) {
             ymax = 0
         var maxwidth = 0,
             maxheight = 0
-            _.each(boxes, function(box) {
-                maxwidth = Math.max(maxwidth, box.w)
-                maxheight = Math.max(maxheight, box.h)
-            })
-            var horiz = !(direction == "up" || direction == "down")
-        // apply anchor...
+        _.each(boxes, function(box) {
+            maxwidth = Math.max(maxwidth, box.w)
+            maxheight = Math.max(maxheight, box.h)
+        })
+        var horiz = !(direction == "up" || direction == "down")
+            // apply anchor...
         _.each(boxes, function(box) {
             if (horiz) {
                 // set y coordinates

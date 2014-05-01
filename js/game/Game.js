@@ -110,10 +110,10 @@ var Game = Base.extend({
         })
     },
     quitGamePrompt: function(cb) {
-      return this.prompt(__("Game over"), {}, cb)
+        return this.prompt(__("Game over"), {}, cb)
     },
     levelUpPrompt: function(cb) {
-      return this.prompt(__("Well done!"), {}, cb)
+        return this.prompt(__("Well done!"), {}, cb)
     },
     hidePrompt: function() {
         Splash.removeAll()

@@ -39,7 +39,7 @@ module.exports = function(Widgetizer) {
     var factory = function(element, done) {
         // children are already widgetized...
         var active = parseInt($(element).attr("active") || 0)
-        // we must find topmost widgets...
+            // we must find topmost widgets...
         var nodes = Widgetizer.findWidgetizedNodes(element, [], true)
         subwidgets = _.map(nodes, function(e) {
             return Widgetizer.widgets[e.getAttribute("id")]
@@ -63,19 +63,19 @@ module.exports = function(Widgetizer) {
             ymax = 0
         var maxwidth = 0,
             maxheight = 0
-            _.each(boxes, function(box) {
-                maxwidth = Math.max(maxwidth, box.w)
-                maxheight = Math.max(maxheight, box.h)
+        _.each(boxes, function(box) {
+            maxwidth = Math.max(maxwidth, box.w)
+            maxheight = Math.max(maxheight, box.h)
+        })
+        // lay out widgets...
+        _.each(subwidgets, function(widget, i) {
+            var grp = SvgHelper.group({
+                "class": "switcher-option"
             })
-            // lay out widgets...
-            _.each(subwidgets, function(widget, i) {
-                var grp = SvgHelper.group({
-                    "class": "switcher-option"
-                })
-                grp.appendChild(widget.element)
-                gg.appendChild(grp)
-            })
-            var name = $(element).attr("name")
+            grp.appendChild(widget.element)
+            gg.appendChild(grp)
+        })
+        var name = $(element).attr("name")
         var ww = Widgetizer.widgetByClass(
             widgetname,
             name,

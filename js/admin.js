@@ -33,52 +33,52 @@
 	    var adminId = "123"
 	    var page = 1
 
-	        function ext(url) {
-	            return (url = url.substr(1 + url.lastIndexOf("/")).split('?')[0]).substr(url.lastIndexOf("."))
-	        }
+	    function ext(url) {
+	        return (url = url.substr(1 + url.lastIndexOf("/")).split('?')[0]).substr(url.lastIndexOf("."))
+	    }
 
-	        function afterDrop(url) {
-	            $("#radiourl-textfield").val(url)
-	            $("#radiotitle-textfield").val(url)
-	        }
+	    function afterDrop(url) {
+	        $("#radiourl-textfield").val(url)
+	        $("#radiotitle-textfield").val(url)
+	    }
 
-	        function cancel(e) {
-	            if (e.preventDefault) e.preventDefault(); // required by FF + Safari
-	            return false; // required by IE
-	        }
+	    function cancel(e) {
+	        if (e.preventDefault) e.preventDefault(); // required by FF + Safari
+	        return false; // required by IE
+	    }
 
-	        function drop(e) {
-	            $(this).removeClass("error").removeClass("accepted")
-	            e.preventDefault();
-	            var found = false;
-	            var types = e.dataTransfer.types
-	            for (var i = 0; i < types.length; i++) {
-	                if (types[i] == "text/uri-list") {
-	                    found = true;
-	                    break;
-	                }
+	    function drop(e) {
+	        $(this).removeClass("error").removeClass("accepted")
+	        e.preventDefault();
+	        var found = false;
+	        var types = e.dataTransfer.types
+	        for (var i = 0; i < types.length; i++) {
+	            if (types[i] == "text/uri-list") {
+	                found = true;
+	                break;
 	            }
-	            var out = ""
-	            var url = null
-	            if (!found) {
-	                // not a link...
-	                $(this).html("Not a link")
-	                $(this).addClass("error")
+	        }
+	        var out = ""
+	        var url = null
+	        if (!found) {
+	            // not a link...
+	            $(this).html("Not a link")
+	            $(this).addClass("error")
+	        } else {
+	            url = e.dataTransfer.getData("Text")
+	            var extension = ext(url).toLowerCase()
+	            if (extension == ".mp3" || extension == ".ogg") {
+	                var link = $('<a href="' + url + '" />').text(url)
+	                $(this).html(link).addClass("accepted")
+	                link.playable()
+	                afterDrop(url)
 	            } else {
-	                url = e.dataTransfer.getData("Text")
-	                var extension = ext(url).toLowerCase()
-	                if (extension == ".mp3" || extension == ".ogg") {
-	                    var link = $('<a href="' + url + '" />').text(url)
-	                    $(this).html(link).addClass("accepted")
-	                    link.playable()
-	                    afterDrop(url)
-	                } else {
-	                    $(this).html("Unsupported link type")
-	                    $(this).addClass("error")
-	                }
+	                $(this).html("Unsupported link type")
+	                $(this).addClass("error")
 	            }
-	            return false;
 	        }
+	        return false;
+	    }
 
 	    var RadioPanel = require("./admin/RadioPanel")(Widgetizer, i18n, dialogs)
 	    var VideoPanel = require("./admin/VideoPanel")(Widgetizer, i18n, dialogs)
@@ -88,13 +88,13 @@
 	    var ip = new ImportPanel(adminId)
 	    var rp = new RadioPanel(adminId)
 
-		var tabber1 = new Yetii({
-			id: 'tabs-container-1',
-			active: 1,
-			tabclass: 'ui-tabs-panel'
-		});
+	    var tabber1 = new Yetii({
+	        id: 'tabs-container-1',
+	        active: 1,
+	        tabclass: 'ui-tabs-panel'
+	    });
 
-		// create GUI...
+	    // create GUI...
 
 	    $("#radio-dropzone")
 	        .bind('drop', drop)

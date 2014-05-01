@@ -1,7 +1,7 @@
 module.exports = function(Widgetizer, i18n, dialogs) {
 
-	var Base = require('basejs');
-    
+    var Base = require('basejs');
+
     var Panel = Base.extend({
         constructor: function(root) {
             this.root = root
@@ -13,8 +13,8 @@ module.exports = function(Widgetizer, i18n, dialogs) {
         refreshView: function() {
             var self = this
             self.getItemsDB(self.searchArgs, function(err, data) {
-                if(!err) self.showItems(data.result)
-            })            
+                if (!err) self.showItems(data.result)
+            })
         },
         showItems: function(data) {
             console.log("Panel.showItems", data)
@@ -38,8 +38,8 @@ module.exports = function(Widgetizer, i18n, dialogs) {
             })
         },
         /**
-        * @returns nothing
-        */
+         * @returns nothing
+         */
         removeItem: function(id, div) {
             // remove record from database...
             console.log("Removing item: " + id)
@@ -79,5 +79,5 @@ module.exports = function(Widgetizer, i18n, dialogs) {
 
     })
 
-	return Panel
+    return Panel
 }

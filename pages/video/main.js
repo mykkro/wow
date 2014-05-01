@@ -24,17 +24,17 @@ module.exports = function(Wow) {
             var pauseButton = this.getWidget("pauseButton")
             var stopButton = this.getWidget("stopButton")
 
-                function setFavState(flag) {
-                    self.selectChain.hide()
-                    if (flag) {
-                        favButton.disable()
-                        unfavButton.enable()
-                    } else {
-                        favButton.enable()
-                        unfavButton.disable()
-                    }
-                    self.selectChain.show()
+            function setFavState(flag) {
+                self.selectChain.hide()
+                if (flag) {
+                    favButton.disable()
+                    unfavButton.enable()
+                } else {
+                    favButton.enable()
+                    unfavButton.disable()
                 }
+                self.selectChain.show()
+            }
             server("videoIsStarred", {
                 userId: userId,
                 videoId: videoId

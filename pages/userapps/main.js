@@ -40,13 +40,13 @@ module.exports = function(Wow) {
             }, function(err, data) {
                 if (!err) {
                     if (data) data = {
-                        // TODO change server query to return similar results as youtube search...
-                        totalItems: 7,
-                        startIndex: 1,
-                        itemsPerPage: 6,
-                        items: data.result
-                    }
-                    //self.selectChain.clear()
+                            // TODO change server query to return similar results as youtube search...
+                            totalItems: 7,
+                            startIndex: 1,
+                            itemsPerPage: 6,
+                            items: data.result
+                        }
+                        //self.selectChain.clear()
                     self.showSearchResults(page, data)
                     /* create plain widgets from results... */
                     var promises = $(".youtube-result").map(function() {

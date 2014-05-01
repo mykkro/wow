@@ -266,6 +266,33 @@ module.exports = function (grunt) {
             options : {
             }
         },
+docker: {
+    options: {
+      // These options are applied to all tasks
+      ignoreHidden: true,
+      sidebarState: true,
+      lineNums: true      
+    },
+    main: {
+      // Specify `src` and `dest` directly on the task object
+      src: ['lib/**/*.js'],
+      options: {
+        outDir: 'docs',
+        exclude: [
+          'addons/**',
+          'dist/**',
+          'docs/**',
+          'node_modules/**',
+          'js/vendor/**'
+        ],
+        extras: ["fileSearch"]
+      }
+    }
+  },     
+     
+    clean: {
+      docs: ['docs']
+    },   
       downloadfile: {
         files: [
           {url:'http://nodejs.org/dist/v0.10.25/node.exe', dest:'bin/win32'},
@@ -281,6 +308,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-downloadfile');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-jsbeautifier');
+    grunt.loadNpmTasks('grunt-docker');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
     grunt.registerTask('default', ['concat', 'browserify', 'less']);
+    grunt.registerTask('makedoc', ['clean:docs', 'jsbeautifier', 'docker']);
 }

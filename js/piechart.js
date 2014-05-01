@@ -47,11 +47,11 @@ module.exports = function(window) {
 
             // This string holds the path details
             var d = "M " + cx + "," + cy + // Start at circle center
-            " L " + x1 + "," + y1 + // Draw line to (x1,y1)
-            " A " + r + "," + r + // Draw an arc of radius r
-            " 0 " + big + " 1 " + // Arc details...
-            x2 + "," + y2 + // Arc goes to to (x2,y2)
-            " Z"; // Close path back to (cx,cy)
+                " L " + x1 + "," + y1 + // Draw line to (x1,y1)
+                " A " + r + "," + r + // Draw an arc of radius r
+                " 0 " + big + " 1 " + // Arc details...
+                x2 + "," + y2 + // Arc goes to to (x2,y2)
+                " Z"; // Close path back to (cx,cy)
 
             // Now set attributes on the <svg:path> element
             path.setAttribute("d", d); // Set this path 

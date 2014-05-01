@@ -1,16 +1,16 @@
 module.exports = function(Widgetizer, i18n, dialogs) {
 
-	var Base = require('basejs');
+    var Base = require('basejs');
     var mustache = require('mustache');
-	var Panel = require("./Panel")(Widgetizer, i18n, dialogs)
+    var Panel = require("./Panel")(Widgetizer, i18n, dialogs)
 
-	var server = Widgetizer.rpc
+    var server = Widgetizer.rpc
 
     var VideoPanel = Panel.extend({
         constructor: function(adminId) {
-        	this.base($("#video-list"))
-        	this.adminId = adminId
-        	this.searchArgs = {
+            this.base($("#video-list"))
+            this.adminId = adminId
+            this.searchArgs = {
                 page: 1,
                 adminId: adminId
             }
@@ -28,7 +28,7 @@ module.exports = function(Widgetizer, i18n, dialogs) {
             this.base(data.items)
         },
         showItem: function(item) {
-        	console.log("VideoPanel.showItem", item)
+            console.log("VideoPanel.showItem", item)
             var self = this
             var tpl = '<h3>{{title}}</h3><img width="120" height="90" src="http://img.youtube.com/vi/{{id}}/default.jpg">'
             var html = mustache.to_html(tpl, item)
@@ -52,7 +52,7 @@ module.exports = function(Widgetizer, i18n, dialogs) {
             var videoId = $("#videoid-textfield").val()
             if (userId && videoId) {
                 var self = this
-                // get metadata for video ID... 
+                    // get metadata for video ID... 
                 server("youTubeVideoInfo", {
                     videoId: videoId
                 }, function(err, data) {
@@ -72,5 +72,5 @@ module.exports = function(Widgetizer, i18n, dialogs) {
         }
     })
 
-	return VideoPanel
+    return VideoPanel
 }

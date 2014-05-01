@@ -1,5 +1,5 @@
 var ImageUtil = {
-	checkImageUrl: function(url, cb) {
+    checkImageUrl: function(url, cb) {
         $.ajax({
             type: "HEAD",
             url: url,

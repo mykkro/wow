@@ -30,13 +30,13 @@ var MyGame = GameWithRules.extend({
     },
     onVirtualControl: function(evt) {
         console.log("MyGame controller event: ", evt)
-        if(this.isGameOver()) {
-            if(evt.type=="press" && evt.control=="select") {
+        if (this.isGameOver()) {
+            if (evt.type == "press" && evt.control == "select") {
                 // kill prompt...
                 this.gameOverPrompt.hide()
             }
-        } else if(this.isFinished()) {
-            if(evt.type=="press" && evt.control=="select") {
+        } else if (this.isFinished()) {
+            if (evt.type == "press" && evt.control == "select") {
                 // kill prompt...
                 this.finishedPrompt.hide()
             }
@@ -59,10 +59,10 @@ var MyGame = GameWithRules.extend({
         console.log("Updating selection...")
         var mainsvg = d3.select("#svgmain")
         mainsvg.selectAll(".svgselector").remove()
-        mainsvg.append("rect").attr({   
+        mainsvg.append("rect").attr({
             'class': 'svgselector' + (this.isValidSelection(valid) ? ' valid' : ''),
-            x: ww*this.gridCtl.col,
-            y: hh*this.gridCtl.row,
+            x: ww * this.gridCtl.col,
+            y: hh * this.gridCtl.row,
             width: ww,
             height: hh
         })
@@ -104,7 +104,7 @@ var MyGame = GameWithRules.extend({
                         "fill-opacity": 0.3
                     }).on("click", function() {
                         console.log("Click!")
-                        self.gridCtl.select(i,j)
+                        self.gridCtl.select(i, j)
                         self.cellSelected(j, i)
                     })
                 }
