@@ -2,61 +2,88 @@ module.exports = function(Widgetizer, i18n, dialogs) {
 
     var Base = require('basejs');
     var mustache = require('mustache');
+    var Panel = require("./Panel")(Widgetizer, i18n, dialogs)
 
     var server = Widgetizer.rpc
+    var fs = require("fs")
+    // TODO use path module?
+    var template = fs.readFileSync(__dirname + "/../../templates/previews/radio.html")
 
-    var RadioPanel = Base.extend({
+    var ext = require("../util/UriUtils").ext
+
+    function afterDrop(url) {
+        $("#radiourl-textfield").val(url)
+        $("#radiotitle-textfield").val(url)
+    }
+
+    function cancel(e) {
+        if (e.preventDefault) e.preventDefault(); // required by FF + Safari
+        return false; // required by IE
+    }
+
+    function drop(e) {
+        $(this).removeClass("error").removeClass("accepted")
+        e.preventDefault();
+        var found = false;
+        var types = e.dataTransfer.types
+        for (var i = 0; i < types.length; i++) {
+            if (types[i] == "text/uri-list") {
+                found = true;
+                break;
+            }
+        }
+        var out = ""
+        var url = null
+        if (!found) {
+            // not a link...
+            $(this).html("Not a link")
+            $(this).addClass("error")
+        } else {
+            url = e.dataTransfer.getData("Text")
+            var extension = ext(url).toLowerCase()
+            if (extension == ".mp3" || extension == ".ogg") {
+                var link = $('<a href="' + url + '" />').text(url)
+                $(this).html(link).addClass("accepted")
+                link.playable()
+                afterDrop(url)
+            } else {
+                $(this).html("Unsupported link type")
+                $(this).addClass("error")
+            }
+        }
+        return false;
+    }
+
+
+    var RadioPanel = Panel.extend({
         constructor: function(adminId) {
-            var self = this
+            this.base($("#radio-list"), template)
             this.adminId = adminId
+            this.searchArgs = {
+                page: 1,
+                adminId: adminId
+            }
+            var self = this
             $("#add-radio-btn").click(function() {
                 self.addUserRadio()
             })
-            self.refreshRadiosView()
+            $("#radio-dropzone")
+                .bind('drop', drop)
+                .bind('dragover', cancel)
+                .bind('dragenter', cancel)
+                .bind('dragleave', cancel);
         },
-        getRadios: function(cb) {
-            /**/
-            var page = 1 /**/
-            server("userRadiosList", {
-                adminId: this.adminId,
-                page: page
-            }, cb)
+        getItemsDB: function(cb) {
+            server("userRadiosList", this.searchArgs, cb)
         },
-        showRadios: function(data) {
-            console.log("show radios: ", data)
-            var root = $("#radio-list").empty()
-            if (data && data.items) {
-                for (var i = 0; i < data.items.length; i++) {
-                    root.append(this.showRadio(data.items[i]))
-                }
-            }
-        },
-        showRadio: function(item) {
-            var self = this
-            var tpl = '<span><a href="{{url}}">{{title}}</a></span><button>Remove</button>'
-            var html = mustache.to_html(tpl, item)
-            var out = $("<div>").html(html)
-            out.find("a").playable()
-            out.find("button").click(function() {
-                self.showRemoveDialog(function() {
-                    // confirmed...
-                    self.removeRadio(item.userId, item.url, out)
-                })
-            })
+        showItem: function(item) {
+            var out = this.base(item)
+            out.find("a.playlink").playable()
             return out
         },
-        removeRadio: function(userId, url, div) {
+        removeItemDB: function(id, next) {
             // remove record from database...
-            server("userRadiosRemove", {
-                adminId: this.adminId,
-                userId: userId,
-                url: url
-            }, function(err, res) {
-                if (err) console.error(err);
-                else {
-                    div.fadeOut("slow")
-                }
-            })
+            server("userRadiosRemove", id, next)
         },
         addUserRadio: function() {
             var userId = $("#radiouser-textfield").val()
@@ -74,18 +101,6 @@ module.exports = function(Widgetizer, i18n, dialogs) {
                     self.refreshRadiosView()
                 })
             }
-        },
-        showRemoveDialog: function(cb) {
-            dialogs.removeDialog(function(reallyRemove) {
-                if (reallyRemove) cb()
-            })
-        },
-        refreshRadiosView: function() {
-            var self = this
-            self.getRadios(function(err, data) {
-                console.log(data)
-                if (!err) self.showRadios(data.result)
-            })
         }
     })
 

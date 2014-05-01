@@ -7,6 +7,10 @@ module.exports = function(Wow) {
     var truncate = require('html-truncate');
     var ItemListPage = require("./ItemListPage")(Wow)
 
+    /**
+     * ## VideosPage
+     * List of videos
+     */
     var VideosPage = ItemListPage.extend({
         createControls: function(data) {
             this.base(data)
