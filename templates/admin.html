@@ -17,6 +17,7 @@
 				<li><a href="#tabs-2">Videos</a></li>
 				<li><a href="#tabs-3">Radios</a></li>
 				<li><a href="#tabs-4">Users</a></li>
+				<li><a href="#tabs-5">Images</a></li>
 			</ul>
 			<div id="tabs-1" class="ui-tabs-panel">
 				<h2>Imports</h2>
@@ -118,6 +119,40 @@
 				<div class="listusers panel">
 					<h2>User List</h2>
 					<ul class="panel-body" id="user-list">
+					</ul>
+				</div>
+			</div>
+			<div id="tabs-5" class="ui-tabs-panel">
+				<h2>Images</h2>
+				<div class="addimage panel">
+					<h2>Add Image</h2>
+					<div class="panel-body">
+						<div>
+					        <div id="image-dropzone" class="dropzone">
+					            Drop image here
+					        </div>
+
+						</div>
+						<div>
+							<label><span>Image URL: </span><input type="text" id="imageurl-textfield"/></label>
+						</div>
+						<div>
+							<label><span>UserID: </span><input type="text" disabled id="imageuser-textfield" value="555"/></label>
+						</div>
+						<div>
+							<label><span>Title: </span><input type="text" id="imagetitle-textfield" value=""/></label>
+						</div>
+						<div>
+							<label><span>Description: </span><input type="text" id="imagedescr-textarea" value=""/></label>
+						</div>
+						<div class="buttons">
+							<button id="add-image-btn">Add to list</button>
+						</div>
+					</div>
+				</div>
+				<div class="userimages panel">
+					<h2>User Images</h2>
+					<ul class="panel-body" id="image-list">
 					</ul>
 				</div>
 			</div>

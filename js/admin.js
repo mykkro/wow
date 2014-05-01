@@ -83,10 +83,12 @@
 	    var RadioPanel = require("./admin/RadioPanel")(Widgetizer, i18n, dialogs)
 	    var VideoPanel = require("./admin/VideoPanel")(Widgetizer, i18n, dialogs)
 	    var ImportPanel = require("./admin/ImportPanel")(Widgetizer, i18n, dialogs)
+	    var ImagePanel = require("./admin/ImagePanel")(Widgetizer, i18n, dialogs)
 
 	    var vp = new VideoPanel(adminId)
 	    var ip = new ImportPanel(adminId)
 	    var rp = new RadioPanel(adminId)
+	    var imgp = new ImagePanel(adminId)
 
 	    var tabber1 = new Yetii({
 	        id: 'tabs-container-1',
