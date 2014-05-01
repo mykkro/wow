@@ -4,6 +4,9 @@ var url = require("url")
 var BasicLayer = require("./basiclayer")
 var SoftwareKeyboard = require("./softwarekeyboard")
 
+/**
+ * ## Generic class for all pages.
+ */
 var BasePage = BasicLayer.extend({
     constructor: function(Wow, options) {
         this.base(Wow, options)

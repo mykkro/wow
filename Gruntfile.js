@@ -21,7 +21,7 @@ module.exports = function(grunt) {
                     './js/pageinfo.js',
                     './js/dialogs.js',
                     './js/mygamepad.js',
-                    './js/basepage.js',
+                    './js/BasePage.js',
                     './js/eventtarget.js',
                     './js/virtualcontrol.js'
                 ],
@@ -33,7 +33,7 @@ module.exports = function(grunt) {
                         './js/pageinfo.js:pageinfo',
                         './js/dialogs.js:dialogs',
                         './js/mygamepad.js:mygamepad',
-                        './js/basepage.js:basepage',
+                        './js/BasePage.js:BasePage',
                         './js/eventtarget.js:eventtarget',
                         './js/virtualcontrol.js:virtualcontrol'
                     ],
