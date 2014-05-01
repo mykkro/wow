@@ -21,16 +21,16 @@ module.exports = function(Wow) {
             var favButton = this.getWidget("favButton")
             var unfavButton = this.getWidget("unfavButton")
 
-                function setFavState(flag) {
-                    if (flag) {
-                        favButton.disable()
-                        unfavButton.enable()
-                    } else {
-                        favButton.enable()
-                        unfavButton.disable()
-                    }
+            function setFavState(flag) {
+                if (flag) {
+                    favButton.disable()
+                    unfavButton.enable()
+                } else {
+                    favButton.enable()
+                    unfavButton.disable()
                 }
-                /*
+            }
+            /*
 			FavApps.starred(userId, appId, function(err, data) {
 				setFavState(!err && data)
 			})
@@ -51,10 +51,10 @@ module.exports = function(Wow) {
             })
             var importName = appName || "notfound"
             var src = "/imports/" + importName + "/index.html"
-            //window.alert(src)
-            // TODO automatic iframe resizing... 
-            // ERROR: sometimes the application will not show, page refresh necessary
-            //setTimeout(function() {
+                //window.alert(src)
+                // TODO automatic iframe resizing... 
+                // ERROR: sometimes the application will not show, page refresh necessary
+                //setTimeout(function() {
             $("#iframe-wrapper").empty().append(
                 $("<iframe nwfaketop nwdisable>").attr({
                     width: "100%",

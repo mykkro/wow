@@ -187,7 +187,7 @@ module.exports = function(window, $, SVG) {
             /* create the widget */
             /* nodename has always prefix wow: */
             var type = element.nodeName.split(":")[1]
-            /* locate a widgetizer... */
+                /* locate a widgetizer... */
             var widgetizer = this.widgetizers[type]
             if (widgetizer) {
                 /* we can run widgetizer on an element... */
@@ -219,9 +219,9 @@ module.exports = function(window, $, SVG) {
             /* create the widget */
             /* nodename has always prefix wow: */
             var type = "plain"
-            /* locate a widgetizer... */
+                /* locate a widgetizer... */
             var widgetizer = this.widgetizers[type]
-            /* we can run widgetizer on an element... */
+                /* we can run widgetizer on an element... */
             return widgetizer(element, function(w) {
                 // replace element with output
                 $(element).replaceWith(w.element)

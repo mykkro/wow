@@ -86,7 +86,9 @@
     "grunt-downloadfile": "~0.3.2",
     "grunt-generate": "~0.2.0",
     "grunt-contrib-concat": "~0.3.0",
-    "grunt-jsbeautifier": "~0.2.7"
+    "grunt-jsbeautifier": "~0.2.7",
+    "grunt-docker": "0.0.8",
+    "grunt-contrib-clean": "~0.5.0"
   },
   "webkit": {
     "plugin": true

@@ -55,58 +55,58 @@ module.exports = function(window, svgsvg) {
     var Timer = require("./timer")(window)
 
 
-        function textbox(d) {
-            // d = {id: parentNode: defaultVal: maxChars: x: y: boxWidth: boxHeight: textYOffset: textStyles: boxStyles: cursorStyles: selBoxStyles: allowedChars: functionToCall:}
-            this.id = d.id; //the id of the textbox
-            this.parentNode = d.parentNode; //can be of type string (id) or node reference (svg or g node)
-            this.maxChars = d.maxChars; //maximum characters allowed
-            this.defaultVal = d.defaultVal.toString(); //default value to be filled in when textbox is created
-            this.x = d.x; //left of background rectangle
-            this.y = d.y; //top of background rectangle
-            this.boxWidth = d.boxWidth; //background rectangle width
-            this.boxHeight = d.boxHeight; //background rectangle height
-            this.textYOffset = d.textYOffset; //the offset of the text element in relation to the upper side of the textbox rectangle
-            this.textStyles = d.textStyles; //array containing text attributes
-            if (!this.textStyles["font-size"]) {
-                this.textStyles["font-size"] = 15;
-            }
-            this.boxStyles = d.boxStyles; //array containing box styles attributes
-            this.cursorStyles = d.cursorStyles; //array containing text attributes
-            this.selBoxStyles = d.selBoxStyles; //array containing box styles attributes
-            //allowedChars contains regular expressions of allowed character ranges
-            if (d.allowedChars) {
-                if (typeof(d.allowedChars) == "string") {
-                    if (d.allowedChars.length > 0) {
-                        this.RegExp = new RegExp(d.allowedChars);
-                    }
-                }
-            } else {
-                this.RegExp = undefined;
-            }
-            this.functionToCall = d.functionToCall; //function to be called if textbox looses focus or enter key is pressed
-            this.textboxRect = null; //later holds reference to rect element
-            this.textboxText = null; //later holds reference to text element
-            this.textboxTextContent = null; //later holds reference to content of text element (first child)
-            this.textboxCursor = null; //later holds reference to cursor
-            this.textboxStatus = 0; //status 0 means unitialized, 1 means partially initalized, 2 means fully initialized and ready to remove event listeners again, 5 means new value was set by method .setValue()
-            this.cursorPosition = 0; //position in whole string
-            this.transX = 0; //offset on the left if text string is larger than box
-            this.textVal = this.defaultVal; //this is the current text string of the content
-            this.shiftDown = false; //boolean value that says if shift was pressed
-            this.mouseDown = false; //boolean value that says if mousedown is active
-            this.startSelection = 0; //position of the start of the selection
-            this.startOrigSelection = 0; //original start position of selection
-            this.endSelection = 0; //position of the end of the selection
-            this.selectionRectVisible = false; //indicates if selection rect is visible or not
-            this.svg = null; //later a nested svg that does clipping
-            this.supportsCharGeom = true; //defines if viewer supports geometry calculations on individual characters, such as .getCharAtPosition(SVGPoint)
-
-            this.timer = new Timer(this); //a Timer instance for calling the functionToCall
-            this.timerMs = 200; //a constant of this object that is used in conjunction with the timer - functionToCall is called after 200 ms
-            this.createTextbox(); //method to initialize textbox
+    function textbox(d) {
+        // d = {id: parentNode: defaultVal: maxChars: x: y: boxWidth: boxHeight: textYOffset: textStyles: boxStyles: cursorStyles: selBoxStyles: allowedChars: functionToCall:}
+        this.id = d.id; //the id of the textbox
+        this.parentNode = d.parentNode; //can be of type string (id) or node reference (svg or g node)
+        this.maxChars = d.maxChars; //maximum characters allowed
+        this.defaultVal = d.defaultVal.toString(); //default value to be filled in when textbox is created
+        this.x = d.x; //left of background rectangle
+        this.y = d.y; //top of background rectangle
+        this.boxWidth = d.boxWidth; //background rectangle width
+        this.boxHeight = d.boxHeight; //background rectangle height
+        this.textYOffset = d.textYOffset; //the offset of the text element in relation to the upper side of the textbox rectangle
+        this.textStyles = d.textStyles; //array containing text attributes
+        if (!this.textStyles["font-size"]) {
+            this.textStyles["font-size"] = 15;
         }
+        this.boxStyles = d.boxStyles; //array containing box styles attributes
+        this.cursorStyles = d.cursorStyles; //array containing text attributes
+        this.selBoxStyles = d.selBoxStyles; //array containing box styles attributes
+        //allowedChars contains regular expressions of allowed character ranges
+        if (d.allowedChars) {
+            if (typeof(d.allowedChars) == "string") {
+                if (d.allowedChars.length > 0) {
+                    this.RegExp = new RegExp(d.allowedChars);
+                }
+            }
+        } else {
+            this.RegExp = undefined;
+        }
+        this.functionToCall = d.functionToCall; //function to be called if textbox looses focus or enter key is pressed
+        this.textboxRect = null; //later holds reference to rect element
+        this.textboxText = null; //later holds reference to text element
+        this.textboxTextContent = null; //later holds reference to content of text element (first child)
+        this.textboxCursor = null; //later holds reference to cursor
+        this.textboxStatus = 0; //status 0 means unitialized, 1 means partially initalized, 2 means fully initialized and ready to remove event listeners again, 5 means new value was set by method .setValue()
+        this.cursorPosition = 0; //position in whole string
+        this.transX = 0; //offset on the left if text string is larger than box
+        this.textVal = this.defaultVal; //this is the current text string of the content
+        this.shiftDown = false; //boolean value that says if shift was pressed
+        this.mouseDown = false; //boolean value that says if mousedown is active
+        this.startSelection = 0; //position of the start of the selection
+        this.startOrigSelection = 0; //original start position of selection
+        this.endSelection = 0; //position of the end of the selection
+        this.selectionRectVisible = false; //indicates if selection rect is visible or not
+        this.svg = null; //later a nested svg that does clipping
+        this.supportsCharGeom = true; //defines if viewer supports geometry calculations on individual characters, such as .getCharAtPosition(SVGPoint)
 
-        //create textbox
+        this.timer = new Timer(this); //a Timer instance for calling the functionToCall
+        this.timerMs = 200; //a constant of this object that is used in conjunction with the timer - functionToCall is called after 200 ms
+        this.createTextbox(); //method to initialize textbox
+    }
+
+    //create textbox
     textbox.prototype.createTextbox = function() {
         var result = this.testParent();
         if (result) {
@@ -708,7 +708,7 @@ module.exports = function(window, svgsvg) {
     textbox.prototype.focus = function(evt) {
         if (evt) this.calcCursorPosFromMouseEvt(evt);
         else this.cursorPosition = -1
-        // set event listeners, this is only done on first mousedown in the textbox
+            // set event listeners, this is only done on first mousedown in the textbox
         if (this.textboxStatus == 0) {
             window.addEventListener("keydown", this, false);
             window.addEventListener("keypress", this, false);

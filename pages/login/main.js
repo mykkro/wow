@@ -7,15 +7,15 @@ module.exports = function(Wow) {
     var Base = require("basejs")
     var SelectChain = require("../../js/selectchain")($, Base)
 
-        function tzLogin() {
-            //window.alert("TZ!")
-            window.location = "/pages/home"
-        }
+    function tzLogin() {
+        //window.alert("TZ!")
+        window.location = "/pages/home"
+    }
 
-        function adminLogin() {
-            //window.alert("Admin!")
-            window.location = "/admin"
-        }
+    function adminLogin() {
+        //window.alert("Admin!")
+        window.location = "/admin"
+    }
     var baseUrl;
 
     return BasePage.extend({

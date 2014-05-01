@@ -17,21 +17,21 @@ var GridController = Base.extend({
     onVirtualControl: function(evt) {
         var r = this.row
         var c = this.col
-        if(evt.type=="press") {
-            switch(evt.control) {
-                case 'up': 
-                    r = (r+this.height-1)%this.height
+        if (evt.type == "press") {
+            switch (evt.control) {
+                case 'up':
+                    r = (r + this.height - 1) % this.height
                     break
-                case 'down': 
-                    r = (r+1)%this.height
+                case 'down':
+                    r = (r + 1) % this.height
                     break
-                case 'left': 
-                    c = (c+this.width-1)%this.width
+                case 'left':
+                    c = (c + this.width - 1) % this.width
                     break
-                case 'right': 
-                    c = (c+1)%this.width
+                case 'right':
+                    c = (c + 1) % this.width
                     break
-                case 'select': 
+                case 'select':
                     this.onSelect(r, c)
                     return
             }
@@ -42,13 +42,13 @@ var GridController = Base.extend({
     },
     onSelectionChanged: function(row, col) {
         console.log("selection changed!")
-        if(this.changed) {
+        if (this.changed) {
             this.changed(row, col)
         }
     },
     onSelect: function(row, col) {
-        console.log("selected! row="+row+" col="+col)
-        if(this.selected) {
+        console.log("selected! row=" + row + " col=" + col)
+        if (this.selected) {
             this.selected(row, col)
         }
     }

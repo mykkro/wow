@@ -8,13 +8,13 @@ module.exports = function(Wow) {
 
     var path = require("path")
 
-        function loadCss(url) {
-            var link = document.createElement("link");
-            link.type = "text/css";
-            link.rel = "stylesheet";
-            link.href = url;
-            document.getElementsByTagName("head")[0].appendChild(link);
-        }
+    function loadCss(url) {
+        var link = document.createElement("link");
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.href = url;
+        document.getElementsByTagName("head")[0].appendChild(link);
+    }
     var Base = require("basejs")
     var SelectChain = require("../../js/selectchain")($, Base)
 
@@ -58,30 +58,30 @@ module.exports = function(Wow) {
             for (var key in buttons) self.selectChain.append(buttons[key].element)
 
 
-                function showTab(name) {
-                    $(".game-overlay").hide()
-                    $(".nav-tabs .tab").removeClass("activeTab")
-                    mySwitcher.setActive(name)
-                    switch (name) {
-                        case "gameTab":
-                            $("#gameOverlay").show()
-                            $(".nav-game").addClass("activeTab")
-                            break;
-                        case "settingsTab":
-                            $("#gameSettingsOverlay").show()
-                            $(".nav-settings").addClass("activeTab")
-                            break;
-                        case "rulesTab":
-                            $(".nav-rules").addClass("activeTab")
-                            break;
-                        case "scoresTab":
-                            $(".nav-scores").addClass("activeTab")
-                            break;
-                        case "infoTab":
-                            $(".nav-info").addClass("activeTab")
-                            break;
-                    }
+            function showTab(name) {
+                $(".game-overlay").hide()
+                $(".nav-tabs .tab").removeClass("activeTab")
+                mySwitcher.setActive(name)
+                switch (name) {
+                    case "gameTab":
+                        $("#gameOverlay").show()
+                        $(".nav-game").addClass("activeTab")
+                        break;
+                    case "settingsTab":
+                        $("#gameSettingsOverlay").show()
+                        $(".nav-settings").addClass("activeTab")
+                        break;
+                    case "rulesTab":
+                        $(".nav-rules").addClass("activeTab")
+                        break;
+                    case "scoresTab":
+                        $(".nav-scores").addClass("activeTab")
+                        break;
+                    case "infoTab":
+                        $(".nav-info").addClass("activeTab")
+                        break;
                 }
+            }
 
             self.showTab = showTab
             $.when(
@@ -140,7 +140,7 @@ module.exports = function(Wow) {
                 var opts = {}
                 var root = $(".game-container")
                 var game = new MyClass(opts, root, appUrl)
-                //var gui = new GameUI(game, self)    
+                    //var gui = new GameUI(game, self)    
                 self.game = game
                 self.playing = false
                 self.paused = false
@@ -301,7 +301,7 @@ module.exports = function(Wow) {
         },
         quitGame: function() {
             var self = this
-            // quit game...
+                // quit game...
             this.game.hidePrompt()
             this.game.quit(function() {
                 self.playing = false;

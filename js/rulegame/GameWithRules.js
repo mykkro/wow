@@ -86,7 +86,7 @@ var GameWithRules = Game.extend({
                 console.log("Finished the level!")
                 self.finished = false
                 self.finishedPrompt = null
-                if(self.onFinished) {
+                if (self.onFinished) {
                     self.onFinished()
                 }
             })
@@ -100,7 +100,7 @@ var GameWithRules = Game.extend({
                 console.log("Quitting the game!")
                 self.gameover = false
                 self.gameOverPrompt = null
-                if(self.onGameOver) {
+                if (self.onGameOver) {
                     self.onGameOver()
                 }
             })
@@ -243,7 +243,10 @@ var GameWithRules = Game.extend({
     },
 
     getCurrentPosition: function() {
-        return { x: this.symbols.Ax.value, y: this.symbols.Ay.value }
+        return {
+            x: this.symbols.Ax.value,
+            y: this.symbols.Ay.value
+        }
     },
 
     // values that can be found in index expressions (always integers)

@@ -47,29 +47,29 @@ module.exports = function(Wow) {
             for (var key in buttons) self.selectChain.append(buttons[key].element)
 
 
-                function showTab(name) {
-                    $(".game-overlay").hide()
-                    $(".nav-tabs .tab").removeClass("activeTab")
-                    mySwitcher.setActive(name)
-                    switch (name) {
-                        case "gameTab":
-                            $(".nav-game").addClass("activeTab")
-                            break;
-                        case "settingsTab":
-                            $("#gameSettingsOverlay").show()
-                            $(".nav-settings").addClass("activeTab")
-                            break;
-                        case "rulesTab":
-                            $(".nav-rules").addClass("activeTab")
-                            break;
-                        case "scoresTab":
-                            $(".nav-scores").addClass("activeTab")
-                            break;
-                        case "infoTab":
-                            $(".nav-info").addClass("activeTab")
-                            break;
-                    }
+            function showTab(name) {
+                $(".game-overlay").hide()
+                $(".nav-tabs .tab").removeClass("activeTab")
+                mySwitcher.setActive(name)
+                switch (name) {
+                    case "gameTab":
+                        $(".nav-game").addClass("activeTab")
+                        break;
+                    case "settingsTab":
+                        $("#gameSettingsOverlay").show()
+                        $(".nav-settings").addClass("activeTab")
+                        break;
+                    case "rulesTab":
+                        $(".nav-rules").addClass("activeTab")
+                        break;
+                    case "scoresTab":
+                        $(".nav-scores").addClass("activeTab")
+                        break;
+                    case "infoTab":
+                        $(".nav-info").addClass("activeTab")
+                        break;
                 }
+            }
 
             self.showTab = showTab
             $.when(
@@ -229,14 +229,13 @@ module.exports = function(Wow) {
                         var levels = bb[0]
                         var settings = cc[0]
                         var rules = dd[0]
-                        // display all pieces in a table...
+                            // display all pieces in a table...
                         console.log(rules)
                         gameData.pieces = pieces.pieces
                         gameData.settings = settings
                         gameData.levels = levels.levels
                         gameData.rules = _.map(rules.rules, function(rr) {
-                            return ruleParser(rr.contents, rr.
-                                break)
+                            return ruleParser(rr.contents, rr.break)
                         })
 
                         // levels:
@@ -376,7 +375,7 @@ module.exports = function(Wow) {
         },
         quitGame: function() {
             var self = this
-            // quit game...
+                // quit game...
             this.game.hidePrompt()
             this.game.quit(function() {
                 self.playing = false;
