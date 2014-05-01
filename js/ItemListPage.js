@@ -3,13 +3,17 @@ module.exports = function(Wow) {
     var $ = Wow.$
     var SVG = Wow.SVG
     var i18n = Wow.i18n
-    var BasePage = require("./basepage")
+    var BasePage = require("./BasePage")
     var SvgHelper = require("./svghelper")(window)
     var url = require("url")
     var Base = require("basejs")
     var SelectChain = require("./selectchain")($, Base)
     var truncate = require('html-truncate');
 
+    /**
+     * ## ItemListPage
+     * A page containing selectable list of items.
+     */
     var ItemListPage = BasePage.extend({
         colors: [
             "#330099", "#f8c300", "#dd1379", "#dd1379", "#330099", "#f8c300"

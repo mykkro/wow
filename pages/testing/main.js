@@ -3,7 +3,7 @@ module.exports = function(Wow) {
     var $ = Wow.$
     var SVG = Wow.SVG
     var i18n = Wow.i18n
-    var BasePage = require("../../js/basepage")
+    var BasePage = require("../../js/BasePage")
     var page = BasePage.extend({
         init: function(data, next) {
             var draw = this.wtr.SVGDoc

@@ -5,7 +5,7 @@ module.exports = function(Wow) {
     var SvgHelper = require("./svghelper")(window)
     var userId = '555'
     var truncate = require('html-truncate');
-    var ItemListPage = require("./itemlistpage")(Wow)
+    var ItemListPage = require("./ItemListPage")(Wow)
 
     var VideosPage = ItemListPage.extend({
         createControls: function(data) {

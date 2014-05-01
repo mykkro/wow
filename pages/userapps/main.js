@@ -3,12 +3,12 @@ module.exports = function(Wow) {
     var $ = Wow.$
     var SVG = Wow.SVG
     var i18n = Wow.i18n
-    var BasePage = require("../../js/basepage")
+    var BasePage = require("../../js/BasePage")
     var SvgHelper = require("../../js/svghelper")(window)
     var url = require("url")
     var truncate = require('html-truncate');
 
-    var ItemListPage = require("../../js/itemlistpage")(Wow)
+    var ItemListPage = require("../../js/ItemListPage")(Wow)
 
     var UserAppsPage = ItemListPage.extend({
         activateSelected: function() {
