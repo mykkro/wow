@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <link href="/css/normalize.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="/css/style.css" media="all" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="/css/bundle.css" type="text/css" /> 
+  <script src="/js/wow-libs.js"></script>
+  <script src="/js/bundle.js"></script>
+<script>
+$(document).ready(function() {
+  console.log("Ready!")
+
+  var tabber1 = new Yetii({
+      id: 'tabs-container-1',
+      active: 1,
+      tabclass: 'ui-tabs-panel'
+  });  
+})
+</script>
+<style>
+.ui-tabs {
+  zoom: 1;
+}
+.ui-tabs .ui-tabs-nav {
+  list-style: none;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+.ui-tabs .ui-tabs-nav li {
+  position: relative;
+  float: left;
+  margin: 0 3px -2px 0;
+  padding: 0;
+}
+.ui-tabs .ui-tabs-nav li a {
+  display: block;
+  padding: 10px 20px;
+  background: #f0f0f0;
+  border: 2px #ccc solid;
+  border-bottom-color: #ccc;
+  outline: none;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
+  padding: 10px 20px 12px 20px;
+  background: #fff;
+  border-bottom-style: none;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a,
+.ui-tabs .ui-tabs-nav li.ui-state-disabled a,
+.ui-tabs .ui-tabs-nav li.ui-state-processing a {
+  cursor: default;
+}
+.ui-tabs .ui-tabs-nav li a,
+.ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
+  cursor: pointer;
+}
+.ui-tabs .ui-tabs-panel {
+  display: block;
+  clear: both;
+  border: 2px #ccc solid;
+  padding: 10px;
+}
+.ui-tabs .ui-tabs-hide {
+  display: none;
+}
+
+</style>
+</head>
+<body>
+  <header>
+    <h2>Craft testing page</h2>
+  </header>
+  <div id="content">
+    <div id="tabs-container-1" class="ui-tabs">
+      <ul id="tabs-container-1-nav" class="ui-tabs-nav">
+        <li><a href="#tabs-1">Administrator</a></li>
+        <li><a href="#tabs-2">App</a></li>
+        <li><a href="#tabs-3">Article</a></li>
+        <li><a href="#tabs-4">Internet Radio</a></li>
+        <li><a href="#tabs-5">User</a></li>
+        <li><a href="#tabs-6">YouTube video</a></li>
+      </ul>
+      <div id="tabs-1" class="ui-tabs-panel">
+        <h2>Administrator</h2>
+        
+      </div>
+      <div id="tabs-2" class="ui-tabs-panel">
+        <h2>App</h2>
+        
+      </div>
+      <div id="tabs-3" class="ui-tabs-panel">
+        <h2>Article</h2>
+        
+      </div>
+      <div id="tabs-4" class="ui-tabs-panel">
+        <h2>Internet Radio</h2>
+        
+      </div>
+      <div id="tabs-5" class="ui-tabs-panel">
+        <h2>User</h2>
+        
+      </div>
+      <div id="tabs-6" class="ui-tabs-panel">
+        <h2>YouTube video</h2>
+        
+      </div>
+    </div>
+  </div>
+  <footer>
+  </footer>
+</body>
+</html>
