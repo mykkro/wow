@@ -7,7 +7,6 @@ module.exports = function(Widgetizer, i18n, dialogs) {
     var server = Widgetizer.rpc
 
     var fs = require("fs")
-    // TODO use path module?
     var template = fs.readFileSync(__dirname + "/../../templates/previews/image.html")
 
     var ImagePanel = Panel.extend({
