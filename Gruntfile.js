@@ -213,7 +213,7 @@ module.exports = function(grunt) {
             appjs: {
                 src: [
                     "js/vendor/underscore-min.js",
-                    "js/vendor/jquery-2.0.3.min.js",
+                    "js/vendor/jquery-2.1.0.min.js",
                     "js/vendor/jquery.history.min.js",
                     "js/vendor/jquery.svg.min.js",
                     "js/vendor/jquery.svgdom.min.js",

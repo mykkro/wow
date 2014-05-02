@@ -1,5 +1,5 @@
 /*!
-Alpaca Version 1.1.1
+Alpaca Version 1.1.2
 
 Copyright 2013 Gitana Software, Inc.
 
@@ -20,6 +20,71 @@ address:
 
   info@gitanasoftware.com
 */
+/*
+ * Bootstrap wants help text to have the "help-block" class.  Unfortunately, this block insists on display:block
+ * which causes next-line formatting issues.  The "help-inline" class orients back to display: inline-block.
+ */
+.help-inline
+{
+    display: inline-block !important;
+}
+
+.help-block alpaca-controlfield-message-text
+{
+    display: inline-block !important;
+    margin-left: 4px;
+}
+
+/*
+ * When in an error state, adjust the glyphicons as well.
+ */
+.has-error .glyphicon
+{
+    color: #b94a48;
+}
+
+/**
+ * Helper messages will have their glyphicon's dimmed to the appropriate color
+ */
+.alpaca-controlfield-helper .glyphicon
+{
+    color: #737373;
+}
+
+/**
+ * Labels for control fields should be inline
+ */
+.alpaca-controlfield-label DIV
+{
+    display: inline-block;
+}
+
+/**
+ * Some spacing after the array item toolbar
+ */
+.alpaca-fieldset-array-item-toolbar
+{
+    margin-bottom: 5px;
+}
+
+/**
+ * label spacing
+ */
+.alpaca-fieldset-legend-button-text
+{
+    padding-left: 6px;
+}
+
+/**
+ * Hide hidden messages
+ */
+.alpaca-controlfield-message-hidden
+{
+    display:none;
+}
+
+
+/*
 .alpaca-controlfield-helper-text
 {
     vertical-align: bottom;
@@ -57,9 +122,6 @@ address:
     vertical-align: middle;
 }
 
-/**
- * Editor Field
- */
 .alpaca-controlfield-editor
 {
     position: relative;
@@ -98,11 +160,6 @@ DIV.alpaca-controlfield-text .twitter-typeahead .tt-dropdown-menu P
     color: #333;
 }
 
-.alpaca-controlfield-message-hidden
-{
-    display:none;
-}
-
 .alpaca-controlfield-checkbox INPUT[type=checkbox]
 {
     margin-left: 0px;
@@ -128,4 +185,60 @@ fieldset.alpaca-view-web-list.fieldset-collapsed
 {
     border: solid 1px #ccc;
     border-radius: 6px;
+}
+*/
+
+/** Type Ahead with Bootstrap **/
+.tt-hint
+{
+    padding-top: 9px !important;
+    padding-left: 12px !important;
+}
+
+.alpaca-hidden
+{
+    display: none;
+}
+
+.help-block
+{
+    display: inline-block;
+}
+
+.alpaca-controlfield-message-hidden {
+    display: none;
+}
+
+
+.alpaca-fileupload-container
+{
+    border: 1px #ccc solid;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.alpaca-fileupload-container .row
+{
+    margin-bottom: 10px;
+}
+
+.alpaca-fileupload-well
+{
+    /*border: 1px #ccc solid;*/
+    padding: 10px;
+    border-radius: 5px;
+    min-height: 100px;
+}
+
+.alpaca-fileupload-container table
+{
+    border: 1px #ccc solid;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.alpaca-fileupload-well p
+{
+    padding-top: 20px;
+    color: #888;
 }

@@ -20,29 +20,47 @@ address:
 
   info@gitanasoftware.com
 */
-/**
- * Fix for jQuery datepicker initial state issue.
- */
-#ui-datepicker-div
+/* BEGIN styles for Editor Field */
+
+.alpaca-controlfield-editor
 {
-    display: none;
-    background-color:white;
-    z-index: 9999999 !important;
-    width: 22em !important;
+    position: relative;
+    width: 100%;
+    height: 300px;
+    border: 1px #ccc solid;
 }
 
-/* Fix for Chrome issue with Button text */
-.ui-button .ui-button-text {
-    white-space: nowrap;
-}
-
-.ui-datepicker
+.alpaca-controlfield-editor .control-field-editor-el
 {
-    z-index: 100;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left: 0;
+    right:0
 }
 
-.alpaca-hidden
+/* END styles for Editor Field */
+
+
+/* BEGIN styles of type ahead */
+.twitter-typeahead .tt-dropdown-menu
 {
-    display: none;
+    background-color: white;
+    border: 1px #ccc solid;
+    padding: 10px;
+    padding-top: 0px;
+    color: #999;
+    width: 100%;
 }
 
+.twitter-typeahead .tt-dropdown-menu P
+{
+    font-size: 1em;
+}
+
+.tt-suggestion.tt-is-under-cursor
+{
+    background-color: #ccc;
+    color: #333;
+}
+/* END styles for type ahead */

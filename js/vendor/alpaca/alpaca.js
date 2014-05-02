@@ -1,65 +1,5 @@
 /*!
-Alpaca Version 1.1.1
-
-Copyright 2013 Gitana Software, Inc.
-
-Licensed under the Apache License, Version 2.0 (the "License"); 
-you may not use this file except in compliance with the License. 
-
-You may obtain a copy of the License at 
-	http://www.apache.org/licenses/LICENSE-2.0 
-
-Unless required by applicable law or agreed to in writing, software 
-distributed under the License is distributed on an "AS IS" BASIS, 
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-See the License for the specific language governing permissions and 
-limitations under the License. 
-
-For more information, please contact Gitana Software, Inc. at this
-address:
-
-  info@gitanasoftware.com
-*/
-/**
- * UMD wrapper for compatibility with browser, Node and AMD.
- *
- * Based on:
- *   https://github.com/umdjs/umd/blob/master/returnExports.js
- */
-(function (root, factory)
-{
-    if (typeof exports === 'object')
-    {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        //module.exports = factory(require('b'));
-        module.exports = factory();
-    }
-    else if (typeof define === 'function' && define.amd)
-    {
-        // AMD. Register as an anonymous module.
-        //define(['b'], factory);
-        define('alpaca', ['jquery', 'jquery-tmpl', 'jquery-ui'], factory);
-    }
-    else
-    {
-        // Browser globals
-        //root.returnExports = factory(root.b);
-        root["Alpaca"] = factory();
-    }
-
-}(this, function ($, tmpl, jQueryUI, ace) {
-
-    //use b in some fashion.
-
-    // Just return a value to define the module export.
-    // This example returns an object, but the module
-    // can return a function as the exported value.
-    //return {};
-
-    /*!
-Alpaca Version 1.1.1
+Alpaca Version 1.1.2
 
 Copyright 2013 Gitana Software, Inc.
 
@@ -1001,6 +941,490 @@ if (typeof JSON !== 'object') {
     $.validator = window.Validator = Validator;
 
 })(jQuery);
+/*!
+ * jQuery Templates Plugin 1.0.0pre
+ * http://github.com/jquery/jquery-tmpl
+ * Requires jQuery 1.4.2
+ *
+ * Copyright 2011, Software Freedom Conservancy, Inc.
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ */
+(function( jQuery, undefined ){
+	var oldManip = jQuery.fn.domManip, tmplItmAtt = "_tmplitem", htmlExpr = /^[^<]*(<[\w\W]+>)[^>]*$|\{\{\! /,
+		newTmplItems = {}, wrappedItems = {}, appendToTmplItems, topTmplItem = { key: 0, data: {} }, itemKey = 0, cloneIndex = 0, stack = [];
+
+	function newTmplItem( options, parentItem, fn, data ) {
+		// Returns a template item data structure for a new rendered instance of a template (a 'template item').
+		// The content field is a hierarchical array of strings and nested items (to be
+		// removed and replaced by nodes field of dom elements, once inserted in DOM).
+		var newItem = {
+			data: data || (data === 0 || data === false) ? data : (parentItem ? parentItem.data : {}),
+			_wrap: parentItem ? parentItem._wrap : null,
+			tmpl: null,
+			parent: parentItem || null,
+			nodes: [],
+			calls: tiCalls,
+			nest: tiNest,
+			wrap: tiWrap,
+			html: tiHtml,
+			update: tiUpdate
+		};
+		if ( options ) {
+			jQuery.extend( newItem, options, { nodes: [], parent: parentItem });
+		}
+		if ( fn ) {
+			// Build the hierarchical content to be used during insertion into DOM
+			newItem.tmpl = fn;
+			newItem._ctnt = newItem._ctnt || newItem.tmpl( jQuery, newItem );
+			newItem.key = ++itemKey;
+			// Keep track of new template item, until it is stored as jQuery Data on DOM element
+			(stack.length ? wrappedItems : newTmplItems)[itemKey] = newItem;
+		}
+		return newItem;
+	}
+
+	// Override appendTo etc., in order to provide support for targeting multiple elements. (This code would disappear if integrated in jquery core).
+	jQuery.each({
+		appendTo: "append",
+		prependTo: "prepend",
+		insertBefore: "before",
+		insertAfter: "after",
+		replaceAll: "replaceWith"
+	}, function( name, original ) {
+		jQuery.fn[ name ] = function( selector ) {
+			var ret = [], insert = jQuery( selector ), elems, i, l, tmplItems,
+				parent = this.length === 1 && this[0].parentNode;
+
+			appendToTmplItems = newTmplItems || {};
+			if ( parent && parent.nodeType === 11 && parent.childNodes.length === 1 && insert.length === 1 ) {
+				insert[ original ]( this[0] );
+				ret = this;
+			} else {
+				for ( i = 0, l = insert.length; i < l; i++ ) {
+					cloneIndex = i;
+					elems = (i > 0 ? this.clone(true) : this).get();
+					jQuery( insert[i] )[ original ]( elems );
+					ret = ret.concat( elems );
+				}
+				cloneIndex = 0;
+				ret = this.pushStack( ret, name, insert.selector );
+			}
+			tmplItems = appendToTmplItems;
+			appendToTmplItems = null;
+			jQuery.tmpl.complete( tmplItems );
+			return ret;
+		};
+	});
+
+	jQuery.fn.extend({
+		// Use first wrapped element as template markup.
+		// Return wrapped set of template items, obtained by rendering template against data.
+		tmpl: function( data, options, parentItem ) {
+			return jQuery.tmpl( this[0], data, options, parentItem );
+		},
+
+		// Find which rendered template item the first wrapped DOM element belongs to
+		tmplItem: function() {
+			return jQuery.tmplItem( this[0] );
+		},
+
+		// Consider the first wrapped element as a template declaration, and get the compiled template or store it as a named template.
+		template: function( name ) {
+			return jQuery.template( name, this[0] );
+		},
+
+		domManip: function( args, table, callback, options ) {
+			if ( args[0] && jQuery.isArray( args[0] )) {
+				var dmArgs = jQuery.makeArray( arguments ), elems = args[0], elemsLength = elems.length, i = 0, tmplItem;
+				while ( i < elemsLength && !(tmplItem = jQuery.data( elems[i++], "tmplItem" ))) {}
+				if ( tmplItem && cloneIndex ) {
+					dmArgs[2] = function( fragClone ) {
+						// Handler called by oldManip when rendered template has been inserted into DOM.
+						jQuery.tmpl.afterManip( this, fragClone, callback );
+					};
+				}
+				oldManip.apply( this, dmArgs );
+			} else {
+				oldManip.apply( this, arguments );
+			}
+			cloneIndex = 0;
+			if ( !appendToTmplItems ) {
+				jQuery.tmpl.complete( newTmplItems );
+			}
+			return this;
+		}
+	});
+
+	jQuery.extend({
+		// Return wrapped set of template items, obtained by rendering template against data.
+		tmpl: function( tmpl, data, options, parentItem ) {
+			var ret, topLevel = !parentItem;
+			if ( topLevel ) {
+				// This is a top-level tmpl call (not from a nested template using {{tmpl}})
+				parentItem = topTmplItem;
+				tmpl = jQuery.template[tmpl] || jQuery.template( null, tmpl );
+				wrappedItems = {}; // Any wrapped items will be rebuilt, since this is top level
+			} else if ( !tmpl ) {
+				// The template item is already associated with DOM - this is a refresh.
+				// Re-evaluate rendered template for the parentItem
+				tmpl = parentItem.tmpl;
+				newTmplItems[parentItem.key] = parentItem;
+				parentItem.nodes = [];
+				if ( parentItem.wrapped ) {
+					updateWrapped( parentItem, parentItem.wrapped );
+				}
+				// Rebuild, without creating a new template item
+				return jQuery( build( parentItem, null, parentItem.tmpl( jQuery, parentItem ) ));
+			}
+			if ( !tmpl ) {
+				return []; // Could throw...
+			}
+			if ( typeof data === "function" ) {
+				data = data.call( parentItem || {} );
+			}
+			if ( options && options.wrapped ) {
+				updateWrapped( options, options.wrapped );
+			}
+			ret = jQuery.isArray( data ) ?
+				jQuery.map( data, function( dataItem ) {
+					return dataItem ? newTmplItem( options, parentItem, tmpl, dataItem ) : null;
+				}) :
+				[ newTmplItem( options, parentItem, tmpl, data ) ];
+			return topLevel ? jQuery( build( parentItem, null, ret ) ) : ret;
+		},
+
+		// Return rendered template item for an element.
+		tmplItem: function( elem ) {
+			var tmplItem;
+			if ( elem instanceof jQuery ) {
+				elem = elem[0];
+			}
+			while ( elem && elem.nodeType === 1 && !(tmplItem = jQuery.data( elem, "tmplItem" )) && (elem = elem.parentNode) ) {}
+			return tmplItem || topTmplItem;
+		},
+
+		// Set:
+		// Use $.template( name, tmpl ) to cache a named template,
+		// where tmpl is a template string, a script element or a jQuery instance wrapping a script element, etc.
+		// Use $( "selector" ).template( name ) to provide access by name to a script block template declaration.
+
+		// Get:
+		// Use $.template( name ) to access a cached template.
+		// Also $( selectorToScriptBlock ).template(), or $.template( null, templateString )
+		// will return the compiled template, without adding a name reference.
+		// If templateString includes at least one HTML tag, $.template( templateString ) is equivalent
+		// to $.template( null, templateString )
+		template: function( name, tmpl ) {
+			if (tmpl) {
+				// Compile template and associate with name
+				if ( typeof tmpl === "string" ) {
+					// This is an HTML string being passed directly in.
+					tmpl = buildTmplFn( tmpl );
+				} else if ( tmpl instanceof jQuery ) {
+					tmpl = tmpl[0] || {};
+				}
+				if ( tmpl.nodeType ) {
+					// If this is a template block, use cached copy, or generate tmpl function and cache.
+					tmpl = jQuery.data( tmpl, "tmpl" ) || jQuery.data( tmpl, "tmpl", buildTmplFn( tmpl.innerHTML ));
+					// Issue: In IE, if the container element is not a script block, the innerHTML will remove quotes from attribute values whenever the value does not include white space.
+					// This means that foo="${x}" will not work if the value of x includes white space: foo="${x}" -> foo=value of x.
+					// To correct this, include space in tag: foo="${ x }" -> foo="value of x"
+				}
+				return typeof name === "string" ? (jQuery.template[name] = tmpl) : tmpl;
+			}
+			// Return named compiled template
+			return name ? (typeof name !== "string" ? jQuery.template( null, name ):
+				(jQuery.template[name] ||
+					// If not in map, and not containing at least on HTML tag, treat as a selector.
+					// (If integrated with core, use quickExpr.exec)
+					jQuery.template( null, htmlExpr.test( name ) ? name : jQuery( name )))) : null;
+		},
+
+		encode: function( text ) {
+			// Do HTML encoding replacing < > & and ' and " by corresponding entities.
+			return ("" + text).split("<").join("&lt;").split(">").join("&gt;").split('"').join("&#34;").split("'").join("&#39;");
+		}
+	});
+
+	jQuery.extend( jQuery.tmpl, {
+		tag: {
+			"tmpl": {
+				_default: { $2: "null" },
+				open: "if($notnull_1){__=__.concat($item.nest($1,$2));}"
+				// tmpl target parameter can be of type function, so use $1, not $1a (so not auto detection of functions)
+				// This means that {{tmpl foo}} treats foo as a template (which IS a function).
+				// Explicit parens can be used if foo is a function that returns a template: {{tmpl foo()}}.
+			},
+			"wrap": {
+				_default: { $2: "null" },
+				open: "$item.calls(__,$1,$2);__=[];",
+				close: "call=$item.calls();__=call._.concat($item.wrap(call,__));"
+			},
+			"each": {
+				_default: { $2: "$index, $value" },
+				open: "if($notnull_1){$.each($1a,function($2){with(this){",
+				close: "}});}"
+			},
+			"if": {
+				open: "if(($notnull_1) && $1a){",
+				close: "}"
+			},
+			"else": {
+				_default: { $1: "true" },
+				open: "}else if(($notnull_1) && $1a){"
+			},
+			"html": {
+				// Unecoded expression evaluation.
+				open: "if($notnull_1){__.push($1a);}"
+			},
+			"=": {
+				// Encoded expression evaluation. Abbreviated form is ${}.
+				_default: { $1: "$data" },
+				open: "if($notnull_1){__.push($.encode($1a));}"
+			},
+			"!": {
+				// Comment tag. Skipped by parser
+				open: ""
+			}
+		},
+
+		// This stub can be overridden, e.g. in jquery.tmplPlus for providing rendered events
+		complete: function( items ) {
+			newTmplItems = {};
+		},
+
+		// Call this from code which overrides domManip, or equivalent
+		// Manage cloning/storing template items etc.
+		afterManip: function afterManip( elem, fragClone, callback ) {
+			// Provides cloned fragment ready for fixup prior to and after insertion into DOM
+			var content = fragClone.nodeType === 11 ?
+				jQuery.makeArray(fragClone.childNodes) :
+				fragClone.nodeType === 1 ? [fragClone] : [];
+
+			// Return fragment to original caller (e.g. append) for DOM insertion
+			callback.call( elem, fragClone );
+
+			// Fragment has been inserted:- Add inserted nodes to tmplItem data structure. Replace inserted element annotations by jQuery.data.
+			storeTmplItems( content );
+			cloneIndex++;
+		}
+	});
+
+	//========================== Private helper functions, used by code above ==========================
+
+	function build( tmplItem, nested, content ) {
+		// Convert hierarchical content into flat string array
+		// and finally return array of fragments ready for DOM insertion
+		var frag, ret = content ? jQuery.map( content, function( item ) {
+			return (typeof item === "string") ?
+				// Insert template item annotations, to be converted to jQuery.data( "tmplItem" ) when elems are inserted into DOM.
+				(tmplItem.key ? item.replace( /(<\w+)(?=[\s>])(?![^>]*_tmplitem)([^>]*)/g, "$1 " + tmplItmAtt + "=\"" + tmplItem.key + "\" $2" ) : item) :
+				// This is a child template item. Build nested template.
+				build( item, tmplItem, item._ctnt );
+		}) :
+		// If content is not defined, insert tmplItem directly. Not a template item. May be a string, or a string array, e.g. from {{html $item.html()}}.
+		tmplItem;
+		if ( nested ) {
+			return ret;
+		}
+
+		// top-level template
+		ret = ret.join("");
+
+		// Support templates which have initial or final text nodes, or consist only of text
+		// Also support HTML entities within the HTML markup.
+		ret.replace( /^\s*([^<\s][^<]*)?(<[\w\W]+>)([^>]*[^>\s])?\s*$/, function( all, before, middle, after) {
+			frag = jQuery( middle ).get();
+
+			storeTmplItems( frag );
+			if ( before ) {
+				frag = unencode( before ).concat(frag);
+			}
+			if ( after ) {
+				frag = frag.concat(unencode( after ));
+			}
+		});
+		return frag ? frag : unencode( ret );
+	}
+
+	function unencode( text ) {
+		// Use createElement, since createTextNode will not render HTML entities correctly
+		var el = document.createElement( "div" );
+		el.innerHTML = text;
+		return jQuery.makeArray(el.childNodes);
+	}
+
+	// Generate a reusable function that will serve to render a template against data
+	function buildTmplFn( markup ) {
+		return new Function("jQuery","$item",
+			// Use the variable __ to hold a string array while building the compiled template. (See https://github.com/jquery/jquery-tmpl/issues#issue/10).
+			"var $=jQuery,call,__=[],$data=$item.data;" +
+
+			// Introduce the data as local variables using with(){}
+			"with($data){__.push('" +
+
+			// Convert the template into pure JavaScript
+			jQuery.trim(markup)
+				.replace( /([\\'])/g, "\\$1" )
+				.replace( /[\r\t\n]/g, " " )
+				.replace( /\$\{([^\}]*)\}/g, "{{= $1}}" )
+				.replace( /\{\{(\/?)(\w+|.)(?:\(((?:[^\}]|\}(?!\}))*?)?\))?(?:\s+(.*?)?)?(\(((?:[^\}]|\}(?!\}))*?)\))?\s*\}\}/g,
+				function( all, slash, type, fnargs, target, parens, args ) {
+					var tag = jQuery.tmpl.tag[ type ], def, expr, exprAutoFnDetect;
+					if ( !tag ) {
+						throw "Unknown template tag: " + type;
+					}
+					def = tag._default || [];
+					if ( parens && !/\w$/.test(target)) {
+						target += parens;
+						parens = "";
+					}
+					if ( target ) {
+						target = unescape( target );
+						args = args ? ("," + unescape( args ) + ")") : (parens ? ")" : "");
+						// Support for target being things like a.toLowerCase();
+						// In that case don't call with template item as 'this' pointer. Just evaluate...
+						expr = parens ? (target.indexOf(".") > -1 ? target + unescape( parens ) : ("(" + target + ").call($item" + args)) : target;
+						exprAutoFnDetect = parens ? expr : "(typeof(" + target + ")==='function'?(" + target + ").call($item):(" + target + "))";
+					} else {
+						exprAutoFnDetect = expr = def.$1 || "null";
+					}
+					fnargs = unescape( fnargs );
+					return "');" +
+						tag[ slash ? "close" : "open" ]
+							.split( "$notnull_1" ).join( target ? "typeof(" + target + ")!=='undefined' && (" + target + ")!=null" : "true" )
+							.split( "$1a" ).join( exprAutoFnDetect )
+							.split( "$1" ).join( expr )
+							.split( "$2" ).join( fnargs || def.$2 || "" ) +
+						"__.push('";
+				}) +
+			"');}return __;"
+		);
+	}
+	function updateWrapped( options, wrapped ) {
+		// Build the wrapped content.
+		options._wrap = build( options, true,
+			// Suport imperative scenario in which options.wrapped can be set to a selector or an HTML string.
+			jQuery.isArray( wrapped ) ? wrapped : [htmlExpr.test( wrapped ) ? wrapped : jQuery( wrapped ).html()]
+		).join("");
+	}
+
+	function unescape( args ) {
+		return args ? args.replace( /\\'/g, "'").replace(/\\\\/g, "\\" ) : null;
+	}
+	function outerHtml( elem ) {
+		var div = document.createElement("div");
+		div.appendChild( elem.cloneNode(true) );
+		return div.innerHTML;
+	}
+
+	// Store template items in jQuery.data(), ensuring a unique tmplItem data data structure for each rendered template instance.
+	function storeTmplItems( content ) {
+		var keySuffix = "_" + cloneIndex, elem, elems, newClonedItems = {}, i, l, m;
+		for ( i = 0, l = content.length; i < l; i++ ) {
+			if ( (elem = content[i]).nodeType !== 1 ) {
+				continue;
+			}
+			elems = elem.getElementsByTagName("*");
+			for ( m = elems.length - 1; m >= 0; m-- ) {
+				processItemKey( elems[m] );
+			}
+			processItemKey( elem );
+		}
+		function processItemKey( el ) {
+			var pntKey, pntNode = el, pntItem, tmplItem, key;
+			// Ensure that each rendered template inserted into the DOM has its own template item,
+			if ( (key = el.getAttribute( tmplItmAtt ))) {
+				while ( pntNode.parentNode && (pntNode = pntNode.parentNode).nodeType === 1 && !(pntKey = pntNode.getAttribute( tmplItmAtt ))) { }
+				if ( pntKey !== key ) {
+					// The next ancestor with a _tmplitem expando is on a different key than this one.
+					// So this is a top-level element within this template item
+					// Set pntNode to the key of the parentNode, or to 0 if pntNode.parentNode is null, or pntNode is a fragment.
+					pntNode = pntNode.parentNode ? (pntNode.nodeType === 11 ? 0 : (pntNode.getAttribute( tmplItmAtt ) || 0)) : 0;
+					if ( !(tmplItem = newTmplItems[key]) ) {
+						// The item is for wrapped content, and was copied from the temporary parent wrappedItem.
+						tmplItem = wrappedItems[key];
+						tmplItem = newTmplItem( tmplItem, newTmplItems[pntNode]||wrappedItems[pntNode] );
+						tmplItem.key = ++itemKey;
+						newTmplItems[itemKey] = tmplItem;
+					}
+					if ( cloneIndex ) {
+						cloneTmplItem( key );
+					}
+				}
+				el.removeAttribute( tmplItmAtt );
+			} else if ( cloneIndex && (tmplItem = jQuery.data( el, "tmplItem" )) ) {
+				// This was a rendered element, cloned during append or appendTo etc.
+				// TmplItem stored in jQuery data has already been cloned in cloneCopyEvent. We must replace it with a fresh cloned tmplItem.
+				cloneTmplItem( tmplItem.key );
+				newTmplItems[tmplItem.key] = tmplItem;
+				pntNode = jQuery.data( el.parentNode, "tmplItem" );
+				pntNode = pntNode ? pntNode.key : 0;
+			}
+			if ( tmplItem ) {
+				pntItem = tmplItem;
+				// Find the template item of the parent element.
+				// (Using !=, not !==, since pntItem.key is number, and pntNode may be a string)
+				while ( pntItem && pntItem.key != pntNode ) {
+					// Add this element as a top-level node for this rendered template item, as well as for any
+					// ancestor items between this item and the item of its parent element
+					pntItem.nodes.push( el );
+					pntItem = pntItem.parent;
+				}
+				// Delete content built during rendering - reduce API surface area and memory use, and avoid exposing of stale data after rendering...
+				delete tmplItem._ctnt;
+				delete tmplItem._wrap;
+				// Store template item as jQuery data on the element
+				jQuery.data( el, "tmplItem", tmplItem );
+			}
+			function cloneTmplItem( key ) {
+				key = key + keySuffix;
+				tmplItem = newClonedItems[key] =
+					(newClonedItems[key] || newTmplItem( tmplItem, newTmplItems[tmplItem.parent.key + keySuffix] || tmplItem.parent ));
+			}
+		}
+	}
+
+	//---- Helper functions for template item ----
+
+	function tiCalls( content, tmpl, data, options ) {
+		if ( !content ) {
+			return stack.pop();
+		}
+		stack.push({ _: content, tmpl: tmpl, item:this, data: data, options: options });
+	}
+
+	function tiNest( tmpl, data, options ) {
+		// nested template, using {{tmpl}} tag
+		return jQuery.tmpl( jQuery.template( tmpl ), data, options, this );
+	}
+
+	function tiWrap( call, wrapped ) {
+		// nested template, using {{wrap}} tag
+		var options = call.options || {};
+		options.wrapped = wrapped;
+		// Apply the template, which may incorporate wrapped content,
+		return jQuery.tmpl( jQuery.template( call.tmpl ), call.data, options, call.item );
+	}
+
+	function tiHtml( filter, textOnly ) {
+		var wrapped = this._wrap;
+		return jQuery.map(
+			jQuery( jQuery.isArray( wrapped ) ? wrapped.join("") : wrapped ).filter( filter || "*" ),
+			function(e) {
+				return textOnly ?
+					e.innerText || e.textContent :
+					e.outerHTML || outerHtml(e);
+			});
+	}
+
+	function tiUpdate() {
+		var coll = this.nodes;
+		jQuery.tmpl( null, null, null, this).insertBefore( coll[0] );
+		jQuery( coll ).remove();
+	}
+})( jQuery );
 // Determine what is o.
 /**
  * @ignore
@@ -1744,25 +2168,26 @@ var equiv = function () {
             // auto-set the focus?
             if (options && options.focus)
             {
-                if (options.focus === true)
-                {
-                    // pick first element in form
-                    if (control.children && control.children.length > 0) {
-                        if (control.children[0].field && control.children[0].field[0]) {
-                            //$(control.children[0].field[0]).focus();
-                            $(control.children[0]).focus();
+                window.setTimeout(function() {
+
+                    if (options.focus === true)
+                    {
+                        // pick first element in form
+                        if (control.children && control.children.length > 0) {
+                            if (control.children[0].field && control.children[0].field) {
+                                control.children[0].field.focus();
+                            }
                         }
                     }
-                }
-                else
-                {
-                    // pick a named control
-                    var child = control.getControlByPath(options.focus);
-                    if (child && child.field) {
-                        //$(child.field[0]).focus();
-                        $(child).focus();
+                    else
+                    {
+                        // pick a named control
+                        var child = control.getControlByPath(options.focus);
+                        if (child && child.field && child.field.length > 0) {
+                            child.field.focus();
+                        }
                     }
-                }
+                }, 250);
             }
 
             if (renderedCallback)
@@ -1832,8 +2257,18 @@ var equiv = function () {
      */
     Alpaca.Connectors = { };
 
+    Alpaca.Extend = $.extend;
+
+    Alpaca.Create = function()
+    {
+        var args = Array.prototype.slice.call(arguments);
+        args.unshift({});
+
+        return $.extend.apply(this, args);
+    };
+
     // static methods and properties
-    $.extend(Alpaca,
+    Alpaca.Extend(Alpaca,
     /** @lends Alpaca */
     {
         /**
@@ -1866,7 +2301,7 @@ var equiv = function () {
          * @returns {Boolean} True if the variable is a string, false otherwise.
          */
         isString: function(obj) {
-            return (typeof obj == "string");
+            return (typeof obj === "string");
         },
 
         /**
@@ -1875,11 +2310,7 @@ var equiv = function () {
          * @returns {Boolean} True if the variable is an object, false otherwise.
          */
         isObject: function(obj) {
-            if (obj === true || obj === false || Alpaca.isUndefined(obj) || obj === null) {
-                return false;
-            }
-
-            return (typeof(obj) === "object") && (typeof(obj.length) === "undefined");
+            return Object.prototype.toString.call(obj) === '[object Object]';
         },
 
         /**
@@ -1897,7 +2328,7 @@ var equiv = function () {
          * @returns {Boolean} True if the variable is a number, false otherwise.
          */
         isNumber: function(obj) {
-            return (typeof obj == "number");
+            return (typeof obj === "number");
         },
 
         /**
@@ -1906,11 +2337,7 @@ var equiv = function () {
          * @returns {Boolean} True if the variable is an array, false otherwise.
          */
         isArray: function(obj) {
-            if (obj === true || obj === false || Alpaca.isUndefined(obj) || obj === null) {
-                return false;
-            }
-
-            return obj.push && obj.slice;
+            return obj instanceof Array;
         },
 
         /**
@@ -1919,7 +2346,7 @@ var equiv = function () {
          * @returns {Boolean} True if the variable is a boolean, false otherwise.
          */
         isBoolean: function(obj) {
-            return (typeof obj == "boolean");
+            return (typeof obj === "boolean");
         },
 
         /**
@@ -1928,7 +2355,7 @@ var equiv = function () {
          * @returns {Boolean} True if the variable is a undefined, false otherwise.
          */
         isUndefined: function(obj) {
-            return (typeof obj == "undefined");
+            return (typeof obj === "undefined");
         },
 
         /**
@@ -1968,8 +2395,20 @@ var equiv = function () {
 
                 x = Alpaca.trim(x);
 
-                // convert to dom
-                x = $(x);
+                var converted = null;
+                try
+                {
+                    converted = $(x);
+                }
+                catch (e)
+                {
+                    // make another attempt to account for safety in some browsers
+                    x = "<div>" + x + "</div>";
+
+                    converted = $(x).children();
+                }
+
+                return converted;
             }
 
             return x;
@@ -2122,17 +2561,6 @@ var equiv = function () {
             }
 
             return -1;
-        },
-
-        /**
-         * Logs a message.
-         *
-         * @param {String} msg The message to be logged.
-         */
-        log: function(msg) {
-            if (typeof(console) !== "undefined") {
-                console.log(msg);
-            }
         },
 
         /**
@@ -3200,10 +3628,19 @@ var equiv = function () {
             //
             ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+            // TEST - swap code
+            // swap el -> placeholder
+            //var tempHolder = $("<div></div>");
+            //$(el).before(tempHolder);
+            //$(el).remove();
 
             var field = Alpaca.createFieldInstance(el, data, options, schema, view, connector, errorCallback);
             if (field)
             {
+                // hide field while rendering
+                $(el).addClass("alpaca-field-rendering");
+                $(el).addClass("alpaca-hidden");
+
                 field.isDynamicCreation = isDynamicCreation;
                 Alpaca.fieldInstances[field.getId()] = field;
 
@@ -3221,10 +3658,59 @@ var equiv = function () {
                     renderedCallback = field.view.postRender;
                 }
 
+                if (Alpaca.collectTiming)
+                {
+                    var counters = Alpaca.Counters("render");
+                    var t1 = new Date().getTime();
+                }
+
+                var fin = function()
+                {
+                    // if this is the top-level alpaca field, then we call for validation state to be recalculated across
+                    // all child fields
+                    if (!field.parent)
+                    {
+                        // final call to update validation state
+                        field.refreshValidationState(true);
+
+                        // force hideInitValidationError to false for field and all children
+                        if (field.view.type != 'view')
+                        {
+                            Alpaca.fieldApplyChildren(field, function(field) {
+
+                                // set to false after first validation (even if in CREATE mode, we only force init validation error false on first render)
+                                field.hideInitValidationError = false;
+
+                            });
+                        }
+                    }
+
+                    // TEST - swap code
+                    // swap placeholder -> el
+                    //$(tempHolder).before(el);
+                    //$(tempHolder).remove();
+
+                    // reveal field after rendering
+                    $(el).removeClass("alpaca-field-rendering");
+                    $(el).removeClass("alpaca-hidden");
+
+                    if (Alpaca.collectTiming)
+                    {
+                        var t2 = new Date().getTime();
+                        counters.increment(field.getFieldType(), (t2-t1));
+                    }
+
+                    renderedCallback(field);
+                };
+
                 if (!Alpaca.isEmpty(callback)) {
-                    callback(field, renderedCallback);
+                    callback(field, function() {
+                        fin();
+                    });
                 } else {
-                    field.render(renderedCallback);
+                    field.render(function() {
+                        fin();
+                    });
                 }
 
                 field.callback = callback;
@@ -3317,7 +3803,7 @@ var equiv = function () {
         {
             var self = this;
 
-            //var t1 = new Date().getTime();
+            // var t1 = new Date().getTime();
 
             var report = {
                 "errors": [],
@@ -3327,8 +3813,8 @@ var equiv = function () {
 
             var finalCallback = function(normalizedViews)
             {
-                //var t2 = new Date().getTime();
-                //console.log("Compilation Exited with " + report.errors.length + " errors in: " + (t2-t1)+ " ms");
+                // var t2 = new Date().getTime();
+                // console.log("Compilation Exited with " + report.errors.length + " errors in: " + (t2-t1)+ " ms");
 
                 if (report.errors.length === 0)
                 {
@@ -3389,6 +3875,23 @@ var equiv = function () {
             var compileViewTemplate = function(normalizedViews, view, compiledTemplateId, template, totalCalls)
             {
                 var viewId = view.id;
+
+                var mightBeUrl = (template && template.indexOf("/") > -1);
+                if (mightBeUrl)
+                {
+
+                }
+                else
+                {
+                    // support for jQuery selectors
+                    if (template && ((template.indexOf("#") === 0) || (template.indexOf(".") === 0)))
+                    {
+                        var x = $(template);
+
+                        type = $(x).attr("type");
+                        template = $(x).html();
+                    }
+                }
 
                 var type = null;
                 if (Alpaca.isObject(template)) {
@@ -3697,16 +4200,29 @@ var equiv = function () {
         },
 
         /**
-         * Executes a template.
+         * Executes a template and returns a DOM element.
          *
-         * @param view
          * @param templateDescriptor
          * @param model
          */
-        tmpl: function(view, templateDescriptor, model)
+        tmpl: function(templateDescriptor, model)
         {
-            if (Alpaca.isString(view)) {
-                view = this.normalizedViews[view];
+            var html = Alpaca.tmplHtml(templateDescriptor, model);
+
+            return Alpaca.safeDomParse(html);
+        },
+
+        /**
+         * Executes a template and returns HTML.
+         *
+         * @param templateDescriptor
+         * @param model
+         */
+        tmplHtml: function(templateDescriptor, model)
+        {
+            if (!model)
+            {
+                model = {};
             }
 
             var engineType = templateDescriptor.engine.type;
@@ -3721,10 +4237,10 @@ var equiv = function () {
             // execute the template
             var cacheKey = templateDescriptor.cache.key;
             var html = engine.execute(cacheKey, model, function(err) {
-                return Alpaca.throwDefaultError("The compiled template: " + compiledTemplateId + " for view: " + view.id + " failed to execute: " + JSON.stringify(err));
+                return Alpaca.throwDefaultError("The compiled template: " + compiledTemplateId + " failed to execute: " + JSON.stringify(err));
             });
 
-            return Alpaca.safeDomParse(html);
+            return html;
         }
     });
 
@@ -3757,18 +4273,18 @@ var equiv = function () {
         Alpaca.log(Alpaca.ERROR, obj);
     };
 
-    Alpaca.log = function(level, obj) {
+    Alpaca.LOG_METHOD_MAP = {
+        0: 'debug',
+        1: 'info',
+        2: 'warn',
+        3: 'error'
+    };
 
-        var methodMap = {
-            0: 'debug',
-            1: 'info',
-            2: 'warn',
-            3: 'error'
-        };
+    Alpaca.log = function(level, obj) {
 
         if (Alpaca.logLevel <= level)
         {
-            var method = methodMap[level];
+            var method = Alpaca.LOG_METHOD_MAP[level];
 
             if (typeof console !== 'undefined' && console[method])
             {
@@ -3827,28 +4343,80 @@ var equiv = function () {
 
     Alpaca.loadRefSchemaOptions = function(topField, referenceId, callback)
     {
-        if (referenceId.indexOf("#/definitions/") > -1)
+        if (!referenceId)
         {
-            var defId = referenceId.substring(14);
+            callback();
+        }
+        else if (referenceId == "#")
+        {
+            // this is the uri of the current schema document
+            callback(topField.schema, topField.options);
+        }
+        else if (referenceId.indexOf("#/") == 0)
+        {
+            // this is a property path relative to the root of the current schema
+            var defId = referenceId.substring(2);
 
-            var defSchema = null;
-            if (topField.schema.definitions)
+            // split into tokens
+            var tokens = defId.split("/");
+
+            var defSchema = topField.schema;
+            for (var i = 0; i < tokens.length; i++)
             {
-                defSchema = topField.schema.definitions[defId];
+                var token = tokens[i];
+
+                // schema
+                if (defSchema[token])
+                {
+                    defSchema = defSchema[token];
+                }
+                else if (defSchema.properties && defSchema.properties[token])
+                {
+                    defSchema = defSchema.properties[token];
+                }
+                else if (defSchema.definitions && defSchema.definitions[token])
+                {
+                    defSchema = defSchema.definitions[token];
+                }
+                else
+                {
+                    defSchema = null;
+                    break;
+                }
             }
 
-            var defOptions = null;
-            if (topField.options.definitions)
+            var defOptions = topField.options;
+            for (var i = 0; i < tokens.length; i++)
             {
-                defOptions = topField.options.definitions[defId];
+                var token = tokens[i];
+
+                // options
+                if (defOptions[token])
+                {
+                    defOptions = defOptions[token];
+                }
+                else if (defOptions.fields && defOptions.fields[token])
+                {
+                    defOptions = defOptions.fields[token];
+                }
+                else if (defOptions.definitions && defOptions.definitions[token])
+                {
+                    defOptions = defOptions.definitions[token];
+                }
+                else
+                {
+                    defOptions = null;
+                    break;
+                }
             }
 
             callback(defSchema, defOptions);
         }
-        else
+        else if (referenceId.indexOf("#") == 0)
         {
-            // THE PROBLEM IS THAT THE FLOW FIELD HASN'T YET BEEN ADDED TO CHILDREN!
-            // IT IS IN THE PROCESS OF RENDERING!
+            // this is the ID of a node in the current schema document
+
+            // walk the current document schema until we find the referenced node (using id property)
             var resolution = Alpaca.resolveReference(topField.schema, topField.options, referenceId);
             if (resolution)
             {
@@ -3859,6 +4427,35 @@ var equiv = function () {
                 // nothing
                 callback();
             }
+        }
+        else
+        {
+            // the reference is considered to be a URI with or without a "#" in it to point to a specific location in
+            // the target schema
+
+            var referenceParts = Alpaca.pathParts(referenceId);
+
+            topField.connector.loadReferenceSchema(referenceParts.path, function(schema) {
+                topField.connector.loadReferenceOptions(referenceParts.path, function(options) {
+
+                    if (referenceParts.id)
+                    {
+                        var resolution = Alpaca.resolveReference(schema, options, referenceParts.id);
+                        if (resolution)
+                        {
+                            schema = resolution.schema;
+                            options = resolution.options;
+                        }
+                    }
+
+                    callback(schema, options);
+
+                }, function() {
+                    callback(schema);
+                });
+            }, function() {
+                callback();
+            });
         }
     };
 
@@ -4036,6 +4633,1480 @@ var equiv = function () {
             }
         }
     };
+
+
+    Alpaca.CountersMap = {};
+    Alpaca.Counters = function(name)
+    {
+        if (Alpaca.Counters[name])
+        {
+            return Alpaca.Counters[name];
+        }
+
+        // create new counters
+
+        var types = {};
+        var all = {
+            count: 0,
+            total: 0,
+            avg: 0,
+            touches: 0
+        };
+
+        var counters = {
+
+            increment: function(type, amount)
+            {
+                if (!types[type]) {
+                    types[type] = {
+                        count: 0,
+                        total: 0,
+                        avg: 0,
+                        touches: 0
+                    };
+                }
+
+                types[type].count++;
+                types[type].total += amount;
+                types[type].avg = types[type].total / types[type].count;
+                types[type].touches++;
+
+                all.count++;
+                all.total += amount;
+                all.avg = all.total / all.count;
+                all.touches++;
+            },
+
+            read: function(type) {
+                return types[type];
+            },
+
+            each: function(f) {
+                for (var type in types)
+                {
+                    f(type, types[type]);
+                }
+            },
+
+            all: function() {
+                return all;
+            }
+        };
+
+        Alpaca.Counters[name] = counters;
+
+        return counters;
+    };
+
+    Alpaca.collectTiming = false;
+
+    Alpaca.pathParts = function(resource)
+    {
+        if (typeof(resource) != "string")
+        {
+            return resource;
+        }
+
+        // convert string to object
+        var resourcePath = resource;
+        var resourceId = null;
+        var i = resourcePath.indexOf("#");
+        if (i > -1)
+        {
+            resourceId = resourcePath.substring(i + 1);
+            resourcePath = resourcePath.substring(0, i);
+        }
+
+        if (Alpaca.endsWith(resourcePath, "/")) {
+            resourcePath = resourcePath.substring(0, resourcePath.length - 1);
+        }
+
+        var parts = {};
+        parts.path = resourcePath;
+
+        if (resourceId)
+        {
+            parts.id = resourceId;
+        }
+
+        return parts;
+    };
+
+    /**
+     * Resolves a field by its property id.
+     *
+     * @param containerField
+     * @param propertyId
+     * @returns {null}
+     */
+    Alpaca.resolveField = function(containerField, propertyIdOrReferenceId)
+    {
+        var resolvedField = null;
+
+        if (typeof(propertyIdOrReferenceId) == "string")
+        {
+            if (propertyIdOrReferenceId.indexOf("#/") == 0 && propertyId.length > 2)
+            {
+                // TODO: path based lookup?
+            }
+            else if (propertyIdOrReferenceId == "#" || propertyIdOrReferenceId == "#/")
+            {
+                resolvedField = containerField;
+            }
+            else if (propertyIdOrReferenceId.indexOf("#") == 0)
+            {
+                // reference id lookup
+
+                // find the top field
+                var topField = containerField;
+                while (topField.parent)
+                {
+                    topField = topField.parent;
+                }
+
+                var referenceId = propertyIdOrReferenceId.substring(1);
+
+                resolvedField = Alpaca.resolveFieldByReference(topField, referenceId);
+
+            }
+            else
+            {
+                // property lookup
+                resolvedField = containerField.childrenByPropertyId[propertyIdOrReferenceId];
+            }
+        }
+
+        return resolvedField;
+    };
+
+    /**
+     * Resolves a field based on its "reference id" relative to a top level field.  This walks down the field tree and
+     * looks for matching schema.id references to find the matching field.
+     *
+     * @param field
+     * @param referenceId
+     */
+    Alpaca.resolveFieldByReference = function(field, referenceId)
+    {
+        if (field.schema && field.schema.id == referenceId)
+        {
+            return field;
+        }
+        else
+        {
+            if (field.children && field.children.length > 0)
+            {
+                for (var i = 0; i < field.children.length; i++)
+                {
+                    var child = field.children[i];
+
+                    var resolved = Alpaca.resolveFieldByReference(child, referenceId);
+                    if (resolved)
+                    {
+                        return resolved;
+                    }
+                }
+            }
+        }
+
+        return null;
+    };
+
+    /**
+     * Determines whether any of the elements of the first argument are equal to the elements of the second argument.
+     *
+     * @param first either a scalar value or a container (object or array) of values
+     * @param second either a scalar value or a container (object or array) of values
+     * @returns whether at least one match is found
+     */
+    Alpaca.anyEquality = function(first, second)
+    {
+        // copy values from first into a values lookup map
+        var values = {};
+        if (typeof(first) == "object" || typeof(first) == "array")
+        {
+            for (var k in first)
+            {
+                values[first[k]] = true;
+            }
+        }
+        else
+        {
+            values[first] = true;
+        }
+
+        var result = false;
+
+        // check values from second against the lookup map
+        if (typeof(second) == "object" || typeof(second) == "array")
+        {
+            for (var k in second)
+            {
+                var v = second[k];
+
+                if (values[v])
+                {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            result = values[second];
+        }
+
+        return result;
+    };
+
+    Alpaca.series = function(funcs, callback)
+    {
+        async.series(funcs, function() {
+            callback();
+        });
+    };
+
+    Alpaca.parallel = function(funcs, callback)
+    {
+        async.parallel(funcs, function() {
+            callback();
+        });
+    };
+
+    Alpaca.nextTick = function(f)
+    {
+        async.nextTick(function() {
+            f();
+        });
+    };
+
+    /**
+     * Compiles the validation context for the chain of fields from the top-most down to the given field.
+     * Each validation context entry is a field in the chain which describes the following:
+     *
+     *    {
+     *       "field": the field instance,
+     *       "before": the before value (boolean)
+     *       "after": the after value (boolean)
+     *       "validated": (optional) if the field validated (switches state from invalid to valid)
+     *       "invalidated": (optional) if the field invalidated (switches state from valid to invalid)
+     *    }
+     *
+     * This hands back an array of entries with the child field first and continuing up the parent chain.
+     * The last entry in the array is the top most parent field.
+     *
+     * @param field
+     * @returns {Array}
+     */
+    Alpaca.compileValidationContext = function(field)
+    {
+        // walk up the parent tree until we find the top-most control
+        // this serves as our starting point for downward validation
+        var chain = [];
+        var parent = field;
+        do
+        {
+            if (!parent.isValidationParticipant())
+            {
+                parent = null;
+            }
+
+            if (parent)
+            {
+                chain.push(parent);
+            }
+
+            if (parent)
+            {
+                parent = parent.parent;
+            }
+        }
+        while (parent);
+
+        // reverse so top most parent is first
+        chain.reverse();
+
+        // compilation context
+        var context = [];
+
+        // internal method that sets validation for a single field
+        var f = function(chain, context)
+        {
+            if (!chain || chain.length == 0)
+            {
+                return;
+            }
+
+            var current = chain[0];
+
+            var entry = {};
+            entry.id = current.getId();
+            entry.field = current;
+            entry.path = current.path;
+
+            // BEFORE field validation status
+            var beforeStatus = current.isValid();
+            if (current.isContainer())
+            {
+                beforeStatus = current.isValid(true);
+            }
+
+            entry.before = beforeStatus;
+
+            // step down into chain
+            if (chain.length > 1)
+            {
+                // copy array
+                var childChain = chain.slice(0);
+                childChain.shift();
+                f(childChain, context);
+            }
+
+            var previouslyValidated = current._previouslyValidated;
+
+            // now run the validation for just this one field
+            current.validate();
+
+            // apply custom validation (if exists) for just this one field
+            current._validateCustomValidator(function() {
+
+                // AFTER field validation state
+                var afterStatus = current.isValid();
+                if (current.isContainer())
+                {
+                    afterStatus = current.isValid(true);
+                }
+
+                entry.after = afterStatus;
+
+                // if this field's validation status flipped, fire triggers
+                entry.validated = false;
+                entry.invalidated = false;
+                if (!beforeStatus && afterStatus)
+                {
+                    entry.validated = true;
+                }
+                else if (beforeStatus && !afterStatus)
+                {
+                    entry.invalidated = true;
+                }
+                // special case for fields that have not yet been validated
+                else if (!previouslyValidated && !afterStatus)
+                {
+                    entry.invalidated = true;
+                }
+
+                entry.container = current.isContainer();;
+                entry.valid = entry.after;
+
+                context.push(entry);
+            });
+        };
+
+        f(chain, context);
+
+        return context;
+    };
+
+    Alpaca.updateValidationStateForContext = function(context)
+    {
+        // walk through each and flip any DOM UI based on entry state
+        for (var i = 0; i < context.length; i++)
+        {
+            var entry = context[i];
+            var field = entry.field;
+
+            // clear out previous validation UI markers
+            field.getStyleInjection("removeError", field.getEl());
+            field.getEl().removeClass("alpaca-field-invalid alpaca-field-invalid-hidden alpaca-field-valid");
+
+            var showMessages = false;
+
+            // valid?
+            if (entry.valid)
+            {
+                field.getEl().addClass("alpaca-field-valid");
+            }
+            else
+            {
+                // we don't markup invalidation state for readonly fields
+                if (!field.options.readonly)
+                {
+                    if (!field.hideInitValidationError)
+                    {
+                        field.getStyleInjection("error", field.getEl());
+                        field.getEl().addClass("alpaca-field-invalid");
+
+                        showMessages = true;
+                    }
+                    else
+                    {
+                        field.getEl().addClass("alpaca-field-invalid-hidden");
+                    }
+                }
+                else
+                {
+                    // this field is invalid and is also read-only, so we're not supposed to inform the end-user
+                    // within the UI (since there is nothing we can do about it)
+                    // here, we log a message to debug to inform the developer
+                    Alpaca.logWarn("The field (id=" + field.getId() + ", title=" + field.getTitle() + ", path=" + field.path + ") is invalid and also read-only");
+                }
+            }
+
+            // TRIGGERS
+            if (entry.validated)
+            {
+                Alpaca.later(25, this, function() {
+                    field.trigger("validated");
+                });
+            }
+            else if (entry.invalidated)
+            {
+                Alpaca.later(25, this, function() {
+                    field.trigger("invalidated");
+                });
+            }
+
+            // Allow for the message to change
+            if (field.options.showMessages)
+            {
+                if (!field.initializing)
+                {
+                    // we don't markup invalidation state for readonly fields
+                    if (!field.options.readonly)
+                    {
+                        // messages
+                        var messages = [];
+                        for (var messageId in field.validation)
+                        {
+                            if (!field.validation[messageId]["status"])
+                            {
+                                messages.push(field.validation[messageId]["message"]);
+                            }
+                        }
+
+                        field.displayMessage(messages, field.valid);
+                    }
+                }
+            }
+
+            if (showMessages)
+            {
+                field.showHiddenMessages();
+            }
+        }
+    };
+
+    /**
+     * Runs the given function over the field and all of its children recursively.
+     *
+     * @param field
+     * @param fn
+     */
+    Alpaca.fieldApplyChildren = function(field, fn)
+    {
+        var f = function(field, fn)
+        {
+            // if the field has children, go depth first
+            if (field.children && field.children.length > 0)
+            {
+                for (var i = 0; i < field.children.length; i++)
+                {
+                    fn(field.children[i]);
+                }
+            }
+        };
+
+        f(field, fn);
+    };
+
+
+
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // ASYNC
+    //
+    // Here we provide a reduced version of the wonderful async library.  This is entirely inline and
+    // will have no bearing on any external dependencies on async.
+    //
+    // https://github.com/caolan/async
+    // Copyright (c) 2010 Caolan McMahon
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /*global setImmediate: false, setTimeout: false, console: false */
+    (function () {
+
+        var async = {};
+
+        // global on the server, window in the browser
+        var root, previous_async;
+
+        root = this;
+        if (root != null) {
+            previous_async = root.async;
+        }
+
+        async.noConflict = function () {
+            root.async = previous_async;
+            return async;
+        };
+
+        function only_once(fn) {
+            var called = false;
+            return function() {
+                if (called) throw new Error("Callback was already called.");
+                called = true;
+                fn.apply(root, arguments);
+            }
+        }
+
+        //// cross-browser compatiblity functions ////
+
+        var _each = function (arr, iterator) {
+            if (arr.forEach) {
+                return arr.forEach(iterator);
+            }
+            for (var i = 0; i < arr.length; i += 1) {
+                iterator(arr[i], i, arr);
+            }
+        };
+
+        var _map = function (arr, iterator) {
+            if (arr.map) {
+                return arr.map(iterator);
+            }
+            var results = [];
+            _each(arr, function (x, i, a) {
+                results.push(iterator(x, i, a));
+            });
+            return results;
+        };
+
+        var _reduce = function (arr, iterator, memo) {
+            if (arr.reduce) {
+                return arr.reduce(iterator, memo);
+            }
+            _each(arr, function (x, i, a) {
+                memo = iterator(memo, x, i, a);
+            });
+            return memo;
+        };
+
+        var _keys = function (obj) {
+            if (Object.keys) {
+                return Object.keys(obj);
+            }
+            var keys = [];
+            for (var k in obj) {
+                if (obj.hasOwnProperty(k)) {
+                    keys.push(k);
+                }
+            }
+            return keys;
+        };
+
+        //// exported async module functions ////
+
+        //// nextTick implementation with browser-compatible fallback ////
+        if (typeof process === 'undefined' || !(process.nextTick)) {
+            if (typeof setImmediate === 'function') {
+                async.nextTick = function (fn) {
+                    // not a direct alias for IE10 compatibility
+                    setImmediate(fn);
+                };
+                async.setImmediate = async.nextTick;
+            }
+            else {
+                async.nextTick = function (fn) {
+                    setTimeout(fn, 0);
+                };
+                async.setImmediate = async.nextTick;
+            }
+        }
+        else {
+            async.nextTick = process.nextTick;
+            if (typeof setImmediate !== 'undefined') {
+                async.setImmediate = function (fn) {
+                    // not a direct alias for IE10 compatibility
+                    setImmediate(fn);
+                };
+            }
+            else {
+                async.setImmediate = async.nextTick;
+            }
+        }
+
+        async.each = function (arr, iterator, callback) {
+            callback = callback || function () {};
+            if (!arr.length) {
+                return callback();
+            }
+            var completed = 0;
+            _each(arr, function (x) {
+                iterator(x, only_once(function (err) {
+                    if (err) {
+                        callback(err);
+                        callback = function () {};
+                    }
+                    else {
+                        completed += 1;
+                        if (completed >= arr.length) {
+                            callback(null);
+                        }
+                    }
+                }));
+            });
+        };
+        async.forEach = async.each;
+
+        async.eachSeries = function (arr, iterator, callback) {
+            callback = callback || function () {};
+            if (!arr.length) {
+                return callback();
+            }
+            var completed = 0;
+            var iterate = function () {
+                iterator(arr[completed], function (err) {
+                    if (err) {
+                        callback(err);
+                        callback = function () {};
+                    }
+                    else {
+                        completed += 1;
+                        if (completed >= arr.length) {
+                            callback(null);
+                        }
+                        else {
+                            iterate();
+                        }
+                    }
+                });
+            };
+            iterate();
+        };
+        async.forEachSeries = async.eachSeries;
+
+        async.eachLimit = function (arr, limit, iterator, callback) {
+            var fn = _eachLimit(limit);
+            fn.apply(null, [arr, iterator, callback]);
+        };
+        async.forEachLimit = async.eachLimit;
+
+        var _eachLimit = function (limit) {
+
+            return function (arr, iterator, callback) {
+                callback = callback || function () {};
+                if (!arr.length || limit <= 0) {
+                    return callback();
+                }
+                var completed = 0;
+                var started = 0;
+                var running = 0;
+
+                (function replenish () {
+                    if (completed >= arr.length) {
+                        return callback();
+                    }
+
+                    while (running < limit && started < arr.length) {
+                        started += 1;
+                        running += 1;
+                        iterator(arr[started - 1], function (err) {
+                            if (err) {
+                                callback(err);
+                                callback = function () {};
+                            }
+                            else {
+                                completed += 1;
+                                running -= 1;
+                                if (completed >= arr.length) {
+                                    callback();
+                                }
+                                else {
+                                    replenish();
+                                }
+                            }
+                        });
+                    }
+                })();
+            };
+        };
+
+
+        var doParallel = function (fn) {
+            return function () {
+                var args = Array.prototype.slice.call(arguments);
+                return fn.apply(null, [async.each].concat(args));
+            };
+        };
+        var doParallelLimit = function(limit, fn) {
+            return function () {
+                var args = Array.prototype.slice.call(arguments);
+                return fn.apply(null, [_eachLimit(limit)].concat(args));
+            };
+        };
+        var doSeries = function (fn) {
+            return function () {
+                var args = Array.prototype.slice.call(arguments);
+                return fn.apply(null, [async.eachSeries].concat(args));
+            };
+        };
+
+
+        var _asyncMap = function (eachfn, arr, iterator, callback) {
+            var results = [];
+            arr = _map(arr, function (x, i) {
+                return {index: i, value: x};
+            });
+            eachfn(arr, function (x, callback) {
+                iterator(x.value, function (err, v) {
+                    results[x.index] = v;
+                    callback(err);
+                });
+            }, function (err) {
+                callback(err, results);
+            });
+        };
+        async.map = doParallel(_asyncMap);
+        async.mapSeries = doSeries(_asyncMap);
+        async.mapLimit = function (arr, limit, iterator, callback) {
+            return _mapLimit(limit)(arr, iterator, callback);
+        };
+
+        var _mapLimit = function(limit) {
+            return doParallelLimit(limit, _asyncMap);
+        };
+
+        // reduce only has a series version, as doing reduce in parallel won't
+        // work in many situations.
+        async.reduce = function (arr, memo, iterator, callback) {
+            async.eachSeries(arr, function (x, callback) {
+                iterator(memo, x, function (err, v) {
+                    memo = v;
+                    callback(err);
+                });
+            }, function (err) {
+                callback(err, memo);
+            });
+        };
+        // inject alias
+        async.inject = async.reduce;
+        // foldl alias
+        async.foldl = async.reduce;
+
+        async.reduceRight = function (arr, memo, iterator, callback) {
+            var reversed = _map(arr, function (x) {
+                return x;
+            }).reverse();
+            async.reduce(reversed, memo, iterator, callback);
+        };
+        // foldr alias
+        async.foldr = async.reduceRight;
+
+        var _filter = function (eachfn, arr, iterator, callback) {
+            var results = [];
+            arr = _map(arr, function (x, i) {
+                return {index: i, value: x};
+            });
+            eachfn(arr, function (x, callback) {
+                iterator(x.value, function (v) {
+                    if (v) {
+                        results.push(x);
+                    }
+                    callback();
+                });
+            }, function (err) {
+                callback(_map(results.sort(function (a, b) {
+                    return a.index - b.index;
+                }), function (x) {
+                    return x.value;
+                }));
+            });
+        };
+        async.filter = doParallel(_filter);
+        async.filterSeries = doSeries(_filter);
+        // select alias
+        async.select = async.filter;
+        async.selectSeries = async.filterSeries;
+
+        var _reject = function (eachfn, arr, iterator, callback) {
+            var results = [];
+            arr = _map(arr, function (x, i) {
+                return {index: i, value: x};
+            });
+            eachfn(arr, function (x, callback) {
+                iterator(x.value, function (v) {
+                    if (!v) {
+                        results.push(x);
+                    }
+                    callback();
+                });
+            }, function (err) {
+                callback(_map(results.sort(function (a, b) {
+                    return a.index - b.index;
+                }), function (x) {
+                    return x.value;
+                }));
+            });
+        };
+        async.reject = doParallel(_reject);
+        async.rejectSeries = doSeries(_reject);
+
+        var _detect = function (eachfn, arr, iterator, main_callback) {
+            eachfn(arr, function (x, callback) {
+                iterator(x, function (result) {
+                    if (result) {
+                        main_callback(x);
+                        main_callback = function () {};
+                    }
+                    else {
+                        callback();
+                    }
+                });
+            }, function (err) {
+                main_callback();
+            });
+        };
+        async.detect = doParallel(_detect);
+        async.detectSeries = doSeries(_detect);
+
+        async.some = function (arr, iterator, main_callback) {
+            async.each(arr, function (x, callback) {
+                iterator(x, function (v) {
+                    if (v) {
+                        main_callback(true);
+                        main_callback = function () {};
+                    }
+                    callback();
+                });
+            }, function (err) {
+                main_callback(false);
+            });
+        };
+        // any alias
+        async.any = async.some;
+
+        async.every = function (arr, iterator, main_callback) {
+            async.each(arr, function (x, callback) {
+                iterator(x, function (v) {
+                    if (!v) {
+                        main_callback(false);
+                        main_callback = function () {};
+                    }
+                    callback();
+                });
+            }, function (err) {
+                main_callback(true);
+            });
+        };
+        // all alias
+        async.all = async.every;
+
+        async.sortBy = function (arr, iterator, callback) {
+            async.map(arr, function (x, callback) {
+                iterator(x, function (err, criteria) {
+                    if (err) {
+                        callback(err);
+                    }
+                    else {
+                        callback(null, {value: x, criteria: criteria});
+                    }
+                });
+            }, function (err, results) {
+                if (err) {
+                    return callback(err);
+                }
+                else {
+                    var fn = function (left, right) {
+                        var a = left.criteria, b = right.criteria;
+                        return a < b ? -1 : a > b ? 1 : 0;
+                    };
+                    callback(null, _map(results.sort(fn), function (x) {
+                        return x.value;
+                    }));
+                }
+            });
+        };
+
+        async.auto = function (tasks, callback) {
+            callback = callback || function () {};
+            var keys = _keys(tasks);
+            if (!keys.length) {
+                return callback(null);
+            }
+
+            var results = {};
+
+            var listeners = [];
+            var addListener = function (fn) {
+                listeners.unshift(fn);
+            };
+            var removeListener = function (fn) {
+                for (var i = 0; i < listeners.length; i += 1) {
+                    if (listeners[i] === fn) {
+                        listeners.splice(i, 1);
+                        return;
+                    }
+                }
+            };
+            var taskComplete = function () {
+                _each(listeners.slice(0), function (fn) {
+                    fn();
+                });
+            };
+
+            addListener(function () {
+                if (_keys(results).length === keys.length) {
+                    callback(null, results);
+                    callback = function () {};
+                }
+            });
+
+            _each(keys, function (k) {
+                var task = (tasks[k] instanceof Function) ? [tasks[k]]: tasks[k];
+                var taskCallback = function (err) {
+                    var args = Array.prototype.slice.call(arguments, 1);
+                    if (args.length <= 1) {
+                        args = args[0];
+                    }
+                    if (err) {
+                        var safeResults = {};
+                        _each(_keys(results), function(rkey) {
+                            safeResults[rkey] = results[rkey];
+                        });
+                        safeResults[k] = args;
+                        callback(err, safeResults);
+                        // stop subsequent errors hitting callback multiple times
+                        callback = function () {};
+                    }
+                    else {
+                        results[k] = args;
+                        async.setImmediate(taskComplete);
+                    }
+                };
+                var requires = task.slice(0, Math.abs(task.length - 1)) || [];
+                var ready = function () {
+                    return _reduce(requires, function (a, x) {
+                        return (a && results.hasOwnProperty(x));
+                    }, true) && !results.hasOwnProperty(k);
+                };
+                if (ready()) {
+                    task[task.length - 1](taskCallback, results);
+                }
+                else {
+                    var listener = function () {
+                        if (ready()) {
+                            removeListener(listener);
+                            task[task.length - 1](taskCallback, results);
+                        }
+                    };
+                    addListener(listener);
+                }
+            });
+        };
+
+        async.waterfall = function (tasks, callback) {
+            callback = callback || function () {};
+            if (tasks.constructor !== Array) {
+                var err = new Error('First argument to waterfall must be an array of functions');
+                return callback(err);
+            }
+            if (!tasks.length) {
+                return callback();
+            }
+            var wrapIterator = function (iterator) {
+                return function (err) {
+                    if (err) {
+                        callback.apply(null, arguments);
+                        callback = function () {};
+                    }
+                    else {
+                        var args = Array.prototype.slice.call(arguments, 1);
+                        var next = iterator.next();
+                        if (next) {
+                            args.push(wrapIterator(next));
+                        }
+                        else {
+                            args.push(callback);
+                        }
+                        async.setImmediate(function () {
+                            iterator.apply(null, args);
+                        });
+                    }
+                };
+            };
+            wrapIterator(async.iterator(tasks))();
+        };
+
+        var _parallel = function(eachfn, tasks, callback) {
+            callback = callback || function () {};
+            if (tasks.constructor === Array) {
+                eachfn.map(tasks, function (fn, callback) {
+                    if (fn) {
+                        fn(function (err) {
+                            var args = Array.prototype.slice.call(arguments, 1);
+                            if (args.length <= 1) {
+                                args = args[0];
+                            }
+                            callback.call(null, err, args);
+                        });
+                    }
+                }, callback);
+            }
+            else {
+                var results = {};
+                eachfn.each(_keys(tasks), function (k, callback) {
+                    tasks[k](function (err) {
+                        var args = Array.prototype.slice.call(arguments, 1);
+                        if (args.length <= 1) {
+                            args = args[0];
+                        }
+                        results[k] = args;
+                        callback(err);
+                    });
+                }, function (err) {
+                    callback(err, results);
+                });
+            }
+        };
+
+        async.parallel = function (tasks, callback) {
+            _parallel({ map: async.map, each: async.each }, tasks, callback);
+        };
+
+        async.parallelLimit = function(tasks, limit, callback) {
+            _parallel({ map: _mapLimit(limit), each: _eachLimit(limit) }, tasks, callback);
+        };
+
+        async.series = function (tasks, callback) {
+            callback = callback || function () {};
+            if (tasks.constructor === Array) {
+                async.mapSeries(tasks, function (fn, callback) {
+                    if (fn) {
+                        fn(function (err) {
+                            var args = Array.prototype.slice.call(arguments, 1);
+                            if (args.length <= 1) {
+                                args = args[0];
+                            }
+                            callback.call(null, err, args);
+                        });
+                    }
+                }, callback);
+            }
+            else {
+                var results = {};
+                async.eachSeries(_keys(tasks), function (k, callback) {
+                    tasks[k](function (err) {
+                        var args = Array.prototype.slice.call(arguments, 1);
+                        if (args.length <= 1) {
+                            args = args[0];
+                        }
+                        results[k] = args;
+                        callback(err);
+                    });
+                }, function (err) {
+                    callback(err, results);
+                });
+            }
+        };
+
+        async.iterator = function (tasks) {
+            var makeCallback = function (index) {
+                var fn = function () {
+                    if (tasks.length) {
+                        tasks[index].apply(null, arguments);
+                    }
+                    return fn.next();
+                };
+                fn.next = function () {
+                    return (index < tasks.length - 1) ? makeCallback(index + 1): null;
+                };
+                return fn;
+            };
+            return makeCallback(0);
+        };
+
+        async.apply = function (fn) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            return function () {
+                return fn.apply(
+                    null, args.concat(Array.prototype.slice.call(arguments))
+                );
+            };
+        };
+
+        var _concat = function (eachfn, arr, fn, callback) {
+            var r = [];
+            eachfn(arr, function (x, cb) {
+                fn(x, function (err, y) {
+                    r = r.concat(y || []);
+                    cb(err);
+                });
+            }, function (err) {
+                callback(err, r);
+            });
+        };
+        async.concat = doParallel(_concat);
+        async.concatSeries = doSeries(_concat);
+
+        async.whilst = function (test, iterator, callback) {
+            if (test()) {
+                iterator(function (err) {
+                    if (err) {
+                        return callback(err);
+                    }
+                    async.whilst(test, iterator, callback);
+                });
+            }
+            else {
+                callback();
+            }
+        };
+
+        async.doWhilst = function (iterator, test, callback) {
+            iterator(function (err) {
+                if (err) {
+                    return callback(err);
+                }
+                if (test()) {
+                    async.doWhilst(iterator, test, callback);
+                }
+                else {
+                    callback();
+                }
+            });
+        };
+
+        async.until = function (test, iterator, callback) {
+            if (!test()) {
+                iterator(function (err) {
+                    if (err) {
+                        return callback(err);
+                    }
+                    async.until(test, iterator, callback);
+                });
+            }
+            else {
+                callback();
+            }
+        };
+
+        async.doUntil = function (iterator, test, callback) {
+            iterator(function (err) {
+                if (err) {
+                    return callback(err);
+                }
+                if (!test()) {
+                    async.doUntil(iterator, test, callback);
+                }
+                else {
+                    callback();
+                }
+            });
+        };
+
+        async.queue = function (worker, concurrency) {
+            if (concurrency === undefined) {
+                concurrency = 1;
+            }
+            function _insert(q, data, pos, callback) {
+                if(data.constructor !== Array) {
+                    data = [data];
+                }
+                _each(data, function(task) {
+                    var item = {
+                        data: task,
+                        callback: typeof callback === 'function' ? callback : null
+                    };
+
+                    if (pos) {
+                        q.tasks.unshift(item);
+                    } else {
+                        q.tasks.push(item);
+                    }
+
+                    if (q.saturated && q.tasks.length === concurrency) {
+                        q.saturated();
+                    }
+                    async.setImmediate(q.process);
+                });
+            }
+
+            var workers = 0;
+            var q = {
+                tasks: [],
+                concurrency: concurrency,
+                saturated: null,
+                empty: null,
+                drain: null,
+                push: function (data, callback) {
+                    _insert(q, data, false, callback);
+                },
+                unshift: function (data, callback) {
+                    _insert(q, data, true, callback);
+                },
+                process: function () {
+                    if (workers < q.concurrency && q.tasks.length) {
+                        var task = q.tasks.shift();
+                        if (q.empty && q.tasks.length === 0) {
+                            q.empty();
+                        }
+                        workers += 1;
+                        var next = function () {
+                            workers -= 1;
+                            if (task.callback) {
+                                task.callback.apply(task, arguments);
+                            }
+                            if (q.drain && q.tasks.length + workers === 0) {
+                                q.drain();
+                            }
+                            q.process();
+                        };
+                        var cb = only_once(next);
+                        worker(task.data, cb);
+                    }
+                },
+                length: function () {
+                    return q.tasks.length;
+                },
+                running: function () {
+                    return workers;
+                }
+            };
+            return q;
+        };
+
+        async.cargo = function (worker, payload) {
+            var working     = false,
+                tasks       = [];
+
+            var cargo = {
+                tasks: tasks,
+                payload: payload,
+                saturated: null,
+                empty: null,
+                drain: null,
+                push: function (data, callback) {
+                    if(data.constructor !== Array) {
+                        data = [data];
+                    }
+                    _each(data, function(task) {
+                        tasks.push({
+                            data: task,
+                            callback: typeof callback === 'function' ? callback : null
+                        });
+                        if (cargo.saturated && tasks.length === payload) {
+                            cargo.saturated();
+                        }
+                    });
+                    async.setImmediate(cargo.process);
+                },
+                process: function process() {
+                    if (working) return;
+                    if (tasks.length === 0) {
+                        if(cargo.drain) cargo.drain();
+                        return;
+                    }
+
+                    var ts = typeof payload === 'number'
+                        ? tasks.splice(0, payload)
+                        : tasks.splice(0);
+
+                    var ds = _map(ts, function (task) {
+                        return task.data;
+                    });
+
+                    if(cargo.empty) cargo.empty();
+                    working = true;
+                    worker(ds, function () {
+                        working = false;
+
+                        var args = arguments;
+                        _each(ts, function (data) {
+                            if (data.callback) {
+                                data.callback.apply(null, args);
+                            }
+                        });
+
+                        process();
+                    });
+                },
+                length: function () {
+                    return tasks.length;
+                },
+                running: function () {
+                    return working;
+                }
+            };
+            return cargo;
+        };
+
+        var _console_fn = function (name) {
+            return function (fn) {
+                var args = Array.prototype.slice.call(arguments, 1);
+                fn.apply(null, args.concat([function (err) {
+                    var args = Array.prototype.slice.call(arguments, 1);
+                    if (typeof console !== 'undefined') {
+                        if (err) {
+                            if (console.error) {
+                                console.error(err);
+                            }
+                        }
+                        else if (console[name]) {
+                            _each(args, function (x) {
+                                console[name](x);
+                            });
+                        }
+                    }
+                }]));
+            };
+        };
+        async.log = _console_fn('log');
+        async.dir = _console_fn('dir');
+        /*async.info = _console_fn('info');
+         async.warn = _console_fn('warn');
+         async.error = _console_fn('error');*/
+
+        async.memoize = function (fn, hasher) {
+            var memo = {};
+            var queues = {};
+            hasher = hasher || function (x) {
+                return x;
+            };
+            var memoized = function () {
+                var args = Array.prototype.slice.call(arguments);
+                var callback = args.pop();
+                var key = hasher.apply(null, args);
+                if (key in memo) {
+                    callback.apply(null, memo[key]);
+                }
+                else if (key in queues) {
+                    queues[key].push(callback);
+                }
+                else {
+                    queues[key] = [callback];
+                    fn.apply(null, args.concat([function () {
+                        memo[key] = arguments;
+                        var q = queues[key];
+                        delete queues[key];
+                        for (var i = 0, l = q.length; i < l; i++) {
+                            q[i].apply(null, arguments);
+                        }
+                    }]));
+                }
+            };
+            memoized.memo = memo;
+            memoized.unmemoized = fn;
+            return memoized;
+        };
+
+        async.unmemoize = function (fn) {
+            return function () {
+                return (fn.unmemoized || fn).apply(null, arguments);
+            };
+        };
+
+        async.times = function (count, iterator, callback) {
+            var counter = [];
+            for (var i = 0; i < count; i++) {
+                counter.push(i);
+            }
+            return async.map(counter, iterator, callback);
+        };
+
+        async.timesSeries = function (count, iterator, callback) {
+            var counter = [];
+            for (var i = 0; i < count; i++) {
+                counter.push(i);
+            }
+            return async.mapSeries(counter, iterator, callback);
+        };
+
+        async.compose = function (/* functions... */) {
+            var fns = Array.prototype.reverse.call(arguments);
+            return function () {
+                var that = this;
+                var args = Array.prototype.slice.call(arguments);
+                var callback = args.pop();
+                async.reduce(fns, args, function (newargs, fn, cb) {
+                        fn.apply(that, newargs.concat([function () {
+                            var err = arguments[0];
+                            var nextargs = Array.prototype.slice.call(arguments, 1);
+                            cb(err, nextargs);
+                        }]))
+                    },
+                    function (err, results) {
+                        callback.apply(that, [err].concat(results));
+                    });
+            };
+        };
+
+        var _applyEach = function (eachfn, fns /*args...*/) {
+            var go = function () {
+                var that = this;
+                var args = Array.prototype.slice.call(arguments);
+                var callback = args.pop();
+                return eachfn(fns, function (fn, cb) {
+                        fn.apply(that, args.concat([cb]));
+                    },
+                    callback);
+            };
+            if (arguments.length > 2) {
+                var args = Array.prototype.slice.call(arguments, 2);
+                return go.apply(this, args);
+            }
+            else {
+                return go;
+            }
+        };
+        async.applyEach = doParallel(_applyEach);
+        async.applyEachSeries = doSeries(_applyEach);
+
+        async.forever = function (fn, callback) {
+            function next(err) {
+                if (err) {
+                    if (callback) {
+                        return callback(err);
+                    }
+                    throw err;
+                }
+                fn(next);
+            }
+            next();
+        };
+
+        /*
+        // AMD / RequireJS
+        if (typeof define !== 'undefined' && define.amd) {
+            define([], function () {
+                return async;
+            });
+        }
+        // Node.js
+        else if (typeof module !== 'undefined' && module.exports) {
+            module.exports = async;
+        }
+        // included directly via <script> tag
+        else {
+            root.async = async;
+        }
+        */
+
+        root.async = async;
+
+    }());
 
 })(jQuery);
 (function()
@@ -4256,13 +6327,12 @@ var equiv = function () {
         {
             Alpaca.logDebug("Executing template for cache key: " + cacheKey);
 
-            var html = this.doExecute(cacheKey, model, callback);
+            var dom = this.doExecute(cacheKey, model, callback);
 
             // if wrapped in script tag, strip away
-            var strip_script = function(html)
+            var strip_script = function(dom)
             {
                 // if if starts with a script tag, then we strip that out
-                var dom = Alpaca.safeDomParse(html);
                 if ($(dom).length == 1)
                 {
                     if ($(dom)[0].nodeName.toLowerCase() == "script")
@@ -4275,9 +6345,9 @@ var equiv = function () {
                 return html;
             };
 
-            html = strip_script(html);
+            dom = strip_script(dom);
 
-            return html;
+            return dom;
         },
 
         /**
@@ -4364,8 +6434,10 @@ var equiv = function () {
             var html = null;
             try
             {
-                var _html = $.tmpl(cacheKey, model);
-                _html = _html.outerHTML();
+                var dom = $.tmpl(cacheKey, model);
+
+                // convert to string
+                var _html = dom.outerHTML();
 
                 // strip out the _tmplitem attribute if it is sticking around anywhere
                 var i = -1;
@@ -4394,7 +6466,9 @@ var equiv = function () {
                 while (i > -1);
 
                 // convert back to dom safely (IE bug resistant)
-                html = Alpaca.safeDomParse(_html);
+                dom = Alpaca.safeDomParse(_html);
+
+                html = dom;
             }
             catch (e)
             {
@@ -4819,11 +6893,79 @@ var equiv = function () {
         }
     });
 
+    /*
+    Alpaca.EmptyViewTemplates = {
+        'controlFieldOuterEl': '{{html this.html}}',
+        'controlFieldMessage': '${message}',
+        'controlFieldLabel': '{{if options.label}}${options.label}{{/if}}',
+        'controlFieldHelper': '{{if options.helper}}${options.helper}{{/if}}',
+        'controlFieldContainer': '{{html this.html}}',
+        'controlField': '{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"controlFieldLabel")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldContainer",true)}}{{html Alpaca.fieldTemplate(this,"controlFieldHelper")}}{{/wrap}}{{/wrap}}',
+        'fieldSetOuterEl': '{{html this.html}}',
+        'fieldSetMessage': '${message}',
+        'fieldSetLegend': '{{if options.label}}${options.label}{{/if}}',
+        'fieldSetHelper': '{{if options.helper}}${options.helper}{{/if}}',
+        'fieldSetItemsContainer': '{{html this.html}}',
+        'fieldSet': '{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"fieldSetLegend")}}{{wrap(null, {})Alpaca.fieldTemplate(this,"fieldSetItemsContainer",true)}}{{/wrap}}{{/wrap}}',
+        'fieldSetItemContainer': '',
+        'formFieldsContainer': '{{html this.html}}',
+        'formButtonsContainer': '{{if options.buttons}}{{each(k,v) options.buttons}}<button data-key="${k}" class="alpaca-form-button alpaca-form-button-${k}" {{each(k1,v1) v}}${k1}="${v1}"{{/each}}>${v.value}</button>{{/each}}{{/if}}',
+        'form': '<form>{{html Alpaca.fieldTemplate(this,"formFieldsContainer")}}{{html Alpaca.fieldTemplate(this,"formButtonsContainer")}}</form>',
+        'wizardStep': '',
+        'wizardNavBar': '',
+        'wizardPreButton': '<button>Back</button>',
+        'wizardNextButton': '<button>Next</button>',
+        'wizardDoneButton': '<button>Done</button>',
+        'wizardStatusBar': '<ol id="${id}">{{each(i,v) titles}}<li id="stepDesc${i}"><div><strong><span>${v.title}</span>${v.description}</strong></div></li>{{/each}}</ol>',
+        'arrayToolbar': '',
+        'arrayItemToolbar': ''
+    };
+    */
+    Alpaca.EmptyViewTemplates = {};
+
 })(jQuery);(function($) {
 
     var Alpaca = $.alpaca;
 
     Alpaca.styleInjections = {};
+
+    var displayTemplates = Alpaca.Create(Alpaca.EmptyViewTemplates, {
+        "controlField": '<div class="alpaca-data-container">{{if options.label}}<div class="alpaca-data-label">${options.label}</div>{{/if}}<div class="alpaca-data">&nbsp;${data}</div></div>',
+        "fieldSetOuterEl": '<div class="ui-widget ui-widget-content">{{html this.html}}</div>',
+        "fieldSetLegend": '{{if options.label}}<div class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</div>{{/if}}',
+        "fieldSetItemsContainer": '<div>{{html this.html}}</div>',
+        "fieldSet": '{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"fieldSetLegend")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetItemsContainer",true)}}{{/wrap}}{{/wrap}}',
+        "controlFieldContainer": '<div>{{html this.html}}</div>'
+    });
+
+    var editTemplates = Alpaca.Create(Alpaca.EmptyViewTemplates, {
+        // Templates for control fields
+        "controlFieldOuterEl": '<span>{{html this.html}}</span>',
+        "controlFieldMessage": '<div><span class="ui-icon ui-icon-alert"></span><span class="alpaca-controlfield-message-text">${message}</span></div>',
+        "controlFieldLabel": '{{if options.label}}<div class="{{if options.labelClass}}${options.labelClass}{{/if}}"><div>${options.label}</div></div>{{/if}}',
+        "controlFieldHelper": '{{if options.helper}}<div class="{{if options.helperClass}}${options.helperClass}{{/if}}"><span class="ui-icon ui-icon-info"></span><span class="alpaca-controlfield-helper-text">${options.helper}</span></div>{{/if}}',
+        "controlFieldContainer": '<div>{{html this.html}}</div>',
+        "controlField": '{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"controlFieldLabel")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldContainer",true)}}{{html Alpaca.fieldTemplate(this,"controlFieldHelper")}}{{/wrap}}{{/wrap}}',
+        // Templates for container fields
+        "fieldSetOuterEl": '<fieldset>{{html this.html}}</fieldset>',
+        "fieldSetMessage": '<div><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span><span>${message}</span></div>',
+        "fieldSetLegend": '{{if options.label}}<legend class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</legend>{{/if}}',
+        "fieldSetHelper": '{{if options.helper}}<div class="{{if options.helperClass}}${options.helperClass}{{/if}}">${options.helper}</div>{{/if}}',
+        "fieldSetItemsContainer": '<div>{{html this.html}}</div>',
+        "fieldSet": '{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"fieldSetLegend")}}{{html Alpaca.fieldTemplate(this,"fieldSetHelper")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetItemsContainer",true)}}{{/wrap}}{{/wrap}}',
+        "fieldSetItemContainer": '<div></div>',
+        // Templates for form
+        "formFieldsContainer": '<div>{{html this.html}}</div>',
+        "formButtonsContainer": '<div>{{if options.buttons}}{{each(k,v) options.buttons}}<button data-key="${k}" class="alpaca-form-button alpaca-form-button-${k}" {{each(k1,v1) v}}${k1}="${v1}"{{/each}}>${v.value}</button>{{/each}}{{/if}}</div>',
+        "form": '<form>{{html Alpaca.fieldTemplate(this,"formFieldsContainer")}}{{html Alpaca.fieldTemplate(this,"formButtonsContainer")}}</form>',
+        // Templates for wizard
+        "wizardStep" : '<div class="alpaca-clear"></div>',
+        "wizardNavBar" : '<div></div>',
+        "wizardPreButton" : '<button>Back</button>',
+        "wizardNextButton" : '<button>Next</button>',
+        "wizardDoneButton" : '<button>Done</button>',
+        "wizardStatusBar" : '<ol id="${id}">{{each(i,v) titles}}<li id="stepDesc${i}"><div><strong><span>${v.title}</span>${v.description}</strong></div></li>{{/each}}</ol>'
+    });
 
     Alpaca.registerView({
         "id": "VIEW_WEB_DISPLAY",
@@ -4833,18 +6975,7 @@ var equiv = function () {
         "type": "view",
         "platform":"web",
         "displayReadonly":true,
-        "templates": {
-            "controlField": '<div class="alpaca-data-container">{{if options.label}}<div class="alpaca-data-label">${options.label}</div>{{/if}}<div class="alpaca-data">&nbsp;${data}</div></div>',
-            "fieldSetOuterEl": '<div class="ui-widget ui-widget-content">{{html this.html}}</div>',
-            "fieldSetLegend": '{{if options.label}}<div class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</div>{{/if}}',
-            "fieldSetItemsContainer": '<div>{{html this.html}}</div>',
-            "fieldSet": '{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"fieldSetLegend")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetItemsContainer",true)}}{{/wrap}}{{/wrap}}',
-
-            "controlFieldContainer": '<div>{{html this.html}}</div>',
-
-            "arrayToolbar": '',
-            "arrayItemToolbar": ''
-}
+        "templates": displayTemplates
     });
 
     Alpaca.registerView({
@@ -4855,34 +6986,7 @@ var equiv = function () {
         "type":"edit",
         "platform": "web",
         "displayReadonly":true,
-        "templates": {
-            // Templates for control fields
-            "controlFieldOuterEl": '<span>{{html this.html}}</span>',
-            "controlFieldMessage": '<div><span class="ui-icon ui-icon-alert"></span><span class="alpaca-controlfield-message-text">${message}</span></div>',
-            "controlFieldLabel": '{{if options.label}}<div class="{{if options.labelClass}}${options.labelClass}{{/if}}"><div>${options.label}</div></div>{{/if}}',
-            "controlFieldHelper": '{{if options.helper}}<div class="{{if options.helperClass}}${options.helperClass}{{/if}}"><span class="ui-icon ui-icon-info"></span><span class="alpaca-controlfield-helper-text">${options.helper}</span></div>{{/if}}',
-            "controlFieldContainer": '<div>{{html this.html}}</div>',
-            "controlField": '{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"controlFieldLabel")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldContainer",true)}}{{html Alpaca.fieldTemplate(this,"controlFieldHelper")}}{{/wrap}}{{/wrap}}',
-            // Templates for container fields
-            "fieldSetOuterEl": '<fieldset>{{html this.html}}</fieldset>',
-            "fieldSetMessage": '<div><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span><span>${message}</span></div>',
-            "fieldSetLegend": '{{if options.label}}<legend class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</legend>{{/if}}',
-            "fieldSetHelper": '{{if options.helper}}<div class="{{if options.helperClass}}${options.helperClass}{{/if}}">${options.helper}</div>{{/if}}',
-            "fieldSetItemsContainer": '<div>{{html this.html}}</div>',
-            "fieldSet": '{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"fieldSetLegend")}}{{html Alpaca.fieldTemplate(this,"fieldSetHelper")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetItemsContainer",true)}}{{/wrap}}{{/wrap}}',
-            "fieldSetItemContainer": '<div></div>',
-            // Templates for form
-            "formFieldsContainer": '<div>{{html this.html}}</div>',
-            "formButtonsContainer": '<div>{{if options.buttons}}{{each(k,v) options.buttons}}<button data-key="${k}" class="alpaca-form-button alpaca-form-button-${k}" {{each(k1,v1) v}}${k1}="${v1}"{{/each}}>${v.value}</button>{{/each}}{{/if}}</div>',
-            "form": '<form>{{html Alpaca.fieldTemplate(this,"formFieldsContainer")}}{{html Alpaca.fieldTemplate(this,"formButtonsContainer")}}</form>',
-            // Templates for wizard
-            "wizardStep" : '<div class="alpaca-clear"></div>',
-            "wizardNavBar" : '<div></div>',
-            "wizardPreButton" : '<button>Back</button>',
-            "wizardNextButton" : '<button>Next</button>',
-            "wizardDoneButton" : '<button>Done</button>',
-            "wizardStatusBar" : '<ol id="${id}">{{each(i,v) titles}}<li id="stepDesc${i}"><div><strong><span>${v.title}</span>${v.description}</strong></div></li>{{/each}}</ol>'
-        }
+        "templates": editTemplates
     });
 
     Alpaca.registerView({
@@ -4898,7 +7002,8 @@ var equiv = function () {
 
     var Alpaca = $.alpaca;
 
-    var listViewTemplates = {
+    var displayTemplates = Alpaca.Create(Alpaca.EmptyViewTemplates, {
+
         // Templates for control fields
         "controlFieldOuterEl": '<span class="alpaca-view-web-list">{{html this.html}}</span>',
         "controlFieldMessage": '<div><span class="ui-icon ui-icon-alert"></span><span class="alpaca-controlfield-message-text">${message}</span></div>',
@@ -4916,7 +7021,28 @@ var equiv = function () {
         "fieldSetItemContainer": '<li style="list-style:none;"></li>',
 
         "itemLabel" : '{{if options.itemLabel}}<label for="${id}" class="alpaca-controlfield-label alpaca-controlfield-label-list-view"><span class="alpaca-controlfield-item-label-list-view">${options.itemLabel}{{if index}} <span class="alpaca-item-label-counter">${index}</span></span>{{/if}}</label>{{/if}}'
-    };
+    });
+
+    var editTemplates = Alpaca.Create(Alpaca.EmptyViewTemplates, {
+
+        // Templates for control fields
+        "controlFieldOuterEl": '<span class="alpaca-view-web-list">{{html this.html}}</span>',
+        "controlFieldMessage": '<div><span class="ui-icon ui-icon-alert"></span><span class="alpaca-controlfield-message-text">${message}</span></div>',
+        "controlFieldLabel": '{{if options.label}}<label for="${id}" class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</label>{{/if}}',
+        "controlFieldHelper": '{{if options.helper}}<div class="{{if options.helperClass}}${options.helperClass}{{/if}}"><span class="ui-icon ui-icon-info"></span><span class="alpaca-controlfield-helper-text">${options.helper}</span></div>{{/if}}',
+        "controlFieldContainer": '<div>{{html this.html}}</div>',
+        "controlField": '{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"controlFieldLabel")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldContainer",true)}}{{html Alpaca.fieldTemplate(this,"controlFieldHelper")}}{{/wrap}}{{/wrap}}',
+        // Templates for container fields
+        "fieldSetOuterEl": '<fieldset class="alpaca-view-web-list">{{html this.html}}</fieldset>',
+        "fieldSetMessage": '<div><span class="ui-icon ui-icon-alert alpaca-fieldset-message-list-view"></span><span>${message}</span></div>',
+        "fieldSetLegend": '{{if options.label}}<legend class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</legend>{{/if}}',
+        "fieldSetHelper": '{{if options.helper}}<div class="{{if options.helperClass}}${options.helperClass}{{/if}}">${options.helper}</div>{{/if}}',
+        "fieldSetItemsContainer": '<ol>{{html this.html}}</ol>',
+        "fieldSet": '{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"fieldSetLegend")}}{{html Alpaca.fieldTemplate(this,"fieldSetHelper")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetItemsContainer",true)}}{{/wrap}}{{/wrap}}',
+        "fieldSetItemContainer": '<li style="list-style:none;"></li>',
+
+        "itemLabel" : '{{if options.itemLabel}}<label for="${id}" class="alpaca-controlfield-label alpaca-controlfield-label-list-view"><span class="alpaca-controlfield-item-label-list-view">${options.itemLabel}{{if index}} <span class="alpaca-item-label-counter">${index}</span></span>{{/if}}</label>{{/if}}'
+    });
 
     Alpaca.registerView({
         "id": "VIEW_WEB_DISPLAY_LIST",
@@ -4924,7 +7050,7 @@ var equiv = function () {
         "title": "Web Display View List Style",
         "description": "Web display view based on list styles.",
         "legendStyle": "link",
-        "templates": listViewTemplates,
+        "templates": displayTemplates,
         "styles": {
         },
         "fields": {
@@ -4944,7 +7070,7 @@ var equiv = function () {
         "title": "Web Edit View List Style",
         "description": "Web edit view based on list styles.",
         "legendStyle": "link",
-        "templates": listViewTemplates,
+        "templates": editTemplates,
         "styles": {
         },
         "fields": {
@@ -4964,7 +7090,7 @@ var equiv = function () {
         "title": "Web Create View List Style",
         "description": "Web create view based on list styles.",
         "legendStyle": "link",
-        "templates": listViewTemplates,
+        "templates": editTemplates,
         "styles": {
         },
         "fields": {
@@ -5137,6 +7263,51 @@ var equiv = function () {
 
     var Alpaca = $.alpaca;
 
+    var displayTemplates = Alpaca.Create(Alpaca.EmptyViewTemplates, {
+
+        // Templates for control fields
+        controlField: '<ul data-role="listview"><li>{{if options.label}}<h4>${options.label}</h4>{{/if}}<p><strong>${data}</strong></p></li></ul>',
+        // Templates for container fields
+        fieldSetOuterEl: '<fieldset data-role="collapsible" id="${id}" data-collapsed="{{if options.collapsed}}true{{else}}false{{/if}}">{{html this.html}}</fieldset>',
+        fieldSetMessage: '<div>* ${message}</div>',
+        fieldSetLegend: '{{if options.label}}<legend for="${id}" class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</legend>{{/if}}',
+        fieldSetHelper: '{{if options.helper}}<h3 class="{{if options.helperClass}}${options.helperClass}{{/if}}">${options.helper}</h3>{{/if}}',
+        fieldSetItemsContainer: '<div data-role="controlgroup">{{html this.html}}</div>',
+        fieldSet: '{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"fieldSetLegend")}}{{html Alpaca.fieldTemplate(this,"fieldSetHelper")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetItemsContainer",true)}}{{/wrap}}{{/wrap}}',
+        fieldSetItemContainer: '<div></div>'
+    });
+
+    var editTemplates = Alpaca.Create(Alpaca.EmptyViewTemplates, {
+
+        // Templates for control fields
+        controlFieldOuterEl: '<div data-role="fieldcontain">{{html this.html}}</div>',
+        controlFieldMessage: '<div>* ${message}</div>',
+        controlFieldLabel: '{{if options.label}}<label for="${id}" class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</label>{{/if}}',
+        controlFieldHelper: '{{if options.helper}}<div class="{{if options.helperClass}}${options.helperClass}{{/if}}">${options.helper}</div>{{/if}}',
+        controlFieldContainer: '<div data-replace="true">{{html this.html}}</div>',
+        controlField: '{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"controlFieldLabel")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldContainer",true)}}{{/wrap}}{{html Alpaca.fieldTemplate(this,"controlFieldHelper")}}{{/wrap}}',
+        // Templates for container fields
+        fieldSetOuterEl: '<fieldset id="${id}" data-collapsed="{{if options.collapsed}}true{{else}}false{{/if}}">{{html this.html}}</fieldset>',
+        fieldSetMessage: '<div>* ${message}</div>',
+        fieldSetLegend: '{{if options.label}}<legend for="${id}" class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</legend>{{/if}}',
+        fieldSetHelper: '{{if options.helper}}<h3 class="{{if options.helperClass}}${options.helperClass}{{/if}}">${options.helper}</h3>{{/if}}',
+        fieldSetItemsContainer: '<div data-role="controlgroup">{{html this.html}}</div>',
+        fieldSet: '{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"fieldSetLegend")}}{{html Alpaca.fieldTemplate(this,"fieldSetHelper")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetItemsContainer",true)}}{{/wrap}}{{/wrap}}',
+        fieldSetItemContainer: '<div></div>',
+        // Templates for form
+        formFieldsContainer: '<div data-role="content">{{html this.html}}</div>',
+        //formButtonsContainer: '<fieldset class="ui-grid-a">{{html this.html}}</fieldset>',
+        //"formButtonsContainer": '<div>{{if options.buttons}}{{each(k,v) options.buttons}}<input data-key="${k}" class="alpaca-form-button alpaca-form-button-${k}" {{each(k1,v1) v}}${k1}="${v1}"{{/each}}/>{{/each}}{{/if}}</div>',
+        form: '<form>{{html Alpaca.fieldTemplate(this,"formFieldsContainer")}}{{html Alpaca.fieldTemplate(this,"formButtonsContainer")}}</form>',
+        // Controls
+        //controlFieldRadio: '<fieldset data-role="controlgroup" id="${id}">{{if options.label}}<legend for="${id}" class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</legend>{{/if}}{{each selectOptions}}<input type="radio" {{if options.readonly}}readonly="readonly"{{/if}} name="${formName}" id="${id}-${$index}" value="${value}" {{if value == data}}checked="checked"{{/if}}/><label for="${id}-${$index}">${text}</label>{{/each}}</fieldset>',
+        controlFieldRadio: '<fieldset data-role="controlgroup" class="alpaca-radio-fieldset" id="${id}">{{each selectOptions}}<input type="radio" {{if options.readonly}}readonly="readonly"{{/if}} name="${name}" id="${id}-${$index}" value="${value}" {{if value == data}}checked="checked"{{/if}}/><label for="${id}-${$index}">${text}</label>{{/each}}</fieldset>',
+        controlFieldCheckbox: '<fieldset data-role="controlgroup" class="alpaca-radio-fieldset" id="${id}-0"><input type="checkbox" id="${id}-1" name="${id}-1" {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each options.data}}data-${fieldId}="${value}"{{/each}}/>{{if options.rightLabel}}<label for="${id}-1">${options.rightLabel}</label>{{else}}{{if options.label}}<label for="${id}-1">${options.label}?</label>{{/if}}{{/if}}</fieldset>',
+        arrayItemToolbar: '<div class="alpaca-fieldset-array-item-toolbar" data-role="controlgroup" data-type="horizontal" data-mini="true"><span class="alpaca-fieldset-array-item-toolbar-add" data-role="button" data-icon="add" data-iconpos="notext">Add</span><span class="alpaca-fieldset-array-item-toolbar-remove" data-role="button" data-icon="delete" data-iconpos="notext">Delete</span><span class="alpaca-fieldset-array-item-toolbar-up" data-role="button" data-icon="arrow-u" data-iconpos="notext">Up</span><span class="alpaca-fieldset-array-item-toolbar-down" data-role="button" data-icon="arrow-d" data-iconpos="notext">Down</span></div>',
+        arrayToolbar: '<div class="alpaca-fieldset-array-toolbar" data-role="controlgroup"  data-mini="true"><span class="alpaca-fieldset-array-toolbar-icon alpaca-fieldset-array-toolbar-add" data-role="button" data-icon="add" data-inline="true" title="Add">Add</span></div>'
+    });
+
+
     Alpaca.styleInjections["jquery-mobile"] = {
         "array" : function(containerElem) {
             if (containerElem) {
@@ -5167,18 +7338,7 @@ var equiv = function () {
         "legendStyle": "link",
         "toolbarStyle": "link",
         "buttonType": "link",
-        "templates": {
-            // Templates for control fields
-            controlField: '<ul data-role="listview"><li>{{if options.label}}<h4>${options.label}</h4>{{/if}}<p><strong>${data}</strong></p></li></ul>',
-            // Templates for container fields
-            fieldSetOuterEl: '<fieldset data-role="collapsible" id="${id}" data-collapsed="{{if options.collapsed}}true{{else}}false{{/if}}">{{html this.html}}</fieldset>',
-            fieldSetMessage: '<div>* ${message}</div>',
-            fieldSetLegend: '{{if options.label}}<legend for="${id}" class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</legend>{{/if}}',
-            fieldSetHelper: '{{if options.helper}}<h3 class="{{if options.helperClass}}${options.helperClass}{{/if}}">${options.helper}</h3>{{/if}}',
-            fieldSetItemsContainer: '<div data-role="controlgroup">{{html this.html}}</div>',
-            fieldSet: '{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"fieldSetLegend")}}{{html Alpaca.fieldTemplate(this,"fieldSetHelper")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetItemsContainer",true)}}{{/wrap}}{{/wrap}}',
-            fieldSetItemContainer: '<div></div>'
-        },
+        "templates": displayTemplates,
         "messages": {
             required: "Required Field",
             invalid: "Invalid Field"
@@ -5212,34 +7372,7 @@ var equiv = function () {
         "toolbarStyle": "link",
         "buttonType": "link",
         "toolbarSticky": true,
-        "templates": {
-            // Templates for control fields
-            controlFieldOuterEl: '<div data-role="fieldcontain">{{html this.html}}</div>',
-            controlFieldMessage: '<div>* ${message}</div>',
-            controlFieldLabel: '{{if options.label}}<label for="${id}" class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</label>{{/if}}',
-            controlFieldHelper: '{{if options.helper}}<div class="{{if options.helperClass}}${options.helperClass}{{/if}}">${options.helper}</div>{{/if}}',
-            controlFieldContainer: '<div data-replace="true">{{html this.html}}</div>',
-            controlField: '{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"controlFieldLabel")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldContainer",true)}}{{/wrap}}{{html Alpaca.fieldTemplate(this,"controlFieldHelper")}}{{/wrap}}',
-            // Templates for container fields
-            fieldSetOuterEl: '<fieldset id="${id}" data-collapsed="{{if options.collapsed}}true{{else}}false{{/if}}">{{html this.html}}</fieldset>',
-            fieldSetMessage: '<div>* ${message}</div>',
-            fieldSetLegend: '{{if options.label}}<legend for="${id}" class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</legend>{{/if}}',
-            fieldSetHelper: '{{if options.helper}}<h3 class="{{if options.helperClass}}${options.helperClass}{{/if}}">${options.helper}</h3>{{/if}}',
-            fieldSetItemsContainer: '<div data-role="controlgroup">{{html this.html}}</div>',
-            fieldSet: '{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"fieldSetLegend")}}{{html Alpaca.fieldTemplate(this,"fieldSetHelper")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetItemsContainer",true)}}{{/wrap}}{{/wrap}}',
-            fieldSetItemContainer: '<div></div>',
-            // Templates for form
-            formFieldsContainer: '<div data-role="content">{{html this.html}}</div>',
-            //formButtonsContainer: '<fieldset class="ui-grid-a">{{html this.html}}</fieldset>',
-            //"formButtonsContainer": '<div>{{if options.buttons}}{{each(k,v) options.buttons}}<input data-key="${k}" class="alpaca-form-button alpaca-form-button-${k}" {{each(k1,v1) v}}${k1}="${v1}"{{/each}}/>{{/each}}{{/if}}</div>',
-            form: '<form>{{html Alpaca.fieldTemplate(this,"formFieldsContainer")}}{{html Alpaca.fieldTemplate(this,"formButtonsContainer")}}</form>',
-            // Controls
-            //controlFieldRadio: '<fieldset data-role="controlgroup" id="${id}">{{if options.label}}<legend for="${id}" class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</legend>{{/if}}{{each selectOptions}}<input type="radio" {{if options.readonly}}readonly="readonly"{{/if}} name="${formName}" id="${id}-${$index}" value="${value}" {{if value == data}}checked="checked"{{/if}}/><label for="${id}-${$index}">${text}</label>{{/each}}</fieldset>',
-            controlFieldRadio: '<fieldset data-role="controlgroup" class="alpaca-radio-fieldset" id="${id}">{{each selectOptions}}<input type="radio" {{if options.readonly}}readonly="readonly"{{/if}} name="${name}" id="${id}-${$index}" value="${value}" {{if value == data}}checked="checked"{{/if}}/><label for="${id}-${$index}">${text}</label>{{/each}}</fieldset>',
-            controlFieldCheckbox: '<fieldset data-role="controlgroup" class="alpaca-radio-fieldset" id="${id}-0"><input type="checkbox" id="${id}-1" name="${id}-1" {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each options.data}}data-${fieldId}="${value}"{{/each}}/>{{if options.rightLabel}}<label for="${id}-1">${options.rightLabel}</label>{{else}}{{if options.label}}<label for="${id}-1">${options.label}?</label>{{/if}}{{/if}}</fieldset>',
-            arrayItemToolbar: '<div class="alpaca-fieldset-array-item-toolbar" data-role="controlgroup" data-type="horizontal" data-mini="true"><span class="alpaca-fieldset-array-item-toolbar-add" data-role="button" data-icon="add" data-iconpos="notext">Add</span><span class="alpaca-fieldset-array-item-toolbar-remove" data-role="button" data-icon="delete" data-iconpos="notext">Delete</span><span class="alpaca-fieldset-array-item-toolbar-up" data-role="button" data-icon="arrow-u" data-iconpos="notext">Up</span><span class="alpaca-fieldset-array-item-toolbar-down" data-role="button" data-icon="arrow-d" data-iconpos="notext">Down</span></div>',
-            arrayToolbar: '<div class="alpaca-fieldset-array-toolbar" data-role="controlgroup"  data-mini="true"><span class="alpaca-fieldset-array-toolbar-icon alpaca-fieldset-array-toolbar-add" data-role="button" data-icon="add" data-inline="true" title="Add">Add</span></div>'
-        },
+        "templates": editTemplates,
         "messages": {
             required: "Required Field",
             invalid: "Invalid Field"
@@ -5285,7 +7418,7 @@ var equiv = function () {
 })(jQuery);/**
  * Twitter Bootstrap Theme ("bootstrap")
  *
- * Defines the Alpaca theme for Twitter bootstrap.
+ * Defines the Alpaca theme for Twitter Bootstrap v3.
  *
  * The style injector:
  *
@@ -5309,19 +7442,55 @@ var equiv = function () {
 
     var Alpaca = $.alpaca;
 
+    var editTemplates = Alpaca.Create(Alpaca.EmptyViewTemplates, {
+        // Templates for control fields
+        "controlFieldOuterEl": '<div class="form-group">{{html this.html}}</div>',
+        "controlFieldMessage": '<span class="glyphicon glyphicon-exclamation-sign"></span><span class="help-block alpaca-controlfield-message-text">${message}</span>',
+        "controlFieldLabel": '{{if options.label}}<label class="{{if options.labelClass}}${options.labelClass}{{/if}} control-label" for="${id}">${options.label}</label>{{/if}}',
+        "controlFieldHelper": '<p class="{{if options.helperClass}}${options.helperClass}{{/if}}">{{if options.helper}}<i class="glyphicon glyphicon-info-sign alpaca-helper-icon"></i>${options.helper}</p>{{/if}}',
+        "controlFieldContainer": '<div>{{html this.html}}</div>',
+        "controlField": '{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"controlFieldLabel")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"controlFieldContainer",true)}}{{html Alpaca.fieldTemplate(this,"controlFieldHelper")}}{{/wrap}}{{/wrap}}',
+        // Templates for container fields
+        "fieldSetOuterEl": '<fieldset>{{html this.html}}</fieldset>',
+        "fieldSetMessage": '<span class="glyphicon glyphicon-exclamation-sign"></span><span class="help-block alpaca-controlfield-message-text">${message}</span>',
+        "fieldSetLegend": '{{if options.label}}<legend class="{{if options.labelClass}}${options.labelClass}{{/if}}">${options.label}</legend>{{/if}}',
+        "fieldSetHelper": '{{if options.helper}}<p class="{{if options.helperClass}}${options.helperClass}{{/if}}"><i class="glyphicon glyphicon-info-sign alpaca-helper-icon"></i>${options.helper}</p>{{/if}}',
+        "fieldSetItemsContainer": '<div>{{html this.html}}</div>',
+        "fieldSet": '{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetOuterEl",true)}}{{html Alpaca.fieldTemplate(this,"fieldSetLegend")}}{{html Alpaca.fieldTemplate(this,"fieldSetHelper")}}{{wrap(null, {}) Alpaca.fieldTemplate(this,"fieldSetItemsContainer",true)}}{{/wrap}}{{/wrap}}',
+        "fieldSetItemContainer": '<div></div>',
+        // Templates for form
+        "formFieldsContainer": '<div>{{html this.html}}</div>',
+        "formButtonsContainer": '<div>{{if options.buttons}}{{each(k,v) options.buttons}}<button data-key="${k}" class="alpaca-form-button alpaca-form-button-${k} btn btn-default" {{each(k1,v1) v}}${k1}="${v1}"{{/each}}>${v.value}</button>{{/each}}{{/if}}</div>',
+        "form": '<form role="form">{{html Alpaca.fieldTemplate(this,"formFieldsContainer")}}{{html Alpaca.fieldTemplate(this,"formButtonsContainer")}}</form>',
+        // Templates for wizard
+        "wizardStep" : '<div class="alpaca-clear"></div>',
+        "wizardNavBar" : '<div></div>',
+        "wizardPreButton" : '<button>Back</button>',
+        "wizardNextButton" : '<button>Next</button>',
+        "wizardDoneButton" : '<button>Done</button>',
+        "wizardStatusBar" : '<ol id="${id}">{{each(i,v) titles}}<li id="stepDesc${i}"><div><strong><span>${v.title}</span>${v.description}</strong></div></li>{{/each}}</ol>',
+
+        "controlFieldCheckbox": '<div class="checkbox" id="${id}">{{if options.rightLabel}}<label for="${id}_checkbox">{{/if}}<input id="${id}_checkbox" type="checkbox" {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each(i,v) options.data}}data-${i}="${v}"{{/each}}/>{{if options.rightLabel}}${options.rightLabel}</label>{{/if}}</div>',
+        "controlFieldCheckboxMultiple": '<div id="${id}">{{each(i,o) checkboxOptions}}<div class="checkbox"><label for="${id}_checkbox_${i}"><input type="checkbox" id="${id}_checkbox_${i}" {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} data-checkbox-value="${o.value}" data-checkbox-index="${i}"/>${o.text}</label></div>{{/each}}</div>',
+
+        "controlFieldRadio": '{{if !required && !removeDefaultNone}}<div class="radio"><input type="radio" {{if options.readonly}}readonly="readonly"{{/if}} name="${name}" id="${id}_radio_nonevalue" value=""/><label for="${id}_radio_nonevalue">None</label></div>{{/if}}{{each selectOptions}}<div class="radio"><input type="radio" {{if options.readonly}}readonly="readonly"{{/if}} name="${name}" value="${value}" id="${id}_radio_${$index}" {{if value == data}}checked="checked"{{/if}}/><label for="${id}_radio_${$index}">${text}</label></div>{{/each}}',
+
+        "itemLabel": '{{if options.itemLabel}}<div class="alpaca-controlfield-label"><div>${options.itemLabel}{{if index}} <span class="alpaca-item-label-counter">${index}</span>{{/if}}</div></div>{{/if}}',
+        "arrayToolbar": '<div class="alpaca-fieldset-array-toolbar btn-group"><button class="alpaca-fieldset-array-toolbar-icon alpaca-fieldset-array-toolbar-add btn btn-default">${addItemLabel}</button></span>',
+        "arrayItemToolbar": '<div class="alpaca-fieldset-array-item-toolbar btn-group btn-group-sm">{{each(k,v) buttons}}<button class="alpaca-fieldset-array-item-toolbar-icon alpaca-fieldset-array-item-toolbar-${v.feature} btn btn-default btn-sm">${v.label}</button>{{/each}}</div>'
+
+
+    });
+
+    var displayTemplates = Alpaca.Create(editTemplates, {
+        "fieldSetOuterEl": '<fieldset disabled>{{html this.html}}</fieldset>'
+    });
+
     Alpaca.styleInjections["bootstrap"] = {
 
+        /*
         // error messages
-        "error" : function(targetDiv) {
-            targetDiv.addClass('control-group error');
-        },
-        "errorMessage" : function(targetDiv) {
-            targetDiv.addClass('');
-        },
-        "removeError" : function(targetDiv) {
-            targetDiv.removeClass('error');
-        },
-        "tooltipErrorMessage": function(targetDiv, message) {
+        "addErrorMessage": function(targetDiv, message) {
 
             // if bootstrap has the tooltip, we can pretty up the message
             if ($.fn.tooltip)
@@ -5332,22 +7501,103 @@ var equiv = function () {
             }
         },
 
-        // field
+        "buttonBeautifier"  : function(button, iconClass, withText) {
+            var buttonText = button.html();
+            button.attr("title", buttonText);
+            var addedButtonText = withText ? buttonText : "";
+            button.empty().append('<b class="alpaca-fieldset-legend-button ' + iconClass + '"></b><span>' + addedButtonText + '</span>');
+        },
+        */
+
         "field" : function(targetDiv) {
-            targetDiv.addClass('control-group');
+
+            // the item container gets the "form-group"
+            //targetDiv.parent().addClass('form-group');
+
+            // all controls get the "form-control" class injected
+            $(targetDiv).find("input").addClass("form-control");
+            $(targetDiv).find("textarea").addClass("form-control");
+            $(targetDiv).find("select").addClass("form-control");
+            // except for the following
+            $(targetDiv).find("input[type=checkbox]").removeClass("form-control");
+            $(targetDiv).find("input[type=file]").removeClass("form-control");
+            $(targetDiv).find("input[type=radio]").removeClass("form-control");
+
+            // any checkbox inputs get the "checkbox" class on their container
+
+            // any checkbox inputs get the "checkbox" class on their checkbox
+            // TODO: remove, this is now done by the template itself
+            //$(targetDiv).find("input[type=checkbox]").parent().parent().addClass("checkbox");
+            // any radio inputs get the "radio" class on their radio
+            $(targetDiv).find("input[type=radio]").parent().parent().addClass("radio");
+
+            // if form has "form-inline" class, then radio and checkbox labels get inline classes
+            if ($(targetDiv).parents("form").hasClass("form-inline"))
+            {
+                // checkboxes
+                $(targetDiv).find("input[type=checkbox]").parent().addClass("checkbox-inline");
+
+                // radios
+                $(targetDiv).find("input[type=radio]").parent().addClass("radio-inline");
+            }
+
+            // TODO: form-horizontal?
         },
 
-        // required
-        "required" : function(targetDiv) {
-            $('<span class="icon-star"></span>&nbsp;').prependTo(targetDiv);
+        // icons
+        "commonIcon" : "",
+        "addIcon" : "glyphicon glyphicon-plus-sign",
+        "removeIcon" : "glyphicon glyphicon-minus-sign",
+        "upIcon" : "glyphicon glyphicon-chevron-up",
+        "downIcon" : "glyphicon glyphicon-chevron-down",
+        "containerExpandedIcon" : "glyphicon glyphicon-circle-arrow-down",
+        "containerCollapsedIcon" : "glyphicon glyphicon-circle-arrow-right",
+        "wizardPreIcon" : "glyphicon glyphicon-chevron-left",
+        "wizardNextIcon" : "glyphicon glyphicon-chevron-right",
+        "wizardDoneIcon" : "glyphicon glyphicon-ok",
+
+
+        // required fields get star icon
+        "required" : function(targetDiv)
+        {
+            $('<span class="glyphicon glyphicon-star"></span>&nbsp;').prependTo(targetDiv);
         },
 
-        // no additional markup on container
-        "container" : function(targetDiv) {
-            targetDiv.addClass('');
+        // error fields get the "has-error" class
+        "error" : function(targetDiv) {
+            targetDiv.addClass('has-error');
+
+            /*
+            $(targetDiv).popover({
+                "html": true,
+                "trigger": "manual",
+                "content": "error message"
+            });
+            $(targetDiv).on("shown.bs.popover", function() {
+                debugger;
+                $(this).css({
+                    "border": "1px red solid",
+                    "color": "red"
+                });
+            });
+            $(targetDiv).popover("show");
+            */
+        },
+        "removeError" : function(targetDiv) {
+            targetDiv.removeClass('has-error');
+
+            /*
+            $(targetDiv).popover("hide");
+            */
+
+            /*
+            $(targetDiv).on("hidden.bs.popover", function() {
+                $(targetDiv).popover("destroy");
+            });
+            */
         },
 
-        // wizard (still relies on jquery-ui)
+        // The Wizard still relies on jQuery UI
         "wizardStatusBar" : function(targetDiv) {
             targetDiv.addClass('ui-widget-header ui-corner-all');
         },
@@ -5358,41 +7608,16 @@ var equiv = function () {
             targetDiv.removeClass('ui-state-highlight ui-corner-all');
         },
 
-        "commonIcon" : "",
-
-        "addIcon" : "icon-plus-sign",
-        "removeIcon" : "icon-minus-sign",
-
-        "upIcon" : "icon-chevron-up",
-        "downIcon" : "icon-chevron-down",
-
-        "wizardPreIcon" : "ui-icon-triangle-1-w",
-        "wizardNextIcon" : "ui-icon-triangle-1-e",
-        "wizardDoneIcon" : "ui-icon-triangle-1-e",
-
-        "containerExpandedIcon" : "icon-circle-arrow-down",
-        "containerCollapsedIcon" : "icon-circle-arrow-right",
-
         "buttonBeautifier"  : function(button, iconClass, withText) {
             var buttonText = button.html();
             button.attr("title", buttonText);
-            var addedButtonText = withText ? buttonText : "";
-            button.empty().append('<b class="alpaca-fieldset-legend-button ' + iconClass + '"></b><span>' + addedButtonText + '</span>');
+            button.empty().append('<b class="alpaca-fieldset-legend-button ' + iconClass + '"></b>');
+            var addedButtonText = withText ? buttonText : null;
+            if (addedButtonText)
+            {
+                button.append('<span class="alpaca-fieldset-legend-button-text">' + addedButtonText + '</span>');
+            }
         }
-    };
-
-    var bootstrapTemplates = {
-        "controlFieldLabel": '{{if options.label}}<label class="control-label {{if options.labelClass}}${options.labelClass}{{/if}}" for="${id}">${options.label}</label>{{/if}}',
-        "controlFieldHelper": '{{if options.helper}}<div class="{{if options.helperClass}}${options.helperClass}{{/if}}"><i class="icon-info-sign"></i> <span class="alpaca-controlfield-helper-text">${options.helper}</span></div>{{/if}}',
-        "controlFieldMessage": '<div><span class="icon-exclamation-sign"></span><span class="alpaca-controlfield-message-text help-inline">${message}</span></div>',
-
-        "arrayToolbar": '<span class="alpaca-fieldset-array-toolbar"><button class="btn alpaca-fieldset-array-toolbar-icon alpaca-fieldset-array-toolbar-add">${addItemLabel}</button></span>',
-        "arrayItemToolbar": '<div class="btn-toolbar alpaca-fieldset-array-item-toolbar"><div class="btn-group">{{each(k,v) buttons}}<button class="btn btn-small alpaca-fieldset-array-item-toolbar-icon alpaca-fieldset-array-item-toolbar-${v.feature}">${v.label}</button>{{/each}}</div></div>',
-
-        "controlFieldCheckbox": '<span>{{if options.rightLabel}}<label for="${id}" class="checkbox">{{/if}}<input type="checkbox" id="${id}" {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each(i,v) options.data}}data-${i}="${v}"{{/each}}/>{{if options.rightLabel}}${options.rightLabel}</label>{{/if}}</span>',
-        "controlFieldRadio": '<div id="${id}" class="alpaca-controlfield-radio">{{if !required}}<label class="alpaca-controlfield-radio-label radio inline"><input type="radio" {{if options.readonly}}readonly="readonly"{{/if}} name="${name}" value=""/>None</label>{{/if}}{{each selectOptions}}<label class="alpaca-controlfield-radio-label radio inline"><input type="radio" {{if options.readonly}}readonly="readonly"{{/if}} name="${name}" value="${value}" {{if value == data}}checked="checked"{{/if}}/>${text}</label>{{/each}}</div>',
-
-        "fieldSetHelper": '{{if options.helper}}<p class="{{if options.helperClass}}${options.helperClass}{{/if}}">${options.helper}</p>{{/if}}'
     };
 
     var renderFunction = function(field, renderedCallback)
@@ -5400,9 +7625,6 @@ var equiv = function () {
         var self = this;
 
         field.render(function(field) {
-
-            $('select,input,textarea', field.outerEl).addClass('input-xlarge');
-            $('button:submit, button:reset, .alpaca-form-button').addClass('btn');
 
             if (renderedCallback) {
                 renderedCallback.call(self, field);
@@ -5417,8 +7639,9 @@ var equiv = function () {
         "description": "Display View for Bootstrap",
         "style": "bootstrap",
         "ui": "bootstrap",
-        "templates": bootstrapTemplates,
-        "render": renderFunction
+        "templates": displayTemplates,
+        "render": renderFunction,
+        "type": "view"
     });
 
     Alpaca.registerView({
@@ -5428,8 +7651,9 @@ var equiv = function () {
         "description": "Edit View for Bootstrap",
         "style": "bootstrap",
         "ui": "bootstrap",
-        "templates": bootstrapTemplates,
-        "render": renderFunction
+        "templates": editTemplates,
+        "render": renderFunction,
+        "type": "edit"
     });
 
     Alpaca.registerView({
@@ -5439,41 +7663,9 @@ var equiv = function () {
         "description":"Create View for Bootstrap",
         "style": "bootstrap",
         "ui": "bootstrap",
-        "templates": bootstrapTemplates,
-        "render": renderFunction
-    });
-
-    Alpaca.registerView({
-        "id": "VIEW_BOOTSTRAP_DISPLAY_LIST",
-        "parent": "VIEW_WEB_DISPLAY_LIST",
-        "title": "Display List View for Bootstrap",
-        "description": "Display List View for Bootstrap",
-        "style": "bootstrap",
-        "ui": "bootstrap",
-        "templates": bootstrapTemplates,
-        "render": renderFunction
-    });
-
-    Alpaca.registerView({
-        "id": "VIEW_BOOTSTRAP_EDIT_LIST",
-        "parent": 'VIEW_WEB_EDIT_LIST',
-        "title": "Edit List View for Bootstrap",
-        "description": "Edit List View for Bootstrap",
-        "style": "bootstrap",
-        "ui": "bootstrap",
-        "templates": bootstrapTemplates,
-        "render": renderFunction
-    });
-
-    Alpaca.registerView({
-        "id": "VIEW_BOOTSTRAP_CREATE_LIST",
-        "parent": 'VIEW_WEB_CREATE_LIST',
-        "title": "Create List View for Bootstrap",
-        "description":"Create List View for Bootstrap",
-        "style": "bootstrap",
-        "ui": "bootstrap",
-        "templates": bootstrapTemplates,
-        "render": renderFunction
+        "templates": editTemplates,
+        "render": renderFunction,
+        "type": "create"
     });
 
 })(jQuery);
@@ -6009,7 +8201,7 @@ var equiv = function () {
          */
         tmpl: function(templateDescriptor, model)
         {
-            return Alpaca.tmpl(this, templateDescriptor, model);
+            return Alpaca.tmpl(templateDescriptor, model);
         }
 
     });
@@ -6121,6 +8313,15 @@ var equiv = function () {
             {
                 return (self.view.type == "view");
             };
+
+            // schema id cleanup
+            if (this.schema && this.schema.id && this.schema.id.indexOf("#") == 0)
+            {
+                this.schema.id = this.schema.id.substring(1);
+            }
+
+            // has this field been previously validated?
+            this._previouslyValidated = false;
         },
 
         /**
@@ -6240,13 +8441,12 @@ var equiv = function () {
         {
             // NOTE: this == control
 
-            Alpaca.logDebug("Firing event: " + name);
             var handler = this._events[name];
 
             var ret = null;
             if (typeof(handler) == "function")
             {
-                Alpaca.logDebug("Found event handler, calling: " + name);
+                Alpaca.logDebug("Firing event: " + name);
                 try
                 {
                     ret = handler.call(this, event);
@@ -6255,10 +8455,6 @@ var equiv = function () {
                 {
                     Alpaca.logDebug("The event handler caught an exception: " + name);
                 }
-            }
-            else
-            {
-                Alpaca.logDebug("Could not find an event handler for: " + name);
             }
 
             return ret;
@@ -6324,6 +8520,7 @@ var equiv = function () {
             }
 
             this.setup();
+
             this._render(callback);
         },
 
@@ -6343,6 +8540,9 @@ var equiv = function () {
 
             // check if it needs to be wrapped in a form
             if (this.options.renderForm) {
+                if (!this.options.form) {
+                    this.options.form = {};
+                }
                 this.options.form.viewType = /*this.viewType*/this.view.type;
                 var form = this.form;
                 if (!form) {
@@ -6360,11 +8560,14 @@ var equiv = function () {
                         }
                         _this.form = form;
                         // allow any post-rendering facilities to kick in
-                        _this.postRender();
-                        // callback
-                        if (callback && Alpaca.isFunction(callback)) {
-                            callback(_this);
-                        }
+                        _this.postRender(function() {
+
+                            // callback
+                            if (callback && Alpaca.isFunction(callback)) {
+                                callback(_this);
+                            }
+
+                        });
                     });
                 });
             } else {
@@ -6373,11 +8576,14 @@ var equiv = function () {
                     // bind our field dom element into the container
                     _this.getEl().appendTo(_this.container);
                     // allow any post-rendering facilities to kick in
-                    _this.postRender();
-                    // callback
-                    if (callback && Alpaca.isFunction(callback)) {
-                        callback(_this);
-                    }
+                    _this.postRender(function() {
+
+                        // callback
+                        if (callback && Alpaca.isFunction(callback)) {
+                            callback(_this);
+                        }
+
+                    });
                 });
             }
         },
@@ -6408,14 +8614,28 @@ var equiv = function () {
             }
 
             // render field template
+            if (Alpaca.collectTiming)
+            {
+                var t1 = new Date().getTime();
+            }
+
             var renderedDomElement = _this.view.tmpl(templateDescriptor, {
                 "id": this.getId(),
                 "options": this.options,
                 "schema": this.schema,
                 "data": theData,
                 "view": this.view,
-                "path": this.path
-            }, {});
+                "path": this.path,
+                "name": this.name
+            });
+
+            if (Alpaca.collectTiming)
+            {
+                var t2 = new Date().getTime();
+
+                var counters = Alpaca.Counters("tmpl");
+                counters.increment(this.type, (t2-t1));
+            }
 
             // TODO: Alpaca currently assumes that everything under parentEl is the control itself
             // the workaround for TABLE view is unaccommodating toward this
@@ -6501,7 +8721,7 @@ var equiv = function () {
          * This method will be called after the field rendition is complete. It is served as a way to make final
          * modifications to the dom elements that were produced.
          */
-        postRender: function() {
+        postRender: function(callback) {
 
             // try to avoid adding unnecessary injections for display view.
             if (this.view.type != 'view') {
@@ -6622,22 +8842,23 @@ var equiv = function () {
             var defaultHideInitValidationError = (this.view.type == 'create');
             this.hideInitValidationError = Alpaca.isValEmpty(this.options.hideInitValidationError) ? defaultHideInitValidationError : this.options.hideInitValidationError;
 
-            // final call to update validation state
-            if (this.view.type != 'view') {
-                this.renderValidationState();
-            }
-
-            // set to false after first validation (even if in CREATE mode, we only force init validation error false on first render)
-            this.hideInitValidationError = false;
-
             // for create view, hide all readonly fields
             if (!this.view.displayReadonly) {
                 $('.alpaca-field-readonly', this.getEl()).hide();
             }
 
             // field level post render
-            if (this.options.postRender) {
-                this.options.postRender(this);
+            if (this.options.postRender)
+            {
+                this.options.postRender.call(this, function() {
+
+                    callback();
+
+                });
+            }
+            else
+            {
+                callback();
             }
 
         },
@@ -6741,11 +8962,12 @@ var equiv = function () {
          * @param {Boolean} beforeStatus Previous validation status.
          */
         displayMessage: function(messages, beforeStatus) {
-            // remove the message element if it exists
+
             var _this = this;
-            //if (beforeStatus == false) {
-                $("[id^='" + _this.getId() + "-field-message']", _this.getEl()).remove();
-            //}
+
+            // remove the message element if it exists
+            _this.getEl().children(".alpaca-controlfield-message-element").remove();
+
             // add message and generate it
             if (messages && messages.length > 0) {
                 $.each(messages, function(index, message) {
@@ -6761,6 +8983,7 @@ var equiv = function () {
                             } else {
                                 _this.messageElement.addClass("alpaca-controlfield-message");
                             }
+                            _this.messageElement.addClass("alpaca-controlfield-message-element");
                             _this.messageElement.attr("id", _this.getId() + '-field-message-' + index);
                             // check to see if we have a message container rendered
                             if ($('.alpaca-controlfield-message-container', _this.getEl()).length) {
@@ -6770,125 +8993,121 @@ var equiv = function () {
                             }
                         }
 
-                        _this.getStyleInjection('tooltipErrorMessage', _this.getEl(), message);
+                        _this.getStyleInjection('addErrorMessage', _this.getEl(), message);
                     }
                 });
             }
         },
 
         /**
-         * Injects styles to the DOM of the rendered field reflects the validation state
-         * of the field. If necessary, displays validation messages as well.
+         * Forces the validation for a field to be refreshed or redrawn to the screen.
          *
-         * @param {Boolean} checkChildren whether to render the validation state for any child fields
+         * If told to check children, then all children of the container field will be refreshed as well.
+         *
+         * @param {Boolean} children whether to refresh children
          */
-        renderValidationState: function(checkChildren) {
-
-            // internal method for conducting either a depth first validation of child fields
-            // or a trickle up re-validation of dependent parents
-            // this method gets called with the context (this) == field
-            var _rvc = function(checkChildren, diving)
+        refreshValidationState: function(children)
+        {
+            if (children)
             {
-                if (this.options.validate) {
-
-                    // if we're instructed to check children, always go depth first right away
-                    if (checkChildren && this.children)
+                var f = function(field, contexts)
+                {
+                    // if the field has children, go depth first
+                    if (field.children && field.children.length > 0)
                     {
-                        for (var i = 0; i < this.children.length; i++) {
-                            _rvc.call(this.children[i], checkChildren, true);
+                        for (var i = 0; i < field.children.length; i++)
+                        {
+                            if (field.children[i].isValidationParticipant())
+                            {
+                                f(field.children[i], contexts);
+                            }
                         }
                     }
 
-                    // current validation status
-                    var beforeStatus = this.isValid();
+                    if (typeof(contexts) == "object")
+                    {
+                        // compile the validation context for this field
+                        var context = Alpaca.compileValidationContext(field);
+                        contexts.push(context);
+                    }
 
-                    // clear out previous validation UI markers
-                    this.getStyleInjection("removeError",this.getEl());
-                    this.getEl().removeClass("alpaca-field-invalid alpaca-field-invalid-hidden alpaca-field-valid");
+                    return contexts;
+                };
 
-                    // now run the validation
-                    if (this.validate()) {
+                // run once to cause everything to flip to correct state
+                //f(this);
 
-                        // TRIGGER: "validated"
-                        this.triggerWithPropagation("validated");
+                // run again to collect contexts (nothing flips)
+                var contexts = f(this, []);
 
-                        // mark valid
-                        this.getEl().addClass("alpaca-field-valid");
+                // merge
+                var mergedMap = {};
+                var mergedContext = [];
+                for (var i = 0; i < contexts.length; i++)
+                {
+                    var context = contexts[i];
 
-                    } else {
+                    // NOTE: context is already in order [child, parent, ...]
 
-                        // TRIGGER: "invalidated"
-                        this.triggerWithPropagation("invalidated");
+                    var mIndex = mergedContext.length;
 
-                        // we don't markup invalidation state for readonly fields
-                        if (!this.options.readonly)
+                    // walk forward
+                    for (var j = 0; j < context.length; j++)
+                    {
+                        var entry = context[j];
+
+                        var existing = mergedMap[entry.id];
+                        if (!existing)
                         {
-                            if (!this.hideInitValidationError) {
-                                this.getStyleInjection("error",this.getEl());
-                                this.getEl().addClass("alpaca-field-invalid");
-                            } else {
-                                this.getEl().addClass("alpaca-field-invalid-hidden");
-                            }
+                            // just add to end
+                            var newEntry = {};
+                            newEntry.id = entry.id;
+                            newEntry.path = entry.path;
+                            newEntry.container = entry.container;
+                            newEntry.field = entry.field;
+                            newEntry.validated = entry.validated;
+                            newEntry.invalidated = entry.invalidated;
+                            newEntry.valid = entry.valid;
+                            mergedContext.splice(mIndex, 0, newEntry);
+
+                            // mark in map
+                            mergedMap[newEntry.id] = newEntry;
                         }
                         else
                         {
-                            // this field is invalid and is also read-only, so we're not supposed to inform the end-user
-                            // within the UI (since there is nothing we can do about it)
-                            // here, we log a message to debug to inform the developer
-                            Alpaca.logWarn("The field (id=" + this.getId() + ", title=" + this.getTitle() + ", label=" + this.options.label + ") is invalid and also read-only");
-                        }
-                    }
-
-                    // now check whether valid
-                    var afterStatus = this.isValid();
-
-                    // Allow for the message to change
-                    if (this.options.showMessages) {
-
-                        if (!this.initializing) {
-
-                            // we don't markup invalidation state for readonly fields
-                            if (!this.options.readonly)
+                            if (entry.validated && !existing.invalidated)
                             {
-                                var messages = [];
-                                for (var messageId in this.validation) {
-                                    if (!this.validation[messageId]["status"]) {
-                                        messages.push(this.validation[messageId]["message"]);
-                                    }
-                                }
-                                this.displayMessage(messages, beforeStatus);
+                                existing.validated = true;
+                                existing.invalidated = false;
+                                existing.valid = entry.valid;
+                            }
+
+                            if (entry.invalidated)
+                            {
+                                existing.invalidated = true;
+                                existing.validated = false;
+                                existing.valid = entry.valid;
                             }
                         }
                     }
-
-                    // if the validations state changed and we're not "diving", then it means we're at the top field
-                    // of our depth-first dive.
-                    //
-                    // a change to the validation state means that any fields dependent on us should have their validation
-                    // checked, thus we allow for trickle-up validation here
-
-                    if (!diving)
-                    {
-                        var forceRevalidation = false;
-                        var parent = this.parent;
-                        while (parent) {
-                            // if parent has custom validator, it should re-validate.
-                            if (parent.options && (parent.options.forceRevalidation || parent.options.validator)) {
-                                forceRevalidation = true;
-                            }
-                            parent = parent.parent;
-                        }
-                        if ((beforeStatus != afterStatus && this.parent && this.parent.renderValidationState) || forceRevalidation) {
-                            this.parent.renderValidationState();
-                        }
-                    }
-
-                    // apply custom validation
-                    this._validateCustomValidator();
                 }
-            };
 
-            _rvc.call(this, checkChildren, false);
+                // now reverse it so that context is normalized with child fields first
+                mergedContext.reverse();
+
+                // update validation state
+                Alpaca.updateValidationStateForContext(mergedContext);
+            }
+            else
+            {
+                // just ourselves
+
+                // compile the validation context for the field
+                var context = Alpaca.compileValidationContext(this);
+
+                // update the UI for these context items
+                Alpaca.updateValidationStateForContext(context);
+            }
         },
 
         showHiddenMessages: function() {
@@ -6900,87 +9119,55 @@ var equiv = function () {
         },
 
         /**
-         * Updates validation based on provided validation information. This method is for user provided
-         * custom validator only.
-         *
-         * @param {String} valId Validator id.
-         * @param {Object} valInfo Object that contains validation information.
-         */
-        updateValidationState: function(valId, valInfo) {
-            if (this.options.validate) {
-
-                var beforeStatus = this.isValid();
-                // Push the message
-                this.validation[valId] = valInfo;
-
-                if (!this.hideInitValidationError) {
-
-                    // we don't markup invalidation state for readonly fields
-                    if (!this.options.readonly)
-                    {
-                        if (valInfo && !valInfo.status) {
-                            this.getEl().removeClass("alpaca-field-valid");
-                            this.getStyleInjection("error",this.getEl());
-                            this.getEl().addClass("alpaca-field-invalid");
-                        }
-                    }
-                }
-
-                // Push the message
-                this.validation[valId] = valInfo;
-
-                // Allow for the message to change
-                if (this.options.showMessages) {
-                    if (!this.initializing) {
-
-                        if (!this.hideInitValidationError) {
-
-                            // we don't markup invalidation state for readonly fields
-                            if (!this.options.readonly)
-                            {
-                                var messages = [];
-                                for (var messageId in this.validation) {
-                                    if (!this.validation[messageId]["status"]) {
-                                        messages.push(this.validation[messageId]["message"]);
-                                    }
-                                }
-                                this.displayMessage(messages, beforeStatus);
-                            }
-                        }
-                    }
-                }
-
-                // Revalidate parents if validation state changed
-                if (this.isValid() && this.parent && this.parent.renderValidationState) {
-                    this.parent.renderValidationState();
-                }
-
-            }
-        },
-
-        /**
          * Validates this field and returns whether it is in a valid state.
          *
          * @param [Boolean] validateChildren whether to child controls.
          *
          * @returns {Boolean} True if value of this field is valid, false otherwise.
          */
-        validate: function(validateChildren) {
-
-            // if validateChildren, then walk recursively down into child elements
-            if (this.children && validateChildren) {
-                for (var i = 0; i < this.children.length; i++) {
-                    var child = this.children[i];
-                    child.validate(validateChildren);
-                }
-            }
-
+        validate: function(validateChildren)
+        {
             // skip out if we haven't yet bound any data into this control
             // the control can still be considered to be initializing
             var status = true;
-            if (!this.initializing && this.options.validate) {
+
+            if (!this.initializing && this.options.validate)
+            {
+                // if validateChildren, then walk recursively down into child elements
+                if (this.children && validateChildren)
+                {
+                    for (var i = 0; i < this.children.length; i++)
+                    {
+                        var child = this.children[i];
+                        if (child.isValidationParticipant())
+                        {
+                            child.validate(validateChildren);
+                        }
+                    }
+                }
+
+                // evaluate ourselves
                 status = this.handleValidate();
+
+                // support for some debugging
+                if (!status && Alpaca.logLevel == Alpaca.DEBUG)
+                {
+                    // messages
+                    var messages = [];
+                    for (var messageId in this.validation)
+                    {
+                        if (!this.validation[messageId]["status"])
+                        {
+                            messages.push(this.validation[messageId]["message"]);
+                        }
+                    }
+
+                    Alpaca.logDebug("Validation failure for field (id=" + this.getId() + ", path=" + this.path + "), messages: " + JSON.stringify(messages));
+                }
             }
+
+            this._previouslyValidated = true;
+
             return status;
         },
 
@@ -7008,12 +9195,23 @@ var equiv = function () {
         /**
          * Validates using user provided validator.
          */
-        _validateCustomValidator: function() {
+        _validateCustomValidator: function(callback) {
+
             var _this = this;
-            if (this.options.validator && Alpaca.isFunction(this.options.validator)) {
+
+            if (this.options.validator && Alpaca.isFunction(this.options.validator))
+            {
                 this.options.validator(this, function(valInfo) {
-                    _this.updateValidationState('customValidator', valInfo);
+
+                    // always store in "custom"
+                    _this.validation["custom"] = valInfo;
+
+                    callback();
                 });
+            }
+            else
+            {
+                callback();
             }
         },
 
@@ -7146,6 +9344,15 @@ var equiv = function () {
 
         },
 
+        isValidationParticipant: function()
+        {
+            return this.isShown();
+        },
+
+        isShown: function() {
+            return this.isVisible();
+        },
+
         isVisible: function() {
             return !this.isHidden();
         },
@@ -7227,8 +9434,11 @@ var equiv = function () {
             {
                 for (var i = 0; i < this.children.length; i++) {
                     var child = this.children[i];
-                    if (!child.isValid(checkChildren)) {
-                        return false;
+                    if (child.isValidationParticipant())
+                    {
+                        if (!child.isValid(checkChildren)) {
+                            return false;
+                        }
                     }
                 }
             }
@@ -7312,7 +9522,7 @@ var equiv = function () {
             this.getEl().removeClass("alpaca-field-focused");
 
             // update the UI validation state
-            this.renderValidationState();
+            this.refreshValidationState();
         },
 
         /**
@@ -7393,447 +9603,7 @@ var equiv = function () {
          */
         getType: function() {
 
-        },//__BUILDER_HELPERS
-
-        /**
-         * Finds if this field is a container of other fields.
-         *
-         * @returns {Boolean} True if it is a container, false otherwise.
-         */
-        isContainer: function() {
-            return false;
-        },
-
-        /**
-         * Returns field title.
-         *
-         * @returns {String} Field title.
-         */
-        getTitle: function() {
-
-        },
-
-        /**
-         * Returns field description.
-         *
-         * @returns {String} Field description.
-         */
-        getDescription: function() {
-
-        },
-
-        /**
-         * Returns JSON schema of the schema properties that are managed by this class.
-         *
-         * @private
-         * @returns {Object} JSON schema of the schema properties that are managed by this class.
-         */
-        getSchemaOfSchema: function() {
-            var schemaOfSchema = {
-                "title": this.getTitle(),
-                "description": this.getDescription(),
-                "type": "object",
-                "properties": {
-                    "title": {
-                        "title": "Title",
-                        "description": "Short description of the property.",
-                        "type": "string"
-                    },
-                    "description": {
-                        "title": "Description",
-                        "description": "Detailed description of the property.",
-                        "type": "string"
-                    },
-                    "readonly": {
-                        "title": "Readonly",
-                        "description": "Property will be readonly if true.",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "required": {
-                        "title": "Required",
-                        "description": "Property value must be set if true.",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "default": {
-                        "title": "Default",
-                        "description": "Default value of the property.",
-                        "type": "any"
-                    },
-                    "type": {
-                        "title": "Type",
-                        "description": "Data type of the property.",
-                        "type": "string",
-                        "readonly": true
-                    },
-                    "format": {
-                        "title": "Format",
-                        "description": "Data format of the property.",
-                        "type": "string"
-                    },
-                    "disallow": {
-                        "title": "Disallowed Values",
-                        "description": "List of disallowed values for the property.",
-                        "type": "array"
-                    },
-                    "dependencies": {
-                        "title": "Dependencies",
-                        "description": "List of property dependencies.",
-                        "type": "array"
-                    }
-                }
-            };
-            if (this.getType && !Alpaca.isValEmpty(this.getType())) {
-                schemaOfSchema.properties.type['default'] = this.getType();
-                schemaOfSchema.properties.type['enum'] = [this.getType()];
-            }
-            return schemaOfSchema;
-        },
-
-        /**
-         * Returns Alpaca options for the schema properties that managed by this class.
-         *
-         * @private
-         * @returns {Object} Alpaca options for the schema properties that are managed by this class.
-         */
-        getOptionsForSchema: function() {
-            return {
-                "fields": {
-                    "title": {
-                        "helper": "Field short description",
-                        "type": "text"
-                    },
-                    "description": {
-                        "helper": "Field detailed description",
-                        "type": "textarea"
-                    },
-                    "readonly": {
-                        "helper": "Field will be read only if checked",
-                        "rightLabel": "This field is read-only",
-                        "type": "checkbox"
-                    },
-                    "required": {
-                        "helper": "Field value must be set if checked",
-                        "rightLabel": "This field is required",
-                        "type": "checkbox"
-                    },
-                    "default": {
-                        "helper": "Field default value",
-                        "type": "textarea"
-                    },
-                    "type": {
-                        "helper": "Field data type",
-                        "type": "text"
-                    },
-                    "format": {
-                        "type": "select",
-                        "dataSource": function(field, callback) {
-                            for (var key in Alpaca.defaultFormatFieldMapping) {
-                                field.selectOptions.push({
-                                    "value": key,
-                                    "text": key
-                                });
-                            }
-                            if (callback) {
-                                callback();
-                            }
-                        }
-                    },
-                    "disallow": {
-                        "helper": "Disallowed values for the field",
-                        "itemLabel":"Value",
-                        "type": "array"
-                    },
-                    "dependencies": {
-                        "helper": "Field Dependencies",
-                        "multiple":true,
-                        "size":3,
-                        "type": "select",
-                        "dataSource": function (field, callback) {
-                            if (field.parent && field.parent.schemaParent && field.parent.schemaParent.parent) {
-                                for (var key in field.parent.schemaParent.parent.childrenByPropertyId) {
-                                    if (key != field.parent.schemaParent.propertyId) {
-                                        field.selectOptions.push({
-                                            "value": key,
-                                            "text": key
-                                        });
-                                    }
-                                }
-                            }
-                            if (callback) {
-                                callback();
-                            }
-                        }
-                    }
-                }
-            };
-        },
-
-        /**
-         * Returns JSON schema of the Alpaca options that are managed by this class.
-         *
-         * @private
-         * @returns {Object} JSON schema of the Alpaca options that are managed by this class.
-         */
-        getSchemaOfOptions: function() {
-            var schemaOfOptions = {
-                "title": "Options for " + this.getTitle(),
-                "description": this.getDescription() + " (Options)",
-                "type": "object",
-                "properties": {
-                    "renderForm": {},
-                    "form":{},
-                    "id": {
-                        "title": "Field Id",
-                        "description": "Unique field id. Auto-generated if not provided.",
-                        "type": "string"
-                    },
-                    "type": {
-                        "title": "Field Type",
-                        "description": "Field type.",
-                        "type": "string",
-                        "default": this.getFieldType(),
-                        "readonly": true
-                    },
-                    "validate": {
-                        "title": "Validation",
-                        "description": "Field validation is required if true.",
-                        "type": "boolean",
-                        "default": true
-                    },
-                    "showMessages": {
-                        "title": "Show Messages",
-                        "description": "Display validation messages if true.",
-                        "type": "boolean",
-                        "default": true
-                    },
-                    "disabled": {
-                        "title": "Disabled",
-                        "description": "Field will be disabled if true.",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "readonly": {
-                        "title": "Readonly",
-                        "description": "Field will be readonly if true.",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "hidden": {
-                        "title": "Hidden",
-                        "description": "Field will be hidden if true.",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "label": {
-                        "title": "Label",
-                        "description": "Field label.",
-                        "type": "string"
-                    },
-                    "helper": {
-                        "title": "Helper",
-                        "description": "Field help message.",
-                        "type": "string"
-                    },
-                    "fieldClass": {
-                        "title": "CSS class",
-                        "description": "Specifies one or more CSS classes that should be applied to the dom element for this field once it is rendered.  Supports a single value, comma-delimited values, space-delimited values or values passed in as an array.",
-                        "type": "string"
-                    },
-                    "hideInitValidationError" : {
-                        "title": "Hide Initial Validation Errors",
-                        "description" : "Hide initial validation errors if true.",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "focus": {
-                        "title": "Focus",
-                        "description": "If true, the initial focus for the form will be set to the first child element (usually the first field in the form).  If a field name or path is provided, then the specified child field will receive focus.  For example, you might set focus to 'name' (selecting the 'name' field) or you might set it to 'client/name' which picks the 'name' field on the 'client' object.",
-                        "type": "checkbox",
-                        "default": true
-                    },
-                    "optionLabels": {
-                        "title": "Enumerated Value Labels",
-                        "description": "An array of string labels for items in the enum array",
-                        "type": "array"
-                    }
-                }
-            };
-            if (this.isTopLevel()) {
-                schemaOfOptions.properties.renderForm = {
-                    "title": "Render Form",
-                    "description": "Render a FORM tag as the container for the rest of fields if true.",
-                    "type": "boolean",
-                    "default": false
-                };
-
-                schemaOfOptions.properties.form = {
-                    "title": "Form",
-                    "description": "Options for rendering the FORM tag.",
-                    "type": "object",
-                    "dependencies" : "renderForm",
-                    "properties": {
-                        "attributes": {
-                            "title": "Form Attributes",
-                            "description": "List of attributes for the FORM tag.",
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "title": "Id",
-                                    "description": "Unique form id. Auto-generated if not provided.",
-                                    "type": "string"
-                                },
-                                "action": {
-                                    "title": "Action",
-                                    "description": "Form submission endpoint",
-                                    "type": "string"
-                                },
-                                "method": {
-                                    "title": "Method",
-                                    "description": "Form submission method",
-                                    "enum":["post","get"],
-                                    "type": "string"
-                                },
-                                "name": {
-                                    "title": "Name",
-                                    "description": "Form name",
-                                    "type": "string"
-                                },
-                                "focus": {
-                                    "title": "Focus",
-                                    "description": "Focus Setting",
-                                    "type": "any"
-                                }
-                            }
-                        },
-                        "buttons": {
-                            "title": "Form Buttons",
-                            "description": "Configuration for form-bound buttons",
-                            "type": "object",
-                            "properties": {
-                                "submit": {
-                                    "type": "object",
-                                    "title": "Submit Button",
-                                    "required": false
-                                },
-                                "reset": {
-                                    "type": "object",
-                                    "title": "Reset button",
-                                    "required": false
-                                }
-                            }
-                        },
-                        "toggleSubmitValidState": {
-                            "title": "Toggle Submit Valid State",
-                            "description": "Toggle the validity state of the Submit button",
-                            "type": "boolean",
-                            "default": true
-                        }
-                    }
-                };
-
-            } else {
-                delete schemaOfOptions.properties.renderForm;
-                delete schemaOfOptions.properties.form;
-            }
-
-            return schemaOfOptions;
-        },
-
-        /**
-         * Returns Alpaca options for the Alpaca options that are managed by this class.
-         *
-         * @private
-         * @returns {Object} Alpaca options for the Alpaca options that are managed by this class.
-         */
-        getOptionsForOptions: function() {
-            var optionsForOptions = {
-                "type": "object",
-                "fields": {
-                    "id": {
-                        "type": "text",
-                        "readonly": true
-                    },
-                    "type": {
-                        "type": "text"
-                    },
-                    "validate": {
-                        "rightLabel": "Enforce validation",
-                        "type": "checkbox"
-                    },
-                    "showMessages": {
-                        "rightLabel":"Show validation messages",
-                        "type": "checkbox"
-                    },
-                    "disabled": {
-                        "rightLabel":"Disable this field",
-                        "type": "checkbox"
-                    },
-                    "hidden": {
-                        "type": "checkbox",
-                        "rightLabel": "Hide this field"
-                    },
-                    "label": {
-                        "type": "text"
-                    },
-                    "helper": {
-                        "type": "textarea"
-                    },
-                    "fieldClass": {
-                        "type": "text"
-                    },
-                    "hideInitValidationError": {
-                        "rightLabel": "Hide initial validation errors",
-                        "type": "checkbox"
-                    },
-                    "focus": {
-                        "type": "checkbox",
-                        "rightLabel": "Auto-focus first child field"
-                    },
-                    "optionLabels": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    }
-                }
-            };
-            if (this.isTopLevel()) {
-                optionsForOptions.fields.renderForm = {
-                    "type": "checkbox",
-                    "rightLabel": "Yes"
-                };
-                optionsForOptions.fields.form = {
-                    "type": "object",
-                    "dependencies" : {
-                        "renderForm" : true
-                    },
-                    "fields": {
-                        "attributes": {
-                            "type": "object",
-                            "fields": {
-                                "id": {
-                                    "type": "text",
-                                    "readonly": true
-                                },
-                                "action": {
-                                    "type": "text"
-                                },
-                                "method": {
-                                    "type": "select"
-                                },
-                                "name": {
-                                    "type": "text"
-                                }
-                            }
-                        }
-                    }
-                };
-            }
-
-            return optionsForOptions;
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     // Registers additional messages
@@ -7886,6 +9656,9 @@ var equiv = function () {
          * @see Alpaca.Field#renderField
          */
         renderField: function(onSuccess) {
+            if (onSuccess) {
+                onSuccess();
+            }
         },
 
         /**
@@ -7921,18 +9694,28 @@ var equiv = function () {
         /**
          * @see Alpaca.Field#postRender
          */
-        postRender: function() {
+        postRender: function(callback)
+        {
+            var self = this;
+
             var labelDiv = $('.alpaca-controlfield-label', this.outerEl);
             if (labelDiv.length) {
                 this.labelDiv = labelDiv;
             }
+
             var helperDiv = $('.alpaca-controlfield-helper', this.outerEl);
             if (helperDiv.length) {
                 this.helperDiv = helperDiv;
             }
-            this.base();
-            // add additional classes
-            this.outerEl.addClass('alpaca-controlfield');
+
+            this.base(function() {
+
+                // add additional classes
+                self.outerEl.addClass('alpaca-controlfield');
+
+                callback();
+
+            });
         },
 
         /**
@@ -8032,7 +9815,7 @@ var equiv = function () {
                 // which the validation logic uses to determine whether the control is now in a valid state
                 //
                 window.setTimeout(function() {
-                    self.renderValidationState();
+                    self.refreshValidationState();
                 }, 50);
             }
 
@@ -8062,68 +9845,7 @@ var equiv = function () {
          * @param {Object} e Click event.
          */
         onClick: function(e) {
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Field#getSchemaOfSchema
-         */
-        getSchemaOfSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "enum": {
-                        "title": "Enumerated Values",
-                        "description": "List of specific values for this property",
-                        "type": "array"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Field#getOptionsForSchema
-         */
-        getOptionsForSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "enum": {
-                        "itemLabel":"Value",
-                        "type": "array"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Field#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "name": {
-                        "title": "Field Name",
-                        "description": "Field Name.",
-                        "type": "string"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Field#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "name": {
-                        "type": "text"
-                    }
-                }
-            });
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     // Registers additional messages
@@ -8455,23 +10177,38 @@ var equiv = function () {
                     this.fieldContainer = this.outerEl;
                 }
 
+                var asyncHandler = false;
+
                 if (!this.singleLevelRendering && !this.lazyLoading) {
-                    this.renderItems();
+                    asyncHandler = true;
+                    this.renderItems(function() {
+                        if (onSuccess) {
+                            onSuccess();
+                        }
+                    });
                 }
 
                 if (this.lazyLoading) {
                     if (this.labelDiv) {
+                        asyncHandler = true;
                         $(this.labelDiv).click(function() {
                             if (_this.lazyLoading) {
-                                _this.renderItems();
-                                _this.lazyLoading = false;
+                                _this.renderItems(function() {
+                                    _this.lazyLoading = false;
+                                    if (onSuccess) {
+                                        onSuccess();
+                                    }
+                                });
                             }
                         });
                     }
                 }
 
-                if (onSuccess) {
-                    onSuccess();
+                if (!asyncHandler)
+                {
+                    if (onSuccess) {
+                        onSuccess();
+                    }
                 }
             },
 
@@ -8505,79 +10242,7 @@ var equiv = function () {
              * @param onSuccess onSuccess callback.
              */
             renderItems: function(onSuccess) {
-            },//__BUILDER_HELPERS
-
-            /**
-             * @see Alpaca.Field#isContainer
-             */
-            isContainer: function() {
-                return true;
-            },
-
-            /**
-             * @private
-             * @see Alpaca.Field#getSchemaOfOptions
-             */
-            getSchemaOfOptions: function() {
-                return Alpaca.merge(this.base(), {
-                    "properties": {
-                        "lazyLoading": {
-                            "title": "Lazy Loading",
-                            "description": "Child fields will only be rendered when the fieldset is expanded if this option is set true.",
-                            "type": "boolean",
-                            "default": false
-                        },
-                        "collapsible": {
-                            "title": "Collapsible",
-                            "description": "Field set is collapsible if true.",
-                            "type": "boolean",
-                            "default": true
-                        },
-                        "collapsed": {
-                            "title": "Collapsed",
-                            "description": "Field set is initially collapsed if true.",
-                            "type": "boolean",
-                            "default": false
-                        },
-                        "legendStyle": {
-                            "title": "Legend Style",
-                            "description": "Field set legend style.",
-                            "type": "string",
-                            "enum":["button","link"],
-                            "default": "button"
-                        }
-                    }
-                });
-            },
-
-            /**
-             * @private
-             * @see Alpaca.Field#getOptionsForOptions
-             */
-            getOptionsForOptions: function() {
-                return Alpaca.merge(this.base(), {
-                    "fields": {
-                        "lazyLoading": {
-                            "rightLabel": "Lazy loading child fields ?",
-                            "helper": "Lazy loading will be enabled if checked.",
-                            "type": "checkbox"
-                        },
-                        "collapsible": {
-                            "rightLabel": "Field set collapsible ?",
-                            "helper": "Field set is collapsible if checked.",
-                            "type": "checkbox"
-                        },
-                        "collapsed": {
-                            "rightLabel": "Field set initially collapsed ?",
-                            "description": "Field set is initially collapsed if checked.",
-                            "type": "checkbox"
-                        },
-                        "legendStyle": {
-                            "type":"select"
-                        }
-                    }
-                });
-            }//__END_OF_BUILDER_HELPERS
+            }
         });
 
 })(jQuery);
@@ -8596,8 +10261,18 @@ var equiv = function () {
 
          * @param {String} id Connector ID.
          */
-        constructor: function(id) {
+        constructor: function(id)
+        {
             this.id = id;
+
+            // helper function to determine if a resource is a uri
+            this.isUri = function(resource)
+            {
+                return !Alpaca.isEmpty(resource) && Alpaca.isUri(resource);
+            };
+
+            var ONE_HOUR = 3600000;
+            this.cache = new ajaxCache('URL', true, ONE_HOUR);
         },
 
         /**
@@ -8606,8 +10281,10 @@ var equiv = function () {
          * @param {Function} onSuccess onSuccess callback.
          * @param {Function} onError onError callback.
          */
-        connect: function (onSuccess, onError) {
-            if (onSuccess && Alpaca.isFunction(onSuccess)) {
+        connect: function (onSuccess, onError)
+        {
+            if (onSuccess && Alpaca.isFunction(onSuccess))
+            {
                 onSuccess();
             }
         },
@@ -8622,22 +10299,34 @@ var equiv = function () {
          * @param {Function} onSuccess onSuccess callback.
          * @param {Function} onError onError callback.
          */
-        loadTemplate : function (source, onSuccess, onError) {
-            if (!Alpaca.isEmpty(source)) {
-                if (Alpaca.isUri(source)) {
+        loadTemplate : function (source, onSuccess, onError)
+        {
+            if (!Alpaca.isEmpty(source))
+            {
+                if (Alpaca.isUri(source))
+                {
                     this.loadUri(source, false, function(loadedData) {
-                        if (onSuccess && Alpaca.isFunction(onSuccess)) {
+
+                        if (onSuccess && Alpaca.isFunction(onSuccess))
+                        {
                             onSuccess(loadedData);
                         }
+
                     }, function (loadError) {
-                        if (onError && Alpaca.isFunction(onError)) {
+
+                        if (onError && Alpaca.isFunction(onError))
+                        {
                             onError(loadError);
                         }
                     });
-                } else {
+                }
+                else
+                {
                     onSuccess(source);
                 }
-            } else {
+            }
+            else
+            {
                 onError({
                     "message":"Empty data source.",
                     "reason": "TEMPLATE_LOADING_ERROR"
@@ -8648,116 +10337,81 @@ var equiv = function () {
         /**
          * Loads JSON data.
          *
-         * @param {Object|String} source Source to be loaded.
+         * @param {Object|String} resource Resource to be loaded.
          * @param {Function} onSuccess onSuccess callback
          * @param {Function} onError onError callback
          */
-        loadData : function (source, successCallback, errorCallback) {
-            var isValidSource = function () {
-                return !Alpaca.isEmpty(source) && Alpaca.isUri(source);
-            };
-            if (isValidSource())
-            {
-                this.loadJson(source, function(loadedData) {
-                    successCallback(loadedData);
-                }, errorCallback);
-            }
-            else
-            {
-                successCallback(source);
-            }
+        loadData: function (resource, successCallback, errorCallback)
+        {
+            return this._handleLoadJsonResource(resource, successCallback, errorCallback);
         },
 
         /**
          * Loads JSON schema.
          *
-         * @param {Object|String} source Source to be loaded.
+         * @param {Object|String} resource Resource to be loaded.
          * @param {Function} onSuccess onSuccess callback.
          * @param {Function} onError onError callback.
          */
-        loadSchema : function (source, successCallback, errorCallback) {
-            var isValidSchema = function () {
-                return !Alpaca.isEmpty(source) && Alpaca.isUri(source);
-            };
-            if (isValidSchema()) {
-                this.loadJson(source, function(loadedSchema) {
-                    successCallback(loadedSchema);
-                }, errorCallback);
-            } else {
-                successCallback(source);
-            }
+        loadSchema: function (resource, successCallback, errorCallback)
+        {
+            return this._handleLoadJsonResource(resource, successCallback, errorCallback);
         },
 
         /**
          * Loads JSON options.
          *
-         * @param {Object|String} source Source to be loaded.
+         * @param {Object|String} resource Resource to be loaded.
          * @param {Function} onSuccess onSuccess callback.
          * @param {Function} onError onError callback.
          */
-        loadOptions : function (source, successCallback, errorCallback) {
-            var isValidOptions = function () {
-                return !Alpaca.isEmpty(source) && Alpaca.isUri(source);
-            };
-            if (isValidOptions()) {
-                this.loadJson(source, function(loadedOptions) {
-                    successCallback(loadedOptions);
-                }, errorCallback);
-            } else {
-                successCallback(source);
-            }
+        loadOptions: function (resource, successCallback, errorCallback)
+        {
+            return this._handleLoadJsonResource(resource, successCallback, errorCallback);
         },
 
         /**
          * Loads JSON view.
          *
-         * @param {Object|String} source Source to be loaded.
+         * @param {Object|String} resource Resource to be loaded.
          * @param {Function} onSuccess onSuccess callback.
          * @param {Function} onError onError callback.
          */
-        loadView : function (source, successCallback, errorCallback) {
-            var isValidView = function () {
-                return !Alpaca.isEmpty(source) && Alpaca.isUri(source);
-            };
-            if (isValidView()) {
-                this.loadJson(source, function(loadedView) {
-                    successCallback(loadedView);
-                }, errorCallback);
-            } else {
-                successCallback(source);
-            }
+        loadView: function (resource, successCallback, errorCallback)
+        {
+            return this._handleLoadJsonResource(resource, successCallback, errorCallback);
         },
 
         /**
          * Loads schema, form, view and data in a single call.
          *
-         * @param {Object} sources sources
+         * @param {Object} resources resources
          * @param {Function} onSuccess onSuccess callback.
          * @param {Function} onError onError callback.
          */
-        loadAll: function (sources, onSuccess, onError) {
-
-            var dataSource = sources.dataSource;
-            var schemaSource = sources.schemaSource;
-            var optionsSource = sources.optionsSource;
-            var viewSource = sources.viewSource;
+        loadAll: function (resources, onSuccess, onError)
+        {
+            var dataSource = resources.dataSource;
+            var schemaSource = resources.schemaSource;
+            var optionsSource = resources.optionsSource;
+            var viewSource = resources.viewSource;
 
             // we allow "schema" to contain a URI as well (backwards-compatibility)
             if (!schemaSource)
             {
-                schemaSource = sources.schema;
+                schemaSource = resources.schema;
             }
 
             // we allow "options" to contain a URI as well (backwards-compatibility)
             if (!optionsSource)
             {
-                optionsSource = sources.options;
+                optionsSource = resources.options;
             }
 
             // we allow "view" to contain a URI as well (backwards-compatibility)
             if (!viewSource)
             {
-                viewSource = sources.view;
+                viewSource = resources.view;
             }
 
             var loaded = {};
@@ -8765,16 +10419,21 @@ var equiv = function () {
             var loadCounter = 0;
             var invocationCount = 0;
 
-            var successCallback = function() {
-                if (loadCounter === invocationCount) {
-                    if (onSuccess && Alpaca.isFunction(onSuccess)) {
+            var successCallback = function()
+            {
+                if (loadCounter === invocationCount)
+                {
+                    if (onSuccess && Alpaca.isFunction(onSuccess))
+                    {
                         onSuccess(loaded.data, loaded.options, loaded.schema, loaded.view);
                     }
                 }
             };
 
-            var errorCallback = function (loadError) {
-                if (onError && Alpaca.isFunction(onError)) {
+            var errorCallback = function (loadError)
+            {
+                if (onError && Alpaca.isFunction(onError))
+                {
                     onError(loadError);
                 }
             };
@@ -8841,7 +10500,7 @@ var equiv = function () {
         /**
          * Loads a JSON through Ajax call.
          *
-         * @param {String} uri Target source JSON location.
+         * @param {String} uri location of the json document
          * @param {Function} onSuccess onSuccess callback.
          * @param {Function} onError onError callback.
          */
@@ -8855,16 +10514,22 @@ var equiv = function () {
          * This uses jQuery to perform the Ajax call.  If you need to customize connectivity to your own remote server,
          * this would be the appropriate place to do so.
          *
-         * @param {String} uri Target source document location.
+         * @param {String} uri uri to be loaded
          * @param {Boolean} isJson Whether the document is a JSON or not.
          * @param {Function} onSuccess onSuccess callback.
          * @param {Function} onError onError callback.
          */
         loadUri : function(uri, isJson, onSuccess, onError) {
+
+            var self = this;
+
             var ajaxConfigs = {
                 "url": uri,
                 "type": "get",
                 "success": function(jsonDocument) {
+
+                    self.cache.put(uri, jsonDocument);
+
                     if (onSuccess && Alpaca.isFunction(onSuccess)) {
                         onSuccess(jsonDocument);
                     }
@@ -8890,12 +10555,411 @@ var equiv = function () {
                 ajaxConfigs.dataType = "text";
             }
 
-            $.ajax(ajaxConfigs);
+            var cachedDocument = self.cache.get(uri);
+
+            if (cachedDocument !== false && onSuccess && Alpaca.isFunction(onSuccess)) {
+                onSuccess(cachedDocument);
+            } else {
+                $.ajax(ajaxConfigs);
+            }
+        },
+
+        /**
+         * Loads referenced JSON schema.
+         *
+         * @param {Object|String} resource Resource to be loaded.
+         * @param {Function} onSuccess onSuccess callback.
+         * @param {Function} onError onError callback.
+         */
+        loadReferenceSchema: function (resource, successCallback, errorCallback)
+        {
+            return this._handleLoadJsonResource(resource, successCallback, errorCallback);
+        },
+
+        /**
+         * Loads referenced JSON options.
+         *
+         * @param {Object|String} resource Resource to be loaded.
+         * @param {Function} onSuccess onSuccess callback.
+         * @param {Function} onError onError callback.
+         */
+        loadReferenceOptions: function (resource, successCallback, errorCallback)
+        {
+            return this._handleLoadJsonResource(resource, successCallback, errorCallback);
+        },
+
+        _handleLoadJsonResource: function (resource, successCallback, errorCallback)
+        {
+            if (this.isUri(resource))
+            {
+                this.loadJson(resource, function(loadedResource) {
+                    successCallback(loadedResource);
+                }, errorCallback);
+            }
+            else
+            {
+                successCallback(resource);
+            }
         }
 
     });
 
     Alpaca.registerConnectorClass("default", Alpaca.Connector);
+
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // AJAX CACHE
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    /*!
+     * ajax-cache JavaScript Library v0.2.1
+     * http://code.google.com/p/ajax-cache/
+     *
+     * Includes few JSON methods (open source)
+     * http://www.json.org/js.html
+     *
+     * Date: 2010-08-03
+     */
+    function ajaxCache(type, on, lifetime) {
+        if (on) {
+            this.on = true;
+        } else
+            this.on = false;
+
+        // set default cache lifetime
+        if (lifetime != null) {
+            this.defaultLifetime = lifetime;
+        }
+
+        // set type
+        this.type = type;
+
+        // set cache functions according to type
+        switch (this.type) {
+            case 'URL':
+                this.put = this.put_url;
+                break;
+            case 'GET':
+                this.put = this.put_GET;
+                break;
+        }
+
+    };
+
+    ajaxCache.prototype.on = false;
+    ajaxCache.prototype.type;
+    ajaxCache.prototype.defaultLifetime = 1800000; // 1800000=30min, 300000=5min, 30000=30sec
+    ajaxCache.prototype.items = Object();
+
+    /**
+     * Caches the request and its response. Type: url
+     *
+     * @param url - url of ajax response
+     * @param response - ajax response
+     * @param lifetime - (optional) sets cache lifetime in miliseconds
+     * @return true on success
+     */
+    ajaxCache.prototype.put_url = function(url, response, lifetime) {
+        if (lifetime == null) lifetime = this.defaultLifetime;
+        var key = this.make_key(url);
+        this.items[key] = Object();
+        this.items[key].key = key;
+        this.items[key].url = url;
+        this.items[key].response = response;
+        this.items[key].expire = (new Date().getTime()) + lifetime;
+        return true;
+    }
+
+    /**
+     * Caches the request and its response. Type: GET
+     *
+     * @param url - url of ajax response
+     * @param data - data params (query)
+     * @param response - ajax response
+     * @param lifetime - (optional) sets cache lifetime in miliseconds
+     * @return true on success
+     */
+    ajaxCache.prototype.put_GET = function(url, data, response, lifetime) {
+        if (lifetime == null)
+            lifetime = this.defaultLifetime;
+        var key = this.make_key(url, [ data ]);
+        this.items[key] = Object();
+        this.items[key].key = key;
+        this.items[key].url = url;
+        this.items[key].data = data;
+        this.items[key].response = response;
+        this.items[key].expire = (new Date().getTime()) + lifetime;
+        return true;
+    }
+
+    /**
+     * Get cached ajax response
+     *
+     * @param url - url of ajax response
+     * @param params - Array of additional parameters, to make key
+     * @return ajax response or false if such does not exist or is expired
+     */
+    ajaxCache.prototype.get = function(url, params) {
+        var key = this.make_key(url, params);
+
+        // if cache does not exist
+        if (this.items[key] == null)
+            return false;
+
+        // if cache expired
+        if (this.items[key].expire < (new Date().getTime()))
+            return false;
+
+        // everything is passed - lets return the response
+        return this.items[key].response;
+    }
+
+    /**
+     * Make unique key for each request depending on url and additional parameters
+     *
+     * @param url - url of ajax response
+     * @param params - Array of additional parameters, to make key
+     * @return unique key
+     */
+    ajaxCache.prototype.make_key = function(url, params) {
+        var key = url;
+        switch (this.type) {
+            case 'URL':
+                break;
+            case 'GET':
+                key += this.stringify(params[0]);
+                break;
+        }
+
+        return key;
+    }
+
+    /**
+     * Flush cache
+     *
+     * @return true on success
+     */
+    ajaxCache.prototype.flush = function() {
+        // flush all cache
+        cache.items = Object();
+        return true;
+    }
+
+    /*
+     * Methods to stringify JavaScript/JSON objects.
+     *
+     * Taken from: http://www.json.org/js.html to be more exact, this file:
+     * http://www.json.org/json2.js copied on 2010-07-19
+     *
+     * Taken methods: stringify, quote and str
+     *
+     * Methods are slightly modified to best fit ajax-cache functionality
+     *
+     */
+    ajaxCache.prototype.stringify = function(value, replacer, space) {
+
+        // The stringify method takes a value and an optional replacer, and an
+        // optional
+        // space parameter, and returns a JSON text. The replacer can be a function
+        // that can replace values, or an array of strings that will select the
+        // keys.
+        // A default replacer method can be provided. Use of the space parameter can
+        // produce text that is more easily readable.
+
+        var i;
+        gap = '';
+        indent = '';
+
+        // If the space parameter is a number, make an indent string containing that
+        // many spaces.
+
+        if (typeof space === 'number') {
+            for (i = 0; i < space; i += 1) {
+                indent += ' ';
+            }
+
+            // If the space parameter is a string, it will be used as the indent
+            // string.
+
+        } else if (typeof space === 'string') {
+            indent = space;
+        }
+
+        // If there is a replacer, it must be a function or an array.
+        // Otherwise, throw an error.
+
+        rep = replacer;
+        if (replacer
+            && typeof replacer !== 'function'
+            && (typeof replacer !== 'object' || typeof replacer.length !== 'number')) {
+            throw new Error('JSON.stringify');
+        }
+
+        // Make a fake root object containing our value under the key of ''.
+        // Return the result of stringifying the value.
+
+        return this.str('', {
+            '' : value
+        });
+    }
+
+    ajaxCache.prototype.quote = function(string) {
+
+        // If the string contains no control characters, no quote characters, and no
+        // backslash characters, then we can safely slap some quotes around it.
+        // Otherwise we must also replace the offending characters with safe escape
+        // sequences.
+
+        var escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+
+        escapable.lastIndex = 0;
+        return escapable.test(string) ? '"' + string.replace(escapable,
+            function(a) {
+                var c = meta[a];
+                return typeof c === 'string' ? c : '\\u' + ('0000' + a
+                    .charCodeAt(0).toString(16)).slice(-4);
+            }) + '"' : '"' + string + '"';
+    }
+
+    ajaxCache.prototype.str = function(key, holder) {
+
+        // Produce a string from holder[key].
+
+        var i, // The loop counter.
+            k, // The member key.
+            v, // The member value.
+            length, mind = gap, partial, value = holder[key];
+
+        // If the value has a toJSON method, call it to obtain a replacement value.
+
+        if (value && typeof value === 'object'
+            && typeof value.toJSON === 'function') {
+            value = value.toJSON(key);
+        }
+
+        // If we were called with a replacer function, then call the replacer to
+        // obtain a replacement value.
+
+        if (typeof rep === 'function') {
+            value = rep.call(holder, key, value);
+        }
+
+        // What happens next depends on the value's type.
+
+        switch (typeof value) {
+            case 'string':
+                return this.quote(value);
+
+            case 'number':
+
+                // JSON numbers must be finite. Encode non-finite numbers as null.
+
+                return isFinite(value) ? String(value) : 'null';
+
+            case 'boolean':
+            case 'null':
+
+                // If the value is a boolean or null, convert it to a string. Note:
+                // typeof null does not produce 'null'. The case is included here in
+                // the remote chance that this gets fixed someday.
+
+                return String(value);
+
+            // If the type is 'object', we might be dealing with an object or an
+            // array or
+            // null.
+
+            case 'object':
+
+                // Due to a specification blunder in ECMAScript, typeof null is
+                // 'object',
+                // so watch out for that case.
+
+                if (!value) {
+                    return 'null';
+                }
+
+                // Make an array to hold the partial results of stringifying this object
+                // value.
+
+                gap += indent;
+                partial = [];
+
+                // Is the value an array?
+
+                if (Object.prototype.toString.apply(value) === '[object Array]') {
+
+                    // The value is an array. Stringify every element. Use null as a
+                    // placeholder
+                    // for non-JSON values.
+
+                    length = value.length;
+                    for (i = 0; i < length; i += 1) {
+                        partial[i] = this.str(i, value) || 'null';
+                    }
+
+                    // Join all of the elements together, separated with commas, and
+                    // wrap them in
+                    // brackets.
+
+                    v = partial.length === 0 ? '[]' : gap ? '[\n' + gap
+                        + partial.join(',\n' + gap) + '\n' + mind + ']'
+                        : '[' + partial.join(',') + ']';
+                    gap = mind;
+                    return v;
+                }
+
+                // If the replacer is an array, use it to select the members to be
+                // stringified.
+
+                if (rep && typeof rep === 'object') {
+                    length = rep.length;
+                    for (i = 0; i < length; i += 1) {
+                        k = rep[i];
+                        if (typeof k === 'string') {
+                            v = this.str(k, value);
+                            if (v) {
+                                partial.push(this.quote(k) + (gap ? ': ' : ':') + v);
+                            }
+                        }
+                    }
+                } else {
+
+                    // Otherwise, iterate through all of the keys in the object.
+
+                    for (k in value) {
+                        if (Object.hasOwnProperty.call(value, k)) {
+                            v = this.str(k, value);
+                            if (v) {
+                                partial.push(this.quote(k) + (gap ? ': ' : ':') + v);
+                            }
+                        }
+                    }
+                }
+
+                // Join all of the member texts together, separated with commas,
+                // and wrap them in braces.
+
+                v = partial.length === 0 ? '{}' : gap ? '{\n' + gap
+                    + partial.join(',\n' + gap) + '\n' + mind + '}' : '{' + partial
+                    .join(',') + '}';
+                gap = mind;
+                return v;
+        }
+    }
 
 })(jQuery);
 (function($) {
@@ -9024,7 +11088,7 @@ var equiv = function () {
             this.topControl.validate(true);
 
             var valid = this.topControl.isValid(true);
-            this.renderValidationState();
+            this.refreshValidationState(true);
 
             return valid;
         },
@@ -9057,8 +11121,6 @@ var equiv = function () {
             this.disableSubmitButton();
 
             var x = this.isFormValid();
-            console.log("isFormValid: " + x);
-
             if (this.isFormValid())
             {
                 this.enableSubmitButton();
@@ -9104,9 +11166,11 @@ var equiv = function () {
                 this.formFieldsContainer = this.outerEl;
             }
 
-            // add all provided attributes
+            // the form field
             this.field = $('form', this.container);
-            if (this.field) {
+            if (this.field)
+            {
+                // add all provided attributes
                 this.field.attr(this.attributes);
             }
 
@@ -9247,12 +11311,12 @@ var equiv = function () {
         /**
          * Displays validation information of all fields of this form.
          *
-         * @param {Boolean} checkChildren whether to render validation state for child fields
+         * @param {Boolean} children whether to render validation state for child fields
          *
          * @returns {Object} Form validation state.
          */
-        renderValidationState: function(checkChildren) {
-            this.topControl.renderValidationState(checkChildren);
+        refreshValidationState: function(children) {
+            this.topControl.refreshValidationState(children);
         },
 
         /**
@@ -9287,7 +11351,7 @@ var equiv = function () {
 
             // we allow form.destroy() which tells parent control to destroy
             // if skipParent == true, then we do not call up (invoked from container)
-            if (!skipParent)
+            if (!skipParent && this.parent)
             {
                 this.parent.destroy();
             }
@@ -9428,67 +11492,175 @@ var equiv = function () {
         /**
          * @see Alpaca.ControlField#postRender
          */
-        postRender: function() {
+        postRender: function(callback) {
 
             var self = this;
 
-            this.base();
+            this.base(function() {
 
-            if (this.field)
-            {
-                // mask it
-                if ( this.field && this.field.mask && this.options.maskString) {
-                    this.field.mask(this.options.maskString);
-                }
-
-                // typeahead?
-                if ( this.field && this.field.typeahead && this.options.typeahead) {
-
-                    var tconfig = {};
-                    for (var k in this.options.typeahead) {
-                        tconfig[k] = this.options.typeahead[k];
-                    }
-
-                    if (!tconfig.name) {
-                        tconfig.name = this.getId();
-                    }
-
-                    $(this.field).typeahead(tconfig);
-
-                    // listen for "autocompleted" event and set the value of the field
-                    $(this.field).on("typeahead:autocompleted", function(event, datum) {
-                        self.setValue(datum.value);
-                    });
-
-                    // listen for "selected" event and set the value of the field
-                    $(this.field).on("typeahead:selected", function(event, datum) {
-                        self.setValue(datum.value);
-                    });
-
-                    // custom events
-                    if (tconfig.events)
+                if (self.field)
+                {
+                    // mask it
+                    if ( self.field && self.field.mask && self.options.maskString)
                     {
-                        if (tconfig.events.autocompleted) {
-                            $(this.field).on("typeahead:autocompleted", function(event, datum) {
-                                tconfig.events.autocompleted(event, datum);
-                            });
+                        self.field.mask(self.options.maskString);
+                    }
+
+                    // typeahead?
+                    if ( self.field && self.field.typeahead && self.options.typeahead)
+                    {
+                        var tConfig = self.options.typeahead.config;
+                        if (!tConfig) {
+                            tConfig = {};
                         }
-                        if (tconfig.events.selected) {
-                            $(this.field).on("typeahead:selected", function(event, datum) {
-                                tconfig.events.selected(event, datum);
-                            });
+
+                        var tDatasets = self.options.typeahead.datasets;
+                        if (!tDatasets) {
+                            tDatasets = {};
                         }
+
+                        if (!tDatasets.name) {
+                            tDatasets.name = self.getId();
+                        }
+
+                        var tEvents = self.options.typeahead.events;
+                        if (!tEvents) {
+                            tEvents = {};
+                        }
+
+                        // support for each datasets (local, prefetch, remote)
+                        if (tDatasets.type == "local" || tDatasets.type == "remote" || tDatasets.type == "prefetch")
+                        {
+                            var bloodHoundConfig = {
+                                datumTokenizer: function(d) {
+                                    return Bloodhound.tokenizers.whitespace(d.value);
+                                },
+                                queryTokenizer: Bloodhound.tokenizers.whitespace
+                            };
+
+                            if (tDatasets.type == "local" )
+                            {
+                                var local = [];
+
+                                for (var i = 0; i < tDatasets.source.length; i++)
+                                {
+                                    var localElement = tDatasets.source[i];
+                                    if (typeof(localElement) == "string")
+                                    {
+                                        localElement = {
+                                            "value": localElement
+                                        };
+                                    }
+
+                                    local.push(localElement);
+                                }
+
+                                bloodHoundConfig.local = local;
+                            }
+
+                            if (tDatasets.type == "prefetch")
+                            {
+                                bloodHoundConfig.prefetch = {
+                                    url: tDatasets.source
+                                };
+
+                                if (tDatasets.filter)
+                                {
+                                    bloodHoundConfig.prefetch.filter = tDatasets.filter;
+                                }
+                            }
+
+                            if (tDatasets.type == "remote")
+                            {
+                                bloodHoundConfig.remote = {
+                                    url: tDatasets.source
+                                };
+
+                                if (tDatasets.filter)
+                                {
+                                    bloodHoundConfig.remote.filter = tDatasets.filter;
+                                }
+
+                                if (tDatasets.replace)
+                                {
+                                    bloodHoundConfig.remote.replace = tDatasets.replace;
+                                }
+                            }
+
+                            var engine = new Bloodhound(bloodHoundConfig);
+                            engine.initialize();
+                            tDatasets.source = engine.ttAdapter();
+                        }
+
+
+                        // compile templates
+                        if (tDatasets.templates)
+                        {
+                            for (var k in tDatasets.templates)
+                            {
+                                var template = tDatasets.templates[k];
+                                if (typeof(template) == "string")
+                                {
+                                    tDatasets.templates[k] = Handlebars.compile(template);
+                                }
+                            }
+                        }
+
+                        // process typeahead
+                        $(self.field).typeahead(tConfig, tDatasets);
+
+                        // listen for "autocompleted" event and set the value of the field
+                        $(self.field).on("typeahead:autocompleted", function(event, datum) {
+                            self.setValue(datum.value);
+                        });
+
+                        // listen for "selected" event and set the value of the field
+                        $(self.field).on("typeahead:selected", function(event, datum) {
+                            self.setValue(datum.value);
+                        });
+
+                        // custom events
+                        if (tEvents)
+                        {
+                            if (tEvents.autocompleted) {
+                                $(self.field).on("typeahead:autocompleted", function(event, datum) {
+                                    tEvents.autocompleted(event, datum);
+                                });
+                            }
+                            if (tEvents.selected) {
+                                $(self.field).on("typeahead:selected", function(event, datum) {
+                                    tEvents.selected(event, datum);
+                                });
+                            }
+                        }
+
+                        // when the input value changes, change the query in typeahead
+                        // this is to keep the typeahead control sync'd with the actual dom value
+                        // only do this if the query doesn't already match
+                        var fi = $(self.field);
+                        $(self.field).change(function() {
+
+                            var value = $(this).val();
+
+                            var newValue = $(fi).typeahead('val');
+                            if (newValue != value)
+                            {
+                                $(fi).typeahead('val', newValue);
+                            }
+
+                        });
+                    }
+
+                    if (self.fieldContainer) {
+                        self.fieldContainer.addClass('alpaca-controlfield-text');
                     }
                 }
 
-                if (this.fieldContainer) {
-                    this.fieldContainer.addClass('alpaca-controlfield-text');
-                }
-            }
+                callback();
+            });
 
         },
 
-        
         /**
          * @see Alpaca.Field#getValue
          */
@@ -9642,148 +11814,11 @@ var equiv = function () {
             {
                 this.field.focus();
             }
-        },//__BUILDER_HELPERS
-        
-        /**
-         * @private
-         * @see Alpaca.ControlField#getSchemaOfSchema
-         */
-        getSchemaOfSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {                
-                    "minLength": {
-                        "title": "Minimal Length",
-                        "description": "Minimal length of the property value.",
-                        "type": "number"
-                    },
-                    "maxLength": {
-                        "title": "Maximum Length",
-                        "description": "Maximum length of the property value.",
-                        "type": "number"
-                    },
-                    "pattern": {
-                        "title": "Pattern",
-                        "description": "Regular expression for the property value.",
-                        "type": "string"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.ControlField#getOptionsForSchema
-         */
-        getOptionsForSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "default": {
-                        "helper": "Field default value",
-                        "type": "text"
-                    },
-                    "minLength": {
-                        "type": "integer"
-                    },
-                    "maxLength": {
-                        "type": "integer"
-                    },
-                    "pattern": {
-                        "type": "text"
-                    }
-                }
-            });
-        },
-		
-        /**
-         * @private
-         * @see Alpaca.ControlField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {                
-                    "size": {
-                        "title": "Field Size",
-                        "description": "Field size.",
-                        "type": "number",
-						"default":40
-                    },
-                    "maskString": {
-                        "title": "Mask Expression",
-                        "description": "Expression for the field mask. Field masking will be enabled if not empty.",
-                        "type": "string"
-                    },
-                    "placeholder": {
-                        "title": "Field Placeholder",
-                        "description": "Field placeholder.",
-                        "type": "string"
-                    },
-                    "typeahead": {
-                        "title": "Type Ahead",
-                        "description": "Provides configuration for the $.typeahead plugin if it is available.  For full configuration options, see: https://github.com/twitter/typeahead.js"
-                    },
-                    "allowOptionalEmpty": {
-                        "title": "Allow Optional Empty",
-                        "description": "Allows this non-required field to validate when the value is empty"
-                    }
-                }
-            });
-        },    
-		
-        /**
-         * @private
-         * @see Alpaca.ControlField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {                
-                    "size": {
-                        "type": "integer"
-                    },
-                    "maskString": {
-                        "helper": "a - an alpha character;9 - a numeric character;* - an alphanumeric character",
-                        "type": "text"
-                    },
-                    "typeahead": {
-                        "type": "object"
-                    },
-                    "allowOptionalEmpty": {
-                        "type": "checkbox"
-                    }
-                }
-            });
-        },    
-
-        /**
-         * @see Alpaca.Field#getTitle
-         */
-        getTitle: function() {
-            return "Single-Line Text";
-        },
-        
-        /**
-         * @see Alpaca.Field#getDescription
-         */
-        getDescription: function() {
-            return "Text field for single-line text.";
-        },
-        
-        /**
-         * @see Alpaca.Field#getType
-         */
-        getType: function() {
-            return "string";
-        },
-		
-        /**
-         * @see Alpaca.Field#getFieldType
-         */
-        getFieldType: function() {
-            return "text";
-        }//__END_OF_BUILDER_HELPERS
+        }
         
     });
 
-    Alpaca.registerTemplate("controlFieldText", '<input type="text" id="${id}"  {{if options.placeholder}}placeholder="${options.placeholder}"{{/if}} {{if options.size}}size="${options.size}"{{/if}} {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each(i,v) options.data}}data-${i}="${v}"{{/each}}/>');
+    Alpaca.registerTemplate("controlFieldText", '<input type="text" id="${id}" {{if options.placeholder}}placeholder="${options.placeholder}"{{/if}} {{if options.size}}size="${options.size}"{{/if}} {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each(i,v) options.data}}data-${i}="${v}"{{/each}}/>');
     Alpaca.registerMessages({
         "invalidPattern": "This field should have pattern {0}",
         "stringTooShort": "This field should contain at least {0} numbers or characters",
@@ -9839,11 +11874,18 @@ var equiv = function () {
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-textarea');
-            }
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-textarea');
+                }
+
+                callback();
+            });
         },
 
         /**
@@ -9903,77 +11945,7 @@ var equiv = function () {
          */
         getValue: function() {
             return $(this.field).val();
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "rows": {
-                        "title": "Rows",
-                        "description": "Number of rows",
-                        "type": "number",
-                        "default": 5
-                    },
-                    "cols": {
-                        "title": "Columns",
-                        "description": "Number of columns",
-                        "type": "number",
-                        "default": 40
-                    },
-                    "wordlimit": {
-                        "title": "Word Limit",
-                        "description": "Limits the number of words allowed in the text area.",
-                        "type": "number",
-                        "default": -1
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "rows": {
-                        "type": "integer"
-                    },
-                    "cols": {
-                        "type": "integer"
-                    },
-                    "wordlimit": {
-                        "type": "integer"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "Multi-Line Text";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Textarea field for multiple line text.";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "textarea";
-        }//__END_OF_BUILDER_HELPERS
+        }
 
     });
 
@@ -9981,7 +11953,7 @@ var equiv = function () {
         "wordLimitExceeded": "The maximum word limit of {0} has been exceeded."
     });
 
-    Alpaca.registerTemplate("controlFieldTextarea", '<textarea id="${id}" {{if options.rows}}rows="${options.rows}"{{/if}} {{if options.cols}}cols="${options.cols}"{{/if}} {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each options.data}}data-${fieldId}="${value}"{{/each}}/>');
+    Alpaca.registerTemplate("controlFieldTextarea", '<textarea id="${id}" {{if options.placeholder}}placeholder="${options.placeholder}"{{/if}} {{if options.rows}}rows="${options.rows}"{{/if}} {{if options.cols}}cols="${options.cols}"{{/if}} {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each options.data}}data-${fieldId}="${value}"{{/each}}/>');
     Alpaca.registerFieldClass("textarea", Alpaca.Fields.TextAreaField);
 
 })(jQuery);
@@ -10016,11 +11988,69 @@ var equiv = function () {
              * @see Alpaca.Field#setup
              */
             setup: function() {
-                this.base();
+
+                var _this = this;
+
+                _this.base();
 
                 if (!this.options.rightLabel) {
                     this.options.rightLabel = "";
                 }
+
+                if (typeof(_this.options.multiple) == "undefined")
+                {
+                    if (_this.schema.type == "array")
+                    {
+                        _this.options.multiple = true;
+                    }
+                    else if (typeof(_this.schema["enum"]) != "undefined")
+                    {
+                        _this.options.multiple = true;
+                    }
+                }
+
+                _this.checkboxOptions = [];
+                if (_this.options.multiple)
+                {
+                    $.each(_this.getEnum(), function(index, value) {
+
+                        var text = value;
+
+                        if (_this.options.optionLabels)
+                        {
+                            if (!Alpaca.isEmpty(_this.options.optionLabels[index]))
+                            {
+                                text = _this.options.optionLabels[index];
+                            }
+                            else if (!Alpaca.isEmpty(_this.options.optionLabels[value]))
+                            {
+                                text = _this.options.optionLabels[value];
+                            }
+                        }
+
+                        _this.checkboxOptions.push({
+                            "value": value,
+                            "text": text
+                        });
+                    });
+                }
+            },
+
+            /**
+             * Gets schema enum property.
+             *
+             * @returns {Array|String} Field schema enum property.
+             */
+            getEnum: function()
+            {
+                var array = [];
+
+                if (this.schema && this.schema["enum"])
+                {
+                    array = this.schema["enum"];
+                }
+
+                return array;
             },
 
             /**
@@ -10029,7 +12059,7 @@ var equiv = function () {
              * @param e Event.
              */
             onClick: function(e) {
-                this.renderValidationState();
+                this.refreshValidationState();
             },
 
             /**
@@ -10039,21 +12069,31 @@ var equiv = function () {
 
                 var _this = this;
 
-                var controlFieldTemplateDescriptor = this.view.getTemplateDescriptor("controlFieldCheckbox");
+                var controlFieldTemplateDescriptor = null;
 
-                if (controlFieldTemplateDescriptor) {
+                // either use the single template or the multiple template
+                if (this.options.multiple) {
+                    controlFieldTemplateDescriptor = this.view.getTemplateDescriptor("controlFieldCheckboxMultiple");
+                } else {
+                    controlFieldTemplateDescriptor = this.view.getTemplateDescriptor("controlFieldCheckbox");
+                }
+
+                if (controlFieldTemplateDescriptor)
+                {
                     this.field = _this.view.tmpl(controlFieldTemplateDescriptor, {
                         "id": this.getId(),
                         "name": this.name,
-                        "options": this.options
+                        "options": this.options,
+                        "checkboxOptions": _this.checkboxOptions
                     });
                     this.injectField(this.field);
-                    this.field = $('input[id="' + this.getId() + '"]', this.field);
+                    //this.field = $('input[id="' + this.getId() + '"]', this.field);
 
                     // do this little trick so that if we have a default value, it gets set during first render
                     // this causes the checked state of the control to update
-                    if (this.data) {
-                        this.setValue(true);
+                    if (this.data && typeof(this.data) != "undefined")
+                    {
+                        this.setValue(this.data);
                     }
                 }
 
@@ -10065,111 +12105,223 @@ var equiv = function () {
             /**
              * @see Alpaca.ControlField#postRender
              */
-            postRender: function() {
-                this.base();
-                if (this.fieldContainer) {
-                    this.fieldContainer.addClass('alpaca-controlfield-checkbox');
-                }
+            postRender: function(callback) {
+
+                var self = this;
+
+                this.base(function() {
+
+                    if (self.fieldContainer) {
+                        self.fieldContainer.addClass('alpaca-controlfield-checkbox');
+                    }
+
+                    // whenever the state of one of our input:checkbox controls is changed (either via a click or programmatically),
+                    // we signal to the top-level field to fire up a change
+                    //
+                    // this allows the dependency system to recalculate and such
+                    //
+                    $(self.field).find("input:checkbox").change(function(evt) {
+                        $(self.field).trigger("change");
+                    });
+
+                    callback();
+                });
             },
 
             /**
              * @see Alpaca.Field#getValue
              */
             getValue: function() {
-                //return this.field.attr("checked") ? true : false;
-                return Alpaca.checked(this.field);
+
+                var self = this;
+
+                var value = null;
+
+                if (!self.options.multiple)
+                {
+                    // single scalar value
+                    var input = $(self.field).find("input");
+                    if (input.length > 0)
+                    {
+                        value = Alpaca.checked($(input[0]));
+                    }
+                }
+                else
+                {
+                    // multiple values
+                    var values = [];
+                    for (var i = 0; i < self.checkboxOptions.length; i++)
+                    {
+                        var input = $(self.field).find("input[data-checkbox-index='" + i + "']");
+                        if (Alpaca.checked(input))
+                        {
+                            var v = $(input).attr("data-checkbox-value");
+                            values.push(v);
+                        }
+                    }
+
+                    // determine how we're going to hand this value back
+
+                    // if type == "array", we just hand back the array
+                    // if type == "string", we build a comma-delimited list
+                    if (self.schema.type == "array")
+                    {
+                        value = values;
+                    }
+                    else if (self.schema.type == "string")
+                    {
+                        value = values.join(",");
+                    }
+                }
+
+                return value;
             },
 
             /**
              * @see Alpaca.Field#setValue
              */
-            setValue: function(value) {
-                // convert string value to boolean
-                if (Alpaca.isString(value)) {
-                    value = (value === "true");
+            setValue: function(value)
+            {
+                var self = this;
+
+                // value can be a boolean, string ("true"), string ("a,b,c") or an array of values
+
+                var applyScalarValue = function(value)
+                {
+                    if (Alpaca.isString(value)) {
+                        value = (value === "true");
+                    }
+
+                    var input = $(self.field).find("input");
+                    if (input.length > 0)
+                    {
+                        Alpaca.checked($(input[0]), value);
+                    }
+                };
+
+                var applyMultiValue = function(values)
+                {
+                    // allow for comma-delimited strings
+                    if (typeof(values) == "string")
+                    {
+                        values = values.split(",");
+                    }
+
+                    // trim things to remove any excess white space
+                    for (var i = 0; i < values.length; i++)
+                    {
+                        values[i] = Alpaca.trim(values[i]);
+                    }
+
+                    // walk through values and assign into appropriate inputs
+                    for (var i = 0; i < values.length; i++)
+                    {
+                        var input = $(self.field).find("input[data-checkbox-value='" + values[i] + "']");
+                        if (input.length > 0)
+                        {
+                            Alpaca.checked($(input[0]), value);
+                        }
+                    }
+                };
+
+                var applied = false;
+
+                if (!self.options.multiple)
+                {
+                    // single value mode
+
+                    // boolean
+                    if (typeof(value) == "boolean")
+                    {
+                        applyScalarValue(value);
+                        applied = true;
+                    }
+                    else if (typeof(value) == "string")
+                    {
+                        applyScalarValue(value);
+                        applied = true;
+                    }
+                }
+                else
+                {
+                    // multiple value mode
+
+                    if (typeof(value) == "string")
+                    {
+                        applyMultiValue(value);
+                        applied = true;
+                    }
+                    else if (Alpaca.isArray(value))
+                    {
+                        applyMultiValue(value);
+                        applied = true;
+                    }
                 }
 
-                Alpaca.checked(this.field, value);
+                if (!applied)
+                {
+                    Alpaca.logError("CheckboxField cannot set value for schema.type=" + self.schema.type + " and value=" + value);
+                }
 
                 // be sure to call into base method
                 this.base(value);
             },
 
             /**
+             * Validate against enum property in the case that the checkbox field is in multiple mode.
+             *
+             * @returns {Boolean} True if the element value is part of the enum list, false otherwise.
+             */
+            _validateEnum: function()
+            {
+                var self = this;
+
+                if (!self.options.multiple)
+                {
+                    return true;
+                }
+
+                var val = self.getValue();
+                if (!self.schema.required && Alpaca.isValEmpty(val))
+                {
+                    return true;
+                }
+
+                // if val is a string, convert to array
+                if (typeof(val) == "string")
+                {
+                    val = val.split(",");
+                }
+
+                return Alpaca.anyEquality(val, self.schema["enum"]);
+            },
+
+            /**
              * @see Alpaca.Field#disable
              */
             disable: function() {
-                this.field.disabled = true;
+
+                $(this.field).find("input").each(function() {
+                    $(this).disabled = true;
+                });
+
             },
 
             /**
              * @see Alpaca.Field#enable
              */
             enable: function() {
-                this.field.disabled = false;
-            },//__BUILDER_HELPERS
 
-            /**
-             * @private
-             * @see Alpaca.ControlField#getSchemaOfOptions
-             */
-            getSchemaOfOptions: function() {
-                return Alpaca.merge(this.base(), {
-                    "properties": {
-                        "rightLabel": {
-                            "title": "Option Label",
-                            "description": "Optional right-hand side label for checkbox field.",
-                            "type": "string"
-                        }
-                    }
+                $(this.field).find("input").each(function() {
+                    $(this).disabled = false;
                 });
-            },
 
-            /**
-             * @private
-             * @see Alpaca.ControlField#getOptionsForOptions
-             */
-            getOptionsForOptions: function() {
-                return Alpaca.merge(this.base(), {
-                    "fields": {
-                        "rightLabel": {
-                            "type": "text"
-                        }
-                    }
-                });
-            },
-
-            /**
-             * @see Alpaca.Field#getTitle
-             */
-            getTitle: function() {
-                return "Checkbox Field";
-            },
-
-            /**
-             * @see Alpaca.Field#getDescription
-             */
-            getDescription: function() {
-                return "Checkbox Field for boolean data.";
-            },
-
-            /**
-             * @see Alpaca.Field#getType
-             */
-            getType: function() {
-                return "boolean";
-            },
-
-            /**
-             * @see Alpaca.Field#getFieldType
-             */
-            getFieldType: function() {
-                return "checkbox";
-            }//__END_OF_BUILDER_HELPERS
+            }
 
         });
 
-    Alpaca.registerTemplate("controlFieldCheckbox", '<span><input type="checkbox" id="${id}" {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each(i,v) options.data}}data-${i}="${v}"{{/each}}/>{{if options.rightLabel}}<label for="${id}">${options.rightLabel}</label>{{/if}}</span>');
+    Alpaca.registerTemplate("controlFieldCheckbox", '<span id="${id}">{{if options.rightLabel}}<label class="alpaca-controlfield-label" for="${id}_checkbox">{{/if}}<input id="${id}_checkbox" type="checkbox" {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each(i,v) options.data}}data-${i}="${v}"{{/each}}/>{{if options.rightLabel}}${options.rightLabel}</label>{{/if}}</span>');
+    Alpaca.registerTemplate("controlFieldCheckboxMultiple", '<span id="${id}">{{each(i,o) checkboxOptions}}<span><label class="alpaca-controlfield-label" for="${id}_checkbox_${i}"><input type="checkbox" id="${id}_checkbox_${i}" {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} data-checkbox-value="${o.value}" data-checkbox-index="${i}" />${text}</label></span>{{/each}}</span>');
 
     Alpaca.registerFieldClass("checkbox", Alpaca.Fields.CheckBoxField);
     Alpaca.registerDefaultSchemaFieldMapping("boolean", "checkbox");
@@ -10273,67 +12425,22 @@ var equiv = function () {
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-            // apply additional css
-			if (this.fieldContainer) {
-				this.fieldContainer.addClass("alpaca-controlfield-file");
-            }
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                // apply additional css
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass("alpaca-controlfield-file");
+                }
+
+                callback();
+            });
 
             // listen for change events on the field
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.ControlField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "selectionHandler": {
-                        "title": "Selection Handler",
-                        "description": "Function that should be called when files are selected.  Requires HTML5.",
-                        "type": "boolean",
-                        "default": false
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.ControlField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "selectionHandler": {
-                        "type": "checkbox"
-                    }
-                }
-            });
-        },
-
-		/**
-         * @see Alpaca.Fields.TextField#getTitle
-		 */
-		getTitle: function() {
-			return "File Field";
-		},
-		
-		/**
-         * @see Alpaca.Fields.TextField#getDescription
-		 */
-		getDescription: function() {
-			return "Field for uploading files.";
-		},
-
-		/**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "file";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
     
     Alpaca.registerTemplate("controlFieldFile", '<input type="file" id="${id}" {{if options.size}}size="${options.size}"{{/if}} {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each(i,v) options.data}}data-${i}="${v}"{{/each}}/>');
@@ -10432,7 +12539,36 @@ var equiv = function () {
             var _this = this;
             if (this.options.dataSource) {
                 if (Alpaca.isFunction(this.options.dataSource)) {
-                    this.options.dataSource(this, function() {
+                    this.options.dataSource(this, function(values) {
+
+                        if (Alpaca.isArray(values))
+                        {
+                            for (var i = 0; i < values.length; i++)
+                            {
+                                if (typeof(values[i]) == "string")
+                                {
+                                    _this.selectOptions.push({
+                                        "text": values[i],
+                                        "value": values[i]
+                                    });
+                                }
+                                else if (Alpaca.isObject(values[i]))
+                                {
+                                    _this.selectOptions.push(values[i]);
+                                }
+                            }
+                        }
+                        else if (Alpaca.isObject(values))
+                        {
+                            for (var k in values)
+                            {
+                                _this.selectOptions.push({
+                                    "text": k,
+                                    "value": values[k]
+                                });
+                            }
+                        }
+
                         _this._renderField(onSuccess);
                     });
                 } else {
@@ -10446,20 +12582,29 @@ var equiv = function () {
                                 if (_this.options.dsTransformer && Alpaca.isFunction(_this.options.dsTransformer)) {
                                     ds = _this.options.dsTransformer(ds);
                                 }
-                                if (ds) {
-                                    if (Alpaca.isArray(ds)) {
-                                        $.each(ds, function(index, value) {
+                                if (ds)
+                                {
+                                    if (Alpaca.isObject(ds))
+                                    {
+                                        // for objects, we walk through one key at a time
+                                        // the insertion order is the order of the keys from the map
+                                        // to preserve order, consider using an array as below
+                                        $.each(ds, function(key, value) {
                                             _this.selectOptions.push({
-                                                "value": value,
+                                                "value": key,
                                                 "text": value
                                             });
                                         });
                                     }
-                                    if (Alpaca.isObject(ds)) {
+                                    else if (Alpaca.isArray(ds))
+                                    {
+                                        // for arrays, we walk through one index at a time
+                                        // the insertion order is dictated by the order of the indices into the array
+                                        // this preserves order
                                         $.each(ds, function(index, value) {
                                             _this.selectOptions.push({
-                                                "value": index,
-                                                "text": value
+                                                "value": value.value,
+                                                "text": value.text
                                             });
                                         });
                                     }
@@ -10508,63 +12653,7 @@ var equiv = function () {
             } else {
                 this._renderField(onSuccess);
             }
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.ControlField#getSchemaOfSchema
-         */
-        getSchemaOfSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "enum": {
-                        "title": "Enumeration",
-                        "description": "List of field value options",
-                        "type": "array",
-                        "required": true
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.ControlField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "optionLabels": {
-                        "title": "Option Labels",
-                        "description": "Labels for options. It can either be a map object or an array field that maps labels to items defined by enum schema property one by one.",
-                        "type": "array"
-                    },
-                    "dataSource": {
-                        "title": "Option Datasource",
-                        "description": "Datasource for generating list of options.",
-                        "type": "string"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.ControlField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "optionLabels": {
-                        "itemLabel":"Label",
-                        "type": "array"
-                    },
-                    "dataSource": {
-                        "type": "text"
-                    }
-                }
-            });
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 })(jQuery);
 (function($){
@@ -10665,7 +12754,8 @@ var equiv = function () {
                     "selectOptions": this.selectOptions,
                     "required":this.schema.required,
 					"name": this.name,
-                    "data": this.data
+                    "data": this.data,
+                    "removeDefaultNone": this.options.removeDefaultNone
                 });
 
                 // if emptySelectFirst and nothing currently checked, then pick first item in the value list
@@ -10696,11 +12786,18 @@ var equiv = function () {
         /**
          * @see Alpaca.ControlField#postRender
          */
-        postRender: function() {
-            this.base();
-			if (this.fieldContainer) {
-				this.fieldContainer.addClass('alpaca-controlfield-radio');
-			}
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-radio');
+                }
+
+                callback();
+            });
         },
         
         /**
@@ -10714,62 +12811,14 @@ var equiv = function () {
             Alpaca.later(25, this, function(){
                 var v = _this.getValue();
                 _this.setValue(v);
-                _this.renderValidationState();
+                _this.refreshValidationState();
             });
-        },//__BUILDER_HELPERS
-		
-        /**
-         * @private
-         * @see Alpaca.Fields.ListField#getSchemaOfOptions
-         */
-		getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(),{
-				"properties": {
-					"name": {
-						"title": "Field name",
-						"description": "Field name.",
-						"type": "string"
-					},
-                    "emptySelectFirst": {
-                        "title": "Empty Select First",
-                        "description": "If the data is empty, then automatically select the first item in the list.",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "vertical": {
-                        "title": "Position the radio selector items vertically",
-                        "description": "When true, the radio selector items will be stacked vertically and not horizontally",
-                        "type": "boolean",
-                        "default": false
-                    }
-				}
-			});
-        },
-        
-		/**
-         * @see Alpaca.Field#getTitle
-		 */
-		getTitle: function() {
-			return "Radio Group Field";
-		},
-		
-		/**
-         * @see Alpaca.Field#getDescription
-		 */
-		getDescription: function() {
-			return "Radio Group Field with list of options.";
-		},
-
-		/**
-         * @see Alpaca.Field#getFieldType
-         */
-        getFieldType: function() {
-            return "radio";
-        }//__END_OF_BUILDER_HELPERS
+        }
         
     });
     
-    Alpaca.registerTemplate("controlFieldRadio", '<div id="${id}" class="alpaca-controlfield-radio">{{if !required}}<span class="alpaca-controlfield-radio-item"><input type="radio" {{if options.readonly}}readonly="readonly"{{/if}} name="${name}" value=""/><span class="alpaca-controlfield-radio-label">None</span></span>{{/if}}{{each selectOptions}}<span class="alpaca-controlfield-radio-item"><input type="radio" {{if options.readonly}}readonly="readonly"{{/if}} name="${name}" value="${value}" {{if value == data}}checked="checked"{{/if}}/><span class="alpaca-controlfield-radio-label">${text}</span></span>{{/each}}</div>');
+    Alpaca.registerTemplate("controlFieldRadio", '<div id="${id}" class="alpaca-controlfield-radio">{{if !required && !removeDefaultNone}}<span class="alpaca-controlfield-radio-item"><input type="radio" {{if options.readonly}}readonly="readonly"{{/if}} name="${name}" id="${id}_radio_nonevalue" value=""/><label class="alpaca-controlfield-radio-label" for="${id}_radio_nonevalue">None</label></span>{{/if}}{{each selectOptions}}<span class="alpaca-controlfield-radio-item"><input type="radio" {{if options.readonly}}readonly="readonly"{{/if}} name="${name}" value="${value}" id="${id}_radio_${$index}" {{if value == data}}checked="checked"{{/if}}/><label class="alpaca-controlfield-radio-label" for="${id}_radio_${$index}">${text}</label></span>{{/each}}</div>');
+
     Alpaca.registerFieldClass("radio", Alpaca.Fields.RadioField);
     
 })(jQuery);
@@ -10816,9 +12865,16 @@ var equiv = function () {
         /**
          * @see Alpaca.Field#getValue
          */
-        getValue: function() {
+        getValue: function()
+        {
             if (this.field) {
-                return this.base(this.field.val());
+                var val = this.field.val();
+                if (!val)
+                {
+                    val = this.data;
+                }
+
+                return this.base(val);
             }
         },
 
@@ -10881,7 +12937,8 @@ var equiv = function () {
                     "required": this.schema.required,
                     "selectOptions": this.selectOptions,
                     "name": this.name,
-                    "data": this.data
+                    "data": this.data,
+                    "removeDefaultNone": this.options.removeDefaultNone
                 });
 
                 // if emptySelectFirst and nothing currently checked, then pick first item in the value list
@@ -10910,11 +12967,18 @@ var equiv = function () {
         /**
          * @see Alpaca.ControlField#postRender
          */
-        postRender: function() {
-            this.base();
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-select');
-            }
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-select');
+                }
+
+                callback();
+            })
         },
 
         /**
@@ -10931,6 +12995,9 @@ var equiv = function () {
                 if (this.options.multiple) {
                     var isValid = true;
                     var _this = this;
+                    if (!val) {
+                        val = [];
+                    }
                     $.each(val, function(i,v) {
                         if ($.inArray(v, _this.schema["enum"]) <= -1) {
                             isValid = false;
@@ -10957,7 +13024,7 @@ var equiv = function () {
             Alpaca.later(25, this, function() {
                 var v = _this.getValue();
                 _this.setValue(v);
-                _this.renderValidationState();
+                _this.refreshValidationState();
             });
         },
 
@@ -11008,80 +13075,12 @@ var equiv = function () {
             };
 
             return baseStatus && valInfo["tooManyItems"]["status"] && valInfo["notEnoughItems"]["status"];
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Fields.ListField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "multiple": {
-                        "title": "Mulitple Selection",
-                        "description": "Allow multiple selection if true.",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "size": {
-                        "title": "Displayed Options",
-                        "description": "Number of options to be shown.",
-                        "type": "number"
-                    },
-                    "emptySelectFirst": {
-                        "title": "Empty Select First",
-                        "description": "If the data is empty, then automatically select the first item in the list.",
-                        "type": "boolean",
-                        "default": false
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.ListField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "multiple": {
-                        "rightLabel": "Allow mulitple selection ?",
-                        "helper": "Allow multiple selection if checked",
-                        "type": "checkbox"
-                    },
-                    "size": {
-                        "type": "integer"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @see Alpaca.Field#getTitle
-         */
-        getTitle: function() {
-            return "Dropdown Select";
-        },
-
-        /**
-         * @see Alpaca.Field#getDescription
-         */
-        getDescription: function() {
-            return "Dropdown select field.";
-        },
-
-        /**
-         * @see Alpaca.Field#getFieldType
-         */
-        getFieldType: function() {
-            return "select";
-        }//__END_OF_BUILDER_HELPERS
+        }
 
     });
 
-    Alpaca.registerTemplate("controlFieldSelect", '<select id="${id}" {{if options.readonly}}readonly="readonly"{{/if}} {{if options.multiple}}multiple{{/if}} {{if options.size}}size="${options.size}"{{/if}} {{if name}}name="${name}"{{/if}}>{{if !required}}<option value="">None</option>{{/if}}{{each(i,value) selectOptions}}<option value="${value}" {{if value == data}}selected="selected"{{/if}}>${text}</option>{{/each}}</select>');
-    Alpaca.registerTemplate("controlFieldSelectMultiple", '<select id="${id}" {{if options.readonly}}readonly="readonly"{{/if}} {{if options.multiple}}multiple="multiple"{{/if}} {{if options.size}}size="${options.size}"{{/if}} {{if name}}name="${name}"{{/if}}>{{if !required}}<option value="">None</option>{{/if}}{{each(i,value) selectOptions}}<option value="${value}" {{each(j,val) data}}{{if value == val}}selected="selected"{{/if}}{{/each}}>${text}</option>{{/each}}</select>');
+    Alpaca.registerTemplate("controlFieldSelect", '<select id="${id}" {{if options.readonly}}readonly="readonly"{{/if}} {{if options.multiple}}multiple{{/if}} {{if options.size}}size="${options.size}"{{/if}} {{if name}}name="${name}"{{/if}}>{{if !required && !removeDefaultNone}}<option value="">None</option>{{/if}}{{each(i,value) selectOptions}}<option value="${value}" {{if value == data}}selected="selected"{{/if}}>${text}</option>{{/each}}</select>');
+    Alpaca.registerTemplate("controlFieldSelectMultiple", '<select id="${id}" {{if options.readonly}}readonly="readonly"{{/if}} {{if options.multiple}}multiple="multiple"{{/if}} {{if options.size}}size="${options.size}"{{/if}} {{if name}}name="${name}"{{/if}}>{{if !required && !removeDefaultNone}}<option value="">None</option>{{/if}}{{each(i,value) selectOptions}}<option value="${value}" {{each(j,val) data}}{{if value == val}}selected="selected"{{/if}}{{/each}}>${text}</option>{{/each}}</select>');
     Alpaca.registerFieldClass("select", Alpaca.Fields.SelectField);
 
 })(jQuery);
@@ -11127,12 +13126,19 @@ var equiv = function () {
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-			if (this.fieldContainer) {
-				this.fieldContainer.addClass('alpaca-controlfield-number');
-			}
-        },		
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-number');
+                }
+
+                callback();
+            });
+        },
 				
         /**
          * @see Alpaca.Fields.TextField#handleValidate
@@ -11179,7 +13185,19 @@ var equiv = function () {
                     valInfo["stringValueTooSmall"]["message"] = Alpaca.substituteTokens(this.view.getMessage("stringValueTooSmall"), [this.schema.minimum]);
                 }
             }
-            return baseStatus && valInfo["stringNotANumber"]["status"] && valInfo["stringDivisibleBy"]["status"] && valInfo["stringValueTooLarge"]["status"] && valInfo["stringValueTooSmall"]["status"];
+
+            status = this._validateMultipleOf();
+            valInfo["stringValueNotMultipleOf"] = {
+                "message": "",
+                "status": status
+            };
+            if (!status)
+            {
+                valInfo["stringValueNotMultipleOf"]["message"] = Alpaca.substituteTokens(this.view.getMessage("stringValueNotMultipleOf"), [this.schema.multipleOf]);
+            }
+
+            // hand back a true/false
+            return baseStatus && valInfo["stringNotANumber"]["status"] && valInfo["stringDivisibleBy"]["status"] && valInfo["stringValueTooLarge"]["status"] && valInfo["stringValueTooSmall"]["status"] && valInfo["stringValueNotMultipleOf"]["status"];
         },
         
         /**
@@ -11252,7 +13270,7 @@ var equiv = function () {
          */
         _validateMinimum: function() {
             var floatValue = this.getValue();
-            
+
             if (!Alpaca.isEmpty(this.schema.minimum)) {
                 if (floatValue < this.schema.minimum) {
                     return false;
@@ -11266,7 +13284,26 @@ var equiv = function () {
             }
             
             return true;
-        },//__BUILDER_HELPERS
+        },
+
+        /**
+         * Validates multipleOf constraint.
+         * @returns {Boolean} true if it passes the multipleOf constraint.
+         */
+        _validateMultipleOf: function() {
+            var floatValue = this.getValue();
+
+            if (!Alpaca.isEmpty(this.schema.multipleOf)) {
+                if (floatValue && this.schema.multipleOf !== 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        },
+
+        //__BUILDER_HELPERS
 
         /**
          * @private
@@ -11275,6 +13312,11 @@ var equiv = function () {
         getSchemaOfSchema: function() {
             return Alpaca.merge(this.base(), {
 				"properties": {
+                    "multipleOf": {
+                        "title": "Multiple Of",
+                        "description": "Property value must be a multiple of the multipleOf schema property such that division by this value yields an interger (mod zero).",
+                        "type": "number"
+                    },
 					"minimum": {
 						"title": "Minimum",
 						"description": "Minimum value of the property.",
@@ -11297,7 +13339,7 @@ var equiv = function () {
 						"type": "boolean",
 						"default": false
 					}
-				}				
+				}
             });
         },
 
@@ -11308,6 +13350,11 @@ var equiv = function () {
         getOptionsForSchema: function() {
 			return Alpaca.merge(this.base(), {
 				"fields": {
+                    "multipleOf": {
+                        "title": "Multiple Of",
+                        "description": "The value must be a integral multiple of the property",
+                        "type": "number"
+                    },
 					"minimum": {
 						"title": "Minimum",
 						"description": "Minimum value of the property",
@@ -11368,7 +13415,8 @@ var equiv = function () {
         "stringValueTooSmallExclusive": "Value of this field must be greater than {0}",
         "stringValueTooLargeExclusive": "Value of this field must be less than {0}",
         "stringDivisibleBy": "The value must be divisible by {0}",
-        "stringNotANumber": "This value is not a number."
+        "stringNotANumber": "This value is not a number.",
+        "stringValueNotMultipleOf": "This value is nu"
     });
     Alpaca.registerFieldClass("number", Alpaca.Fields.NumberField);
     Alpaca.registerDefaultSchemaFieldMapping("number", "number");
@@ -11482,15 +13530,45 @@ var equiv = function () {
                 }
             }
 
-            _this.resolveItemSchemaOptions(function(schema, options) {
+            // if the number of items in the data is greater than the number of existing child elements
+            // then we need to add the new fields
 
-                // if the number of items in the data is greater than the number of existing child elements
-                while(i < data.length) {
-                    _this.addItem(i, schema, options, data[i]);
-                    i++;
-                };
+            if (i < data.length)
+            {
+                _this.resolveItemSchemaOptions(function(schema, options) {
 
-            });
+                    // waterfall functions
+                    var funcs = [];
+
+                    while (i < data.length)
+                    {
+                        var f = (function(i, data)
+                        {
+                            return function(callback)
+                            {
+                                _this.addItem(i, schema, options, data[i], null, false, function() {
+
+                                    // by the time we get here, we may have constructed a very large child chain of
+                                    // sub-dependencies and so we use nextTick() instead of a straight callback so as to
+                                    // avoid blowing out the stack size
+                                    Alpaca.nextTick(function() {
+                                        callback();
+                                    });
+
+                                });
+                            };
+                        })(i, data[i]);
+
+                        funcs.push(f);
+
+                        i++;
+                    };
+
+                    Alpaca.series(funcs, function() {
+                        // TODO: anything once finished?
+                    });
+                });
+            }
 
         },
 
@@ -11638,7 +13716,7 @@ var equiv = function () {
                 });
                 delete this.childrenById[id];
                 $('#' + id + "-item-container", this.outerEl).remove();
-                this.renderValidationState();
+                this.refreshValidationState();
                 this.updateToolbarItemsStatus();
                 this.updatePathAndName();
 
@@ -11692,6 +13770,12 @@ var equiv = function () {
         renderToolbar: function(containerElem) {
             var _this = this;
 
+            // we do not render the toolbar in "display" mode
+            if (this.view && this.view.type == "view")
+            {
+                return;
+            }
+
             if (!this.options.readonly) {
                 var id = containerElem.attr('alpaca-id');
                 var fieldControl = this.childrenById[id];
@@ -11708,8 +13792,9 @@ var equiv = function () {
 
                                 _this.resolveItemSchemaOptions(function(schema, options) {
 
-                                    var newContainerElem = arrayField.addItem(containerElem.index() + 1, schema, options, null, id, true);
-                                    arrayField.enrichElements(newContainerElem);
+                                    arrayField.addItem(containerElem.index() + 1, schema, options, null, id, true, function(addedField) {
+                                        arrayField.enrichElements(addedField.getEl());
+                                    });
 
                                 });
 
@@ -11794,6 +13879,13 @@ var equiv = function () {
          */
         renderArrayToolbar: function(containerElem) {
             var _this = this;
+
+            // we do not render the array toolbar in "display" mode
+            if (this.view && this.view.type == "view")
+            {
+                return;
+            }
+
             var id = containerElem.attr('alpaca-id');
             var itemToolbarTemplateDescriptor = this.view.getTemplateDescriptor("arrayToolbar");
             if (itemToolbarTemplateDescriptor) {
@@ -11811,8 +13903,10 @@ var equiv = function () {
 
                         _this.resolveItemSchemaOptions(function(schema, options) {
 
-                            var newContainerElem = _this.addItem(0, schema, options, "", id, true);
-                            _this.enrichElements(newContainerElem);
+                            _this.addItem(0, schema, options, "", id, true, function(addedField) {
+                                _this.enrichElements(addedField.getEl());
+                            });
+
 
                         });
                     });
@@ -11824,7 +13918,10 @@ var equiv = function () {
                     toolbarElemAdd.click(function() {
 
                         _this.resolveItemSchemaOptions(function(schema, options) {
-                            _this.addItem(0, schema, options, "", id, true);
+
+                            _this.addItem(0, schema, options, "", id, true, function(addedField) {
+                                _this.enrichElements(addedField.getEl());
+                            });
                         });
 
                         return false;
@@ -11865,9 +13962,10 @@ var equiv = function () {
          * @param {Any} itemData field data
          * @param {String} insertAfterId Where the item will be inserted
          * @param [Boolean] isDynamicSubItem whether this item is being dynamically created (after first render)
+         * @param [Function] postRenderCallback called after the child is added
          */
-        addItem: function(index, itemSchema, itemOptions, itemData, insertAfterId, isDynamicSubItem) {
-            return this._addItem(index, itemSchema, itemOptions, itemData, insertAfterId, isDynamicSubItem);
+        addItem: function(index, itemSchema, itemOptions, itemData, insertAfterId, isDynamicSubItem, postRenderCallback) {
+            return this._addItem(index, itemSchema, itemOptions, itemData, insertAfterId, isDynamicSubItem, postRenderCallback);
         },
 
         /**
@@ -11879,10 +13977,11 @@ var equiv = function () {
          * @param itemData
          * @param insertAfterId
          * @param isDynamicSubItem
+         * @param postRenderCallback
          * @return {*}
          * @private
          */
-        _addItem: function(index, itemSchema, itemOptions, itemData, insertAfterId, isDynamicSubItem) {
+        _addItem: function(index, itemSchema, itemOptions, itemData, insertAfterId, isDynamicSubItem, postRenderCallback) {
             var _this = this;
             if (_this._validateEqualMaxItems()) {
 
@@ -11905,53 +14004,69 @@ var equiv = function () {
                     },
                     "notTopLevel":true,
                     "isDynamicCreation": (isDynamicSubItem || this.isDynamicCreation),
-                    "render" : function(fieldControl) {
+                    "render" : function(fieldControl, cb) {
                         // render
                         fieldControl.parent = _this;
                         // setup item path
                         fieldControl.path = _this.path + "[" + index + "]";
                         fieldControl.nameCalculated = true;
-                        fieldControl.render();
-                        containerElem.attr("id", fieldControl.getId() + "-item-container");
-                        containerElem.attr("alpaca-id", fieldControl.getId());
-                        containerElem.addClass("alpaca-item-container");
-                        // render item label if needed
-                        if (_this.options && _this.options.itemLabel) {
-                            var itemLabelTemplateDescriptor = _this.view.getTemplateDescriptor("itemLabel");
-                            var itemLabelElem = _this.view.tmpl(itemLabelTemplateDescriptor, {
-                                "options": _this.options,
-                                "index": index ? index + 1 : 1,
-                                "id": _this.id
-                            });
-                            itemLabelElem.prependTo(containerElem);
-                        }
-                        // remember the control
-                        _this.addChild(fieldControl, index);
-                        _this.renderToolbar(containerElem);
-                        _this.renderValidationState();
-                        _this.updatePathAndName();
+                        fieldControl.render(null, function() {
 
-                        // trigger update on the parent array
-                        _this.triggerUpdate();
+                            containerElem.attr("id", fieldControl.getId() + "-item-container");
+                            containerElem.attr("alpaca-id", fieldControl.getId());
+                            containerElem.addClass("alpaca-item-container");
+                            // render item label if needed
+                            if (_this.options && _this.options.itemLabel) {
+                                var itemLabelTemplateDescriptor = _this.view.getTemplateDescriptor("itemLabel");
+                                var itemLabelElem = _this.view.tmpl(itemLabelTemplateDescriptor, {
+                                    "options": _this.options,
+                                    "index": index ? index + 1 : 1,
+                                    "id": _this.id
+                                });
+                                itemLabelElem.prependTo(containerElem);
+                            }
+                            // remember the control
+                            _this.addChild(fieldControl, index);
+                            _this.renderToolbar(containerElem);
+                            _this.refreshValidationState();
+                            _this.updatePathAndName();
 
-                        // if not empty, mark the "last" and "first" dom elements in the list
-                        if ($(containerElem).siblings().addBack().length > 0)
+                            // trigger update on the parent array
+                            _this.triggerUpdate();
+
+                            // if not empty, mark the "last" and "first" dom elements in the list
+                            if ($(containerElem).siblings().addBack().length > 0)
+                            {
+                                $(containerElem).parent().removeClass("alpaca-fieldset-items-container-empty");
+
+                                $(containerElem).siblings().addBack().removeClass("alpaca-item-container-first");
+                                $(containerElem).siblings().addBack().removeClass("alpaca-item-container-last");
+                                $(containerElem).siblings().addBack().first().addClass("alpaca-item-container-first");
+                                $(containerElem).siblings().addBack().last().addClass("alpaca-item-container-last");
+                            }
+
+                            // store key on dom element
+                            $(containerElem).attr("data-alpaca-item-container-item-key", index);
+
+                            _this.updateToolbarItemsStatus(_this.outerEl);
+
+                            if (cb)
+                            {
+                                cb();
+                            }
+                        });
+                    },
+                    "postRender": function(control)
+                    {
+                        if (postRenderCallback)
                         {
-                            $(containerElem).parent().removeClass("alpaca-fieldset-items-container-empty");
-
-                            $(containerElem).siblings().addBack().removeClass("alpaca-item-container-first");
-                            $(containerElem).siblings().addBack().removeClass("alpaca-item-container-last");
-                            $(containerElem).siblings().addBack().first().addClass("alpaca-item-container-first");
-                            $(containerElem).siblings().addBack().last().addClass("alpaca-item-container-last");
+                            postRenderCallback(control);
                         }
-
-                        // store key on dom element
-                        $(containerElem).attr("data-alpaca-item-container-item-key", index);
-
                     }
                 });
 
-                this.updateToolbarItemsStatus(this.outerEl);
+                //this.updateToolbarItemsStatus(this.outerEl);
+
                 return containerElem;
             }
         },
@@ -11996,6 +14111,9 @@ var equiv = function () {
                     fieldChain.push(topField);
                 }
 
+                var originalItemSchema = itemSchema;
+                var originalItemOptions = itemOptions;
+
                 Alpaca.loadRefSchemaOptions(topField, referenceId, function(itemSchema, itemOptions) {
 
                     // walk the field chain to see if we have any circularity
@@ -12010,18 +14128,26 @@ var equiv = function () {
 
                     var circular = (refCount > 1);
 
+                    var resolvedItemSchema = {};
+                    if (originalItemSchema) {
+                        Alpaca.mergeObject(resolvedItemSchema, originalItemSchema);
+                    }
                     if (itemSchema)
                     {
-                        itemSchema = Alpaca.copyOf(itemSchema);
-                        delete itemSchema.id;
+                        Alpaca.mergeObject(resolvedItemSchema, itemSchema);
                     }
+                    delete resolvedItemSchema.id;
 
+                    var resolvedItemOptions = {};
+                    if (originalItemOptions) {
+                        Alpaca.mergeObject(resolvedItemOptions, originalItemOptions);
+                    }
                     if (itemOptions)
                     {
-                        itemOptions = Alpaca.copyOf(itemOptions);
+                        Alpaca.mergeObject(resolvedItemOptions, itemOptions);
                     }
 
-                    callback(itemSchema, itemOptions, circular);
+                    callback(resolvedItemSchema, resolvedItemOptions, circular);
                 });
             }
             else
@@ -12033,29 +14159,67 @@ var equiv = function () {
         /**
          * @see Alpaca.ContainerField#renderItems
          */
-        renderItems: function() {
-            var _this = this;
+        renderItems: function(onSuccess)
+        {
+            var self = this;
 
             // mark field container as empty by default
             // the "addItem" method below gets the opportunity to unset this
-            $(this.fieldContainer).addClass("alpaca-fieldset-items-container-empty");
+            $(self.fieldContainer).addClass("alpaca-fieldset-items-container-empty");
 
-            if (this.data)
+            if (self.data)
             {
                 // all items within the array have the same schema and options
                 // so we only need to load this once
-                _this.resolveItemSchemaOptions(function(schema, options) {
+                self.resolveItemSchemaOptions(function(schema, options) {
 
-                    $.each(_this.data, function(index, value) {
-                        _this.addItem(index, schema, options, value, false);
+                    // waterfall functions
+                    var funcs = [];
+                    for (var index = 0; index < self.data.length; index++)
+                    {
+                        var value = self.data[index];
+
+                        var pf = (function(index, value)
+                        {
+                            return function(callback)
+                            {
+                                self.addItem(index, schema, options, value, false, false, function() {
+
+                                    // by the time we get here, we may have constructed a very large child chain of
+                                    // sub-dependencies and so we use nextTick() instead of a straight callback so as to
+                                    // avoid blowing out the stack size
+                                    Alpaca.nextTick(function() {
+                                        callback();
+                                    });
+
+                                });
+                            };
+
+                        })(index, value);
+
+                        funcs.push(pf);
+                    }
+
+                    Alpaca.series(funcs, function(err) {
+
+                        self.updateToolbarItemsStatus();
+
+                        if (onSuccess)
+                        {
+                            onSuccess();
+                        }
                     });
 
-                    _this.updateToolbarItemsStatus();
                 });
             }
             else
             {
-                this.updateToolbarItemsStatus();
+                self.updateToolbarItemsStatus();
+
+                if (onSuccess)
+                {
+                    onSuccess();
+                }
             }
         },
 
@@ -12156,189 +14320,7 @@ var equiv = function () {
             };
 
             return baseStatus && valInfo["valueNotUnique"]["status"] && valInfo["tooManyItems"]["status"] && valInfo["notEnoughItems"]["status"];
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.ContainerField#getSchemaOfSchema
-         */
-        getSchemaOfSchema: function() {
-            var properties = {
-                "properties": {
-                    "items": {
-                        "title": "Array Items",
-                        "description": "Schema for array items.",
-                        "type": "object",
-                        "properties": {
-                            "minItems": {
-                                "title": "Minimum Items",
-                                "description": "Minimum number of items.",
-                                "type": "number"
-                            },
-                            "maxItems": {
-                                "title": "Maximum Items",
-                                "description": "Maximum number of items.",
-                                "type": "number"
-                            },
-                            "uniqueItems": {
-                                "title": "Items Unique",
-                                "description": "Item values should be unique if true.",
-                                "type": "boolean",
-                                "default": false
-                            }
-                        }
-                    }
-                }
-            };
-
-            if (this.children && this.children[0]) {
-                Alpaca.merge(properties.properties.items.properties, this.children[0].getSchemaOfSchema());
-            }
-
-            return Alpaca.merge(this.base(), properties);
-        },
-
-        /**
-         * @private
-         * @see Alpaca.ContainerField#getOptionsForSchema
-         */
-        getOptionsForSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "items": {
-                        "type": "object",
-                        "fields": {
-                            "minItems": {
-                                "type": "integer"
-                            },
-                            "maxItems": {
-                                "type": "integer"
-                            },
-                            "uniqueItems": {
-                                "type": "checkbox"
-                            }
-                        }
-                    }
-                }
-            });
-        },
-        /**
-         * @private
-         * @see Alpaca.ContainerField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            var properties = {
-                "properties": {
-                    "toolbarSticky": {
-                        "title": "Sticky Toolbar",
-                        "description": "Array item toolbar will be aways on if true.",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "items": {
-                        "title": "Array Items",
-                        "description": "Options for array items.",
-                        "type": "object",
-                        "properties": {
-                            "extraToolbarButtons": {
-                                "title": "Extra Toolbar buttons",
-                                "description": "Buttons to be added next to add/remove/up/down, see examples",
-                                "type": "array",
-                                "default": undefined
-                            },
-                            "moveUpItemLabel": {
-                                "title": "Move Up Item Label",
-                                "description": "The label to use for the toolbar's 'move up' button.",
-                                "type": "string",
-                                "default": "Move Up"
-                            },
-                            "moveDownItemLabel": {
-                                "title": "Move Down Item Label",
-                                "description": "The label to use for the toolbar's 'move down' button.",
-                                "type": "string",
-                                "default": "Move Down"
-                            },
-                            "removeItemLabel": {
-                                "title": "Remove Item Label",
-                                "description": "The label to use for the toolbar's 'remove item' button.",
-                                "type": "string",
-                                "default": "Remove Item"
-                            },
-                            "addItemLabel": {
-                                "title": "Add Item Label",
-                                "description": "The label to use for the toolbar's 'add item' button.",
-                                "type": "string",
-                                "default": "Add Item"
-                            },
-                            "showMoveDownItemButton": {
-                                "title": "Show Move Down Item Button",
-                                "description": "Whether to show to the 'Move Down' button on the toolbar.",
-                                "type": "boolean",
-                                "default": true
-                            },
-                            "showMoveUpItemButton": {
-                                "title": "Show Move Up Item Button",
-                                "description": "Whether to show the 'Move Up' button on the toolbar.",
-                                "type": "boolean",
-                                "default": true
-                            }
-                        }
-                    }
-                }
-            };
-
-            if (this.children && this.children[0]) {
-                Alpaca.merge(properties.properties.items.properties, this.children[0].getSchemaOfSchema());
-            }
-
-            return Alpaca.merge(this.base(), properties);
-        },
-
-        /**
-         * @private
-         * @see Alpaca.ContainerField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "toolbarSticky": {
-                        "type": "checkbox"
-                    },
-                    "items": {
-                        "type": "object",
-                        "fields": {
-                        }
-                    }
-                }
-            });
-        },
-        /**
-         * @see Alpaca.ContainerField#getTitle
-         */
-        getTitle: function() {
-            return "Array Field";
-        },
-
-        /**
-         * @see Alpaca.ContainerField#getDescription
-         */
-        getDescription: function() {
-            return "Field for list of items with same data type or structure.";
-        },
-
-        /**
-         * @see Alpaca.ContainerField#getType
-         */
-        getType: function() {
-            return "array";
-        },
-
-        /**
-         * @see Alpaca.ContainerField#getFiledType
-         */
-        getFieldType: function() {
-            return "array";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerTemplate("itemLabel", '{{if options.itemLabel}}<div class="alpaca-controlfield-label"><div>${options.itemLabel}{{if index}} <span class="alpaca-item-label-counter">${index}</span>{{/if}}</div></div>{{/if}}');
@@ -12361,1290 +14343,292 @@ var equiv = function () {
     var Alpaca = $.alpaca;
 
     Alpaca.Fields.ObjectField = Alpaca.ContainerField.extend(
+    /**
+     * @lends Alpaca.Fields.ObjectField.prototype
+     */
+    {
         /**
-         * @lends Alpaca.Fields.ObjectField.prototype
+         * @constructs
+         * @augments Alpaca.ContainerField
+         *
+         * @class Control for JSON Schema object type.
+         *
+         * @param {Object} container Field container.
+         * @param {Any} data Field data.
+         * @param {Object} options Field options.
+         * @param {Object} schema Field schema.
+         * @param {Object|String} view Field view.
+         * @param {Alpaca.Connector} connector Field connector.
+         * @param {Function} errorCallback Error callback.
          */
-        {
-            /**
-             * @constructs
-             * @augments Alpaca.ContainerField
-             *
-             * @class Control for JSON Schema object type.
-             *
-             * @param {Object} container Field container.
-             * @param {Any} data Field data.
-             * @param {Object} options Field options.
-             * @param {Object} schema Field schema.
-             * @param {Object|String} view Field view.
-             * @param {Alpaca.Connector} connector Field connector.
-             * @param {Function} errorCallback Error callback.
-             */
-            constructor: function(container, data, options, schema, view, connector, errorCallback) {
-                this.base(container, data, options, schema, view, connector, errorCallback);
-            },
+        constructor: function(container, data, options, schema, view, connector, errorCallback) {
+            this.base(container, data, options, schema, view, connector, errorCallback);
+        },
 
-            /**
-             * @see Alpaca.ContainerField#setup
-             */
-            setup: function() {
-                this.base();
+        /**
+         * @see Alpaca.ContainerField#setup
+         */
+        setup: function() {
+            this.base();
 
-                this.wizardPreIcon = "";
-                this.wizardNextIcon = "";
-                this.wizardDoneIcon= "";
+            this.wizardPreIcon = "";
+            this.wizardNextIcon = "";
+            this.wizardDoneIcon= "";
 
-                if (this.view.style && Alpaca.styleInjections[this.view.style]) {
-                    if (Alpaca.styleInjections[this.view.style]["wizardPreIcon"]) {
-                        this.wizardPreIcon = Alpaca.styleInjections[this.view.style]["wizardPreIcon"];
-                    }
-                    if (Alpaca.styleInjections[this.view.style]["wizardNextIcon"]) {
-                        this.wizardNextIcon = Alpaca.styleInjections[this.view.style]["wizardNextIcon"];
-                    }
-                    if (Alpaca.styleInjections[this.view.style]["wizardDoneIcon"]) {
-                        this.wizardDoneIcon = Alpaca.styleInjections[this.view.style]["wizardDoneIcon"];
-                    }
+            if (this.view.style && Alpaca.styleInjections[this.view.style]) {
+                if (Alpaca.styleInjections[this.view.style]["wizardPreIcon"]) {
+                    this.wizardPreIcon = Alpaca.styleInjections[this.view.style]["wizardPreIcon"];
                 }
+                if (Alpaca.styleInjections[this.view.style]["wizardNextIcon"]) {
+                    this.wizardNextIcon = Alpaca.styleInjections[this.view.style]["wizardNextIcon"];
+                }
+                if (Alpaca.styleInjections[this.view.style]["wizardDoneIcon"]) {
+                    this.wizardDoneIcon = Alpaca.styleInjections[this.view.style]["wizardDoneIcon"];
+                }
+            }
 
-                if (Alpaca.isEmpty(this.data)) {
+            if (Alpaca.isEmpty(this.data)) {
+                return;
+            }
+
+            if (this.data == "")
+            {
+                return;
+            }
+
+            if (!Alpaca.isObject(this.data)) {
+                if (!Alpaca.isString(this.data)) {
                     return;
-                }
-                if (!Alpaca.isObject(this.data)) {
-                    if (!Alpaca.isString(this.data)) {
-                        return;
-                    } else {
-                        try {
-                            this.data = Alpaca.parseJSON(this.data);
-                            if (!Alpaca.isObject(this.data)) {
-                                Alpaca.logWarn("ObjectField parsed data but it was not an object: " + JSON.stringify(this.data));
-                                return;
-                            }
-                        } catch (e) {
+                } else {
+                    try {
+                        this.data = Alpaca.parseJSON(this.data);
+                        if (!Alpaca.isObject(this.data)) {
+                            Alpaca.logWarn("ObjectField parsed data but it was not an object: " + JSON.stringify(this.data));
                             return;
                         }
+                    } catch (e) {
+                        return;
                     }
                 }
-            },
+            }
+        },
 
-            /**
-             * Picks apart the data object and set onto child fields.
-             *
-             * @see Alpaca.Field#setValue
-             */
-            setValue: function(data) {
-                if (!data || !Alpaca.isObject(data)) {
-                    return;
-                }
-                // clear all controls
-                //Alpaca.each(this.children, function() {
-                //    this.clear();
-                //});
+        /**
+         * Picks apart the data object and set onto child fields.
+         *
+         * @see Alpaca.Field#setValue
+         */
+        setValue: function(data)
+        {
+            if (!data)
+            {
+                data = {};
+            }
 
-                // set fields
-                for (var fieldId in this.childrenById) {
-                    var propertyId = this.childrenById[fieldId].propertyId;
-                    var _data = Alpaca.traverseObject(data, propertyId);
-                    if (!Alpaca.isEmpty(_data)) {
-                        var childField = this.childrenById[fieldId];
-                        childField.setValue(_data);
-                    }
-                }
-            },
+            // if not an object by this point, we don't handle it
+            if (!Alpaca.isObject(data))
+            {
+                return;
+            }
 
-            /**
-             * Reconstructs the data object from the child fields.
-             *
-             * @see Alpaca.Field#getValue
-             */
-            getValue: function() {
+            // sort existing fields by property id
+            var existingFieldsByPropertyId = {};
+            for (var fieldId in this.childrenById)
+            {
+                var propertyId = this.childrenById[fieldId].propertyId;
+                existingFieldsByPropertyId[propertyId] = this.childrenById[fieldId];
+            }
 
-                // if we don't have any children and we're not required, hand back undefined
-                if (this.children.length === 0 && !this.schema.required)
+            // new data mapped by property id
+            var newDataByPropertyId = {};
+            for (var k in data)
+            {
+                if (data.hasOwnProperty(k))
                 {
-                    return;
+                    newDataByPropertyId[k] = data[k];
                 }
+            }
 
-                // otherwise, hand back an object with our child properties in it
-                var o = {};
+            // walk through new property ids
+            // if a field exists, set value onto it and remove from newDataByPropertyId and existingFieldsByPropertyId
+            // if a field doesn't exist, let it remain in list
+            for (var propertyId in newDataByPropertyId)
+            {
+                var field = existingFieldsByPropertyId[propertyId];
+                if (field)
+                {
+                    field.setValue(newDataByPropertyId[propertyId]);
 
-                // walk through all of the properties object
-                // for each property, we insert it into a JSON object that we'll hand back as the result
+                    delete existingFieldsByPropertyId[propertyId];
+                    delete newDataByPropertyId[propertyId];
+                }
+            }
 
-                // if the property has dependencies, then we evaluate those dependencies first to determine whether the
-                // resulting property should be included
+            // anything left in existingFieldsByPropertyId describes data that is missing, null or empty
+            // we null out those values
+            for (var propertyId in existingFieldsByPropertyId)
+            {
+                var field = existingFieldsByPropertyId[propertyId];
+                field.setValue(null);
+            }
 
-                for (var i = 0; i < this.children.length; i++) {
+            // anything left in newDataByPropertyId is new stuff that we need to add
+            // the object field doesn't support this since it runs against a schema
+            // so we drop this off
+        },
 
-                    // the property key and vlaue
-                    var propertyId = this.children[i].propertyId;
-                    var fieldValue = this.children[i].getValue();
+        /**
+         * Reconstructs the data object from the child fields.
+         *
+         * @see Alpaca.Field#getValue
+         */
+        getValue: function() {
 
-                    if (typeof(fieldValue) !== "undefined")
+            // if we don't have any children and we're not required, hand back empty object
+            if (this.children.length === 0 && !this.schema.required)
+            {
+                return {};
+            }
+
+            // otherwise, hand back an object with our child properties in it
+            var o = {};
+
+            // walk through all of the properties object
+            // for each property, we insert it into a JSON object that we'll hand back as the result
+
+            // if the property has dependencies, then we evaluate those dependencies first to determine whether the
+            // resulting property should be included
+
+            for (var i = 0; i < this.children.length; i++) {
+
+                // the property key and vlaue
+                var propertyId = this.children[i].propertyId;
+                var fieldValue = this.children[i].getValue();
+
+                if (typeof(fieldValue) !== "undefined")
+                {
+                    if (this.determineAllDependenciesValid(propertyId))
                     {
-                        if (this.determineAllDependenciesValid(propertyId))
+                        var assignedValue = null;
+
+                        if (typeof(fieldValue) === "boolean")
                         {
-                            o[propertyId] = fieldValue;
+                            assignedValue = (fieldValue? true: false);
+                        }
+                        else if (Alpaca.isArray(fieldValue) || Alpaca.isObject(fieldValue))
+                        {
+                            assignedValue = fieldValue;
+                        }
+                        else if (fieldValue)
+                        {
+                            assignedValue = fieldValue;
+                        }
+
+                        if (assignedValue)
+                        {
+                            o[propertyId] = assignedValue;
                         }
                     }
                 }
+            }
 
-                return o;
-            },
+            return o;
+        },
 
-            /**
-             * @see Alpaca.Field#postRender
-             */
-            postRender: function() {
-                this.base();
+        /**
+         * @see Alpaca.Field#postRender
+         */
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
                 // Generates wizard if requested
-                if (this.isTopLevel()) {
-                    if (this.view) {
-                        this.wizardConfigs = this.view.getWizard();
-                        if (this.wizardConfigs) {
+                if (self.isTopLevel()) {
+                    if (self.view) {
+                        self.wizardConfigs = self.view.getWizard();
+                        if (self.wizardConfigs) {
 
                             // set up defaults for wizard
-                            if (Alpaca.isUndefined(this.wizardConfigs.validation)) {
-                                this.wizardConfigs.validation = true;
+                            if (Alpaca.isUndefined(self.wizardConfigs.validation)) {
+                                self.wizardConfigs.validation = true;
                             }
-                            if (!this.wizardConfigs.buttons) {
-                                this.wizardConfigs.buttons = {};
+                            if (!self.wizardConfigs.buttons) {
+                                self.wizardConfigs.buttons = {};
                             }
 
                             // done
-                            if (!this.wizardConfigs.buttons.done) {
-                                this.wizardConfigs.buttons.done = {};
+                            if (!self.wizardConfigs.buttons.done) {
+                                self.wizardConfigs.buttons.done = {};
                             }
-                            if (Alpaca.isUndefined(this.wizardConfigs.buttons.done.validateOnClick)) {
-                                this.wizardConfigs.buttons.done.validateOnClick = true;
+                            if (Alpaca.isUndefined(self.wizardConfigs.buttons.done.validateOnClick)) {
+                                self.wizardConfigs.buttons.done.validateOnClick = true;
                             }
 
                             // prev
-                            if (!this.wizardConfigs.buttons.prev) {
-                                this.wizardConfigs.buttons.prev = {};
+                            if (!self.wizardConfigs.buttons.prev) {
+                                self.wizardConfigs.buttons.prev = {};
                             }
-                            if (Alpaca.isUndefined(this.wizardConfigs.buttons.prev.validateOnClick)) {
-                                this.wizardConfigs.buttons.prev.validateOnClick = true;
+                            if (Alpaca.isUndefined(self.wizardConfigs.buttons.prev.validateOnClick)) {
+                                self.wizardConfigs.buttons.prev.validateOnClick = true;
                             }
 
                             // next
-                            if (!this.wizardConfigs.buttons.next) {
-                                this.wizardConfigs.buttons.next = {};
+                            if (!self.wizardConfigs.buttons.next) {
+                                self.wizardConfigs.buttons.next = {};
                             }
-                            if (Alpaca.isUndefined(this.wizardConfigs.buttons.next.validateOnClick)) {
-                                this.wizardConfigs.buttons.next.validateOnClick = true;
+                            if (Alpaca.isUndefined(self.wizardConfigs.buttons.next.validateOnClick)) {
+                                self.wizardConfigs.buttons.next.validateOnClick = true;
                             }
-
                         }
-                        var layoutTemplateDescriptor = this.view.getLayout().templateDescriptor;
-                        if (this.wizardConfigs && this.wizardConfigs.renderWizard) {
+                        var layoutTemplateDescriptor = self.view.getLayout().templateDescriptor;
+                        if (self.wizardConfigs && self.wizardConfigs.renderWizard) {
                             if (layoutTemplateDescriptor) {
                                 //Wizard based on layout
-                                this.wizard();
+                                self.wizard();
                             } else {
                                 //Wizard based on injections
-                                this.autoWizard();
-                            }
-                        }
-                    }
-                }
-            },
-
-            /**
-             * Gets child index.
-             *
-             * @param {Object} propertyId Child field property ID.
-             */
-            getIndex: function(propertyId) {
-                if (Alpaca.isEmpty(propertyId)) {
-                    return -1;
-                }
-                for (var i = 0; i < this.children.length; i++) {
-                    var pid = this.children[i].propertyId;
-                    if (pid == propertyId) {
-                        return i;
-                    }
-                }
-                return -1;
-            },
-
-            /**
-             * Determines the schema and options to utilize for sub-objects within this object.
-             *
-             * @param propertyId
-             * @param callback
-             */
-            resolvePropertySchemaOptions: function(propertyId, callback)
-            {
-                var _this = this;
-
-                var propertySchema = null;
-                if (_this.schema && _this.schema.properties && _this.schema.properties[propertyId]) {
-                    propertySchema = _this.schema.properties[propertyId];
-                }
-                var propertyOptions = {};
-                if (_this.options && _this.options.fields && _this.options.fields[propertyId]) {
-                    propertyOptions = _this.options.fields[propertyId];
-                }
-
-                // handle $ref
-                if (propertySchema && propertySchema["$ref"])
-                {
-                    var referenceId = propertySchema["$ref"];
-
-                    var topField = this;
-                    var fieldChain = [topField];
-                    while (topField.parent)
-                    {
-                        topField = topField.parent;
-                        fieldChain.push(topField);
-                    }
-
-                    Alpaca.loadRefSchemaOptions(topField, referenceId, function(propertySchema, propertyOptions) {
-
-                        // walk the field chain to see if we have any circularity
-                        var refCount = 0;
-                        for (var i = 0; i < fieldChain.length; i++)
-                        {
-                            if (fieldChain[i].schema && fieldChain[i].schema.id === referenceId)
-                            {
-                                refCount++;
-                            }
-                        }
-
-                        var circular = (refCount > 1);
-
-                        if (propertySchema)
-                        {
-                            propertySchema = Alpaca.copyOf(propertySchema);
-                            delete propertySchema.id;
-                        }
-
-                        if (propertyOptions)
-                        {
-                            propertyOptions = Alpaca.copyOf(propertyOptions);
-                        }
-
-                        callback(propertySchema, propertyOptions, circular);
-                    });
-                }
-                else
-                {
-                    callback(propertySchema, propertyOptions);
-                }
-            },
-
-            /**
-             * Removes child
-             *
-             * @param {String} id the alpaca field id of the field to be removed
-             */
-            removeItem: function(id)
-            {
-                this.children = $.grep(this.children, function(val, index) {
-                    return (val.getId() != id);
-                });
-
-                var childField = this.childrenById[id];
-
-                delete this.childrenById[id];
-                if (childField.propertyId)
-                {
-                    delete this.childrenByPropertyId[childField.propertyId];
-                }
-
-                childField.destroy();
-
-                this.renderValidationState();
-
-                // trigger update handler
-                this.triggerUpdate();
-            },
-
-            /**
-             * Adds a child item.
-             *
-             * @param {String} propertyId Child field property ID.
-             * @param {Object} itemSchema schema
-             * @param {Object} fieldOptions Child field options.
-             * @param {Any} value Child field value
-             * @param {String} insertAfterId Location where the child item will be inserted.
-             * @param [Boolean] isDynamicSubItem whether this item is being dynamically created (after first render)
-             */
-            addItem: function(propertyId, itemSchema, itemOptions, itemData, insertAfterId, isDynamicSubItem) {
-                var _this = this;
-
-                var containerElem = _this.renderItemContainer(insertAfterId, this, propertyId);
-                containerElem.alpaca({
-                    "data" : itemData,
-                    "options": itemOptions,
-                    "schema" : itemSchema,
-                    "view" : this.view.id ? this.view.id : this.view,
-                    "connector": this.connector,
-                    "error": function(err)
-                    {
-                        _this.destroy();
-
-                        _this.errorCallback.call(_this, err);
-                    },
-                    "notTopLevel":true,
-                    "isDynamicCreation": (isDynamicSubItem || this.isDynamicCreation),
-                    "render" : function(fieldControl) {
-                        // render
-                        fieldControl.parent = _this;
-                        // add the property Id
-                        fieldControl.propertyId = propertyId;
-                        // setup item path
-                        if (_this.path != "/") {
-                            fieldControl.path = _this.path + "/" + propertyId;
-                        } else {
-                            fieldControl.path = _this.path + propertyId;
-                        }
-                        fieldControl.render();
-                        containerElem.attr("id", fieldControl.getId() + "-item-container");
-                        containerElem.attr("alpaca-id", fieldControl.getId());
-                        containerElem.addClass("alpaca-fieldset-item-container");
-                        // remember the control
-                        if (Alpaca.isEmpty(insertAfterId)) {
-                            _this.addChild(fieldControl);
-                        } else {
-                            var index = _this.getIndex(insertAfterId);
-                            if (index != -1) {
-                                _this.addChild(fieldControl, index + 1);
-                            } else {
-                                _this.addChild(fieldControl);
-                            }
-                        }
-                        if (insertAfterId) {
-                            _this.renderValidationState();
-                        }
-
-                        // if not empty, mark the "last" and "first" dom elements in the list
-                        if ($(containerElem).siblings().addBack().length > 0)
-                        {
-                            $(containerElem).parent().removeClass("alpaca-fieldset-items-container-empty");
-
-                            $(containerElem).siblings().addBack().removeClass("alpaca-item-container-first");
-                            $(containerElem).siblings().addBack().removeClass("alpaca-item-container-last");
-                            $(containerElem).siblings().addBack().first().addClass("alpaca-item-container-first");
-                            $(containerElem).siblings().addBack().last().addClass("alpaca-item-container-last");
-                        }
-
-                        // store key on dom element
-                        $(containerElem).attr("data-alpaca-item-container-item-key", propertyId);
-
-                        // trigger update on the parent array
-                        _this.triggerUpdate();
-                    }
-                });
-            },
-
-            /**
-             * @see Alpaca.ContainerField#renderItems
-             */
-            renderItems: function() {
-
-                var _this = this;
-
-                // we keep a map of all of the properties in our original data object
-                // as we render elements out of the schema, we remove from the dataProperties map
-                // whatever is leftover are the data properties that were NOT rendered because they were not part
-                // of the schema
-                // we use this for debugging
-                var extraDataProperties = {};
-                for (var dataKey in _this.data) {
-                    extraDataProperties[dataKey] = dataKey;
-                }
-
-                var properties = _this.data;
-                if (_this.schema && _this.schema.properties) {
-                    properties = _this.schema.properties;
-                }
-
-                var cf = function(validPropertyIds)
-                {
-                    // If the schema and the data line up perfectly, then there will be no properties in the data that are
-                    // not also in the schema, and thus, extraDataProperties will be empty.
-                    //
-                    // On the other hand, if there are some properties in data that were not in schema, then they will
-                    // remain in extraDataProperties and we can inform developers for debugging purposes
-                    //
-                    var extraDataKeys = [];
-                    for (var extraDataKey in extraDataProperties) {
-                        extraDataKeys.push(extraDataKey);
-                    }
-                    if (extraDataKeys.length > 0) {
-                        Alpaca.logDebug("There were " + extraDataKeys.length + " extra data keys that were not part of the schema " + JSON.stringify(extraDataKeys));
-                    }
-
-                    // support for dependencies
-
-                    // walk through all properties and allow each to determine whether it should show based on its dependencies.
-                    // if properties do not have dependencies, they show by default.
-                    for (var propertyId in properties)
-                    {
-                        _this.showOrHidePropertyBasedOnDependencies(propertyId);
-                    }
-
-                    // bind event handlers to handle updates to field state
-                    for (var propertyId in properties)
-                    {
-                        _this.bindDependencyFieldUpdateEvent(propertyId);
-                    }
-
-                    _this.renderValidationState();
-                };
-
-                // each property in the object can have a different schema and options so we need to process
-                // asynchronously and wait for all to complete
-
-                var total = 0;
-                for (var propertyId in properties)
-                {
-                    total++;
-                }
-                var complete = 0;
-                for (var propertyId in properties)
-                {
-                    var itemData = null;
-                    if (_this.data)
-                    {
-                        itemData = _this.data[propertyId];
-                    }
-
-                    // only allow this if we have data, otherwise we end up with circular reference
-                    _this.resolvePropertySchemaOptions(propertyId, function(schema, options, circular) {
-
-                        // we only allow addition if the resolved schema isn't circularly referenced
-                        // or the schema is optional
-                        if (circular)
-                        {
-                            return Alpaca.throwErrorWithCallback("Circular reference detected for schema: " + schema, _this.errorCallback);
-                        }
-
-                        if (!schema)
-                        {
-                            Alpaca.logError("Unable to resolve schema for property: " + propertyId);
-                        }
-
-                        _this.addItem(propertyId, schema, options, itemData);
-
-                        // remove from extraDataProperties helper
-                        delete extraDataProperties[propertyId];
-
-                        complete++;
-                        if (complete === total)
-                        {
-                            // move ahead
-                            cf();
-                        }
-                    });
-                }
-            },
-
-
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////
-            //
-            // DEPENDENCIES
-            //
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            /**
-             * Shows or hides a property's field based on how its dependencies evaluate.
-             * If a property doesn't have dependencies, this no-ops.
-             *
-             * @param propertyId
-             */
-            showOrHidePropertyBasedOnDependencies: function(propertyId)
-            {
-                var self = this;
-
-                var item = this.childrenByPropertyId[propertyId];
-                if (!item)
-                {
-                    return Alpaca.throwErrorWithCallback("Missing property: " + propertyId, self.errorCallback);
-                }
-
-                var valid = this.determineAllDependenciesValid(propertyId);
-                if (valid)
-                {
-                    item.show();
-
-                    item.onDependentReveal();
-                }
-                else
-                {
-                    item.hide();
-
-                    item.onDependentConceal();
-                }
-            },
-
-            /**
-             * Determines whether the dependencies for a property pass.
-             *
-             * @param propertyId
-             */
-            determineAllDependenciesValid: function(propertyId)
-            {
-                var self = this;
-
-                var item = this.childrenByPropertyId[propertyId];
-                if (!item)
-                {
-                    return Alpaca.throwErrorWithCallback("Missing property: " + propertyId, self.errorCallback);
-                }
-
-                var itemDependencies = item.schema.dependencies;
-                if (!itemDependencies)
-                {
-                    // no dependencies, so yes, we pass
-                    return true;
-                }
-
-                var valid = true;
-                if (Alpaca.isString(itemDependencies))
-                {
-                    valid = self.determineSingleDependencyValid(propertyId, itemDependencies);
-                }
-                else if (Alpaca.isArray(itemDependencies))
-                {
-                    $.each(itemDependencies, function(index, value) {
-                        valid = valid && self.determineSingleDependencyValid(propertyId, value);
-                    });
-                }
-
-                return valid;
-            },
-
-            /**
-             * Binds field updates to any field dependencies.
-             *
-             * @param propertyId
-             */
-            bindDependencyFieldUpdateEvent: function(propertyId)
-            {
-                var self = this;
-
-                var item = this.childrenByPropertyId[propertyId];
-                if (!item)
-                {
-                    return Alpaca.throwErrorWithCallback("Missing property: " + propertyId, self.errorCallback);
-                }
-
-                var itemDependencies = item.schema.dependencies;
-                if (!itemDependencies)
-                {
-                    // no dependencies, so simple return
-                    return true;
-                }
-
-                // helper function
-                var bindEvent = function(propertyId, dependencyPropertyId)
-                {
-                    var dependentField = self.childrenByPropertyId[dependencyPropertyId];
-                    if (dependentField)
-                    {
-                        dependentField.getEl().bind("fieldupdate", function(event) {
-
-                            // the property "dependencyPropertyId" changed and affects target property ("propertyId")
-
-                            // update UI state for target property
-                            self.showOrHidePropertyBasedOnDependencies(propertyId);
-
-                            // look for any other sibling fields that depend on new state for target property
-                            for (var targetPropertyId in self.schema.properties)
-                            {
-                                var def = self.schema.properties[targetPropertyId];
-                                if (def.dependencies)
-                                {
-                                    var targetField = self.childrenByPropertyId[targetPropertyId];
-
-                                    if (Alpaca.isString(def.dependencies) && def.dependencies == propertyId)
-                                    {
-                                        self.showOrHidePropertyBasedOnDependencies(targetPropertyId);
-                                        targetField.triggerUpdate();
-                                    }
-                                    else if (Alpaca.isArray(def.dependencies))
-                                    {
-                                        $.each(def.dependencies, function(index, value) {
-                                            if (value == propertyId)
-                                            {
-                                                self.showOrHidePropertyBasedOnDependencies(targetPropertyId);
-                                                targetField.triggerUpdate();
-                                            }
-                                        });
-                                    }
-                                }
-                            }
-                        });
-                    }
-                };
-
-                if (Alpaca.isString(itemDependencies))
-                {
-                    bindEvent(propertyId, itemDependencies);
-                }
-                else if (Alpaca.isArray(itemDependencies))
-                {
-                    $.each(itemDependencies, function(index, value) {
-                        bindEvent(propertyId, value);
-                    });
-                }
-            },
-
-            /**
-             * Checks whether a single property's dependency is satisfied or not.
-             *
-             * In order to be valid, the property's dependency must exist (JSON schema) and optionally must satisfy
-             * any dependency options (value matches using an AND).  Finally, the dependency field must be showing.
-             *
-             * @param {Object} propertyId Field property id.
-             * @param {Object} dependentOnPropertyId Property id of the dependency field.
-             *
-             * @returns {Boolean} True if all dependencies have been satisfied and the field needs to be shown,
-             * false otherwise.
-             */
-            determineSingleDependencyValid: function(propertyId, dependentOnPropertyId)
-            {
-                // checks to see if the referenced "dependent-on" property has a value
-                // basic JSON-schema supports this (if it has ANY value, it is considered valid
-                // special consideration for boolean false
-                var child = this.childrenByPropertyId[dependentOnPropertyId];
-                if (!child)
-                {
-                    // no dependent-on field found, return false
-                    return false;
-                }
-
-                // assume it isn't valid
-                var valid = false;
-
-                // go one of two directions depending on whether we have conditional dependencies or not
-                var conditionalDependencies = this.childrenByPropertyId[propertyId].options.dependencies;
-                if (!conditionalDependencies || conditionalDependencies.length === 0)
-                {
-                    //
-                    // BASIC DEPENENDENCY CHECKING (CORE JSON SCHEMA)
-                    //
-
-                    // special case: if the field is a boolean field and we have no conditional dependency checking,
-                    // then we set valid = false if the field data is a boolean false
-                    if (child.getType() === "boolean" && !this.childrenByPropertyId[propertyId].options.dependencies && !child.data)
-                    {
-                        valid = false;
-                    }
-                    else
-                    {
-                        valid = !Alpaca.isValEmpty(child.data);
-                    }
-                }
-                else
-                {
-                    //
-                    // CONDITIONAL DEPENDENCY CHECKING (ALPACA EXTENSION VIA OPTIONS)
-                    //
-
-                    // Alpaca extends JSON schema by allowing dependencies to trigger only for specific values on the
-                    // dependent fields.  If options are specified to define this, we walk through and perform an
-                    // AND operation across any fields
-
-                    // do some data sanity cleanup
-                    var dependentOnField = this.childrenByPropertyId[dependentOnPropertyId];
-                    var dependentOnData = dependentOnField.data;
-                    if (dependentOnField.getType() === "boolean" && !dependentOnData) {
-                        dependentOnData = false
-                    }
-
-
-                    // if the option is a function, then evaluate the function to determine whether to show
-                    // the function evaluates regardless of whether the schema-based fallback determined we should show
-                    if (!Alpaca.isEmpty(conditionalDependencies[dependentOnPropertyId]) && Alpaca.isFunction(conditionalDependencies[dependentOnPropertyId]))
-                    {
-                        valid = conditionalDependencies[dependentOnPropertyId].call(this, dependentOnData);
-                    }
-                    else
-                    {
-                        // assume true
-                        valid = true;
-
-                        // the option is an array or an object
-                        if (Alpaca.isArray(conditionalDependencies[dependentOnPropertyId])) {
-
-                            // check array value
-                            if (conditionalDependencies[dependentOnPropertyId] && $.inArray(dependentOnData, conditionalDependencies[dependentOnPropertyId]) == -1)
-                            {
-                                valid = false;
-                            }
-                        }
-                        else
-                        {
-                            // check object value
-                            if (!Alpaca.isEmpty(conditionalDependencies[dependentOnPropertyId]) && conditionalDependencies[dependentOnPropertyId] != dependentOnData)
-                            {
-                                valid = false;
+                                self.autoWizard();
                             }
                         }
                     }
                 }
 
-                //
-                // NESTED HIDDENS DEPENDENCY HIDES (ALPACA EXTENSION)
-                //
-
-                // final check: only set valid if the dependentOnPropertyId is showing
-                var dependencyProperty = this.childrenByPropertyId[dependentOnPropertyId];
-                if (dependencyProperty && dependencyProperty.isHidden())
-                {
-                    valid = false;
-                }
-
-                return valid;
-            },
-
-
-
-
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////
-            //
-            // WIZARD
-            //
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-            /**
-             * Renders a template-based wizard.
-             */
-            wizard: function() {
-
-                var _this = this;
-
-                var element = this.outerEl;
-                var steps = $('.alpaca-wizard-step', element);
-                var count = steps.size();
-
-                this.totalSteps = count;
-
-                var stepTitles = [];
-                if (this.wizardConfigs.stepTitles) {
-                    stepTitles = this.wizardConfigs.stepTitles;
-                } else {
-                    // Prepare step titles
-                    steps.each(function(i) {
-                        var stepTitle = {
-                            "title": "",
-                            "description": ""
-                        };
-                        if ($('.alpaca-wizard-step-title', this)) {
-                            stepTitle.title = $('.alpaca-wizard-step-title', this).html();
-                            $('.alpaca-wizard-step-title', this).hide();
-                        }
-                        if ($('.alpaca-wizard-step-description', this)) {
-                            stepTitle.description = $('.alpaca-wizard-step-description', this).html();
-                            $('.alpaca-wizard-step-description', this).hide();
-                        }
-                        stepTitles.push(stepTitle);
-                    });
-                }
-                var wizardStatusBarElement = this._renderWizardStatusBar(stepTitles);
-                if (wizardStatusBarElement) {
-                    $(element).before(wizardStatusBarElement);
-                }
-
-                steps.each(function(i) {
-
-                    var wizardStepTargetId = $(this).attr("id");
-
-                    var stepId = 'step' + i;
-                    var wizardStepTemplateDescriptor = _this.view.getTemplateDescriptor("wizardStep");
-                    if (wizardStepTemplateDescriptor) {
-                        var wizardStepElement = _this.view.tmpl(wizardStepTemplateDescriptor, {});
-                        wizardStepElement.attr("id", stepId);
-                        $(this).wrap(wizardStepElement);
-                    }
-
-                    var navBarId = stepId + '-nav-bar';
-                    var wizardNavBarTemplateDescriptor = _this.view.getTemplateDescriptor("wizardNavBar");
-                    if (wizardNavBarTemplateDescriptor) {
-                        var wizardNavBarElement = _this.view.tmpl(wizardNavBarTemplateDescriptor, {});
-                        wizardNavBarElement.attr("id", navBarId);
-                        wizardNavBarElement.addClass('alpaca-wizard-nav-bar');
-                        $(this).append(wizardNavBarElement);
-                    }
-
-                    // collect all of the stepBindings for this step
-                    var stepBindings = {};
-                    var bindings = _this.view.getLayout().bindings;
-                    for (var fieldId in bindings)
-                    {
-                        var bindingTargetId = bindings[fieldId];
-
-                        if (bindingTargetId == wizardStepTargetId)
-                        {
-                            stepBindings[fieldId] = wizardStepTargetId;
-                        }
-                    }
-
-                    var vFunc = function(stepCount, stepBindings)
-                    {
-                        return function() {
-
-                            var valid = true;
-
-                            if (_this.wizardConfigs && _this.wizardConfigs.validation) {
-
-                                // if auto-wizard, process bindings one at a time
-                                if (stepBindings) {
-                                    $.each(stepBindings, function(propertyId, step) {
-                                        valid = valid & _this.childrenByPropertyId[propertyId].validate();
-                                        _this.childrenByPropertyId[propertyId].renderValidationState();
-                                    });
-                                }
-
-                            }
-
-                            return valid;
-                        };
-                    }(i, stepBindings);
-
-                    if (i === 0) {
-                        _this._createNextButton(i, true, vFunc);
-                        _this._selectStep(i);
-                    } else if (i == count - 1) {
-                        $("#step" + i).hide();
-                        _this._createPrevButton(i, false);
-                        _this._createDoneButton(i, true, vFunc);
-                    } else {
-                        $("#step" + i).hide();
-                        _this._createPrevButton(i, false);
-                        _this._createNextButton(i, true, vFunc);
-                    }
-                });
-            },
-
-            /**
-             * Renders a configuration-based wizard without a layout template.
-             */
-            autoWizard: function() {
-
-                var _this = this;
-
-                var totalSteps = this.wizardConfigs.steps;
-
-                if (!totalSteps) {
-                    totalSteps = 1;
-                }
-
-                this.totalSteps = totalSteps;
-
-                var stepBindings = this.wizardConfigs.bindings;
-
-                if (!stepBindings) {
-                    stepBindings = {};
-                }
-
-                for (var propertyId in this.childrenByPropertyId) {
-                    if (!stepBindings.hasOwnProperty(propertyId)) {
-                        stepBindings[propertyId] = 1;
-                    }
-                }
-
-                for (var i = 0; i < totalSteps; i++) {
-                    var step = i + 1;
-                    var tmpArray = [];
-                    for (var propertyId in stepBindings) {
-                        if (stepBindings[propertyId] == step) {
-                            if (this.childrenByPropertyId && this.childrenByPropertyId[propertyId]) {
-                                tmpArray.push("#" + this.childrenByPropertyId[propertyId].container.attr('id'));
-                            }
-                        }
-                    }
-
-                    var stepId = 'step' + i;
-                    var wizardStepTemplateDescriptor = this.view.getTemplateDescriptor("wizardStep");
-                    if (wizardStepTemplateDescriptor) {
-                        var wizardStepElement = _this.view.tmpl(wizardStepTemplateDescriptor, {});
-                        wizardStepElement.attr("id", stepId);
-                        $(tmpArray.join(',')).wrapAll(wizardStepElement);
-                    }
-
-                    var navBarId = stepId + '-nav-bar';
-                    var wizardNavBarTemplateDescriptor = this.view.getTemplateDescriptor("wizardNavBar");
-                    if (wizardNavBarTemplateDescriptor) {
-                        var wizardNavBarElement = _this.view.tmpl(wizardNavBarTemplateDescriptor, {});
-                        wizardNavBarElement.attr("id", navBarId);
-                        wizardNavBarElement.addClass('alpaca-wizard-nav-bar');
-                        $('#' + stepId, this.outerEl).append(wizardNavBarElement);
-                    }
-                }
-
-                var wizardStatusBarElement = this._renderWizardStatusBar(this.wizardConfigs.stepTitles);
-                if (wizardStatusBarElement) {
-                    wizardStatusBarElement.prependTo(this.fieldContainer);
-                }
-
-                for (var i = 0; i < totalSteps; i++) {
-
-                    var vFunc = function(stepCount, stepBindings)
-                    {
-                        return function() {
-
-                            var valid = true;
-
-                            if (_this.view && _this.wizardConfigs && _this.wizardConfigs.validation) {
-
-                                // if auto-wizard, process bindings one at a time
-                                if (stepBindings) {
-                                    $.each(stepBindings, function(propertyId, step) {
-                                        if (step == stepCount + 1 && valid) {
-                                            valid = _this.childrenByPropertyId[propertyId].validate();
-                                            _this.childrenByPropertyId[propertyId].validate();
-                                        }
-                                    });
-                                }
-                            }
-
-                            return valid;
-
-                        };
-                    }(i, stepBindings);
-
-
-                    if (i === 0) {
-                        _this._createNextButton(i, false, vFunc);
-                        _this._selectStep(i);
-                    } else if (i == totalSteps - 1) {
-                        $("#step" + i).hide();
-                        _this._createPrevButton(i, false);
-                        _this._createDoneButton(i, true, vFunc);
-                    } else {
-                        $("#step" + i).hide();
-                        _this._createPrevButton(i, false);
-                        _this._createNextButton(i, false, vFunc);
-                    }
-                }
-            },
-
-            /**
-             * Renders wizard status bar.
-             *
-             * @param {Object} stepTitles Step titles.
-             */
-            _renderWizardStatusBar: function(stepTitles) {
-
-                var _this = this;
-
-                var wizardStatusBar = this.wizardConfigs.statusBar;
-                if (wizardStatusBar && stepTitles) {
-                    var wizardStatusBarTemplateDescriptor = this.view.getTemplateDescriptor("wizardStatusBar");
-                    if (wizardStatusBarTemplateDescriptor) {
-                        var wizardStatusBarElement = _this.view.tmpl(wizardStatusBarTemplateDescriptor, {
-                            "id": this.getId() + "-wizard-status-bar",
-                            "titles": stepTitles
-                        });
-                        wizardStatusBarElement.addClass("alpaca-wizard-status-bar");
-                        this.getStyleInjection("wizardStatusBar",wizardStatusBarElement);
-                        return wizardStatusBarElement;
-                    }
-                }
-            },
-
-            /**
-             * Creates an "prev" button.
-             *
-             * @param {Integer} i Step number.
-             * @param [boolean] whether to add a clear div at the end
-             * @param [validationFunction] function test whether the button should be allowed to proceed
-             */
-            _createPrevButton: function(i, clear, validationFunction) {
-
-                // only apply validation if configured to do so
-                if (this.wizardConfigs.buttons && this.wizardConfigs.buttons.prev) {
-                    if (!this.wizardConfigs.buttons.prev.validateOnClick) {
-                        validationFunction = null;
-                    }
-                }
-
-                var stepName = "step" + i;
-                var _this = this;
-
-                var wizardPreButtonTemplateDescriptor = this.view.getTemplateDescriptor("wizardPreButton");
-                if (wizardPreButtonTemplateDescriptor) {
-                    var wizardPreButtonElement = _this.view.tmpl(wizardPreButtonTemplateDescriptor, {});
-                    wizardPreButtonElement.attr("id", stepName + '-button-pre');
-                    wizardPreButtonElement.addClass("alpaca-wizard-button-pre");
-                    if (_this.buttonBeautifier) {
-                        _this.buttonBeautifier.call(_this, wizardPreButtonElement, this.wizardPreIcon,true );
-                    }
-
-                    // when they click "prev", run validation function first to make sure they're allowed to proceed
-                    wizardPreButtonElement.click(function(stepName, stepCount, validationFunction) {
-
-                        return function() {
-                            var valid = true;
-
-                            if (validationFunction)
-                            {
-                                valid = validationFunction(stepName, stepCount);
-                            }
-
-                            if (valid) {
-                                $("#" + stepName).hide();
-                                $("#step" + (i - 1)).show();
-                                _this._selectStep(i - 1);
-
-                                // TODO: fire click handler?
-                                if (_this.wizardConfigs.buttons.prev && _this.wizardConfigs.buttons.prev.onClick) {
-                                    _this.wizardConfigs.buttons.prev.onClick();
-                                }
-                            }
-
-                            return false;
-                        };
-                    }(stepName, i, validationFunction));
-
-                    $("#" + stepName + "-nav-bar").append(wizardPreButtonElement);
-                    if (clear) {
-                        $("#" + stepName + "-nav-bar").parent().append("<div style='clear:both'></div>");
-                    }
-                }
-
-            },
-
-            /**
-             * Creates a "next" button.
-             *
-             * @param {Integer} i Step number.
-             * @param [boolean] whether to add a clear div at the end
-             * @param [validationFunction] function test whether the button should be allowed to proceed
-             */
-            _createNextButton: function(i, clear, validationFunction) {
-
-                // only apply validation if configured to do so
-                if (this.wizardConfigs.buttons && this.wizardConfigs.buttons.next) {
-                    if (!this.wizardConfigs.buttons.next.validateOnClick) {
-                        validationFunction = null;
-                    }
-                }
-
-                var stepName = "step" + i;
-                var _this = this;
-
-                var wizardNextButtonTemplateDescriptor = this.view.getTemplateDescriptor("wizardNextButton");
-                if (wizardNextButtonTemplateDescriptor) {
-                    var wizardNextButtonElement = _this.view.tmpl(wizardNextButtonTemplateDescriptor, {});
-                    wizardNextButtonElement.attr("id", stepName + '-button-next');
-                    wizardNextButtonElement.addClass("alpaca-wizard-button-next");
-                    if (_this.buttonBeautifier) {
-                        _this.buttonBeautifier.call(_this, wizardNextButtonElement, this.wizardNextIcon,true );
-                    }
-
-                    // when they click "next", run validation function first to make sure they're allowed to proceed
-                    wizardNextButtonElement.click(function(stepName, stepCount, validationFunction) {
-
-                        return function() {
-                            var valid = true;
-
-                            if (validationFunction)
-                            {
-                                valid = validationFunction(stepName, stepCount);
-                            }
-
-                            if (valid) {
-                                $("#" + stepName).hide();
-                                $("#step" + (stepCount + 1)).show();
-                                _this._selectStep(stepCount + 1);
-
-                                // TODO: fire click handler?
-                                if (_this.wizardConfigs.buttons.next && _this.wizardConfigs.buttons.next.onClick) {
-                                    _this.wizardConfigs.buttons.next.onClick();
-                                }
-                            }
-
-                            return false;
-                        };
-                    }(stepName, i, validationFunction));
-
-                    $("#" + stepName + "-nav-bar").append(wizardNextButtonElement);
-                    if (clear) {
-                        $("#" + stepName + "-nav-bar").parent().append("<div style='clear:both'></div>");
-                    }
-                }
-            },
-
-            /**
-             * Creates a "done" button.
-             *
-             * @param {Integer} i Step number.
-             * @param [boolean] whether to add a clear div at the end
-             * @param [validationFunction] function test whether the button should be allowed to proceed
-             */
-            _createDoneButton: function(i, clear, validationFunction) {
-
-                // only apply validation if configured to do so
-                if (this.wizardConfigs.buttons && this.wizardConfigs.buttons.done) {
-                    if (!this.wizardConfigs.buttons.done.validateOnClick) {
-                        validationFunction = null;
-                    }
-                }
-
-                var stepName = "step" + i;
-                var _this = this;
-
-                var wizardDoneButtonTemplateDescriptor = this.view.getTemplateDescriptor("wizardDoneButton");
-                if (wizardDoneButtonTemplateDescriptor) {
-                    var wizardDoneButtonElement = _this.view.tmpl(wizardDoneButtonTemplateDescriptor, {});
-                    wizardDoneButtonElement.attr("id", stepName + '-button-done');
-                    wizardDoneButtonElement.addClass("alpaca-wizard-button-done");
-                    if (_this.buttonBeautifier) {
-                        _this.buttonBeautifier.call(_this, wizardDoneButtonElement, this.wizardDoneIcon,true );
-                    }
-
-                    // when they click "done", run validation function first to make sure they're allowed to proceed
-                    wizardDoneButtonElement.click(function(stepName, stepCount, validationFunction) {
-
-                        return function() {
-                            var valid = true;
-
-                            if (validationFunction)
-                            {
-                                valid = validationFunction(stepName, stepCount);
-                            }
-
-                            if (valid) {
-                                $("#" + stepName + "-nav-bar").append(wizardDoneButtonElement);
-                                if (clear) {
-                                    $("#" + stepName + "-nav-bar").parent().append("<div style='clear:both'></div>");
-                                }
-
-                                // TODO: fire click handler?
-                                if (_this.wizardConfigs.buttons.done && _this.wizardConfigs.buttons.done.onClick) {
-                                    _this.wizardConfigs.buttons.done.onClick();
-                                }
-                            }
-
-                            return false;
-                        };
-                    }(stepName, i, validationFunction));
-
-                    $("#" + stepName + "-nav-bar").append(wizardDoneButtonElement);
-                    if (clear) {
-                        $("#" + stepName + "-nav-bar").parent().append("<div style='clear:both'></div>");
-                    }
-                }
-
-            },
-
-            /**
-             * Selects a wizard step.
-             *
-             * @param {Integer} i Step number.
-             */
-            _selectStep: function(i) {
-                var unCurrentStepElem = $("#" + this.getId() + "-wizard-status-bar" + " li");
-                unCurrentStepElem.removeClass("current current-has-next");
-                this.getStyleInjection("wizardUnCurrentStep",unCurrentStepElem);
-                var currentStepElem = $("#stepDesc" + i);
-                currentStepElem.addClass("current");
-                this.getStyleInjection("wizardCurrentStep",currentStepElem);
-                if (i < this.totalSteps - 1) {
-                    $("#stepDesc" + i).addClass("current-has-next");
-                }
-            },//__BUILDER_HELPERS
-
-            /**
-             * @private
-             * @see Alpaca.ContainerField#getSchemaOfSchema
-             */
-            getSchemaOfSchema: function() {
-                var properties = {
-                    "properties": {
-                        "properties": {
-                            "title": "Properties",
-                            "description": "List of child properties.",
-                            "type": "object"
-                        }
-                    }
-                };
-
-                var fieldsProperties = properties.properties.properties;
-
-                fieldsProperties.properties = {};
-
-                if (this.children) {
-                    for (var i = 0; i < this.children.length; i++) {
-                        var propertyId = this.children[i].propertyId;
-                        fieldsProperties.properties[propertyId] = this.children[i].getSchemaOfSchema();
-                        fieldsProperties.properties[propertyId].title = propertyId + " :: " + fieldsProperties.properties[propertyId].title;
-                    }
-                }
-
-                return Alpaca.merge(this.base(), properties);
-            },
-
-            /**
-             * @private
-             * @see Alpaca.ContainerField#getSchemaOfOptions
-             */
-            getSchemaOfOptions: function() {
-                var schemaOfOptions = Alpaca.merge(this.base(), {
-                    "properties": {
-                    }
-                });
-
-                var properties = {
-                    "properties": {
-                        "fields": {
-                            "title": "Field Options",
-                            "description": "List of options for child fields.",
-                            "type": "object"
-                        }
-                    }
-                };
-
-                var fieldsProperties = properties.properties.fields;
-
-                fieldsProperties.properties = {};
-
-                if (this.children) {
-                    for (var i = 0; i < this.children.length; i++) {
-                        var propertyId = this.children[i].propertyId;
-                        fieldsProperties.properties[propertyId] = this.children[i].getSchemaOfOptions();
-                        fieldsProperties.properties[propertyId].title = propertyId + " :: " + fieldsProperties.properties[propertyId].title;
-                    }
-                }
-
-                return Alpaca.merge(schemaOfOptions, properties);
-            },
-
-            /**
-             * @see Alpaca.Field#getTitle
-             */
-            getTitle: function() {
-                return "Composite Field";
-            },
-
-            /**
-             * @see Alpaca.Field#getDescription
-             */
-            getDescription: function() {
-                return "Composite field for containing other fields";
-            },
-
-            /**
-             * @see Alpaca.Field#getType
-             */
-            getType: function() {
-                return "object";
-            },
-
-            /**
-             * @see Alpaca.Field#getFieldType
-             */
-            getFieldType: function() {
-                return "object";
-            }//__END_OF_BUILDER_HELPERS
-
-        });
+                callback();
+            });
+        },
+
+        /**
+         * @see Alpaca.ContainerField#handleValidate
+         */
+        handleValidate: function() {
+            var baseStatus = this.base();
+
+            var valInfo = this.validation;
+
+            var status = this._validateMaxProperties();
+            valInfo["tooManyProperties"] = {
+                "message": status ? "" : Alpaca.substituteTokens(this.view.getMessage("tooManyProperties"), [this.schema.maxProperties]),
+                "status": status
+            };
+
+            status = this._validateMinProperties();
+            valInfo["tooFewProperties"] = {
+                "message": status ? "" : Alpaca.substituteTokens(this.view.getMessage("tooManyItems"), [this.schema.items.minProperties]),
+                "status": status
+            };
+
+            return baseStatus && valInfo["tooManyProperties"]["status"] && valInfo["tooFewProperties"]["status"];
+        }
+
+    });
+
+    // Additional Registrations
+    Alpaca.registerMessages({
+        "tooManyProperties": "The maximum number of properties ({0}) has been exceeded.",
+        "tooFewProperties": "There are not enough properties ({0} are required)"
+    });
 
     Alpaca.registerFieldClass("object", Alpaca.Fields.ObjectField);
     Alpaca.registerDefaultSchemaFieldMapping("object", "object");
@@ -13706,14 +14690,6 @@ var equiv = function () {
         },
 
         /**
-         * @see Alpaca.ControlField#postRender
-         */
-        postRender: function() {
-            this.base();
-        },
-
-
-        /**
          * @see Alpaca.Field#getValue
          */
         getValue: function() {
@@ -13760,79 +14736,7 @@ var equiv = function () {
          */
         focus: function() {
             this.field.focus();
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.ControlField#getSchemaOfSchema
-         */
-        getSchemaOfSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.ControlField#getOptionsForSchema
-         */
-        getOptionsForSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.ControlField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.ControlField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                }
-            });
-        },
-
-        /**
-         * @see Alpaca.Field#getTitle
-         */
-        getTitle: function() {
-            return "Any Field";
-        },
-
-        /**
-         * @see Alpaca.Field#getDescription
-         */
-        getDescription: function() {
-            return "Any field.";
-        },
-
-        /**
-         * @see Alpaca.Field#getType
-         */
-        getType: function() {
-            return "any";
-        },
-
-        /**
-         * @see Alpaca.Field#getFieldType
-         */
-        getFieldType: function() {
-            return "any";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerTemplate("controlFieldAny", '<input type="text" id="${id}" size="40" {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each(i,v) options.data}}data-${i}="${v}"{{/each}}/>');
@@ -13904,13 +14808,19 @@ var equiv = function () {
         /**
          * @see Alpaca.ControlField#postRender
          */
-        postRender: function() {
+        postRender: function(callback) {
 
-            this.base();
+            var self = this;
 
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-hidden');
-            }
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-hidden');
+                }
+
+                callback();
+            });
+
         },
 
         
@@ -14155,7 +15065,7 @@ var equiv = function () {
 
 })(jQuery);
 /*!
-Alpaca Version 1.1.1
+Alpaca Version 1.1.2
 
 Copyright 2013 Gitana Software, Inc.
 
@@ -14292,133 +15202,67 @@ address:
          * @see Alpaca.Field#renderField
          */
         renderField: function(onSuccess) {
-            this.base();
-            var _this = this;
-            // apply additional css
-            $(this.fieldContainer).addClass("alpaca-addressfield");
 
-            if (this.options.addressValidation && !this.isDisplayOnly()) {
-                $('<div style="clear:both;"></div>').appendTo(this.fieldContainer);
-                var mapButton = $('<div class="alpaca-form-button">Google Map</div>').appendTo(this.fieldContainer);
-                if (mapButton.button) {
-                    mapButton.button({
-                        text: true
-                    });
-                }
-                mapButton.click(
-                    function() {
-                        if (google && google.maps) {
-                            var geocoder = new google.maps.Geocoder();
-                            var address = _this.getAddress();
-                            if (geocoder) {
-                                geocoder.geocode({
-                                    'address': address
-                                }, function(results, status) {
-                                    if (status == google.maps.GeocoderStatus.OK) {
-                                        var mapCanvasId = _this.getId() + "-map-canvas";
-                                        if ($('#' + mapCanvasId).length === 0) {
-                                            $("<div id='" + mapCanvasId + "' class='alpaca-controlfield-address-mapcanvas'></div>").appendTo(_this.fieldContainer);
+            var self = this;
+
+            this.base(function() {
+
+                // apply additional css
+                $(self.fieldContainer).addClass("alpaca-addressfield");
+
+                if (self.options.addressValidation && !self.isDisplayOnly()) {
+                    $('<div style="clear:both;"></div>').appendTo(self.fieldContainer);
+                    var mapButton = $('<div class="alpaca-form-button">Google Map</div>').appendTo(self.fieldContainer);
+                    if (mapButton.button) {
+                        mapButton.button({
+                            text: true
+                        });
+                    }
+                    mapButton.click(
+                        function() {
+                            if (google && google.maps) {
+                                var geocoder = new google.maps.Geocoder();
+                                var address = self.getAddress();
+                                if (geocoder) {
+                                    geocoder.geocode({
+                                        'address': address
+                                    }, function(results, status) {
+                                        if (status == google.maps.GeocoderStatus.OK) {
+                                            var mapCanvasId = self.getId() + "-map-canvas";
+                                            if ($('#' + mapCanvasId).length === 0) {
+                                                $("<div id='" + mapCanvasId + "' class='alpaca-controlfield-address-mapcanvas'></div>").appendTo(self.fieldContainer);
+                                            }
+                                            var map = new google.maps.Map(document.getElementById(self.getId() + "-map-canvas"), {
+                                                "zoom": 10,
+                                                "center": results[0].geometry.location,
+                                                "mapTypeId": google.maps.MapTypeId.ROADMAP
+                                            });
+                                            var marker = new google.maps.Marker({
+                                                map: map,
+                                                position: results[0].geometry.location
+                                            });
+                                        } else {
+                                            self.displayMessage("Geocoding failed: " + status);
                                         }
-                                        var map = new google.maps.Map(document.getElementById(_this.getId() + "-map-canvas"), {
-                                            "zoom": 10,
-                                            "center": results[0].geometry.location,
-                                            "mapTypeId": google.maps.MapTypeId.ROADMAP
-                                        });
-                                        var marker = new google.maps.Marker({
-                                            map: map,
-                                            position: results[0].geometry.location
-                                        });
-                                    } else {
-                                        _this.displayMessage("Geocoding failed: " + status);
-                                    }
-                                });
+                                    });
+                                }
+                            } else {
+                                self.displayMessage("Google Map API is not installed.");
                             }
-                        } else {
-                            _this.displayMessage("Google Map API is not installed.");
-                        }
-                    }).wrap('<small/>');
+                        }).wrap('<small/>');
 
-                if (this.options.showMapOnLoad)
-                {
-                    mapButton.click();
-                }
-            }
-
-            if (onSuccess) {
-                onSuccess();
-            }
-        },//__BUILDER_HELPERS
-
-        /**
-         * @see Alpaca.Field#isContainer
-         */
-        isContainer: function() {
-            return false;
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.ObjectField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "validateAddress": {
-                        "title": "Address Validation",
-                        "description": "Enable address validation if true",
-                        "type": "boolean",
-                        "default": true
-                    },
-                    "showMapOnLoad": {
-                        "title": "Whether to show the map when first loaded",
-                        "type": "boolean"
+                    if (self.options.showMapOnLoad)
+                    {
+                        mapButton.click();
                     }
                 }
-            });
-        },
 
-        /**
-         * @private
-         * @see Alpaca.Fields.ObjectField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "validateAddress": {
-                        "helper": "Address validation if checked",
-                        "rightLabel": "Enable Google Map for address validation?",
-                        "type": "checkbox"
-                    }
+                if (onSuccess) {
+                    onSuccess();
                 }
             });
-        },
-        /**
-         * @see Alpaca.Fields.ObjectField#getTitle
-         */
-        getTitle: function() {
-            return "Address";
-        },
 
-        /**
-         * @see Alpaca.Fields.ObjectField#getDescription
-         */
-        getDescription: function() {
-            return "Standard US Address with Street, City, State and Zip. Also comes with support for Google map.";
-        },
-
-        /**
-         * @see Alpaca.Fields.ObjectField#getType
-         */
-        getType: function() {
-            return "any";
-        },
-
-        /**
-         * @see Alpaca.Fields.ObjectField#getFieldType
-         */
-        getFieldType: function() {
-            return "address";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerFieldClass("address", Alpaca.Fields.AddressField);
@@ -14468,30 +15312,36 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
+        postRender: function(callback) {
 
-            if (this.field && $.datepicker)
-            {
-                var datePickerOptions = this.options.datepicker;
-                if (!datePickerOptions)
+            var self = this;
+
+            this.base(function() {
+
+                if (self.field && $.datepicker)
                 {
-                    datePickerOptions = {
-                        "changeMonth": true,
-                        "changeYear": true
-                    };
-                }
-                if (!datePickerOptions.dateFormat)
-                {
-                    datePickerOptions.dateFormat = this.options.dateFormat;
-                }
-                this.field.datepicker(datePickerOptions);
+                    var datePickerOptions = self.options.datepicker;
+                    if (!datePickerOptions)
+                    {
+                        datePickerOptions = {
+                            "changeMonth": true,
+                            "changeYear": true
+                        };
+                    }
+                    if (!datePickerOptions.dateFormat)
+                    {
+                        datePickerOptions.dateFormat = self.options.dateFormat;
+                    }
+                    self.field.datepicker(datePickerOptions);
 
-                if (this.fieldContainer) {
-                    this.fieldContainer.addClass('alpaca-controlfield-date');
+                    if (self.fieldContainer) {
+                        self.fieldContainer.addClass('alpaca-controlfield-date');
+                    }
                 }
-            }
 
+                callback();
+
+            });
         },
 
         /**
@@ -14499,7 +15349,7 @@ address:
          */
         onChange: function(e) {
             this.base();
-            this.renderValidationState();
+            this.refreshValidationState();
         },
 
         /**
@@ -14550,109 +15400,7 @@ address:
             }
 
             this.base(val);
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfSchema
-         */
-        getSchemaOfSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "format": {
-                        "title": "Format",
-                        "description": "Property data format",
-                        "type": "string",
-                        "default":"date",
-                        "enum" : ["date"],
-                        "readonly":true
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getOptionsForSchema
-         */
-        getOptionsForSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "format": {
-                        "type": "text"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "dateFormat": {
-                        "title": "Date Format",
-                        "description": "Date format",
-                        "type": "string",
-                        "default": Alpaca.defaultDateFormat
-                    },
-                    "dateFormatRegex": {
-                        "title": "Format Regular Expression",
-                        "description": "Regular expression for validation date format",
-                        "type": "string",
-                        "default": Alpaca.regexps.date
-                    },
-                    "datepicker": {
-                        "title": "Date Picker options",
-                        "description": "Optional configuration to be passed to jQuery UI DatePicker control",
-                        "type": "any"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "dateFormat": {
-                        "type": "text"
-                    },
-                    "dateFormatRegex": {
-                        "type": "text"
-                    },
-                    "datetime": {
-                        "type": "any"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "Date Field";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Date Field.";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "date";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerMessages({
@@ -14703,36 +15451,42 @@ address:
             /**
              * @see Alpaca.Fields.TextField#postRender
              */
-            postRender: function() {
-                var _this = this;
-                this.base();
+            postRender: function(callback) {
 
-                if (this.field)
-                {
-                    if (this.field.datetimepicker) {
-                        this.field.hover(function() {
-                            if (!$(this).hasClass('hasDatepicker')) {
+                var self = this;
 
-                                var timePickerOptions = _this.options.timepicker;
-                                if (!timePickerOptions)
-                                {
-                                    timePickerOptions = _this.options.timepicker;
+                this.base(function() {
+
+                    if (self.field)
+                    {
+                        if (self.field.datetimepicker) {
+                            self.field.hover(function() {
+                                if (!$(this).hasClass('hasDatepicker')) {
+
+                                    var timePickerOptions = self.options.timepicker;
+                                    if (!timePickerOptions)
+                                    {
+                                        timePickerOptions = self.options.timepicker;
+                                    }
+                                    if (!timePickerOptions)
+                                    {
+                                        timePickerOptions = {
+                                            "changeYear": true,
+                                            "changeMonth": true
+                                        };
+                                    }
+                                    $(this).datetimepicker(timePickerOptions);
                                 }
-                                if (!timePickerOptions)
-                                {
-                                    timePickerOptions = {
-                                        "changeYear": true,
-                                        "changeMonth": true
-                                    };
-                                }
-                                $(this).datetimepicker(timePickerOptions);
+                            });
+                            if (self.fieldContainer) {
+                                self.fieldContainer.addClass('alpaca-controlfield-datetime');
                             }
-                        });
-                        if (this.fieldContainer) {
-                            this.fieldContainer.addClass('alpaca-controlfield-datetime');
                         }
                     }
-                }
+
+                    callback();
+
+                });
             },
 
             /**
@@ -14771,62 +15525,16 @@ address:
                 } catch (e) {
                     return this.getValue();
                 }
-            },//__BUILDER_HELPERS
-
-            /**
-             * @private
-             * @see Alpaca.ControlField#getSchemaOfOptions
-             */
-            getSchemaOfOptions: function() {
-                return Alpaca.merge(this.base(), {
-                    "properties": {
-                        "timepicker": {
-                            "title": "Timepicker options",
-                            "description": "Options that are supported by the <a href='http://trentrichardson.com/examples/timepicker/'>jQuery timepicker addon</a>.",
-                            "type": "any"
-                        }
-                    }
-                });
-            },
-
-            /**
-             * @private
-             * @see Alpaca.ControlField#getOptionsForOptions
-             */
-            getOptionsForOptions: function() {
-                return Alpaca.merge(this.base(), {
-                    "fields": {
-                        "timepicker": {
-                            "type": "any"
-                        }
-                    }
-                });
-            },
-
-            /**
-             * @see Alpaca.Fields.TextField#getTitle
-             */
-            getTitle: function() {
-                return "Datetime Field";
-            },
-
-            /**
-             * @see Alpaca.Fields.TextField#getDescription
-             */
-            getDescription: function() {
-                return "Datetime Field based on Trent Richardson's <a href='http://trentrichardson.com/examples/timepicker/'>jQuery timepicker addon</a>.";
-            },
-
-            /**
-             * @see Alpaca.Fields.TextField#getFieldType
-             */
-            getFieldType: function() {
-                return "datetime";
-            }//__END_OF_BUILDER_HELPERS
+            }
         });
 
     Alpaca.registerFieldClass("datetime", Alpaca.Fields.DatetimeField);
+
+    // "datetime" is legacy (pre v4 schema)
     Alpaca.registerDefaultFormatFieldMapping("datetime", "datetime");
+
+    // official v4 uses date-time
+    Alpaca.registerDefaultFormatFieldMapping("date-time", "datetime");
 })(jQuery);
 (function($) {
 
@@ -14867,101 +15575,131 @@ address:
             /**
              * @see Alpaca.Fields.TextField#postRender
              */
-            postRender: function() {
-                this.base();
+            postRender: function(callback) {
 
                 var self = this;
 
-                if (this.fieldContainer) {
-                    this.fieldContainer.addClass('alpaca-controlfield-editor');
+                this.base(function() {
 
-                    // set field container parent width = 100%
-                    $(this.fieldContainer).parent().css("width", "100%");
-
-                    // ACE HEIGHT
-                    var aceHeight = this.options.aceHeight;
-                    if (aceHeight)
+                    if (self.fieldContainer)
                     {
-                        $(this.fieldContainer).css("height", aceHeight);
+                        self.fieldContainer.addClass('alpaca-controlfield-editor');
+
+                        // set field container parent width = 100%
+                        $(self.fieldContainer).parent().css("width", "100%");
+
+                        // ACE HEIGHT
+                        var aceHeight = self.options.aceHeight;
+                        if (aceHeight)
+                        {
+                            $(self.fieldContainer).css("height", aceHeight);
+                        }
+
+                        // ACE WIDTH
+                        var aceWidth = self.options.aceWidth;
+                        if (!aceWidth) {
+                            aceWidth = "100%";
+                        }
+                        $(self.fieldContainer).css("width", aceWidth);
                     }
 
-                    // ACE WIDTH
-                    var aceWidth = this.options.aceWidth;
-                    if (!aceWidth) {
-                        aceWidth = "100%";
+                    // locate where we will insert the editor
+                    var el = $(self.fieldContainer).find(".control-field-editor-el")[0];
+
+                    // ace must be included ahead of time
+                    if (!ace && window.ace) {
+                        ace = window.ace;
                     }
-                    $(this.fieldContainer).css("width", aceWidth);
-                }
 
-                // locate where we will insert the editor
-                var el = $(this.fieldContainer).find(".control-field-editor-el")[0];
-
-                // ace must be included ahead of time
-                if (!ace && window.ace) {
-                    ace = window.ace;
-                }
-                this.editor = ace.edit(el);
-
-                // theme
-                var aceTheme = this.options.aceTheme;
-                if (!aceTheme) {
-                    aceTheme = "ace/theme/chrome";
-                }
-                this.editor.setTheme(aceTheme);
-
-                // mode
-                var aceMode = this.options.aceMode;
-                if (!aceMode) {
-                    aceMode = "ace/mode/json";
-                }
-                this.editor.getSession().setMode(aceMode);
-
-                this.editor.renderer.setHScrollBarAlwaysVisible(false);
-                //this.editor.renderer.setVScrollBarAlwaysVisible(false); // not implemented
-                this.editor.setShowPrintMargin(false);
-
-                // set data onto editor
-                this.editor.setValue(this.data);
-                this.editor.clearSelection();
-
-                // FIT-CONTENT the height of the editor to the contents contained within
-                if (this.options.aceFitContentHeight)
-                {
-                    var heightUpdateFunction = function() {
-
-                        // http://stackoverflow.com/questions/11584061/
-                        var newHeight = self.editor.getSession().getScreenLength() * self.editor.renderer.lineHeight + self.editor.renderer.scrollBar.getWidth();
-
-                        $(self.fieldContainer).height(newHeight.toString() + "px");
-
-                        // This call is required for the editor to fix all of
-                        // its inner structure for adapting to a change in size
-                        self.editor.resize();
-                    };
-
-                    // Set initial size to match initial content
-                    heightUpdateFunction();
-
-                    // Whenever a change happens inside the ACE editor, update
-                    // the size again
-                    self.editor.getSession().on('change', heightUpdateFunction);
-                }
-
-                // READONLY
-                if (this.schema.readonly)
-                {
-                    this.editor.setReadOnly(true);
-                }
-
-                // if the editor's dom element gets destroyed, make sure we clean up the editor instance
-                // normally, we expect Alpaca fields to be destroyed by the destroy() method but they may also be
-                // cleaned-up via the DOM, thus we check here.
-                $(el).bind('destroyed', function() {
-
-                    if (self.editor) {
-                        self.editor.destroy();
-                        self.editor = null;
+                    if (!ace)
+                    {
+                        Alpaca.logError("Editor Field is missing the 'ace' Cloud 9 Editor");
                     }
+                    else
+                    {
+                        self.editor = ace.edit(el);
+
+                        // theme
+                        var aceTheme = self.options.aceTheme;
+                        if (!aceTheme) {
+                            aceTheme = "ace/theme/chrome";
+                        }
+                        self.editor.setTheme(aceTheme);
+
+                        // mode
+                        var aceMode = self.options.aceMode;
+                        if (!aceMode) {
+                            aceMode = "ace/mode/json";
+                        }
+                        self.editor.getSession().setMode(aceMode);
+
+                        self.editor.renderer.setHScrollBarAlwaysVisible(false);
+                        //this.editor.renderer.setVScrollBarAlwaysVisible(false); // not implemented
+                        self.editor.setShowPrintMargin(false);
+
+                        // set data onto editor
+                        self.editor.setValue(self.data);
+                        self.editor.clearSelection();
+
+                        // clear undo session
+                        self.editor.getSession().getUndoManager().reset();
+
+                        // FIT-CONTENT the height of the editor to the contents contained within
+                        if (self.options.aceFitContentHeight)
+                        {
+                            var heightUpdateFunction = function() {
+
+                                var first = false;
+                                if (self.editor.renderer.lineHeight === 1)
+                                {
+                                    first = true;
+                                    self.editor.renderer.lineHeight = 16;
+                                }
+
+                                // http://stackoverflow.com/questions/11584061/
+                                var newHeight = self.editor.getSession().getScreenLength() * self.editor.renderer.lineHeight + self.editor.renderer.scrollBar.getWidth();
+
+                                $(self.fieldContainer).height(newHeight.toString() + "px");
+
+                                // This call is required for the editor to fix all of
+                                // its inner structure for adapting to a change in size
+                                self.editor.resize();
+
+                                if (first)
+                                {
+                                    window.setTimeout(function() {
+                                        self.editor.clearSelection();
+                                    }, 5);
+                                }
+                            };
+
+                            // Set initial size to match initial content
+                            heightUpdateFunction();
+
+                            // Whenever a change happens inside the ACE editor, update
+                            // the size again
+                            self.editor.getSession().on('change', heightUpdateFunction);
+                        }
+
+                        // READONLY
+                        if (self.schema.readonly)
+                        {
+                            self.editor.setReadOnly(true);
+                        }
+
+                        // if the editor's dom element gets destroyed, make sure we clean up the editor instance
+                        // normally, we expect Alpaca fields to be destroyed by the destroy() method but they may also be
+                        // cleaned-up via the DOM, thus we check here.
+                        $(el).bind('destroyed', function() {
+
+                            if (self.editor) {
+                                self.editor.destroy();
+                                self.editor = null;
+                            }
+                        });
+                    }
+
+                    callback();
                 });
 
             },
@@ -14998,13 +15736,33 @@ address:
 
                 var valInfo = this.validation;
 
-                var status =  this._validateWordCount();
+                var wordCountStatus =  this._validateWordCount();
                 valInfo["wordLimitExceeded"] = {
-                    "message": status ? "" : Alpaca.substituteTokens(this.view.getMessage("wordLimitExceeded"), [this.options.wordlimit]),
-                    "status": status
+                    "message": wordCountStatus ? "" : Alpaca.substituteTokens(this.view.getMessage("wordLimitExceeded"), [this.options.wordlimit]),
+                    "status": wordCountStatus
                 };
 
-                return baseStatus && valInfo["wordLimitExceeded"]["status"];
+                var editorAnnotationsStatus = this._validateEditorAnnotations();
+                valInfo["editorAnnotationsExist"] = {
+                    "message": editorAnnotationsStatus ? "" : this.view.getMessage("editorAnnotationsExist"),
+                    "status": editorAnnotationsStatus
+                };
+
+                return baseStatus && valInfo["wordLimitExceeded"]["status"] && valInfo["editorAnnotationsExist"]["status"];
+            },
+
+            _validateEditorAnnotations: function() {
+
+                if (this.editor)
+                {
+                    var annotations = this.editor.getSession().getAnnotations();
+                    if (annotations && annotations.length > 0)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
             },
 
             /**
@@ -15037,7 +15795,10 @@ address:
              */
             onDependentReveal: function()
             {
-                this.editor.resize();
+                if (this.editor)
+                {
+                    this.editor.resize();
+                }
             },
 
             /**
@@ -15069,100 +15830,13 @@ address:
                 }
 
                 return value;
-            },//__BUILDER_HELPERS
-
-            /**
-             * @private
-             * @see Alpaca.Fields.TextField#getSchemaOfOptions
-             */
-            getSchemaOfOptions: function() {
-                return Alpaca.merge(this.base(), {
-                    "properties": {
-                        "aceTheme": {
-                            "title": "ACE Editor Theme",
-                            "description": "Specifies the theme to set onto the editor instance",
-                            "type": "string",
-                            "default": "ace/theme/twilight"
-                        },
-                        "aceMode": {
-                            "title": "ACE Editor Mode",
-                            "description": "Specifies the mode to set onto the editor instance",
-                            "type": "string",
-                            "default": "ace/mode/javascript"
-                        },
-                        "aceWidth": {
-                            "title": "ACE Editor Height",
-                            "description": "Specifies the width of the wrapping div around the editor",
-                            "type": "string",
-                            "default": "100%"
-                        },
-                        "aceHeight": {
-                            "title": "ACE Editor Height",
-                            "description": "Specifies the height of the wrapping div around the editor",
-                            "type": "string",
-                            "default": "300px"
-                        },
-                        "aceFitContentHeight": {
-                            "title": "ACE Fit Content Height",
-                            "description": "Configures the ACE Editor to auto-fit its height to the contents of the editor",
-                            "type": "boolean",
-                            "default": false
-                        },
-                        "wordlimit": {
-                            "title": "Word Limit",
-                            "description": "Limits the number of words allowed in the text area.",
-                            "type": "number",
-                            "default": -1
-                        }
-                    }
-                });
-            },
-
-            /**
-             * @private
-             * @see Alpaca.Fields.TextField#getOptionsForOptions
-             */
-            getOptionsForOptions: function() {
-                return Alpaca.merge(this.base(), {
-                    "fields": {
-                        "aceTheme": {
-                            "type": "text"
-                        },
-                        "aceMode": {
-                            "type": "text"
-                        },
-                        "wordlimit": {
-                            "type": "integer"
-                        }
-                    }
-                });
-            },
-
-            /**
-             * @see Alpaca.Fields.TextField#getTitle
-             */
-            getTitle: function() {
-                return "Editor";
-            },
-
-            /**
-             * @see Alpaca.Fields.TextField#getDescription
-             */
-            getDescription: function() {
-                return "Editor";
-            },
-
-            /**
-             * @see Alpaca.Fields.TextField#getFieldType
-             */
-            getFieldType: function() {
-                return "editor";
-            }//__END_OF_BUILDER_HELPERS
+            }
 
         });
 
     Alpaca.registerMessages({
-        "wordLimitExceeded": "The maximum word limit of {0} has been exceeded."
+        "wordLimitExceeded": "The maximum word limit of {0} has been exceeded.",
+        "editorAnnotationsExist": "The editor has errors in it that must be corrected"
     });
 
     Alpaca.registerTemplate("controlFieldEditor", '<div id="${id}" class="control-field-editor-el"></div>');
@@ -15210,11 +15884,19 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-email');
-            }
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (this.fieldContainer) {
+                    this.fieldContainer.addClass('alpaca-controlfield-email');
+                }
+
+                callback();
+
+            });
         },
 
         /**
@@ -15230,70 +15912,7 @@ address:
             }
 
             return baseStatus;
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfSchema
-         */
-        getSchemaOfSchema: function() {
-            var pattern = (this.schema && this.schema.pattern) ? this.schema.pattern : Alpaca.regexps.email;
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "pattern": {
-                        "title": "Pattern",
-                        "description": "Field Pattern in Regular Expression",
-                        "type": "string",
-                        "default": pattern,
-                        "enum":[pattern],
-                        "readonly": true
-                    },
-                    "format": {
-                        "title": "Format",
-                        "description": "Property data format",
-                        "type": "string",
-                        "default":"email",
-                        "enum":["email"],
-                        "readonly":true
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getOptionsForSchema
-         */
-        getOptionsForSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "format": {
-                        "type": "text"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "Email Field";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Email Field.";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "email";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerMessages({
@@ -15369,30 +15988,38 @@ address:
         /**
          * @see Alpaca.Fields.NumberField#postRender
          */
-        postRender: function() {
-            this.base();
-            var _this = this;
-            if (this.options.slider) {
-                if (!Alpaca.isEmpty(this.schema.maximum) && !Alpaca.isEmpty(this.schema.minimum)) {
+        postRender: function(callback)
+        {
+            var self = this;
 
-                    if (this.field)
-                    {
-                        this.field.after('<div id="slider"></div>');
-                        this.slider = $('#slider', this.field.parent()).slider({
-                            value: this.getValue(),
-                            min: this.schema.minimum,
-                            max: this.schema.maximum,
-                            slide: function(event, ui) {
-                                _this.setValue(ui.value);
-                                _this.renderValidationState();
-                            }
-                        });
+            this.base(function() {
+
+                if (self.options.slider) {
+                    if (!Alpaca.isEmpty(self.schema.maximum) && !Alpaca.isEmpty(self.schema.minimum)) {
+
+                        if (self.field)
+                        {
+                            self.field.after('<div id="slider"></div>');
+                            self.slider = $('#slider', self.field.parent()).slider({
+                                value: self.getValue(),
+                                min: self.schema.minimum,
+                                max: self.schema.maximum,
+                                slide: function(event, ui) {
+                                    self.setValue(ui.value);
+                                    self.refreshValidationState();
+                                }
+                            });
+                        }
                     }
                 }
-            }
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-integer');
-            }
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-integer');
+                }
+
+                callback();
+
+            });
         },
 
         /**
@@ -15435,117 +16062,7 @@ address:
             }
 
             return true;
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Fields.NumberField#getSchemaOfSchema
-         */
-        getSchemaOfSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "minimum": {
-                        "title": "Minimum",
-                        "description": "Minimum value of the property.",
-                        "type": "integer"
-                    },
-                    "maximum": {
-                        "title": "Maximum",
-                        "description": "Maximum value of the property.",
-                        "type": "integer"
-                    },
-                    "divisibleBy": {
-                        "title": "Divisible By",
-                        "description": "Property value must be divisible by this number.",
-                        "type": "integer"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.NumberField#getOptionsForSchema
-         */
-        getOptionsForSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "minimum": {
-                        "helper": "Minimum value of the field.",
-                        "type": "integer"
-                    },
-                    "maximum": {
-                        "helper": "Maximum value of the field.",
-                        "type": "integer"
-                    },
-                    "divisibleBy": {
-                        "helper": "Property value must be divisible by this number.",
-                        "type": "integer"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.NumberField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "slider": {
-                        "title": "Slider",
-                        "description": "Generate jQuery UI slider control with the field if true.",
-                        "type": "boolean",
-                        "default": false
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.NumberField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "slider": {
-                        "rightLabel": "Slider control ?",
-                        "helper": "Generate slider control if selected.",
-                        "type": "checkbox"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @see Alpaca.Fields.NumberField#getTitle
-         */
-        getTitle: function() {
-            return "Integer Field";
-        },
-
-        /**
-         * @see Alpaca.Fields.NumberField#getDescription
-         */
-        getDescription: function() {
-            return "Field for integers.";
-        },
-
-        /**
-         * @see Alpaca.Fields.NumberField#getType
-         */
-        getType: function() {
-            return "integer";
-        },
-
-        /**
-         * @see Alpaca.Fields.NumberField#getFieldType
-         */
-        getFieldType: function() {
-            return "integer";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     // Additional Registrations
@@ -15596,11 +16113,19 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-			if (this.fieldContainer) {
-				this.fieldContainer.addClass('alpaca-controlfield-ipv4');
-			}	
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-ipv4');
+                }
+
+                callback();
+
+            });
         },
 
         /**
@@ -15616,69 +16141,7 @@ address:
             }
             
             return baseStatus;
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfSchema
-         */
-        getSchemaOfSchema: function() {
-            var pattern = (this.schema && this.schema.pattern)? this.schema.pattern : Alpaca.regexps.ipv4;
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "pattern": {
-                        "title": "Pattern",
-                        "description": "Field Pattern in Regular Expression",
-                        "type": "string",
-                        "default": pattern,
-                        "readonly": true
-                    },                    
-					"format": {
-                        "title": "Format",
-                        "description": "Property data format",
-                        "type": "string",
-                        "enum": ["ip-address"],
-						"default":"ip-address",
-						"readonly":true
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getOptionsForSchema
-         */
-		getOptionsForSchema: function() {
-            return Alpaca.merge(this.base(),{
-				"fields": {
-					"format": {
-						"type": "text"
-					}
-				}
-			});
-        },
-        
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "IP Address Field";
-        },
-        
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "IP Address Field.";
-        },
-
-		/**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "ipv4";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
     
     Alpaca.registerMessages({
@@ -15787,60 +16250,45 @@ address:
         /**
          * @see Alpaca.Fields.TextAreaField#postRender
          */
-        postRender: function() {
-            this.base();
-            var _this = this;
+        postRender: function(callback) {
 
-            if (this.field)
-            {
-                // Some auto-formatting capabilities
-                this.field.bind('keypress', function(e) {
-                    //console.log(e.which);
-                    if (e.which == 34) {
-                        _this.field.insertAtCaret('"');
-                    }
-                    if (e.which == 123) {
-                        _this.field.insertAtCaret('}');
-                    }
-                    if (e.which == 91) {
-                        _this.field.insertAtCaret(']');
-                    }
-                });
-                this.field.bind('keypress', 'Ctrl+l', function() {
-                    _this.getEl().removeClass("alpaca-field-focused");
+            var self = this;
 
-                    // set class from state
-                    _this.renderValidationState();
-                });
-                this.field.attr('title','Type Ctrl+L to format and validate the JSON string.');
-            }
+            this.base(function() {
 
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-json');
-            }
+                if (self.field)
+                {
+                    // Some auto-formatting capabilities
+                    self.field.bind('keypress', function(e) {
+                        //console.log(e.which);
+                        if (e.which == 34) {
+                            self.field.insertAtCaret('"');
+                        }
+                        if (e.which == 123) {
+                            self.field.insertAtCaret('}');
+                        }
+                        if (e.which == 91) {
+                            self.field.insertAtCaret(']');
+                        }
+                    });
+                    self.field.bind('keypress', 'Ctrl+l', function() {
+                        self.getEl().removeClass("alpaca-field-focused");
 
-        },//__BUILDER_HELPERS
+                        // set class from state
+                        self.refreshValidationState();
+                    });
+                    self.field.attr('title','Type Ctrl+L to format and validate the JSON string.');
+                }
 
-		/**
-         * @see Alpaca.Fields.TextAreaField#getTitle
-		 */
-		getTitle: function() {
-			return "JSON Editor";
-		},
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-json');
+                }
 
-		/**
-         * @see Alpaca.Fields.TextAreaField#getDescription
-		 */
-		getDescription: function() {
-			return "Editor for JSON objects with basic validation and formatting.";
-		},
+                callback();
 
-		/**
-         * @see Alpaca.Fields.TextAreaField#getFieldType
-         */
-        getFieldType: function() {
-            return "json";
-        }//__END_OF_BUILDER_HELPERS
+            });
+
+        }
     });
 
     // Additional Registrations
@@ -16044,30 +16492,38 @@ address:
         /**
          * @see Alpaca.Fields.NumberField#postRender
          */
-        postRender: function() {
-            this.base();
-            var _this = this;
-            if (this.options.slider) {
-                if (!Alpaca.isEmpty(this.schema.maximum) && !Alpaca.isEmpty(this.schema.minimum)) {
+        postRender: function(callback)
+        {
+            var self = this;
 
-                    if (this.field)
-                    {
-                        this.field.after('<div id="slider"></div>');
-                        this.slider = $('#slider', this.field.parent()).slider({
-                            value: this.getValue(),
-                            min: this.schema.minimum,
-                            max: this.schema.maximum,
-                            slide: function(event, ui) {
-                                _this.setValue(ui.value);
-                                _this.renderValidationState();
-                            }
-                        });
+            this.base(function() {
+
+                if (self.options.slider) {
+                    if (!Alpaca.isEmpty(self.schema.maximum) && !Alpaca.isEmpty(self.schema.minimum)) {
+
+                        if (self.field)
+                        {
+                            self.field.after('<div id="slider"></div>');
+                            self.slider = $('#slider', self.field.parent()).slider({
+                                value: self.getValue(),
+                                min: self.schema.minimum,
+                                max: self.schema.maximum,
+                                slide: function(event, ui) {
+                                    self.setValue(ui.value);
+                                    self.refreshValidationState();
+                                }
+                            });
+                        }
                     }
                 }
-            }
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-integer');
-            }
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-integer');
+                }
+
+                callback();
+
+            });
         },
 
         /**
@@ -16110,117 +16566,7 @@ address:
             }
 
             return true;
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Fields.NumberField#getSchemaOfSchema
-         */
-        getSchemaOfSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "minimum": {
-                        "title": "Minimum",
-                        "description": "Minimum value of the property.",
-                        "type": "integer"
-                    },
-                    "maximum": {
-                        "title": "Maximum",
-                        "description": "Maximum value of the property.",
-                        "type": "integer"
-                    },
-                    "divisibleBy": {
-                        "title": "Divisible By",
-                        "description": "Property value must be divisible by this number.",
-                        "type": "integer"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.NumberField#getOptionsForSchema
-         */
-        getOptionsForSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "minimum": {
-                        "helper": "Minimum value of the field.",
-                        "type": "integer"
-                    },
-                    "maximum": {
-                        "helper": "Maximum value of the field.",
-                        "type": "integer"
-                    },
-                    "divisibleBy": {
-                        "helper": "Property value must be divisible by this number.",
-                        "type": "integer"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.NumberField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "slider": {
-                        "title": "Slider",
-                        "description": "Generate jQuery UI slider control with the field if true.",
-                        "type": "boolean",
-                        "default": false
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.NumberField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "slider": {
-                        "rightLabel": "Slider control ?",
-                        "helper": "Generate slider control if selected.",
-                        "type": "checkbox"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @see Alpaca.Fields.NumberField#getTitle
-         */
-        getTitle: function() {
-            return "Integer Field";
-        },
-
-        /**
-         * @see Alpaca.Fields.NumberField#getDescription
-         */
-        getDescription: function() {
-            return "Field for integers.";
-        },
-
-        /**
-         * @see Alpaca.Fields.NumberField#getType
-         */
-        getType: function() {
-            return "integer";
-        },
-
-        /**
-         * @see Alpaca.Fields.NumberField#getFieldType
-         */
-        getFieldType: function() {
-            return "integer";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     // Additional Registrations
@@ -16260,11 +16606,19 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-lowercase');
-            }
+        postRender: function(callback)
+        {
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-lowercase');
+                }
+
+                callback();
+
+            });
         },
 
         /**
@@ -16290,28 +16644,7 @@ address:
                 var v = _this.getValue();
                 _this.setValue(v);
             });
-        },//__BUILDER_HELPERS
-
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "Lowercase Text";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Text field for lowercase text.";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "lowercase";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerFieldClass("lowercase", Alpaca.Fields.LowerCaseField);
@@ -16467,33 +16800,20 @@ address:
         /**
          * @see Alpaca.Fields.TextAreaField#postRender
          */
-        postRender: function() {
-            this.base();
-			if (this.fieldContainer) {
-				this.fieldContainer.addClass('alpaca-controlfield-map');
-			}
-        },//__BUILDER_HELPERS
+        postRender: function(callback)
+        {
+            var self = this;
 
-		/**
-         * @see Alpaca.Fields.TextAreaField#getTitle
-		 */
-		getTitle: function() {
-			return "Map Field";
-		},
+            this.base(function() {
 
-		/**
-         * @see Alpaca.Fields.TextAreaField#getDescription
-		 */
-		getDescription: function() {
-			return "Field for objects with key/value pairs that share the same schema for values.";
-		},
+                if (this.fieldContainer) {
+                    this.fieldContainer.addClass('alpaca-controlfield-map');
+                }
 
-		/**
-         * @see Alpaca.Fields.TextAreaField#getFieldType
-         */
-        getFieldType: function() {
-            return "map";
-        }//__END_OF_BUILDER_HELPERS
+                callback();
+            });
+
+        }
     });
 
     Alpaca.registerFieldClass("map", Alpaca.Fields.MapField);
@@ -16547,11 +16867,18 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-			if (this.fieldContainer) {
-				this.fieldContainer.addClass('alpaca-controlfield-password');
-			}
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-password');
+                }
+
+                callback();
+            });
         },
 
         /**
@@ -16567,70 +16894,7 @@ address:
             }
             
             return baseStatus;
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfSchema
-         */
-        getSchemaOfSchema: function() {
-            var pattern = (this.schema && this.schema.pattern)? this.schema.pattern : /^[0-9a-zA-Z\x20-\x7E]*$/;
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "pattern": {
-                        "title": "Pattern",
-                        "description": "Field Pattern in Regular Expression",
-                        "type": "string",
-                        "default": this.schema.pattern,
-                        "enum":[pattern],
-                        "readonly": true
-                    },                    
-					"format": {
-                        "title": "Format",
-                        "description": "Property data format",
-                        "type": "string",
-						"default":"password",
-                        "enum":["password"],
-						"readonly":true
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getOptionsForSchema
-         */
-		getOptionsForSchema: function() {
-            return Alpaca.merge(this.base(),{
-				"fields": {
-					"format": {
-						"type": "text"
-					}
-				}
-			});
-        },
-        
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "Password Field";
-        },
-        
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Password Field.";
-        },
-
-		/**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "password";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerTemplate("controlFieldPassword", '<input type="password" id="${id}" {{if options.size}}size="${options.size}"{{/if}} {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each(i,v) options.data}}data-${i}="${v}"{{/each}}/>');
@@ -16670,11 +16934,19 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-personalname');
-            }
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-personalname');
+                }
+
+                callback();
+
+            });
         },
 
         /**
@@ -16710,28 +16982,7 @@ address:
                 var v = _this.getValue();
                 _this.setValue(v);
             });
-        },//__BUILDER_HELPERS
-
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "Personal Name";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Text Field for personal name with captical letter for first letter & after hyphen, space or apostrophe.";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "personalname";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerFieldClass("personalname", Alpaca.Fields.PersonalNameField);
@@ -16783,11 +17034,19 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-phone');
-            }
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-phone');
+                }
+
+                callback();
+
+            });
         },
 
         /**
@@ -16803,87 +17062,7 @@ address:
             }
 
             return baseStatus;
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfSchema
-         */
-        getSchemaOfSchema: function() {
-            var pattern = (this.schema && this.schema.pattern) ? this.schema.pattern : Alpaca.regexps.phone;
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "pattern": {
-                        "title": "Pattern",
-                        "description": "Field Pattern in Regular Expression",
-                        "type": "string",
-                        "default": pattern,
-                        "enum":[pattern],
-                        "readonly": true
-                    },
-                    "format": {
-                        "title": "Format",
-                        "description": "Property data format",
-                        "type": "string",
-                        "default":"phone",
-                        "enum":["phone"],
-                        "readonly":true
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getOptionsForSchema
-         */
-        getOptionsForSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "format": {
-                        "type": "text"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "maskString": {
-                        "title": "Field Mask String",
-                        "description": "Expression for field mask",
-                        "type": "string",
-                        "default": "(999) 999-9999"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "Phone Field";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Phone Field.";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "phone";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerMessages({
@@ -16933,11 +17112,18 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-tag');
-            }
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-tag');
+                }
+
+                callback();
+            });
         },
 
         /**
@@ -16980,59 +17166,7 @@ address:
 
             this.setValue(trimmed);
 
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "separator": {
-                        "title": "Separator",
-                        "description": "Separator used to split tags.",
-                        "type": "string",
-                        "default":","
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "separator": {
-                        "type": "text"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "Tag Field";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Text field for entering list of tags separated by delimiter.";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "tag";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerFieldClass("tag", Alpaca.Fields.TagField);
@@ -17086,11 +17220,19 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-time');
-            }
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-time');
+                }
+
+                callback();
+
+            });
         },
 
         /**
@@ -17098,7 +17240,7 @@ address:
          */
         onChange: function(e) {
             this.base();
-            this.renderValidationState();
+            this.refreshValidationState();
         },
 
         /**
@@ -17129,117 +17271,7 @@ address:
             }
             //valitime the time without the help of timepicker.parseTime
             return value.match(this.options.timeFormatRegex);
-        },//__BUILDER_HELPERS
-
-        /**
-         * @see Alpaca.Fields.TextField#setValue
-         */
-        setValue: function(val) {
-            // skip out if no time
-            if (val === "") {
-                this.base(val);
-                return;
-            }
-
-            this.base(val);
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfSchema
-         */
-        getSchemaOfSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "format": {
-                        "title": "Format",
-                        "description": "Property data format",
-                        "type": "string",
-                        "default":"time",
-                        "enum" : ["time"],
-                        "readonly":true
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getOptionsForSchema
-         */
-        getOptionsForSchema: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "format": {
-                        "type": "text"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "timeFormat": {
-                        "title": "Time Format",
-                        "description": "Time format",
-                        "type": "string",
-                        "default": "hh:mm:ss"
-                    },
-                    "timeFormatRegex": {
-                        "title": "Format Regular Expression",
-                        "description": "Regular expression for validation time format",
-                        "type": "string",
-                        "default": /^(([0-1][0-9])|([2][0-3])):([0-5][0-9]):([0-5][0-9])$/
-                    },
-                    "maskString": {
-                        "default" : "99:99:99"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "timeFormat": {
-                        "type": "text"
-                    },
-                    "timeFormatRegex": {
-                        "type": "text"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "Time Field";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Field for time.";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "time";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerMessages({
@@ -17278,12 +17310,19 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
+        postRender: function(callback) {
 
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-uppercase');
-            }
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-uppercase');
+                }
+
+                callback();
+
+            });
         },
 
         /**
@@ -17310,28 +17349,7 @@ address:
                 var v = _this.getValue();
                 _this.setValue(v);
             });
-        },//__BUILDER_HELPERS
-
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "Uppercase Text";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Text field for uppercase text.";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "uppercase";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerFieldClass("uppercase", Alpaca.Fields.UpperCaseField);
@@ -17406,123 +17424,68 @@ address:
         /**
          * @see Alpaca.Fields.TextAreaField#postRender
          */
-        postRender: function() {
-            this.base();            
-			// see if we can render jWysiwyg
-            var _this = this;
+        postRender: function(callback) {
 
-            if (this.field && $.wysiwyg)
-            {
-                var wysiwygOptions = this.options.wysiwyg ? this.options.wysiwyg : {};
+            var self = this;
 
-                if (wysiwygOptions.controls)
+            this.base(function() {
+
+                // see if we can render jWysiwyg
+                if (self.field && $.wysiwyg)
                 {
-                    if (typeof(wysiwygOptions.controls) === "string")
+                    var wysiwygOptions = self.options.wysiwyg ? self.options.wysiwyg : {};
+
+                    if (wysiwygOptions.controls)
                     {
-                        wysiwygOptions.controls = this.controlsConfig[wysiwygOptions.controls];
-                        if (!wysiwygOptions.controls)
+                        if (typeof(wysiwygOptions.controls) === "string")
                         {
-                            wysiwygOptions.controls = {};
+                            wysiwygOptions.controls = self.controlsConfig[wysiwygOptions.controls];
+                            if (!wysiwygOptions.controls)
+                            {
+                                wysiwygOptions.controls = {};
+                            }
                         }
                     }
-                }
 
-                if (this.options.onDemand)
-                {
-                    this.outerEl.find("textarea").mouseover(function() {
+                    if (self.options.onDemand)
+                    {
+                        self.outerEl.find("textarea").mouseover(function() {
 
-                        if (!_this.plugin)
-                        {
-                            _this.plugin = $(this).wysiwyg(wysiwygOptions);
+                            if (!self.plugin)
+                            {
+                                self.plugin = $(this).wysiwyg(wysiwygOptions);
 
-                            _this.outerEl.find(".wysiwyg").mouseout(function() {
+                                self.outerEl.find(".wysiwyg").mouseout(function() {
 
-                                if (_this.plugin) {
-                                    _this.plugin.wysiwyg('destroy');
-                                }
+                                    if (self.plugin) {
+                                        self.plugin.wysiwyg('destroy');
+                                    }
 
-                                _this.plugin = null;
+                                    self.plugin = null;
 
-                            });
-                        }
+                                });
+                            }
+                        });
+                    }
+                    else
+                    {
+                        self.plugin = self.field.wysiwyg(wysiwygOptions);
+                    }
+
+                    self.outerEl.find(".wysiwyg").mouseout(function() {
+                        self.data = _this.getValue();
+                        self.refreshValidationState();
                     });
                 }
-                else
-                {
-                    this.plugin = this.field.wysiwyg(wysiwygOptions);
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-wysiwyg');
                 }
 
-                this.outerEl.find(".wysiwyg").mouseout(function() {
-                    _this.data = _this.getValue();
-                    _this.renderValidationState();
-                });
-            }
-
-			if (this.fieldContainer) {
-				this.fieldContainer.addClass('alpaca-controlfield-wysiwyg');
-			}
-        },//__BUILDER_HELPERS
-		
-        /**
-         * @private
-         * @see Alpaca.ControlField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "wysiwyg": {
-                        "title": "Editor options",
-                        "description": "Options that are supported by the <a href='https://github.com/akzhan/jwysiwyg'>jQuery WYSIWYG plugin</a>.",
-                        "type": "any"
-                    },
-                    "onDemand": {
-                        "title": "On Demand",
-                        "description": "If true, WYSIWYG editor will only be enabled when the field is hovered.",
-                        "type": "boolean",
-                        "default": false
-                    }
-                }
+                callback();
             });
-        },
 
-        /**
-         * @private
-         * @see Alpaca.ControlField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "wysiwyg": {
-                        "type": "any"
-                    },
-                    "onDemand": {
-                        "type": "checkbox",
-                        "rightLabel": "Make the editor on-demand?"
-                    }
-                }
-            });
-        },
-
-		/**
-         * @see Alpaca.Fields.TextAreaField#getTitle
-		 */
-		getTitle: function() {
-			return "Wysiwyg Editor";
-		},
-		
-		/**
-         * @see Alpaca.Fields.TextAreaField#getDescription
-		 */
-		getDescription: function() {
-			return "Wysiwyg editor for multi-line text which is based on Akzhan Abdulin's <a href='https://github.com/akzhan/jwysiwyg'>jQuery WYSIWYG plugin</a>.";
-		},
-
-		/**
-         * @see Alpaca.Fields.TextAreaField#getFieldType
-         */
-        getFieldType: function() {
-            return "wysiwyg";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
     
     Alpaca.registerFieldClass("wysiwyg", Alpaca.Fields.WysiwygField);
@@ -17603,11 +17566,19 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-state');
-            }
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-state');
+                }
+
+                callback();
+
+            });
         },
 
         /**
@@ -17619,93 +17590,7 @@ address:
             // no additional validation
 
             return baseStatus;
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "format": {
-                        "title": "Format",
-                        "description": "How to represent the state values in the selector",
-                        "type": "string",
-                        "default": "name",
-                        "enum":["name", "code"],
-                        "readonly": true
-                    },
-                    "capitalize": {
-                        "title": "Capitalize",
-                        "description": "Whether the values should be capitalized",
-                        "type": "boolean",
-                        "default": false,
-                        "readonly": true
-                    },
-                    "includeStates": {
-                        "title": "Include States",
-                        "description": "Whether to include the states of the United States",
-                        "type": "boolean",
-                        "default": true,
-                        "readonly": true
-                    },
-                    "includeTerritories": {
-                        "title": "Include Territories",
-                        "description": "Whether to include the territories of the United States",
-                        "type": "boolean",
-                        "default": true,
-                        "readonly": true
-                    }
-                }
-            });
-
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "format": {
-                        "type": "text"
-                    },
-                    "capitalize": {
-                        "type": "checkbox"
-                    },
-                    "includeStates": {
-                        "type": "checkbox"
-                    },
-                    "includeTerritories": {
-                        "type": "checkbox"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "State Field";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Provides a dropdown selector of states and/or territories in the United States, keyed by their two-character code.";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "state";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerFieldClass("state", Alpaca.Fields.StateField);
@@ -18179,11 +18064,19 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-country');
-            }
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-country');
+                }
+
+                callback();
+
+            });
         },
 
         /**
@@ -18195,62 +18088,7 @@ address:
             // no additional validation
 
             return baseStatus;
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "capitalize": {
-                        "title": "Capitalize",
-                        "description": "Whether the values should be capitalized",
-                        "type": "boolean",
-                        "default": false,
-                        "readonly": true
-                    }
-                }
-            });
-
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "capitalize": {
-                        "type": "checkbox"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "Country Field";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Provides a dropdown selector of countries keyed by their ISO3 code.  The names of the countries are read from the I18N bundle for the current locale.";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "country";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerFieldClass("country", Alpaca.Fields.CountryField);
@@ -18324,11 +18162,18 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-zipcode');
-            }
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-zipcode');
+                }
+
+                callback();
+            });
         },
 
         /**
@@ -18352,63 +18197,7 @@ address:
             }
 
             return baseStatus;
-        },//__BUILDER_HELPERS
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getSchemaOfOptions
-         */
-        getSchemaOfOptions: function() {
-
-            return Alpaca.merge(this.base(), {
-                "properties": {
-                    "format": {
-                        "title": "Format",
-                        "description": "How to represent the zipcode field",
-                        "type": "string",
-                        "default": "five",
-                        "enum":["five", "nine"],
-                        "readonly": true
-                    }
-                }
-            });
-
-        },
-
-        /**
-         * @private
-         * @see Alpaca.Fields.TextField#getOptionsForOptions
-         */
-        getOptionsForOptions: function() {
-            return Alpaca.merge(this.base(), {
-                "fields": {
-                    "format": {
-                        "type": "text"
-                    }
-                }
-            });
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "Zipcode Field";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Provides a five or nine-digital US zipcode control with validation.";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "zipcode";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerMessages({
@@ -18460,11 +18249,19 @@ address:
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function() {
-            this.base();
-            if (this.fieldContainer) {
-                this.fieldContainer.addClass('alpaca-controlfield-url');
-            }
+        postRender: function(callback) {
+
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-url');
+                }
+
+                callback();
+
+            });
         },
 
         /**
@@ -18481,28 +18278,7 @@ address:
             }
 
             return baseStatus;
-        },//__BUILDER_HELPERS
-
-        /**
-         * @see Alpaca.Fields.TextField#getTitle
-         */
-        getTitle: function() {
-            return "URL Field";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getDescription
-         */
-        getDescription: function() {
-            return "Provides a text control with validation for an internet web address.";
-        },
-
-        /**
-         * @see Alpaca.Fields.TextField#getFieldType
-         */
-        getFieldType: function() {
-            return "url";
-        }//__END_OF_BUILDER_HELPERS
+        }
     });
 
     Alpaca.registerMessages({
@@ -18512,8 +18288,792 @@ address:
     Alpaca.registerDefaultFormatFieldMapping("url", "url");
 
 })(jQuery);
+(function($) {
+
+    var Alpaca = $.alpaca;
+
+    Alpaca.Fields.UploadField = Alpaca.Fields.TextField.extend(
+    /**
+     * @lends Alpaca.Fields.UploadField.prototype
+     */
+    {
+        /**
+         * @constructs
+         * @augments Alpaca.Fields.ObjectField
+         *
+         * @class Upload Field
+         *
+         * @param {Object} container Field container.
+         * @param {Any} data Field data.
+         * @param {Object} options Field options.
+         * @param {Object} schema Field schema.
+         * @param {Object|String} view Field view.
+         * @param {Alpaca.Connector} connector Field connector.
+         * @param {Function} errorCallback Error callback.
+         */
+        constructor: function(container, data, options, schema, view, connector, errorCallback) {
+            this.base(container, data, options, schema, view, connector, errorCallback);
+        },
+
+        /**
+         * @see Alpaca.Fields.TextField#setup
+         */
+        setup: function() {
+
+            var self = this;
+
+            this.base();
+
+            this.controlFieldTemplateDescriptor = this.view.getTemplateDescriptor("controlFieldUpload");
+            this.uploadDescriptor = self.view.getTemplateDescriptor("controlFieldUpload_upload");
+            this.downloadDescriptor = self.view.getTemplateDescriptor("controlFieldUpload_download");
+
+            if (typeof(self.options.multiple) == "undefined")
+            {
+                self.options.multiple = false;
+            }
+
+            if (typeof(self.options.showUploadPreview) == "undefined")
+            {
+                self.options.showUploadPreview = true;
+            }
+
+        },
+
+        /**
+         * @see Alpaca.ControlField#renderField
+         */
+        renderField: function(onSuccess) {
+
+            var self = this;
+
+            this.base(function() {
+
+                self.field = $(self.field).find(".alpaca-fileupload-input-hidden");
+
+                if (onSuccess) {
+                    onSuccess();
+                }
+
+            });
+        },
 
 
-    return Alpaca;
+        /**
+         * @see Alpaca.Fields.TextField#postRender
+         */
+        postRender: function(callback) {
 
-}));
+            var self = this;
+
+            this.base(function() {
+
+                if (self.fieldContainer) {
+                    self.fieldContainer.addClass('alpaca-controlfield-upload');
+                }
+
+                self.handlePostRender(self.fieldContainer, function() {
+                    callback();
+                });
+
+            });
+        },
+
+        handlePostRender: function(el, callback)
+        {
+            var self = this;
+
+            var uploadTemplateFunction = function(data)
+            {
+                return Alpaca.tmpl(self.uploadDescriptor, {
+                    o: data
+                });
+            };
+             var downloadTemplateFunction = function(data)
+             {
+                 return Alpaca.tmpl(self.downloadDescriptor, {
+                     o: data
+                 });
+             };
+
+            // file upload config
+            var fileUploadConfig = {};
+
+            // defaults
+            fileUploadConfig["dataType"] = "json";
+            fileUploadConfig["uploadTemplateId"] = null;
+            fileUploadConfig["uploadTemplate"] = uploadTemplateFunction;
+            fileUploadConfig["downloadTemplateId"] = null;
+            fileUploadConfig["downloadTemplate"] = downloadTemplateFunction;
+            fileUploadConfig["filesContainer"] = $(el).find(".files");
+            fileUploadConfig["dropZone"] = $(el).find(".fileupload-active-zone");
+            fileUploadConfig["url"] = "/";
+            fileUploadConfig["method"] = "post";
+            fileUploadConfig["showUploadPreview"] = self.options.showUploadPreview;
+
+            if (self.options.upload)
+            {
+                for (var k in self.options.upload)
+                {
+                    fileUploadConfig[k] = self.options.upload[k];
+                }
+            }
+
+            if (self.options.multiple)
+            {
+                $(el).find(".alpaca-fileupload-input").attr("multiple", true);
+                $(el).find(".alpaca-fileupload-input").attr("name", self.name + "_files[]");
+            }
+
+            // hide the progress bar at first
+            $(el).find(".progress").css("display", "none");
+
+            /**
+             * If a file is being uploaded, show the progress bar.  Otherwise, hide it.
+             *
+             * @param e
+             * @param data
+             */
+            fileUploadConfig["progressall"] = function (e, data) {
+
+                var showProgressBar = false;
+                if (data.loaded < data.total)
+                {
+                    showProgressBar = true;
+                }
+                if (showProgressBar)
+                {
+                    $(el).find(".progress").css("display", "block");
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .progress-bar').css(
+                        'width',
+                        progress + '%'
+                    );
+                }
+                else
+                {
+                    $(el).find(".progress").css("display", "none");
+                }
+            };
+
+            // allow for extension
+            self.applyConfiguration(fileUploadConfig);
+
+            // instantiate the control
+            var fileUpload = self.fileUpload = $(el).find('.alpaca-fileupload-input').fileupload(fileUploadConfig);
+
+            // When file upload of a file competes, we offer the chance to adjust the data ahead of FileUpload
+            // getting it.  This is useful for cases where you can't change the server side JSON but could do
+            // a little bit of magic in the client.
+            fileUpload.bindFirst("fileuploaddone", function(e, data) {
+
+                var enhanceFiles = self.options.enhanceFiles;
+                if (enhanceFiles)
+                {
+                    enhanceFiles(fileUploadConfig, data);
+                }
+                else
+                {
+                    self.enhanceFiles(fileUploadConfig, data);
+                }
+
+                // copy back down into data.files
+                data.files = data.result.files;
+            });
+
+            // When files are submitted, the "properties" and "parameters" options map are especially treated
+            // and are written into property<index>__<key> and param<index>__key entries in the form data.
+            // This allows for multi-part receivers to get values on a per-file basis.
+            // Plans are to allow token substitution and other client-side treatment ahead of posting.
+            fileUpload.bindFirst("fileuploadsubmit", function(e, data) {
+
+                if (self.options["properties"])
+                {
+                    $.each(data.files, function(index, file) {
+
+                        for (var key in self.options["properties"])
+                        {
+                            var propertyName = "property" + index + "__" + key;
+                            var propertyValue = self.options["properties"][key];
+
+                            // token substitutions
+                            propertyValue = self.applyTokenSubstitutions(propertyValue, index, file);
+
+                            if (!data.formData) {
+                                data.formData = {};
+                            }
+
+                            data.formData[propertyName] = propertyValue;
+                        }
+                    });
+                }
+
+                if (self.options["parameters"])
+                {
+                    $.each(data.files, function(index, file) {
+
+                        for (var key in self.options["parameters"])
+                        {
+                            var paramName = "param" + index + "__" + key;
+                            var paramValue = self.options["parameters"][key];
+
+                            // token substitutions
+                            paramValue = self.applyTokenSubstitutions(paramValue, index, file);
+
+                            if (!data.formData) {
+                                data.formData = {};
+                            }
+
+                            data.formData[paramName] = paramValue;
+                        }
+                    });
+                }
+            });
+
+            /**
+             * When files are uploaded, we adjust the value of the field.
+             */
+            fileUpload.bind("fileuploaddone", function(e, data) {
+
+                // existing
+                var array = self.getValue();
+
+                var f = function(i)
+                {
+                    if (i == data.files.length)
+                    {
+                        // done
+                        self.setValue(array);
+                        return;
+                    }
+
+                    self.convertFileToDescriptor(data.files[i], function(err, descriptor) {
+                        if (descriptor)
+                        {
+                            array.push(descriptor);
+                        }
+                        f(i+1);
+                    });
+                };
+                f(0);
+            });
+
+            // allow for extension
+            self.applyBindings(fileUpload, el);
+
+            // allow for preloading of documents
+            self.preload(fileUpload, el, function(files) {
+
+                if (files)
+                {
+                    var form = $(self.fieldContainer).find('.alpaca-fileupload-input');
+                    $(form).fileupload('option', 'done').call(form, $.Event('done'), {
+                        result: {
+                            files: files
+                        }
+                    });
+
+                    self.afterPreload(fileUpload, el, files, function() {
+                        callback();
+                    });
+                }
+                else
+                {
+                    callback();
+                }
+            });
+        },
+
+        applyTokenSubstitutions: function(text, index, file)
+        {
+            var tokens = {
+                "index": index,
+                "name": file.name,
+                "size": file.size,
+                "url": file.url,
+                "thumbnailUrl": file.thumbnailUrl
+            };
+
+            // substitute any tokens
+            var x = -1;
+            var b = 0;
+            do
+            {
+                x = text.indexOf("{", b);
+                if (x > -1)
+                {
+                    var y = text.indexOf("}", x);
+                    if (y > -1)
+                    {
+                        var token = text.substring(x + car.length, y);
+
+                        var replacement = tokens[token];
+                        if (replacement)
+                        {
+                            text = text.substring(0, x) + replacement + text.substring(y+1);
+                        }
+
+                        b = y + 1;
+                    }
+                }
+            }
+            while(x > -1);
+
+            return text;
+        },
+
+        /**
+         * Removes a descriptor with the given id from the value set.
+         *
+         * @param id
+         */
+        removeValue: function(id)
+        {
+            var self = this;
+
+            var array = self.getValue();
+            for (var i = 0; i < array.length; i++)
+            {
+                if (array[i].id == id)
+                {
+                    array.splice(i, 1);
+                    break;
+                }
+            }
+
+            self.setValue(array);
+        },
+
+
+        /**
+         * Extension point for adding properties and callbacks to the file upload config.
+         *
+         * @param fileUploadconfig
+         */
+        applyConfiguration: function(fileUploadconfig)
+        {
+        },
+
+        /**
+         * Extension point for binding event handlers to file upload instance.
+         *
+         * @param fileUpload
+         */
+        applyBindings: function(fileUpload)
+        {
+        },
+
+        /**
+         * Converts from a file to a storage descriptor.
+         *
+         * A descriptor looks like:
+         *
+         *      {
+         *          "id": ""
+         *          ...
+         *      }
+         *
+         * A descriptor may contain additional properties as needed by the underlying storage implementation
+         * so as to retrieve metadata about the described file.
+         *
+         * Assumption is that the underlying persistence mechanism may need to be consulted.  Thus, this is async.
+         *
+         * By default, the descriptor mimics the file.
+         *
+         * @param file
+         * @param callback function(err, descriptor)
+         */
+        convertFileToDescriptor: function(file, callback)
+        {
+            var descriptor = {
+                "id": file.id,
+                "name": file.name,
+                "size": file.size,
+                "url": file.url,
+                "thumbnailUrl":file.thumbnailUrl,
+                "deleteUrl": file.deleteUrl,
+                "deleteType": file.deleteType
+            };
+
+            callback(null, descriptor);
+        },
+
+        /**
+         * Converts a storage descriptor to a file.
+         *
+         * A file looks like:
+         *
+         *      {
+         *          "id": "",
+         *          "name": "picture1.jpg",
+         *          "size": 902604,
+         *          "url": "http:\/\/example.org\/files\/picture1.jpg",
+         *          "thumbnailUrl": "http:\/\/example.org\/files\/thumbnail\/picture1.jpg",
+         *          "deleteUrl": "http:\/\/example.org\/files\/picture1.jpg",
+         *          "deleteType": "DELETE"
+         *      }
+         *
+         * Since an underlying storage mechanism may be consulted, an async callback hook is provided.
+         *
+         * By default, the descriptor mimics the file.
+         *
+         * @param descriptor
+         * @param callback function(err, file)
+         */
+        convertDescriptorToFile: function(descriptor, callback)
+        {
+            var file = {
+                "id": descriptor.id,
+                "name": descriptor.name,
+                "size": descriptor.size,
+                "url": descriptor.url,
+                "thumbnailUrl":descriptor.thumbnailUrl,
+                "deleteUrl": descriptor.deleteUrl,
+                "deleteType": descriptor.deleteType
+            };
+
+            callback(null, file);
+        },
+
+        /**
+         * Extension point for "enhancing" data received from the remote server after uploads have been submitted.
+         * This provides a place to convert the data.rows back into the format which the upload control expects.
+         *
+         * Expected format:
+         *
+         *    data.result.rows = [{...}]
+         *    data.result.files = [{
+         *      "id": "",
+         *      "path": "",
+         *      "name": "picture1.jpg",
+         *      "size": 902604,
+         *      "url": "http:\/\/example.org\/files\/picture1.jpg",
+         *      "thumbnailUrl": "http:\/\/example.org\/files\/thumbnail\/picture1.jpg",
+         *      "deleteUrl": "http:\/\/example.org\/files\/picture1.jpg",
+         *      "deleteType": "DELETE"*
+         *    }]
+         *
+         * @param fileUploadConfig
+         * @param row
+         */
+        enhanceFiles: function(fileUploadConfig, data)
+        {
+        },
+
+        /**
+         * Preloads data descriptors into files.
+         *
+         * @param fileUpload
+         * @param el
+         * @param callback
+         */
+        preload: function(fileUpload, el, callback)
+        {
+            var self = this;
+
+            var files = [];
+
+            // now preload with files based on property value
+            var descriptors = self.getValue();
+
+            var f = function(i)
+            {
+                if (i == descriptors.length)
+                {
+                    // all done
+                    callback(files);
+                    return;
+                }
+
+                self.convertDescriptorToFile(descriptors[i], function(err, file) {
+                    if (file)
+                    {
+                        files.push(file);
+                    }
+                    f(i+1);
+                });
+            };
+            f(0);
+        },
+
+        afterPreload: function(fileUpload, el, files, callback)
+        {
+            callback();
+        },
+
+        /**
+         * @override
+         *
+         * Retrieves an array of descriptors.
+         */
+        getValue: function()
+        {
+            if (!this.data)
+            {
+                this.data = [];
+            }
+
+            return this.data;
+        },
+
+        /**
+         * @override
+         *
+         * Sets an array of descriptors.
+         *
+         * @param data
+         */
+        setValue: function(data)
+        {
+            this.data = data;
+        },
+
+        reload: function(callback)
+        {
+            var self = this;
+
+            var descriptors = this.getValue();
+
+            var files = [];
+
+            var f = function(i)
+            {
+                if (i == descriptors.length)
+                {
+                    // all done
+
+                    var form = $(self.fieldContainer).find('.alpaca-fileupload-input');
+                    $(form).fileupload('option', 'done').call(form, $.Event('done'), {
+                        result: {
+                            files: files
+                        }
+                    });
+
+                    callback();
+
+                    return;
+                }
+
+                self.convertDescriptorToFile(descriptors[i], function(err, file) {
+                    if (file)
+                    {
+                        files.push(file);
+                    }
+                    f(i+1);
+                });
+            };
+            f(0);
+        },
+        //__BUILDER_HELPERS
+
+        /**
+         * @see Alpaca.ControlField#getTitle
+         */
+        getTitle: function() {
+            return "Upload Field";
+        },
+
+        /**
+         * @see Alpaca.ControlField#getDescription
+         */
+        getDescription: function() {
+            return "Provides an upload field with support for thumbnail preview";
+        },
+
+        /**
+         * @see Alpaca.ControlField#getType
+         */
+        getType: function() {
+            return "array";
+        },
+
+        /**
+         * @see Alpaca.ControlField#getFieldType
+         */
+        getFieldType: function() {
+            return "upload";
+        }//__END_OF_BUILDER_HELPERS
+    });
+
+    var TEMPLATE = ' \
+        <div class="alpaca-fileupload-container {{if cssClasses}}${cssClasses}{{/if}}"> \
+            <div class="container-fluid"> \
+                <div class="row"> \
+                    <div class="col-md-12"> \
+                        <div class="btn-group"> \
+                            <button class="btn btn-default fileinput-button"> \
+                                <i class="glyphicon glyphicon-upload"></i> \
+                                <span class="fileupload-add-button">Choose files...</span> \
+                                <input class="alpaca-fileupload-input" type="file" name="${name}_files"> \
+                                <input class="alpaca-fileupload-input-hidden" type="hidden" name="${name}_files_hidden"> \
+                            </button> \
+                        </div> \
+                    </div> \
+                </div> \
+                <div class="row alpaca-fileupload-well"> \
+                    <div class="col-md-12 fileupload-active-zone"> \
+                        <table class="table table-striped"> \
+                            <tbody class="files"> \
+                            </tbody> \
+                        </table> \
+                        <p align="center">Click the Choose button or Drag and Drop files here to start...</p> \
+                    </div> \
+                </div> \
+                <div class="row"> \
+                    <div class="col-md-12"> \
+                        <div id="progress" class="progress"> \
+                            <div class="progress-bar progress-bar-success"></div> \
+                        </div> \
+                    </div> \
+                </div> \
+            </div> \
+        </div> \
+    ';
+
+    var TEMPLATE_UPLOAD = ' \
+        <script id="template-upload" type="text/x-tmpl"> \
+        {{each(i, file) o.files}} \
+            <tr class="template-upload fade"> \
+                {{if o.options.showUploadPreview}} \
+                <td class="preview"> \
+                    <span class="fade"></span> \
+                </td> \
+                {{else}} \
+                <td> \
+                </td> \
+                {{/if}} \
+                <td class="name"><span>${file.name}</span></td> \
+                <td class="size"><span>${file.size}</span></td> \
+            {{if file.error}} \
+                <td class="error" colspan="2"><span class="label label-important">Error</span> ${file.error}</td> \
+            {{else}} \
+                {{if o.files.valid && !i}} \
+                <td> \
+                    <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"> \
+                        <div class="progress-bar" style="width:0%;"></div>\
+                    </div> \
+                </td> \
+                <td class="start">\
+                {{if !o.options.autoUpload}} \
+                    <button class="btn btn-primary"> \
+                        <i class="glyphicon glyphicon-upload glyphicon-white"></i> \
+                        <span>Start</span> \
+                    </button> \
+                {{/if}} \
+                </td> \
+                {{else}} \
+                <td colspan="2"></td> \
+                <td class="cancel">\
+                {{if !i}} \
+                    <button class="btn btn-warning"> \
+                        <i class="glyphicon glyphicon-ban-circle glyphicon-white"></i> \
+                        <span>Cancel</span> \
+                    </button> \
+                {{/if}} \
+                </td> \
+                {{/if}} \
+            {{/if}} \
+                <td></td> \
+            </tr> \
+        {{/each}} \
+        </script> \
+    ';
+
+    var TEMPLATE_DOWNLOAD = ' \
+        <script id="template-download" type="text/x-tmpl"> \
+        {{each(i, file) o.files}} \
+            <tr class="template-download fade"> \
+            {{if file.error}} \
+                <td></td> \
+                <td class="name"><span>${file.name}</span></td> \
+                <td class="size"><span>${file.size}</span></td> \
+                <td class="error" colspan="2"><span class="label label-important">Error</span> ${file.error}</td> \
+            {{else}} \
+                <td class="preview"> \
+                {{if file.thumbnailUrl}} \
+                    <a href="${file.url}" title="${file.name}" data-gallery="gallery" download="${file.name}"> \
+                        <img src="${file.thumbnailUrl}"> \
+                    </a> \
+                {{/if}} \
+                </td> \
+                <td class="name"> \
+                    <a href="${file.url}" title="${file.name}" data-gallery="${file.thumbnailUrl}gallery" download="${file.name}">${file.name}</a> \
+                </td> \
+                <td class="size"><span>${file.size}</span></td> \
+                <td colspan="2"></td> \
+            {{/if}} \
+                <td> \
+                    <button class="delete btn btn-danger" data-type="${file.deleteType}" data-url="${file.deleteUrl}" {{if file.deleteWithCredentials}}data-xhr-fields="{\"withCredentials\":true}" {{/if}}> \
+                        <i class="glyphicon glyphicon-trash glyphicon-white"></i> \
+                        <span>Delete</span> \
+                    </button> \
+                </td> \
+            </tr> \
+        {{/each}} \
+        </script> \
+    ';
+
+    Alpaca.registerTemplate("controlFieldUpload", TEMPLATE);
+    Alpaca.registerTemplate("controlFieldUpload_upload", TEMPLATE_UPLOAD);
+    Alpaca.registerTemplate("controlFieldUpload_download", TEMPLATE_DOWNLOAD);
+    Alpaca.registerFieldClass("upload", Alpaca.Fields.UploadField);
+
+    // https://github.com/private-face/jquery.bind-first/blob/master/dev/jquery.bind-first.js
+    // jquery.bind-first.js
+    (function($) {
+        var splitVersion = $.fn.jquery.split(".");
+        var major = parseInt(splitVersion[0]);
+        var minor = parseInt(splitVersion[1]);
+
+        var JQ_LT_17 = (major < 1) || (major == 1 && minor < 7);
+
+        function eventsData($el)
+        {
+            return JQ_LT_17 ? $el.data('events') : $._data($el[0]).events;
+        }
+
+        function moveHandlerToTop($el, eventName, isDelegated)
+        {
+            var data = eventsData($el);
+            var events = data[eventName];
+
+            if (!JQ_LT_17) {
+                var handler = isDelegated ? events.splice(events.delegateCount - 1, 1)[0] : events.pop();
+                events.splice(isDelegated ? 0 : (events.delegateCount || 0), 0, handler);
+
+                return;
+            }
+
+            if (isDelegated) {
+                data.live.unshift(data.live.pop());
+            } else {
+                events.unshift(events.pop());
+            }
+        }
+
+        function moveEventHandlers($elems, eventsString, isDelegate) {
+            var events = eventsString.split(/\s+/);
+            $elems.each(function() {
+                for (var i = 0; i < events.length; ++i) {
+                    var pureEventName = $.trim(events[i]).match(/[^\.]+/i)[0];
+                    moveHandlerToTop($(this), pureEventName, isDelegate);
+                }
+            });
+        }
+
+        $.fn.bindFirst = function()
+        {
+            var args = $.makeArray(arguments);
+            var eventsString = args.shift();
+
+            if (eventsString) {
+                $.fn.bind.apply(this, arguments);
+                moveEventHandlers(this, eventsString);
+            }
+
+            return this;
+        };
+
+    })($);
+
+})(jQuery);

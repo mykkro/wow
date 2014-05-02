@@ -1,5 +1,5 @@
 /*!
-Alpaca Version 1.1.1
+Alpaca Version 1.1.2
 
 Copyright 2013 Gitana Software, Inc.
 
@@ -68,4 +68,9 @@ input, textarea, select
 .alpaca-controlfield-message-hidden
 {
     display:none;
+}
+
+.alpaca-hidden
+{
+    display: none;
 }

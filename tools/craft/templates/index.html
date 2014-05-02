@@ -101,12 +101,26 @@ html, body {
           <ul id="tabs-subcontainer-{{index}}-1-nav" class="ui-tabs-nav">
             <li><a href="#tabs-{{index}}-schema">Schema</a></li>
             <li><a href="#tabs-{{index}}-defaults">Defaults</a></li>
+            <li><a href="#tabs-{{index}}-add">Add</a></li>
           </ul>
           <div id="tabs-{{index}}-schema" class="ui-subtabs-panel">
-            <pre class="json-view">{{{schema}}}</pre>
+            <pre class="json-view">{{{schemaView}}}</pre>
           </div>
           <div id="tabs-{{index}}-defaults" class="ui-subtabs-panel">
-            <pre class="json-view">{{{defaults}}}</pre>
+            <pre class="json-view">{{{defaultsView}}}</pre>
+          </div>
+          <div id="tabs-{{index}}-add" class="ui-subtabs-panel">
+            <div class="form"></div>
+            <script>
+            $(function() {
+              var entitySchema = {{{schema}}}
+              var formParams = {{{formParams}}}
+              var schema = formParams.schema || entitySchema
+              var options = formParams.options || {}
+              var data = {{{defaultData}}}
+              $("#tabs-{{index}}-add .form").alpaca({schema:schema, options:options, data:data})
+            })
+            </script>
           </div>
         </div>
       </div>
