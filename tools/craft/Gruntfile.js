@@ -13,9 +13,15 @@ module.exports = function(grunt) {
                     transform: ['brfs']
                 }            
             }
-        }
+        },
+        jsonlint: {
+          sample: {
+            src: [ 'craft.json' ]
+          }
+        }        
     })
     grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-jsonlint');
 
-    grunt.registerTask('default', ['browserify']);
+    grunt.registerTask('default', ['browserify', 'jsonlint']);
 }
