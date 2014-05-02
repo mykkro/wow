@@ -61,6 +61,7 @@
 					}
 				},
 				"defaults": {
+					"ownerAdminId": -1,
 					"title": "Administrator",
 					"description": "",
 					"canCreateAdmins": false,
@@ -133,7 +134,10 @@
 					        }
 					    },
 					    "fields":{
-					        "created":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
+					        "created": {
 					            "hidden" : true
 					        },
 					        "description":{
@@ -213,6 +217,7 @@
 					}
 				},
 				"defaults": {
+			    	"ownerAdminId": -1,
 					"apptype": "basic", 
 					"title": "Imported App",
 					"description": "",
@@ -238,6 +243,9 @@
 					        }
 					    },
 					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
 					        "created":{
 					            "hidden" : true
 					        },
@@ -294,6 +302,7 @@
 					}
 				},
 				"defaults": {
+			    	"ownerAdminId": -1,
 					"title": "Untitled Article", 
 					"description": "No description"
 				}
@@ -314,6 +323,9 @@
 					        }
 					    },
 					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
 					        "created":{
 					            "hidden" : true
 					        },
@@ -371,6 +383,7 @@
 				},
 				"defaults": {
 					"_comment": "Alas, JSON field hangs the browser - maybe some bug in Alpaca?",
+			    	"ownerAdminId": -1,
 					"title": "JSON",
 					"description": "",
 					"content": "{}"
@@ -392,6 +405,9 @@
 					        }
 					    },
 					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
 					        "created":{
 					            "hidden" : true
 					        },
@@ -451,6 +467,7 @@
 					}
 				},
 				"defaults": {
+			    	"ownerAdminId": -1,
 					"title": "Radio",
 					"description": ""
 				}
@@ -471,6 +488,9 @@
 					        }
 					    },
 					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
 					        "created":{
 					            "hidden" : true
 					        },
@@ -532,6 +552,7 @@
 					}
 				},
 				"defaults": {
+			    	"ownerAdminId": -1,
 					"title": "User",
 					"description": "",
 					"usesPassword": false,
@@ -596,6 +617,9 @@
 					        }
 					    },
 					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
 					        "created":{
 					            "hidden" : true
 					        },
@@ -697,6 +721,7 @@
 					}
 				},
 				"defaults": {
+			    	"ownerAdminId": -1,
 					"title": "YouTube Video",
 					"description": ""
 				}
@@ -717,6 +742,9 @@
 					        }
 					    },
 					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
 					        "created":{
 					            "hidden" : true
 					        },

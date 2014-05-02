@@ -39,7 +39,7 @@
                 this.options.cols = 40;
             }
 
-            this.controlFieldTemplateDescriptor = this.view.getTemplateDescriptor("controlFieldTextarea");
+            this.controlFieldTemplateDescriptor = this.view.getTemplateDescriptor("controlFieldMyTextarea");
         },
 
         /**
@@ -195,7 +195,7 @@
         "wordLimitExceeded": "The maximum word limit of {0} has been exceeded."
     });
 
-    Alpaca.registerTemplate("controlFieldMyTextarea", '<textarea id="${id}" {{if options.placeholder}}placeholder="${options.placeholder}"{{/if}} {{if options.rows}}rows="${options.rows}"{{/if}} {{if options.cols}}cols="${options.cols}"{{/if}} {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each options.data}}data-${fieldId}="${value}"{{/each}}/>');
+    Alpaca.registerTemplate("controlFieldMyTextarea", '<textarea class="mytextarea" id="${id}" {{if options.placeholder}}placeholder="${options.placeholder}"{{/if}} {{if options.rows}}rows="${options.rows}"{{/if}} {{if options.cols}}cols="${options.cols}"{{/if}} {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each options.data}}data-${fieldId}="${value}"{{/each}}/>');
     Alpaca.registerFieldClass("mytextarea", Alpaca.Fields.MyTextAreaField);
 
 })(jQuery);
