@@ -228,6 +228,8 @@ module.exports = function(grunt) {
                     "js/vendor/jquery.youtubedrop.js",
                     "js/vendor/gamepad.min.js",
                     "js/vendor/mustache.js",
+                    // tried newer alpaca (in js/vendor/alpaca), but there are some problems
+                    // so we use the older one
                     "js/vendor/alpaca.min.js",
                     "js/vendor/moment-with-langs.min.js",
                     "js/vendor/raphael-min.js",
