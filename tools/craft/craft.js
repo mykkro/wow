@@ -5,6 +5,8 @@ var mustache = require("mustache")
 var _ = require("underscore")
 var cfg = require("./craft.json")
 
+var JsonUtils = require("../../js/util/JsonUtils")
+
 var outDir = path.join(__dirname, 'output')
 
 var daoTpl = fs.readFileSync("templates/dao.js", "utf8")
@@ -46,8 +48,12 @@ var craft = function(name, node, options) {
 }
 
 /**************************************************/
-var webDir = path.join(__dirname, 'public')
+var webDir = path.join(outDir, 'public')
+var jsDir = path.join(webDir, 'js')
+var cssDir = path.join(webDir, 'css')
 fs.mkdirpSync(webDir)
+fs.mkdirpSync(jsDir)
+fs.mkdirpSync(cssDir)
 
 var nodes = []
 for(var nodeName in cfg.nodes) {
@@ -64,7 +70,9 @@ var out = mustache.render(indexTpl, {
 		return {
 			index: i+1,
 			title: n.node.title,
-			name: n.name
+			name: n.name,
+			schema: JsonUtils.highlight(n.node.entity.schema),
+			defaults: JsonUtils.highlight(n.node.entity.defaults)
 		}
 	})	
 })
