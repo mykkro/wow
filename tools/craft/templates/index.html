@@ -6,9 +6,18 @@
   <link href="/css/style.css" media="all" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="/css/bundle.css" type="text/css" /> 
   <script src="/js/wow-libs.js"></script>
+  <script src="/js/MyTextAreaField.js"></script>
+  <!-- script src="/js/MyJSONField.js" -->
   <script src="/js/bundle.js"></script>
   <script src="/js/craft.bundle.js"></script>
 <script>
+var JsonUtils = require("JsonUtils")
+
+var formSubmitted = function(type, action, control, value) {
+  console.log("Form "+type+"."+action+" submitted!")
+  console.log(value)
+}
+
 $(document).ready(function() {
   console.log("Ready!")
 
@@ -18,7 +27,6 @@ $(document).ready(function() {
       tabclass: 'ui-tabs-panel'
   });  
 
-  var JsonUtils = require("JsonUtils")
 })
 </script>
 <style>
@@ -112,13 +120,25 @@ html, body {
           <div id="tabs-{{index}}-add" class="ui-subtabs-panel">
             <div class="form"></div>
             <script>
-            $(function() {
+            $(function() {              
               var entitySchema = {{{schema}}}
               var formParams = {{{formParams}}}
               var schema = formParams.schema || entitySchema
               var options = formParams.options || {}
               var data = {{{defaultData}}}
-              $("#tabs-{{index}}-add .form").alpaca({schema:schema, options:options, data:data})
+              var form = $("#tabs-{{index}}-add .form").alpaca({
+                schema:schema, 
+                options:options, 
+                data:data,
+                postRender: function(control) {
+                  // console.log("postRender: ")
+                  $(control.container).find("[name=submit]").click(function() {
+                    // clicked on submit button...
+                    formSubmitted("{{name}}", "add", control, control.form.getValue())
+                    return false;
+                  })
+                }
+              })
             })
             </script>
           </div>

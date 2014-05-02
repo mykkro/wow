@@ -400,7 +400,7 @@
 					            "placeholder": "Enter description here..."
 					        },
 					        "content": {
-					        	"type": "textarea",
+					        	"type": "mytextarea",
 					        	"rows": 12,
         						"cols": 60
 					        }       
