@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="/css/bundle.css" type="text/css" /> 
   <script src="/js/wow-libs.js"></script>
   <script src="/js/bundle.js"></script>
+  <script src="/js/craft.bundle.js"></script>
 <script>
 $(document).ready(function() {
   console.log("Ready!")
@@ -16,6 +17,8 @@ $(document).ready(function() {
       active: 1,
       tabclass: 'ui-tabs-panel'
   });  
+
+  var JsonUtils = require("JsonUtils")
 })
 </script>
 <style>
@@ -56,7 +59,8 @@ $(document).ready(function() {
 .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
   cursor: pointer;
 }
-.ui-tabs .ui-tabs-panel {
+.ui-tabs .ui-tabs-panel, 
+.ui-tabs .ui-subtabs-panel {
   display: block;
   clear: both;
   border: 2px #ccc solid;
@@ -64,6 +68,17 @@ $(document).ready(function() {
 }
 .ui-tabs .ui-tabs-hide {
   display: none;
+}
+pre.json-view {
+  outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+.string { color: green; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: red; }
+
+html, body {
+  overflow: auto;
 }
 
 </style>
@@ -82,8 +97,25 @@ $(document).ready(function() {
       {{#tabs}}
       <div id="tabs-{{index}}" class="ui-tabs-panel">
         <h2>{{title}}</h2>
-        {{{content}}}
+        <div id="tabs-subcontainer-{{index}}-1" class="ui-tabs">
+          <ul id="tabs-subcontainer-{{index}}-1-nav" class="ui-tabs-nav">
+            <li><a href="#tabs-{{index}}-schema">Schema</a></li>
+            <li><a href="#tabs-{{index}}-defaults">Defaults</a></li>
+          </ul>
+          <div id="tabs-{{index}}-schema" class="ui-subtabs-panel">
+            <pre class="json-view">{{{schema}}}</pre>
+          </div>
+          <div id="tabs-{{index}}-defaults" class="ui-subtabs-panel">
+            <pre class="json-view">{{{defaults}}}</pre>
+          </div>
+        </div>
       </div>
+      <script>
+      new Yetii({
+          id: 'tabs-subcontainer-{{index}}-1',
+          tabclass: 'ui-subtabs-panel'
+      });  
+      </script>
       {{/tabs}}
     </div>
   </div>
