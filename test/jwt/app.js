@@ -20,6 +20,7 @@ var API = require("./EmployeeAPI")
 
 app.get('/api/empl/:name', function(req, res) {
   	res.type('application/json');
+  /**/console.log(req.params, req.query, req.body)
   	var name = req.params.name;
  	var out = API.getEmployee(name)	
 	res.json(out);
@@ -27,12 +28,14 @@ app.get('/api/empl/:name', function(req, res) {
 
 app.delete('/api/empl/:name', function(req, res) {
   	res.type('application/json');
+  /**/console.log(req.params, req.query, req.body)
   	var name = req.params.name;
  	var out = API.deleteEmployee(name)	
 	res.json(out);
 });
 
 app.put('/api/empl/:name', function(req, res) {
+  /**/console.log(req.params, req.query, req.body)
 	var data = req.body;
 	var name = req.params.name;
 	var out = API.createNamedEmployee(name, data)
@@ -40,6 +43,7 @@ app.put('/api/empl/:name', function(req, res) {
 });	
  
 app.post('/api/empl/new', function(req, res) {
+  /**/console.log(req.params, req.query, req.body)
 	console.log('user ' + req.user.email + ' is calling /api/restricted');
 	var data = req.body;
 	var out = API.createEmployee(data)

@@ -10,6 +10,7 @@ var JsonUtils = require("../../js/util/JsonUtils")
 var outDir = path.join(__dirname, 'output')
 
 var daoTpl = fs.readFileSync("templates/dao.js", "utf8")
+var apiTpl = fs.readFileSync("templates/api.js", "utf8")
 
 function capFirst(string)
 {
@@ -40,6 +41,16 @@ var craftDAO = function(name, node, options) {
 	fs.writeFileSync(path.join(targetDir, dname+ ".js"), content, "utf8")
 }
 
+var craftAPI = function(nodes) {
+	var targetDir = path.join(outDir, 'lib', 'api')
+	fs.mkdirpSync(targetDir)
+	var daos = _.map(nodes, function(n) { 
+		return { name: n.name, daoname: daoName(n.name), varname: n.name + "DAO" }
+	})
+	var content = mustache.render(apiTpl, {daos: daos})
+	fs.writeFileSync(path.join(targetDir, "api.js"), content, "utf8")
+}
+
 var craft = function(name, node, options) {
 	console.log('Crafting '+name)
 	craftManifest(name, node, options)
@@ -62,6 +73,8 @@ for(var nodeName in cfg.nodes) {
 	craft(nodeName, node, opts)
 	nodes.push({name: nodeName, node:node, options:opts})
 }
+
+craftAPI(nodes)
 
 // write out index.html file
 var indexTpl = fs.readFileSync("templates/index.html", "utf8")
