@@ -5,49 +5,48 @@ var jwt = require('jsonwebtoken');
 
 var secret = 'keyboard cat'
 
-app.use(express.json());
-app.use(express.urlencoded());
 app.configure(function(){
-   	app.use(express.json());
+ 	app.use(express.json());
 	app.use(express.urlencoded());   
 	app.use(express.methodOverride());
-    app.use(express.cookieParser());
+  app.use(express.cookieParser());
 	// We are going to protect /api routes with JWT
 	app.use('/api', expressJwt({secret: secret}));
 });
  
 var API = require("./EmployeeAPI")
 
-app.get('/api/empl/:name', function(req, res) {
-  	res.type('application/json');
-  /**/console.log(req.params, req.query, req.body)
-  	var name = req.params.name;
- 	var out = API.getEmployee(name)	
-	res.json(out);
+app.get('/api/empl/:id', function(req, res) {
+	res.type('application/json');
+	var id = req.params.id;
+ 	API.employee.get(id, function(err, rr) {
+    if(!err) res.json(rr)
+  })	
 });
 
-app.delete('/api/empl/:name', function(req, res) {
-  	res.type('application/json');
-  /**/console.log(req.params, req.query, req.body)
-  	var name = req.params.name;
- 	var out = API.deleteEmployee(name)	
-	res.json(out);
+app.delete('/api/empl/:id', function(req, res) {
+	res.type('application/json');
+	var id = req.params.id;
+ 	API.employee.delete(id, function(err, rr) {
+    if(!err) res.json(rr)
+  })	
 });
 
-app.put('/api/empl/:name', function(req, res) {
-  /**/console.log(req.params, req.query, req.body)
+app.put('/api/empl/:id', function(req, res) {
+  res.type('application/json');
 	var data = req.body;
-	var name = req.params.name;
-	var out = API.createNamedEmployee(name, data)
-	res.send(out);		
+	var id = req.params.id;
+	API.employee.update(id, data, function(err, rr) {
+    if(!err) res.json(rr)
+  })
 });	
  
 app.post('/api/empl/new', function(req, res) {
-  /**/console.log(req.params, req.query, req.body)
-	console.log('user ' + req.user.email + ' is calling /api/restricted');
+  res.type('application/json');
 	var data = req.body;
-	var out = API.createEmployee(data)
-	res.send(out);		
+	API.employee.create(data, function(err, rr) {
+    if(!err) res.json(rr)
+  })
 });	
 
 // See: https://auth0.com/blog/2014/01/07/angularjs-authentication-with-cookies-vs-token/

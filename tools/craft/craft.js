@@ -9,8 +9,9 @@ var JsonUtils = require("../../js/util/JsonUtils")
 
 var outDir = path.join(__dirname, 'output')
 
-var daoTpl = fs.readFileSync("templates/dao.js", "utf8")
-var apiTpl = fs.readFileSync("templates/api.js", "utf8")
+var daoTpl = fs.readFileSync("templates/DAO.js", "utf8")
+var apiTpl = fs.readFileSync("templates/API.js", "utf8")
+var restTpl = fs.readFileSync("templates/REST.js", "utf8")
 
 function capFirst(string)
 {
@@ -48,7 +49,17 @@ var craftAPI = function(nodes) {
 		return { name: n.name, daoname: daoName(n.name), varname: n.name + "DAO" }
 	})
 	var content = mustache.render(apiTpl, {daos: daos})
-	fs.writeFileSync(path.join(targetDir, "api.js"), content, "utf8")
+	fs.writeFileSync(path.join(targetDir, "API.js"), content, "utf8")
+}
+
+var craftREST = function(nodes) {
+	var targetDir = path.join(outDir, 'lib', 'api')
+	fs.mkdirpSync(targetDir)
+	var daos = _.map(nodes, function(n) { 
+		return { name: n.name }
+	})
+	var content = mustache.render(restTpl, {daos: daos})
+	fs.writeFileSync(path.join(targetDir, "REST.js"), content, "utf8")
 }
 
 var craft = function(name, node, options) {
@@ -75,6 +86,7 @@ for(var nodeName in cfg.nodes) {
 }
 
 craftAPI(nodes)
+craftREST(nodes)
 
 // write out index.html file
 var indexTpl = fs.readFileSync("templates/index.html", "utf8")

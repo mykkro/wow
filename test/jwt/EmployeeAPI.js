@@ -1,31 +1,34 @@
 var API = {
-	getEmployee: function(name) {
-		var employee = new Object();
-		employee.name = name;
-		employee.age = 25;
-		employee.deparment = "HR";
-		employee.wage = 15000.00;	
-		
-		address = new Object();
-		address.city = "Massachusetts";
-		address.state = "Springfield";
-		address.street = "Evergreen";
-		address.zip = 66450;
-		
-		employee.address = address;
-		return employee
-	},
-	createEmployee: function(data) {
-		/* does nothing */
-		return { "params": data }
-	},
-	createNamedEmployee: function(name, data) {
-		/* does nothing */
-		return { "name": name, "params": data }
-	},
-	deleteEmployee: function(name) {
-		/* does nothing */
-		return { "deleted": name }
+	employee: {
+		get: function(id, next) {
+			var employee = new Object();
+			employee.id = 1
+			employee.name = "Mykkro";
+			employee.age = 25;
+			employee.deparment = "HR";
+			employee.wage = 15000.00;	
+			
+			address = new Object();
+			address.city = "Massachusetts";
+			address.state = "Springfield";
+			address.street = "Evergreen";
+			address.zip = 66450;
+			
+			employee.address = address;
+			next(null, employee)
+		},
+		create: function(data, next) {
+			/* does nothing */
+			next(null, { "create": data })
+		},
+		update: function(id, data, next) {
+			/* does nothing */			
+			next(null, { "update": data })
+		},
+		delete: function(id, next) {
+			/* does nothing */
+			next(null, { "deletedId": id })
+		}
 	}
 }
 
