@@ -9,7 +9,7 @@ module.exports = function(app, api) {
     		res.json({status: "ok", response: rr})
     	} else {
     		console.error(err)
-    		res.json({status: "error", "details": err})
+    		res.json({status: "error", error: err})
     	}
 	}
 

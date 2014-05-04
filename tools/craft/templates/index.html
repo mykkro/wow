@@ -14,10 +14,85 @@
 <script>
 var JsonUtils = require("JsonUtils")
 
+var doAjax = function(uri, data, cb) {
+    $.ajax({
+      url: uri,
+      type: 'POST',
+      data: JSON.stringify(data),
+      dataType: 'json',
+      contentType: "application/json; charset=utf-8"
+    }).then(function(res) {
+      console.log("Response from server:", res)
+      if(!res.error) {
+        cb(null, res.response)
+      } else {
+        cb(res.error)
+      }
+    })
+}
+
+var getAjax = function(uri, data, cb) {
+    $.ajax({
+      url: uri,
+      type: 'GET',
+      contentType: "application/json; charset=utf-8"
+    }).then(function(res) {
+      console.log("Response from server:", res)
+      if(!res.error) {
+        cb(null, res.response)
+      } else {
+        cb(res.error)
+      }
+    })
+}
+
 var formSubmitted = function(type, action, control, value) {
   console.log("Form "+type+"."+action+" submitted!")
   console.log(value)
+  if(action == "add") {
+    var uri = "/api/"+type+"/new"
+    var data = value
+    doAjax(uri, data, function(err, res) {
+      if(!err) console.log("Data received: ", res)
+    })
+  }
 }
+
+var refreshListView = function() {
+  if(currentIndex>0) {
+    var main = $("#tabs-"+currentIndex+"-list")
+    var div = main.find(".list")
+    var uri = "/api/"+currentTab+"/search"
+    getAjax(uri, {}, function(err, res) {
+      if(!err) console.log("Data received: ", res)
+        div.html(displayItems(currentTab, res))
+    })
+  }
+}
+
+var displayItems = function(type, items) {
+  var out = $("<div>")
+  out.append($("<div>").text("Displaying items: "+items.length))
+  _.each(items, function(it) {
+    out.append(displayItem(type, it))
+  })
+  return out
+}
+
+var displayItem = function(type, item) {
+  var out = $("<div>")
+  out.text("#"+item._id+" "+item.title)
+  return out
+}
+
+var tabInfo = [
+  {{#tabs}}
+  "{{name}}",
+  {{/tabs}}
+]
+
+var currentTab = null
+var currentIndex = null
 
 $(document).ready(function() {
   console.log("Ready!")
@@ -25,7 +100,14 @@ $(document).ready(function() {
   var tabber1 = new Yetii({
       id: 'tabs-container-1',
       active: 1,
-      tabclass: 'ui-tabs-panel'
+      tabclass: 'ui-tabs-panel',
+      callback: function(tabnumber) {
+        if(tabnumber>=1) {
+          var tabName = tabInfo[tabnumber-1]
+          currentTab = tabName
+          currentIndex = tabnumber
+        }
+      }
   });  
 
 })
@@ -111,6 +193,7 @@ html, body {
             <li><a href="#tabs-{{index}}-schema">Schema</a></li>
             <li><a href="#tabs-{{index}}-defaults">Defaults</a></li>
             <li><a href="#tabs-{{index}}-add">Add</a></li>
+            <li><a href="#tabs-{{index}}-list">List</a></li>
           </ul>
           <div id="tabs-{{index}}-schema" class="ui-subtabs-panel">
             <pre class="json-view">{{{schemaView}}}</pre>
@@ -143,12 +226,28 @@ html, body {
             })
             </script>
           </div>
+          <div id="tabs-{{index}}-list" class="ui-subtabs-panel">
+            <button class="refresh">Refresh</button>
+            <div class="list"></div>
+            <script>
+            $(function() {              
+              var btn = $("#tabs-{{index}}-list .refresh")
+              btn.click(refreshListView)
+            })
+            </script>
+          </div>
         </div>
       </div>
       <script>
       new Yetii({
           id: 'tabs-subcontainer-{{index}}-1',
-          tabclass: 'ui-subtabs-panel'
+          tabclass: 'ui-subtabs-panel',
+          callback: function(tabnumber) {
+            if(tabnumber == 4) {
+              // list tab
+              refreshListView()
+            }
+          }
       });  
       </script>
       {{/tabs}}
