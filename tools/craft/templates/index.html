@@ -70,6 +70,18 @@ var removeItem = function(type, id) {
     })
 }
 
+var viewItem = function(type, item) {
+  var tabIndex = tabindexes[type]
+  tabbers[tabIndex].show(5) // view tab
+  console.log(item)
+}
+
+var editItem = function(type, item) {
+  var tabIndex = tabindexes[type]
+  tabbers[tabIndex].show(6) // edit tab
+  console.log(item)
+}
+
 var displayItems = function(type, items) {
   var out = $("<div>")
   out.append($("<div>").text("Displaying items: "+items.length))
@@ -82,11 +94,19 @@ var displayItems = function(type, items) {
 var displayItem = function(type, item) {
   var out = $("<div>")
   out.append($("<span>").text("#"+item._id+" "+item.title))
-  var removeBtn = $("<button>").text("Remove")
-  removeBtn.click(function() {
-    removeItem(type, item._id)
+  var viewLink = $("<a>").attr("href", "#").addClass("viewitem").text(" view ").click(function() {
+    viewItem(type, item)
+    return false
   })
-  out.append(removeBtn)
+  var editLink = $("<a>").attr("href", "#").addClass("edititem").text(" edit ").click(function() {
+    editItem(type, item)
+    return false
+  })
+  var removeLink = $("<a>").attr("href", "#").addClass("removeitem").text(" remove ").click(function() {
+    removeItem(type, item._id)
+    return false
+  })
+  out.append(viewLink, editLink, removeLink)
   return out
 }
 
@@ -95,6 +115,10 @@ var tabInfo = [
   "{{name}}",
   {{/tabs}}
 ]
+
+var tabbers = {}
+var tabnames = {}
+var tabindexes = {}
 
 var currentTab = null
 var currentIndex = null
@@ -199,6 +223,8 @@ html, body {
             <li><a href="#tabs-{{index}}-defaults">Defaults</a></li>
             <li><a href="#tabs-{{index}}-add">Add</a></li>
             <li><a href="#tabs-{{index}}-list">List</a></li>
+            <li><a href="#tabs-{{index}}-view">View</a></li>
+            <li><a href="#tabs-{{index}}-edit">Edit</a></li>
           </ul>
           <div id="tabs-{{index}}-schema" class="ui-subtabs-panel">
             <pre class="json-view">{{{schemaView}}}</pre>
@@ -234,17 +260,31 @@ html, body {
           <div id="tabs-{{index}}-list" class="ui-subtabs-panel">
             <button class="refresh">Refresh</button>
             <div class="list"></div>
-            <script>
-            $(function() {              
-              var btn = $("#tabs-{{index}}-list .refresh")
-              btn.click(refreshListView)
-            })
-            </script>
+          </div>
+          <div id="tabs-{{index}}-view" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-{{index}}-list">show list</a>
+            <div class="content"></div>
+          </div>
+          <div id="tabs-{{index}}-edit" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-{{index}}-list">show list</a>
+            <div class="content"></div>
           </div>
         </div>
+        <script>
+        $(function() {              
+          $("#tabs-{{index}} .refresh").click(refreshListView)
+          $("#tabs-{{index}} .showlist").click(function() {
+            // show list subtab...
+            tabbers[{{index}}].show(4)
+            return false
+          })
+        })
+        </script>
       </div>
       <script>
-      new Yetii({
+      tabnames[{{index}}] = "{{name}}"
+      tabindexes["{{name}}"] = {{index}}
+      tabbers[{{index}}] = new Yetii({
           id: 'tabs-subcontainer-{{index}}-1',
           tabclass: 'ui-subtabs-panel',
           callback: function(tabnumber) {
