@@ -21,7 +21,7 @@ var API = {
 			{{varname}}().set(id, data, next)
 		},
 		update: function(id, data, next) {
-			var newData = merge(data, {_id:id})
+			var newData = merge({_id:id}, data)
 			{{varname}}().update(newData, next)
 		},
 		delete: function(id, next) {
