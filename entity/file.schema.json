@@ -1,0 +1,52 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "title": "File",
+  "properties": {
+    "ownerAdminId": {
+      "title": "Owner ID",
+      "type": "number",
+      "required": true
+    },
+    "created": {
+      "title": "Created",
+      "type": "string",
+      "required": false
+    },
+    "title": {
+      "title": "Title",
+      "type": "string",
+      "required": false
+    },
+    "description": {
+      "title": "Description",
+      "type": "string",
+      "required": false
+    },
+    "originalFilename": {
+      "title": "Original filename",
+      "type": "string",
+      "required": true
+    },
+    "path": {
+      "title": "Path",
+      "type": "string",
+      "required": true
+    },
+    "size": {
+      "title": "Size",
+      "type": "number",
+      "required": true
+    },
+    "type": {
+      "title": "Type",
+      "type": "string",
+      "required": false
+    },
+    "uuid": {
+      "title": "UUID",
+      "type": "string",
+      "required": true
+    }
+  }
+}
