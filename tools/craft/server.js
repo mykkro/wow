@@ -39,6 +39,7 @@ app.configure(function(){
   app.use('/css', express.static(__dirname + '/css'));
 	app.use(express.static(__dirname + '/output/public'));
 	app.use(express.static(__dirname + '/../../public'));
+  app.use('/uploads', express.static(__dirname + '/output/uploads'));
 
 	REST(app, API)
 });
@@ -66,7 +67,7 @@ app.post('/upload', function(req, res) {
     var serverName = uuid.v4()
     var serverPath = '/images/' + serverName + "." + ext;
     console.log("Uploading "+fileInfo.name+" as "+fileInfo.path+", extension: "+ext+" size: "+size)
-    mv(fileInfo.path, path.join(__dirname, 'output', 'upload', serverPath),
+    mv(fileInfo.path, path.join(__dirname, 'output', 'uploads', serverPath),
       function(err) {
         if(err) {
           console.error(err)
