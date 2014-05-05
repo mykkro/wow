@@ -11,7 +11,8 @@
   <script src="/js/MyTextAreaField.js"></script>
   <!-- script src="/js/MyJSONField.js" -->
    <script type="text/javascript" src="/js/jquery.ajaxfileupload.js"></script>
-  <script src="/js/bundle.js"></script>
+  <script type="text/javascript" src="/js/jquery.imagedrop.js"></script>
+   <script src="/js/bundle.js"></script>
   <script src="/js/craft.bundle.js"></script>
   <script src="/js/app.js"></script>
 <script>
@@ -169,6 +170,12 @@ $(document).ready(function() {
     e.preventDefault();
   });
 
+  $('#image-dropzone').imageDrop({
+      dropped: function(url) {
+          console.log("Dropped!", url)
+      }
+  })  
+
 })
 </script>
 </head>
@@ -302,7 +309,10 @@ $(document).ready(function() {
         <div id="testarea">
           <form method="post" action="" enctype="multipart/form-data">
               <label>File Input: <input type="file" name="file" id="demo1" /></label>
-              <div id="uploads">
+              <div id="image-dropzone" class="dropzone">
+                      Drop image here
+                  </div>
+                  <div id="uploads">
 
               </div>
             </form>
