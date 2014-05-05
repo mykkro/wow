@@ -74,10 +74,12 @@ var webDir = path.join(outDir, 'public')
 var jsDir = path.join(webDir, 'js')
 var cssDir = path.join(webDir, 'css')
 var uploadDir = path.join(outDir, 'uploads', 'images')
+var fileUploadDir = path.join(outDir, 'uploads', 'files')
 fs.mkdirpSync(webDir)
 fs.mkdirpSync(jsDir)
 fs.mkdirpSync(cssDir)
 fs.mkdirpSync(uploadDir)
+fs.mkdirpSync(fileUploadDir)
 
 var nodes = []
 for(var nodeName in cfg.nodes) {
