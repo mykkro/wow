@@ -73,7 +73,7 @@ var craft = function(name, node, options) {
 var webDir = path.join(outDir, 'public')
 var jsDir = path.join(webDir, 'js')
 var cssDir = path.join(webDir, 'css')
-var uploadDir = path.join(outDir, 'upload', 'images')
+var uploadDir = path.join(outDir, 'uploads', 'images')
 fs.mkdirpSync(webDir)
 fs.mkdirpSync(jsDir)
 fs.mkdirpSync(cssDir)

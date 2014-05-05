@@ -10,6 +10,7 @@
   <script src="/js/wow-libs.js"></script>
   <script src="/js/MyTextAreaField.js"></script>
   <!-- script src="/js/MyJSONField.js" -->
+   <script type="text/javascript" src="/js/jquery.ajaxfileupload.js"></script>
   <script src="/js/bundle.js"></script>
   <script src="/js/craft.bundle.js"></script>
   <script src="/js/app.js"></script>
@@ -299,7 +300,28 @@ $(document).ready(function() {
       <div id="tabs-testing" class="ui-tabs-panel">
         <h2>Testing</h2>
         <div id="testarea">
-        </div>
+          <form method="post" action="" enctype="multipart/form-data">
+              <label>File Input: <input type="file" name="file" id="demo1" /></label>
+              <div id="uploads">
+
+              </div>
+            </form>
+            <script type="text/javascript">
+
+              $(document).ready(function() {
+                $("#demo1").AjaxFileUpload({
+                  action: "/upload",
+                  onComplete: function(filename, response) {
+                    console.log("Uploaded!", filename, response)
+                    $("#uploads").append(
+                      $("<img />").attr("src", '/uploads' + response.path).attr("width", 200)
+                    );
+                  }
+                });
+              });
+
+            </script>
+                    </div>
       </div>
     </div>
   </div>
