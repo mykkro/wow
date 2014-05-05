@@ -61,3 +61,22 @@ pre.json-view {
 html, body {
   overflow: auto;
 }
+
+.dropzone {
+  background-color: #fce;
+  border: 4px dashed #ccc;
+  padding: 10px;
+}
+.dropzone.error {
+  background-color: salmon;
+}
+.dropzone.accepted {
+  background-color: greenyellow;
+}
+#image-dropzone {
+    width: 400px;
+    height: 400px;
+}
+#image-dropzone > img {
+  width: 100%;
+}
