@@ -806,6 +806,11 @@
 							"type":"string",
 							"required":true
 						},
+						"thumbnailPath": {
+							"title": "Path",
+							"type":"string",
+							"required":false
+						},
 						"size": {
 							"title": "Size",
 							"type":"number",
