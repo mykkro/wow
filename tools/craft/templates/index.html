@@ -308,36 +308,58 @@ $(document).ready(function() {
         <h2>Testing</h2>
         <div id="testarea">
           <form method="post" action="" enctype="multipart/form-data">
-              <label>File Input: <input type="file" name="file" id="demo1" /></label>
-              <div id="image-dropzone" class="dropzone">
-                      Drop image here
-                  </div>
-                  <div id="upload-thumb">
+            <label>File Input: <input type="file" name="file" id="demo1" /></label>
+            <div id="image-dropzone" class="dropzone">
+              Drop image here
+            </div>
+            <input type="text" name="uuid" id="upload-uuid"/>
+            <div id="upload-thumb"></div>
+            <a href="#" id="remove-upload">Remove</a>
+          </form>
+          <script type="text/javascript">
 
-              </div>
-            </form>
-            <script type="text/javascript">
-
-              $(document).ready(function() {
-                var previousUUID = null
-                $("#demo1").AjaxFileUpload({
-                  action: previousUUID ? "/upload?uuid="+previousUUID : "/upload",
-                  onComplete: function(filename, response) {
-                    console.log("Uploaded!", filename, response)
-                    $("#upload-thumb").html(
-                      $("<img />").attr("src", response.thumbnailUri).attr("width", 200)
-                    );
-                    previousUUID = response.uuid
-                  },
-                  onSubmit : function(id, fileName){
-                    // send additionsl data to be send in form submit...
-                    return { uuid: previousUUID }
+            $(document).ready(function() {
+              var previousUUID = null
+              $("#remove-upload").click(function() {
+                if(previousUUID) {
+                  console.log("Deleting "+previousUUID)
+                  var opts = {
+                    url: "/upload/"+previousUUID,
+                    type: "DELETE",
+                    contentType: "application/json; charset=utf-8"
                   }
-                });
+                  $.ajax(opts).then(function(res) {
+                    console.log("Response from server:", res)
+                    if(!res.error) {
+                      console.log("File deleted!")
+                      previousUUID = null
+                      $("#upload-thumb").empty()
+                      $("#remove-upload").hide()
+                      $("#upload-uuid").val(previousUUID)
+                    } 
+                  })                  
+                  return false
+                }
+              }).hide()
+              $("#demo1").AjaxFileUpload({
+                action: previousUUID ? "/upload?uuid="+previousUUID : "/upload",
+                onComplete: function(filename, response) {
+                  console.log("Uploaded!", filename, response)
+                  $("#upload-thumb").html(
+                    $("<img />").attr("src", response.thumbnailUri).attr("width", 200)
+                  );
+                  previousUUID = response.uuid
+                  $("#remove-upload").show()
+                  $("#upload-uuid").val(previousUUID)
+                },
+                onSubmit : function(id, fileName){
+                  // send additionsl data to be send in form submit...
+                  return { uuid: previousUUID }
+                }
               });
+            });
 
-            </script>
-                    </div>
+          </script>
       </div>
     </div>
   </div>

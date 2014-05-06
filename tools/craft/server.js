@@ -8,6 +8,7 @@ var fs = require("fs-extra")
 var mv = require('mv')
 var uuid = require('node-uuid');
 var cfg = require("./craft.json")
+var merge = require("merge")
 
 var app = express()
 
@@ -45,6 +46,54 @@ app.configure(function(){
 	REST(app, API)
 });
 
+var sendError = function(res, msg, details) {
+    res.send({
+      error: msg,
+      details: details
+    })
+}
+
+/**
+ * Transforms path and thumbnailPath fields to uri and thumbnailUri
+ * @param {object} File descriptor
+ * @return {object} File descriptor with fields uri, thumbnailUri
+ */
+var withLinks = function(file) {
+    var links = { 
+      uri: '/uploads/'+path.relative(Storage.uploadDir, file.path),
+      thumbnailUri: file.thumbnailPath ? '/uploads/' + path.relative(Storage.uploadDir, file.thumbnailPath) : null
+    }
+    var out = merge(links, file)
+    delete out.path
+    delete out.thumbnailPath
+    return out
+}
+
+app.get('/upload/:uuid', function(req, res) {
+  var uuid = req.params.uuid
+  Uploader.get(uuid, function(err, resp) {
+    if(err) {
+      sendError(res, 'Ah crap! Something bad happened', err)
+    } else if(!resp) {
+      sendError(res, "File not found")
+    } else {      
+      res.send(withLinks(resp))
+    }
+  })
+})
+
+
+app.delete('/upload/:uuid', function(req, res) {
+  var uuid = req.params.uuid
+  Uploader.remove(uuid, function(err, resp) {
+    if(err) {
+      sendError(res, 'Ah crap! Something bad happened', err)
+    } else {
+      console.log("File deleted!", resp)
+      res.send({"deleted":uuid})
+    }
+  })
+})
 
 // Test it:
 // curl -F "file=@./media/golf_ball.png" localhost:9999/upload
@@ -54,15 +103,11 @@ app.post('/upload', function(req, res) {
     var ext = getExtension(fileInfo.path).toLowerCase()
     var size = fileInfo.size
     if(size > allowedFilesize) {
-      res.send({
-        error: "File too big: "+size+", allowed: "+allowedFilesize
-      })
+      sendError(res, "File too big: "+size+", allowed: "+allowedFilesize)
       return
     }
     if(!(ext in allowedFiletypes)) {
-      res.send({
-        error: "Unsupported file type: "+ext
-      })
+      sendError(res, "Unsupported file type: "+ext)
       return
     }
     // do upload...      
@@ -77,22 +122,18 @@ app.post('/upload', function(req, res) {
       },
       function(err, file) {
         if(err) {
-          console.error(err)
-          res.send({
-            error: 'Ah crap! Something bad happened',
-            details: err
-          });
+          sendError(res, 'Ah crap! Something bad happened', err)
           return;
         }
-        res.send({
+        res.send(withLinks({
           uuid: file.uuid,
-          uri: '/uploads/'+path.relative(Storage.uploadDir, file.path),
-          thumbnailUri: file.thumbnailPath ? '/uploads/' + path.relative(Storage.uploadDir, file.thumbnailPath) : null,
+          path: file.path,
+          thumbnailPath: file.thumbnailPath,
           size: file.size,
           type: file.type,
           name: path.basename(file.path),
           originalFilename: fileInfo.originalFilename
-        });
+        }));
       }
     );
 
