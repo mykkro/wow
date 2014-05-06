@@ -18,7 +18,11 @@ $.fn.dropAnything = function (settings) {
         if(out.type == "link") {
             if(out.subtype == "image") {
                 return $("<img>").attr("src", out.url)
+            } else if(out.subtype == "youtube") {
+                var code = '<object type="application/x-shockwave-flash" style="width:450px; height:366px;" data="http://www.youtube.com/v/'+out.videoId+'"><param name="movie" value="http://www.youtube.com/v/'+out.videoId+'" /><param name="allowFullScreen" value="true" /><param name="allowscriptaccess" value="always" /></object>'
+                return $(code)
             } else {
+                // just a link
                 return $("<a>").attr("href", out.url).text(out.url)
             }
         } else if(out.type == "text") {
