@@ -7,13 +7,14 @@ var mustache = require('mustache')
 var fs = require("fs-extra")
 var mv = require('mv')
 var uuid = require('node-uuid');
-
 var cfg = require("./craft.json")
 
 var app = express()
 
 var API = require("./output/lib/api/API")
 var REST = require("./output/lib/api/REST")
+var Storage = require("./output/lib/Storage")
+var Uploader = require("./output/lib/Uploader")
 
 function getExtension(filename) {
     var ext = path.extname(filename||'').split('.');
@@ -39,16 +40,17 @@ app.configure(function(){
   app.use('/css', express.static(__dirname + '/css'));
 	app.use(express.static(__dirname + '/output/public'));
 	app.use(express.static(__dirname + '/../../public'));
-  app.use('/uploads', express.static(__dirname + '/output/uploads'));
+  app.use('/uploads',express.static(Storage.uploadDir));
 
 	REST(app, API)
 });
 
 
 // Test it:
-// curl -F "file=@./media/golf_bal.png" localhost:9999/upload
+// curl -F "file=@./media/golf_ball.png" localhost:9999/upload
 app.post('/upload', function(req, res) {
     var fileInfo = req.files.file
+    var uuid = req.body.uuid
     var ext = getExtension(fileInfo.path).toLowerCase()
     var size = fileInfo.size
     if(size > allowedFilesize) {
@@ -64,24 +66,31 @@ app.post('/upload', function(req, res) {
       return
     }
     // do upload...      
-    var serverName = uuid.v4()
-    var serverPath = '/images/' + serverName + "." + ext;
-    console.log("Uploading "+fileInfo.name+" as "+fileInfo.path+", extension: "+ext+" size: "+size)
-    mv(fileInfo.path, path.join(__dirname, 'output', 'uploads', serverPath),
-      function(err) {
+    console.log("Uploading "+fileInfo.name+" as "+fileInfo.path+", extension: "+ext+" size: "+size+" uuid: "+uuid)    
+    Uploader.copy({
+        path: fileInfo.path, 
+        originalFilename: 
+        fileInfo.name, 
+        moveFile: true, 
+        ownerAdminId: -1,
+        uuid: uuid
+      },
+      function(err, file) {
         if(err) {
           console.error(err)
           res.send({
-            error: 'Ah crap! Something bad happened'
+            error: 'Ah crap! Something bad happened',
+            details: err
           });
           return;
         }
         res.send({
-          uuid: serverName,
-          path: serverPath,
-          size: fileInfo.size,
-          type: fileInfo.type,
-          name: fileInfo.name,
+          uuid: file.uuid,
+          uri: '/uploads/'+path.relative(Storage.uploadDir, file.path),
+          thumbnailUri: file.thumbnailPath ? '/uploads/' + path.relative(Storage.uploadDir, file.thumbnailPath) : null,
+          size: file.size,
+          type: file.type,
+          name: path.basename(file.path),
           originalFilename: fileInfo.originalFilename
         });
       }
@@ -89,7 +98,9 @@ app.post('/upload', function(req, res) {
 
 });
 
-var port = cfg.options.testserver.port
-app.listen(port, function() {
-	console.log('Listening on port '+port);
-});
+Storage.init(function() {
+  var port = cfg.options.testserver.port
+  app.listen(port, function() {
+    console.log('Listening on port '+port);
+  });
+})
