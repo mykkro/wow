@@ -98,11 +98,33 @@ app.delete('/upload/:uuid', function(req, res) {
   })
 })
 
+// Downloads file from URL and uploads it to local storage.
+// Test it:
+// curl -X POST  -H "Accept: application/json" -H "Content-Type: application/json" -d '{"url":"http://th00.deviantart.net/fs71/PRE/f/2013/191/3/b/mtg__urabrask_the_hidden_by_cryptcrawler-d39big4.jpg"}' http://localhost:9999/download
+app.post('/download', function(req, res) {
+  console.log(req.body)
+  var src = req.body.url
+  var uuid = req.body.uuid
+  downloader.download(src, function(err, fileInfo) {
+    if(err) {
+      sendError(res, 'Ah crap! Something bad happened', err)
+      return
+    }
+    // console.log("Downloaded file:", file)
+    uploadFile(fileInfo, uuid, res)
+  })
+})
+
+
 // Test it:
 // curl -F "file=@./media/golf_ball.png" localhost:9999/upload
 app.post('/upload', function(req, res) {
     var fileInfo = req.files.file
     var uuid = req.body.uuid
+    uploadFile(fileInfo, uuid, res)
+})
+
+var uploadFile = function(fileInfo, uuid, res) {
     var ext = getExtension(fileInfo.path).toLowerCase()
     var size = fileInfo.size
     if(size > allowedFilesize) {
@@ -117,8 +139,8 @@ app.post('/upload', function(req, res) {
     console.log("Uploading "+fileInfo.name+" as "+fileInfo.path+", extension: "+ext+" size: "+size+" uuid: "+uuid)    
     uploader.copy({
         path: fileInfo.path, 
-        originalFilename: 
-        fileInfo.name, 
+        originalFilename: fileInfo.name, 
+        type: fileInfo.type,
         moveFile: true, 
         ownerAdminId: -1,
         uuid: uuid
@@ -140,7 +162,7 @@ app.post('/upload', function(req, res) {
       }
     );
 
-});
+}
 
 Storage.init(function() {
   var port = cfg.options.testserver.port
