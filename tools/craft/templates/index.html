@@ -312,20 +312,26 @@ $(document).ready(function() {
               <div id="image-dropzone" class="dropzone">
                       Drop image here
                   </div>
-                  <div id="uploads">
+                  <div id="upload-thumb">
 
               </div>
             </form>
             <script type="text/javascript">
 
               $(document).ready(function() {
+                var previousUUID = null
                 $("#demo1").AjaxFileUpload({
-                  action: "/upload",
+                  action: previousUUID ? "/upload?uuid="+previousUUID : "/upload",
                   onComplete: function(filename, response) {
                     console.log("Uploaded!", filename, response)
-                    $("#uploads").append(
-                      $("<img />").attr("src", '/uploads' + response.path).attr("width", 200)
+                    $("#upload-thumb").html(
+                      $("<img />").attr("src", response.thumbnailUri).attr("width", 200)
                     );
+                    previousUUID = response.uuid
+                  },
+                  onSubmit : function(id, fileName){
+                    // send additionsl data to be send in form submit...
+                    return { uuid: previousUUID }
                   }
                 });
               });
