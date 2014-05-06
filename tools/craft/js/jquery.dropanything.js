@@ -49,10 +49,27 @@ $.fn.dropAnything = function (settings) {
         xhr.send(formData);
     }
 
+    function downloadFile(src, cb) {
+        $.ajax({
+          url: '/download',
+          type: 'POST',
+          data: JSON.stringify({url:src}),
+          dataType: 'json',
+          contentType: "application/json; charset=utf-8"
+        }).then(function(res) {
+          if(!res.error) {
+            cb(null, res)
+          } else {
+            cb(res.error)
+          }
+        })
+    }
+
     var display = function(out) {
         if(out.type == "link") {
             if(out.subtype == "image") {
-                return $("<img>").attr("src", out.url)
+                var src = out.uploaded ? out.uploaded.thumbnailUri : out.url 
+                return $("<img>").attr("src", src)
             } else if(out.subtype == "youtube") {
                 var code = '<object type="application/x-shockwave-flash" style="width:450px; height:366px;" data="http://www.youtube.com/v/'+out.videoId+'"><param name="movie" value="http://www.youtube.com/v/'+out.videoId+'" /><param name="allowFullScreen" value="true" /><param name="allowscriptaccess" value="always" /></object>'
                 return $(code)
@@ -157,11 +174,19 @@ $.fn.dropAnything = function (settings) {
             // we have an image!
             // TODO better test with <img src> construction
             out.subtype = "image"
-            cb(null, out)
+            handleImage(out, cb)
         } else {
             // other classes....
             cb(null, out)
         }
+    }
+
+    function handleImage(info, cb) {
+        // download the image and store it locally...
+        downloadFile(info.url, function(err, res) {
+            if(err) cb(err);
+            else cb(null, $.extend(info, {uploaded:res}))
+        })
     }
 
     function handleWrappedImageLink(dt, cb) {
@@ -174,7 +199,7 @@ $.fn.dropAnything = function (settings) {
             cb("Not an image! " + html)
         } else {
             out.subtype = "image"
-            cb(null, out)
+            handleImage(out, cb)
         }
     }
 
