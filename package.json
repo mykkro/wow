@@ -78,7 +78,9 @@
     "jsonwebtoken": "~0.4.0",
     "mv": "~2.0.0",
     "node-uuid": "~1.4.1",
-    "mime": "~1.2.11"
+    "mime": "~1.2.11",
+    "tmp": "0.0.23",
+    "download": "~0.1.16"
   },
   "repository": {
     "type": "git",

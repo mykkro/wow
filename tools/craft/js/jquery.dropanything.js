@@ -109,7 +109,9 @@ $.fn.dropAnything = function (settings) {
         if("text/uri-list" in tm) {
             handleLink(dt, tm, cb)
         } else if("text/html" in tm) {
-            handleText(dt, cb)
+            handleRichText(dt, cb)
+        } else if("text/plain" in tm) {
+            handlePlainText(dt, cb)
         } else if("Files" in tm) {
             handleFile(dt, cb)
         } else {
@@ -118,10 +120,19 @@ $.fn.dropAnything = function (settings) {
         }
     }
 
-    function handleText(dt, cb) {
+    function handleRichText(dt, cb) {
         var out = {}
         out.type = "text"
+        out.subtype = "html"
         out.html = dt.getData("text/html")
+        out.text = dt.getData("text/plain")
+        cb(null, out)
+    }
+
+    function handlePlainText(dt, cb) {
+        var out = {}
+        out.type = "text"
+        out.subtype = "plain"
         out.text = dt.getData("text/plain")
         cb(null, out)
     }

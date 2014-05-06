@@ -16,6 +16,7 @@ var API = require("./output/lib/api/API")
 var REST = require("./output/lib/api/REST")
 var Storage = require("./output/lib/Storage")
 var Uploader = require("./output/lib/Uploader")
+var uploader = new Uploader()
 
 function getExtension(filename) {
     var ext = path.extname(filename||'').split('.');
@@ -71,7 +72,7 @@ var withLinks = function(file) {
 
 app.get('/upload/:uuid', function(req, res) {
   var uuid = req.params.uuid
-  Uploader.get(uuid, function(err, resp) {
+  uploader.get(uuid, function(err, resp) {
     if(err) {
       sendError(res, 'Ah crap! Something bad happened', err)
     } else if(!resp) {
@@ -85,7 +86,7 @@ app.get('/upload/:uuid', function(req, res) {
 
 app.delete('/upload/:uuid', function(req, res) {
   var uuid = req.params.uuid
-  Uploader.remove(uuid, function(err, resp) {
+  uploader.remove(uuid, function(err, resp) {
     if(err) {
       sendError(res, 'Ah crap! Something bad happened', err)
     } else {
@@ -112,7 +113,7 @@ app.post('/upload', function(req, res) {
     }
     // do upload...      
     console.log("Uploading "+fileInfo.name+" as "+fileInfo.path+", extension: "+ext+" size: "+size+" uuid: "+uuid)    
-    Uploader.copy({
+    uploader.copy({
         path: fileInfo.path, 
         originalFilename: 
         fileInfo.name, 
