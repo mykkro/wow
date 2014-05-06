@@ -17,6 +17,8 @@ var REST = require("./output/lib/api/REST")
 var Storage = require("./output/lib/Storage")
 var Uploader = require("./output/lib/Uploader")
 var uploader = new Uploader()
+var Downloader = require("./output/lib/Downloader")
+var downloader = new Downloader()
 
 function getExtension(filename) {
     var ext = path.extname(filename||'').split('.');
