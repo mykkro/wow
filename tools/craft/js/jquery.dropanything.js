@@ -10,9 +10,44 @@ $.fn.dropAnything = function (settings) {
 
     settings = $.extend({
         // css: 'dropzone'
+        maxUploadFilesize: 10000000
     }, settings);
 
     var afterDrop = settings.dropped || $.noop
+
+    function uploadFile(file, cb) {
+        // Open our formData Object
+        var formData = new FormData();
+     
+        // Append our file to the formData object
+        formData.append('file', file);
+     
+        // Create our XMLHttpRequest Object
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                   var obj = JSON.parse(xhr.responseText);
+                   // return result...
+                   if(obj.error) {
+                        cb(obj.error)
+                   } else {
+                        cb(null, obj)
+                   }
+                } else {
+                    cb("Server error: "+xhr.status);         
+                }
+            }
+        };
+        xhr.onerror = function () { 
+            cb("Server error: "+xhr.status); 
+        };         
+        // Open our connection using the POST method
+        xhr.open("POST", '/upload');
+     
+        // Send the file
+        xhr.send(formData);
+    }
 
     var display = function(out) {
         if(out.type == "link") {
@@ -27,6 +62,8 @@ $.fn.dropAnything = function (settings) {
             }
         } else if(out.type == "text") {
             return out.html ? $("<div>").html(out.html) : $("<div>").text(out.text)
+        } else if(out.type == "file") {
+            return $("<img>").attr("src", out.uploaded.thumbnailUri)
         } else {
             return "Unsupported type: "+out.type
         }
@@ -65,56 +102,116 @@ $.fn.dropAnything = function (settings) {
       return false; // required by IE
     }   
 
-    function drop(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        var types = e.dataTransfer.types
+    var dropIt = function(dt, cb) {
+        var types = dt.types
         var tm = {}
         for(var i=0; i<types.length; i++) tm[types[i]] = true
-        var out = {}
         if("text/uri-list" in tm) {
-            // we got link!
-            if("text/plain" in tm) {
-                // we got link (URL)...
-                out.type = "link"
-                out.subtype = "general"
-                out.url = e.dataTransfer.getData("text/plain")
-                if(isYouTubeUrl(out.url)) {
-                    // extract youtube ID
-                    var ytId = youtube_parser(out.url)
-                    if(ytId) {
-                        out.subtype = "youtube"
-                        out.videoId = ytId
-                    }
-                } else if(checkImageUrl(out.url)) {
-                    // we have an image!
-                    // TODO better test with <img src> construction
-                    out.subtype = "image"
-                } else {
-                    // other classes....
-                }
-            } else if("text/html" in tm) {
-                // we got <img src="..."/>
-                var html = e.dataTransfer.getData("text/html")
-                var regex =  /<img.*?src="(.*?)"/
-                out.type = "link"
-                out.url = regex.exec(html)[1];
-                if(!out.url) {
-                    console.error("Not an image!", html)
-                } else {
-                    out.subtype = "image"
-                }
-            }           
+            handleLink(dt, tm, cb)
         } else if("text/html" in tm) {
-            out.type = "text"
-            out.html = e.dataTransfer.getData("text/html")
-            out.text = e.dataTransfer.getData("text/plain")
+            handleText(dt, cb)
+        } else if("Files" in tm) {
+            handleFile(dt, cb)
         } else {
             // something else...
-            console.error("Don't know what to do with this...", types)
+            cb("Don't know what to do with this..." + types.join(","))
         }
-        $(this).html(display(out))
-        afterDrop(out)
+    }
+
+    function handleText(dt, cb) {
+        var out = {}
+        out.type = "text"
+        out.html = dt.getData("text/html")
+        out.text = dt.getData("text/plain")
+        cb(null, out)
+    }
+
+    function handleDirectLink(dt, cb) {
+        var out = {}
+        out.type = "link"
+        out.subtype = "general"
+        out.url = dt.getData("text/plain")
+        if(isYouTubeUrl(out.url)) {
+            // extract youtube ID
+            var ytId = youtube_parser(out.url)
+            if(ytId) {
+                out.subtype = "youtube"
+                out.videoId = ytId
+                cb(null, out)
+            } else {
+                // youtube ID not found...
+                cb("YouTube ID not found!")
+            }
+        } else if(checkImageUrl(out.url)) {
+            // we have an image!
+            // TODO better test with <img src> construction
+            out.subtype = "image"
+            cb(null, out)
+        } else {
+            // other classes....
+            cb(null, out)
+        }
+    }
+
+    function handleWrappedImageLink(dt, cb) {
+        var out = {}
+        var html = dt.getData("text/html")
+        var regex =  /<img.*?src="(.*?)"/
+        out.type = "link"
+        out.url = regex.exec(html)[1];
+        if(!out.url) {
+            cb("Not an image! " + html)
+        } else {
+            out.subtype = "image"
+            cb(null, out)
+        }
+    }
+
+    function handleLink(dt, tm, cb) {
+        var out = {}
+        if("text/plain" in tm) {
+            // we got link (URL)...
+            handleDirectLink(dt, cb)
+        } else if("text/html" in tm) {
+            // we got <img src="..."/>
+            handleWrappedImageLink(dt, cb)           
+        }                  
+    }
+
+    function handleFile(dt, cb) {
+        var files = dt.files
+        if(files.length == 1) {
+            // single file
+            // upload it!
+            if(files[0].size > settings.maxUploadFilesize) {
+                cb("File too big for upload!")
+            } else {
+                uploadFile(files[0], function(err, fileData) {
+                    if(!err) {
+                        cb(null, { type: "file", uploaded: fileData})
+                    } else {
+                        cb(err)
+                    }
+                })                
+            }
+        } else {
+            // multiple files
+            cb("Only single file uploads supported!")
+        }
+    }
+
+    function drop(e) {
+        var $this = $(this)
+        e.stopPropagation();
+        e.preventDefault();
+        dropIt(e.dataTransfer, function(err, res) {
+            if(err) {
+                console.error(err)
+            } else {
+                $this.html(display(res))
+                afterDrop(res)
+            }
+        })
         return false;
       }
 
