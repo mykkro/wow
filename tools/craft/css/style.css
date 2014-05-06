@@ -73,10 +73,10 @@ html, body {
 .dropzone.accepted {
   background-color: greenyellow;
 }
-#image-dropzone {
-    width: 400px;
-    height: 400px;
+#allpurpose-dropzone {
+    width: 200px;
+    height: 200px;
 }
-#image-dropzone > img {
+#allpurpose-dropzone > img {
   width: 100%;
 }
