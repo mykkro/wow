@@ -1,6 +1,5 @@
 /* wow server */
 
-var express = require('express');
 var path = require("path")
 var http = require('http');
 var mustache = require('mustache')
@@ -9,8 +8,12 @@ var mv = require('mv')
 var uuid = require('node-uuid');
 var cfg = require("./craft.json")
 var merge = require("merge")
+var io = require('socket.io')
 
-var app = express()
+var express = require('express')
+  , app = express()
+  , server = http.createServer(app)
+  , io = require('socket.io').listen(server);
 
 var API = require("./output/lib/api/API")
 var REST = require("./output/lib/api/REST")
@@ -164,9 +167,17 @@ var uploadFile = function(fileInfo, uuid, res) {
 
 }
 
+// demo code for socket.io
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
+
 Storage.init(function() {
   var port = cfg.options.testserver.port
-  app.listen(port, function() {
+  server.listen(port, function() {
     console.log('Listening on port '+port);
   });
 })

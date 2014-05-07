@@ -16,6 +16,16 @@
    <script src="/js/bundle.js"></script>
   <script src="/js/craft.bundle.js"></script>
   <script src="/js/app.js"></script>
+  
+  <script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('http://localhost:9999');
+  socket.on('news', function (data) {  
+    console.log("SOCKET: ",data);
+    socket.emit('my other event', { my: 'data' });
+  });
+</script>
+  
 <script>
 var JsonUtils = require("JsonUtils")
 
