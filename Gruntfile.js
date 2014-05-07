@@ -11,7 +11,7 @@ module.exports = function(grunt) {
                 app_name: 'wow',
                 app_version: '0.1'
             },
-            src: ['./**/*'] // Your node-wekit app
+            src: ['./**/*'] // Your node-webkit app
         },
         browserify: {
             basic: {
@@ -268,50 +268,6 @@ module.exports = function(grunt) {
                     ]
                 }
             }
-            /*
-        production: {
-          options: {
-            paths: ["./css"],
-            cleancss: true
-          },
-          files: {
-            "public/css/bundle.min.css": [
-              "public/css/wow-libs.css",
-              "less/style.less",
-              "less/game.less"
-              ]
-          }
-<<<<<<< HEAD
-      },
-      compress: {
-        main: {
-          options: {
-            // TODO how to get this filename by appending version number from package.json?
-            archive: 'dist/wow-0.7.1.zip'
-          },
-          files: [
-            {src: ['assets/**', 'css/**', 'fonts/**', 'js/**', 'lib/**', 'locales/**', 'media/**', 'pages/**', 'public/**', 'routes/**', 'templates/**', 'views/**']},
-            {src: ['run.bat', 'run.js', 'server.js', 'package.json', 'main.js']},
-            {src: ['bin/win32/**']},
-            {src: ['addons/dist/**']},
-            {src: ['node_modules/**', 
-              '!node_modules/browserify/**',
-              '!node_modules/browserify-shim/**',
-              '!node_modules/grunt/**',
-              '!node_modules/grunt-browserify/**',
-              '!node_modules/grunt-contrib-compress/**',
-              '!node_modules/grunt-contrib-less/**',
-              '!node_modules/grunt-execute/**',
-              '!node_modules/grunt-node-webkit-builder/**',
-              '!node_modules/grunt-downloadfile/**',
-              '!node_modules/node-chrome/**',
-              '!node_modules/pouchdb/**',
-              ]}
-          ]
-=======
->>>>>>> de7c73c82942ee96260e85fb47ab8d654c0cb4d1
-        }
-        */
         },
         execute: {
             target: {
