@@ -1,10 +1,6 @@
 {
   "name": "wow",
-<<<<<<< HEAD
-  "version": "0.7.1",
-=======
   "version": "0.9.0",
->>>>>>> de7c73c82942ee96260e85fb47ab8d654c0cb4d1
   "description": "",
   "main": "server.html",
   "scripts": {
