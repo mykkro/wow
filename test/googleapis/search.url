@@ -1,0 +1,4 @@
+# testing search URL for Google Custom Search
+# Note: 100 queries/day free
+
+https://www.googleapis.com/customsearch/v1?q=red+dwarf&key=AIzaSyCAkY3UgE20Htr-yKq8rqFGkjIAT4bvCb4&cx=014704573646051814989:5fmpdpkt1le
