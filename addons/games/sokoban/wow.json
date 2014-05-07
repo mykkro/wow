@@ -1,0 +1,11 @@
+{
+  "name": "wow-contrib-games-rulegame-sokoban",
+  "apptype": "wow/app/rulegame",
+  "title": "Sokoban",
+  "description": "",
+  "className": "RuleGame",
+  "version": "0.2",
+  "langs": [
+    "cz"
+  ]
+}

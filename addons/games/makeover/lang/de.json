@@ -1,0 +1,8 @@
+{
+  "name": "de",
+  "lang": "de",
+  "title": "Viktoriánský hlavolam",
+  "info": "",
+  "rules": "Vyměňte červené a modré kameny. Kameny můžete posunovat pouze na sousední volné pole, a to i za pomoci přeskoku přes jiný kámen (jakékoli barvy), za nímž je další pole volné. Povoleny jsou pouze tahy v ortogonálním směru (přímo doleva, doprava, nahoru a dolů od volného pole).",
+  "labels": {}
+}

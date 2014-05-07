@@ -1,0 +1,129 @@
+{
+  "$type": "level-layout",
+  "items": {
+    "Ax": {
+      "name": "Ax",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Ay": {
+      "name": "Ay",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Px": {
+      "name": "Px",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Py": {
+      "name": "Py",
+      "type": "int",
+      "value": 0,
+      "show": false
+    }
+  },
+  "matrices": {
+    "STATE": [
+      {
+        "type": "string",
+        "name": "STATE",
+        "width": null,
+        "height": null,
+        "rows": [
+          [
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            ""
+          ]
+        ]
+      }
+    ],
+    "FINAL": [
+      {
+        "type": "string",
+        "name": "FINAL",
+        "width": null,
+        "height": null,
+        "rows": [
+          [
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            ""
+          ]
+        ]
+      },
+      {
+        "type": "string",
+        "name": "FINAL",
+        "width": null,
+        "height": null,
+        "rows": [
+          [
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            ""
+          ]
+        ]
+      }
+    ],
+    "VALID": [
+      {
+        "type": "boolean",
+        "name": "VALID",
+        "width": null,
+        "height": null,
+        "rows": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ]
+      }
+    ]
+  }
+}

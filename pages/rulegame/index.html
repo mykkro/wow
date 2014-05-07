@@ -1,0 +1,202 @@
+<div>
+<style>
+.tab {
+    fill: #ccc;
+    fill-opacity: 0.3;
+}
+.activeTab, .nav-tabs-back {
+    fill: rgb(146, 188, 235);
+    fill-opacity: 0.5;
+}
+
+#svgmain {
+    border: 1px solid #333;    
+}
+
+.svgselector {
+    fill: black;
+    fill-opacity: 0.2;
+    stroke: black;
+    stroke-width: 10;
+    stroke-opacity: 0.5;
+    pointer-events: none;
+    -webkit-animation: pulse 1.5s ease infinite;
+}
+
+.svgselector.valid {
+    fill: green;
+    stroke: green;
+}
+
+.svgboard > rect {
+    pointer-events: auto;
+}
+
+.svgboard > image {
+    pointer-events: none;
+}
+
+@-webkit-keyframes pulse {
+  0%   { fill-opacity: 0.1; }
+  50% { fill-opacity: 0.5; }
+  100% { fill-opacity: 0.1; }
+}
+</style>
+<svg 
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:wow="http://example.org/wow"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    unselectable="on" 
+    style="-webkit-user-select: none;"
+    id="svg"
+    tabindex='1'
+    viewBox="0 0 960 600"
+    width="100%"
+    height="100%"
+    class="main controls"
+    preserveAspectRatio="none"
+    >
+    <defs>
+    {{{defs}}}
+        <g id="switcherTab">
+            <rect width="200" height="50"></rect>
+        </g>
+    </defs>
+    <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
+
+    <g class="nav-tabs">
+        <use class="tab nav-game" xlink:href="#switcherTab" x="0" y="100"></use>
+        <use class="tab nav-game"  xlink:href="#switcherTab" x="0" y="150"></use>
+        <use class="tab nav-game"  xlink:href="#switcherTab" x="0" y="200"></use>
+        <use class="tab nav-game"  xlink:href="#switcherTab" x="0" y="250"></use>
+        <use class="tab nav-info" xlink:href="#switcherTab" x="0" y="300"></use>
+        <use class="tab nav-rules" xlink:href="#switcherTab" x="0" y="350"></use>
+        <use class="tab nav-scores" xlink:href="#switcherTab" x="0" y="400"></use>
+        <use class="tab nav-settings" xlink:href="#switcherTab" x="0" y="450"></use>
+    </g>
+    <rect class="nav-tabs-back" x="200" y="0" width="760" height="600"></rect>
+
+    <wow:flow class="nav-buttons" direction="down" anchor="left" gap="0">
+        <wow:button name="homeButton" icon="/assets/buttons/home.svg" height="50" iconAt="left">Home</wow:button>
+        <wow:button name="backButton" icon="/assets/buttons/quit.svg" height="50" iconAt="left">Back</wow:button>
+        <wow:button name="newGameButton" icon="/icons/PNG/128/run.png" height="50" iconAt="left">Play</wow:button>
+        <wow:button name="pauseButton" icon="/icons/PNG/128/pause.png" height="50" iconAt="left">Pause</wow:button>
+        <wow:button name="restartButton" icon="/icons/PNG/128/restart.png" height="50" iconAt="left">Restart</wow:button>
+        <wow:button name="quitGameButton" icon="/icons/PNG/128/quit.png" height="50" iconAt="left">Quit Game</wow:button>
+        <wow:button name="infoButton" icon="/icons/PNG/128/info.png" height="50" iconAt="left">Info</wow:button>
+        <wow:button name="rulesButton" icon="/icons/PNG/128/chess.png" height="50" iconAt="left">Rules</wow:button>
+        <wow:button name="scoreButton" icon="/icons/PNG/128/scores.png" height="50" iconAt="left">Scores</wow:button>
+        <wow:button name="settingsButton" icon="/icons/PNG/128/settings.png" height="50" conAt="left">Settings</wow:button>
+        
+    </wow:flow>
+
+<foreignObject x="200" y="0" width="760" height="100">
+  <div xmlns="http://www.w3.org/1999/xhtml">
+    <div class="game-info">
+        <div class="title">title</div>
+        <div class="logs"></div>
+    </div>
+  </div>
+</foreignObject>
+
+
+    <wow:switcher name="mySwitcher" active=0>
+        <wow:plain name="gameTab">
+            <g id="gameTab">
+                <g transform="translate(210,110)">
+                    <svg 
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        id="svgmain" 
+                        width="480" 
+                        height="480"
+                        viewBox="0 0 1000 1000">
+                    </svg>
+                </g>
+            </g>
+        </wow:plain>
+        <wow:plain name="infoTab">
+            <g id="infoTab">
+                <foreignObject x="200" y="100" width="760" height="500">
+                  <div id="infoTabInt" xmlns="http://www.w3.org/1999/xhtml">
+                    <img id="infoImg" src=""></img>
+                    <div id="infoDiv"></div>
+                  </div>
+              </foreignObject>
+            </g>
+        </wow:plain>
+        <wow:plain name="rulesTab">
+            <g id="rulesTab">
+                <foreignObject x="200" y="100" width="760" height="500">
+                  <div id="rulesTabInt"  xmlns="http://www.w3.org/1999/xhtml">
+                    <div id="rulesDiv"></div>
+                  </div>
+              </foreignObject>
+            </g>
+        </wow:plain>
+        <wow:plain name="scoresTab">
+            <g id="scoresTab">
+                <foreignObject x="200" y="100" width="760" height="500">
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                    <div id="scoresDiv"></div>
+                  </div>
+              </foreignObject>
+            </g>
+        </wow:plain>
+        <wow:plain name="settingsTab">
+            <g id="settingsTab">
+                <foreignObject x="200" y="100" width="760" height="500">
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                    <div id="settingsDiv"></div>
+                  </div>
+              </foreignObject>
+            </g>
+        </wow:plain>
+    </wow:switcher>
+    
+    <g id="tempgroup" style="display:none;"></g>    
+</svg>
+<style>
+#infoTabInt, #rulesTabInt {
+    padding: 10px;
+}
+.game-overlay {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    display: none;
+    pointer-events: none;
+}
+.game-viewport {
+    display: block;
+    position: relative;
+    margin-left: 20.8%;
+    width: 79.2%;
+    height: 83.3%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         
+    padding: 10px;
+    pointer-events: auto;
+    overflow: hidden;
+}
+.filler {
+    display: block;
+    width: 100%;
+    height: 16.6%;
+}
+.game-container, .game-settings {
+    width: 100%;
+    height: 100%;
+}
+</style>
+<div class="game-overlay" id="gameSettingsOverlay">
+    <div class="filler"></div>
+    <div class="game-viewport">
+        <div class="game-settings"></div>    
+    </div>
+</div>
+</div>

@@ -16,5 +16,8 @@
   },
   "webkit": {
   	"plugin": true
+  },
+  "local-web-server":{
+    "port": 8100
   }
 }

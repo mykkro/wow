@@ -3334,103 +3334,6 @@
 
 
 	   </g>
-    <g
-       id="Button01" class="button nav-button">
-      <path
-         class="background"
-         d="m 34.862509,42.980004 237.979431,0 c 10.22428,0 18.50949,8.399911 18.50949,18.749809 l 0,112.498807 c 0,10.349 -8.28521,18.74982 -18.50949,18.74982 l -237.979431,0 c -10.136172,0 -18.509515,-8.40082 -18.509515,-18.74982 l 0,-112.498807 c 0,-10.349898 8.373343,-18.749809 18.509515,-18.749809 z"
-         fill="#99c918"
-		 stroke="#4f8c0d"
-		 stroke-width="5.00156641"
-		 stroke-miterlimit="4"
-		  />
-      <path
-         sodipodi:nodetypes="ccccc"
-         inkscape:connector-curvature="0"
-         id="ButtonLabelField01"
-         d="m 32.315161,105.71602 244.765149,0 0,42.56784 -244.765149,0 z"
-         style="fill:#ffffff;stroke:none;filter:url(#filter4051)" />
-      <text
-         sodipodi:linespacing="125%"
-         class="label"
-         y="137.23553"
-         x="150"
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;text-anchor:middle;"
-         xml:space="preserve"><tspan
-           style="font-size:25px;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"
-           id="labelNavButton1"
-           sodipodi:role="line"></tspan></text>
-      <path
-         class="overlay"
-         d="m 34.862509,42.980004 237.979431,0 c 10.22428,0 18.50949,8.399911 18.50949,18.749809 l 0,112.498807 c 0,10.349 -8.28521,18.74982 -18.50949,18.74982 l -237.979431,0 c -10.136172,0 -18.509515,-8.40082 -18.509515,-18.74982 l 0,-112.498807 c 0,-10.349898 8.373343,-18.749809 18.509515,-18.749809 z"
-         fill="none"
-		 stroke="none"/>
-    </g>
-    <g
-       id="Button02" class="button nav-button">
-      <path
-         class="background"
-         id="ButtonFigure02"
-         d="m 34.862509,223.89338 237.979431,0 c 10.22428,0 18.50949,8.39991 18.50949,18.7498 l 0,112.49882 c 0,10.34899 -8.28521,18.74982 -18.50949,18.74982 l -237.979431,0 c -10.136172,0 -18.509515,-8.40083 -18.509515,-18.74982 l 0,-112.49882 c 0,-10.34989 8.373343,-18.7498 18.509515,-18.7498 z"
-         fill="#e77815"
-		 stroke="#ba5205"
-		 stroke-width="5.00156641"
-		 stroke-miterlimit="4" />
-      <path
-         inkscape:label="#ButtonLabelField02"
-         sodipodi:nodetypes="ccccc"
-         inkscape:connector-curvature="0"
-         id="ButtonLabelField02"
-         d="m 32.315161,286.62849 244.765149,0 0,42.56785 -244.765149,0 z"
-         style="fill:#ffffff;stroke:none;filter:url(#filter4061)" />
-      <text
-         sodipodi:linespacing="125%"
-         class="label"
-         y="316.18878"
-         x="150.19383"
-         style="font-size:25px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:Times New Roman;text-anchor:middle;"
-         xml:space="preserve"><tspan
-           id="labelNavButton2"
-           sodipodi:role="line"></tspan></text>
-      <path
-         class="overlay"
-         d="m 34.862509,223.89338 237.979431,0 c 10.22428,0 18.50949,8.39991 18.50949,18.7498 l 0,112.49882 c 0,10.34899 -8.28521,18.74982 -18.50949,18.74982 l -237.979431,0 c -10.136172,0 -18.509515,-8.40083 -18.509515,-18.74982 l 0,-112.49882 c 0,-10.34989 8.373343,-18.7498 18.509515,-18.7498 z"
-         fill="none"
-		 stroke="none"/>
-    </g>
-    <g
-       id="Button03" class="button nav-button">
-      <path
-         class="background"
-         inkscape:connector-curvature="0"
-         id="ButtonFigure03"
-         d="m 34.874645,404.83764 237.955165,0 c 10.22322,0 18.50759,8.3984 18.50759,18.74551 l 0,112.47846 c 0,10.34802 -8.28437,18.74641 -18.50759,18.74641 l -237.955165,0 c -10.135139,0 -18.507627,-8.39839 -18.507627,-18.74641 l 0,-112.47846 c 0,-10.34711 8.372488,-18.74551 18.507627,-18.74551 z"
-         fill="#9900ff"
-		 stroke="#70126b"
-		 stroke-width="5.00156641"
-		 stroke-miterlimit="4" />
-      <path
-         sodipodi:nodetypes="ccccc"
-         inkscape:connector-curvature="0"
-         id="ButtonLabelField03"
-         d="m 32.332906,467.54186 244.765144,0 0,42.56786 -244.765144,0 z"
-         style="fill:#ffffff;stroke:none;filter:url(#filter4071)" />
-      <text
-         sodipodi:linespacing="125%"
-         class="label"
-         y="497.09604"
-         x="150"
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;text-anchor:middle;"
-         xml:space="preserve"><tspan
-           style="font-size:25px;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"
-           id="labelNavButton3"
-           sodipodi:role="line"></tspan></text>
-      <path
-         class="overlay"
-         d="m 34.874645,404.83764 237.955165,0 c 10.22322,0 18.50759,8.3984 18.50759,18.74551 l 0,112.47846 c 0,10.34802 -8.28437,18.74641 -18.50759,18.74641 l -237.955165,0 c -10.135139,0 -18.507627,-8.39839 -18.507627,-18.74641 l 0,-112.47846 c 0,-10.34711 8.372488,-18.74551 18.507627,-18.74551 z"
-         fill="none"
-		 stroke="none"/>
-    </g>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;text-anchor:middle;"
@@ -3561,13 +3464,13 @@
      inkscape:label="Layer03"
      style="display:inline"
      sodipodi:insensitive="true">
-	<text id="MeteoIcon" x="470" y="430" class="meteo">R</text>
+	<text id="MeteoIcon" x="470" y="430" class="meteo"></text>
     <text
        x="540"
        y="278.52701"
        style="font-size:100px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;text-anchor:middle">
-<tspan id="MeteoTemperature">10</tspan>
-<tspan id="MeteoUnit" dx="-20" class="meteo" style="font-size:100px;">C</tspan></text>
+<tspan id="MeteoTemperature"></tspan>
+<tspan id="MeteoUnit" dx="-20" class="meteo" style="font-size:100px;"></tspan></text>
     <text
        xml:space="preserve"
        style="font-size:25px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#28166f;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:Times New Roman"

@@ -1,0 +1,40 @@
+<div class="container">
+	<div class="nav">
+			<label><button class="game game-new"></button><span>{{translated.labels.Play}}</span></label>
+			<label><button class="game game-pause"></button><span>{{translated.labels.Pause}}</span></label>
+			<label><button class="game game-restart"></button><span>{{translated.labels.Restart}}</span></label>
+			<label><button class="game game-quit"></button><span>{{translated.labels.Quit}}</span></label>
+			<label><button class="game game-info"></button><span>{{translated.labels.Info}}</span></label>
+			<label><button class="game game-rules"></button><span>{{translated.labels.Rules}}</span></label>
+			<label><button class="game game-scores"></button><span>{{translated.labels.Scores}}</span></label>
+			<label><button class="game game-settings"></button><span>{{translated.labels.Settings}}</span></label>
+		</div>
+		<div class="info">
+			<div class="title">{{translated.title}}</div>
+			<div class="logs"></div>
+		</div>
+		<div class="tabs">
+  		<div class="tab" id="tab-game">
+			
+		</div>
+  		<div class="tab" id="tab-info">
+  			<h3>{{translated.labels.GeneralInformation}}</h3>
+  			<div class="game-preview"><img src="preview.png"></div>
+  			<div class="game-description">{{translated.info}}</div>
+		</div>
+  		<div class="tab" id="tab-rules">
+  			<h3>{{translated.labels.Rules}}</h3>
+  			<div class="game-rules">{{translated.rules}}</div>
+		</div>
+  		<div class="tab" id="tab-scores">
+  			<h3>{{translated.labels.Scores}}</h3>
+  			<div class="game-scores"></div>
+		</div>
+  		<div class="tab" id="tab-settings">
+  			<div class="game-settings"></div>
+
+
+		</div>
+	</div>
+	<div id="overlay"><div class="content"></div></div>
+</div>

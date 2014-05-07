@@ -1,0 +1,14 @@
+{
+  "$type": "game-description",
+  "version": "1.0",
+  "name": "Jezdcova procházka",
+  "rules": "Vyjeďte jezdcem ze startovního pole a postupně s ním projděte všechna prázdná pole šachovnice tak, abyste skončili opět na výchozím poli. Každé pole musí být navštíveno právě jednou a jezdec smí táhnout jen v souladu s šachovými pravidly.",
+  "levelTakeTime": "20 minut",
+  "difficulty": "velmi těžká",
+  "category": "logická",
+  "piecesUri": "pieces.json",
+  "rulesUri": "rules.json",
+  "settingsUri": "settings.json",
+  "levelsUri": "levels.json",
+  "thumbnailUri": "preview.png"
+}

@@ -1,0 +1,200 @@
+{
+  "$type": "game-pieces",
+  "pieces": {
+    "WhiteNumber1": {
+      "picture": "WhiteNumber1.png",
+      "uri": "pieces/WhiteNumber1.png",
+      "showBorder": false
+    },
+    "WhiteNumber2": {
+      "picture": "WhiteNumber2.png",
+      "uri": "pieces/WhiteNumber2.png",
+      "showBorder": false
+    },
+    "WhiteNumber3": {
+      "picture": "WhiteNumber3.png",
+      "uri": "pieces/WhiteNumber3.png",
+      "showBorder": false
+    },
+    "WhiteNumber4": {
+      "picture": "WhiteNumber4.png",
+      "uri": "pieces/WhiteNumber4.png",
+      "showBorder": false
+    },
+    "WhiteNumber5": {
+      "picture": "WhiteNumber5.png",
+      "uri": "pieces/WhiteNumber5.png",
+      "showBorder": false
+    },
+    "WhiteNumber6": {
+      "picture": "WhiteNumber6.png",
+      "uri": "pieces/WhiteNumber6.png",
+      "showBorder": false
+    },
+    "WhiteNumber7": {
+      "picture": "WhiteNumber7.png",
+      "uri": "pieces/WhiteNumber7.png",
+      "showBorder": false
+    },
+    "WhiteNumber8": {
+      "picture": "WhiteNumber8.png",
+      "uri": "pieces/WhiteNumber8.png",
+      "showBorder": false
+    },
+    "WhiteNumber9": {
+      "picture": "WhiteNumber9.png",
+      "uri": "pieces/WhiteNumber9.png",
+      "showBorder": false
+    },
+    "WhiteNumber1Visited": {
+      "picture": "WhiteNumber1Visited.png",
+      "uri": "pieces/WhiteNumber1Visited.png",
+      "showBorder": false
+    },
+    "WhiteNumber2Visited": {
+      "picture": "WhiteNumber2Visited.png",
+      "uri": "pieces/WhiteNumber2Visited.png",
+      "showBorder": false
+    },
+    "WhiteNumber3Visited": {
+      "picture": "WhiteNumber3Visited.png",
+      "uri": "pieces/WhiteNumber3Visited.png",
+      "showBorder": false
+    },
+    "WhiteNumber4Visited": {
+      "picture": "WhiteNumber4Visited.png",
+      "uri": "pieces/WhiteNumber4Visited.png",
+      "showBorder": false
+    },
+    "WhiteNumber5Visited": {
+      "picture": "WhiteNumber5Visited.png",
+      "uri": "pieces/WhiteNumber5Visited.png",
+      "showBorder": false
+    },
+    "WhiteNumber6Visited": {
+      "picture": "WhiteNumber6Visited.png",
+      "uri": "pieces/WhiteNumber6Visited.png",
+      "showBorder": false
+    },
+    "WhiteNumber7Visited": {
+      "picture": "WhiteNumber7Visited.png",
+      "uri": "pieces/WhiteNumber7Visited.png",
+      "showBorder": false
+    },
+    "WhiteNumber8Visited": {
+      "picture": "WhiteNumber8Visited.png",
+      "uri": "pieces/WhiteNumber8Visited.png",
+      "showBorder": false
+    },
+    "WhiteNumber9Visited": {
+      "picture": "WhiteNumber9Visited.png",
+      "uri": "pieces/WhiteNumber9Visited.png",
+      "showBorder": false
+    },
+    "BlackNumber1": {
+      "picture": "BlackNumber1.png",
+      "uri": "pieces/BlackNumber1.png",
+      "showBorder": false
+    },
+    "BlackNumber2": {
+      "picture": "BlackNumber2.png",
+      "uri": "pieces/BlackNumber2.png",
+      "showBorder": false
+    },
+    "BlackNumber3": {
+      "picture": "BlackNumber3.png",
+      "uri": "pieces/BlackNumber3.png",
+      "showBorder": false
+    },
+    "BlackNumber4": {
+      "picture": "BlackNumber4.png",
+      "uri": "pieces/BlackNumber4.png",
+      "showBorder": false
+    },
+    "BlackNumber5": {
+      "picture": "BlackNumber5.png",
+      "uri": "pieces/BlackNumber5.png",
+      "showBorder": false
+    },
+    "BlackNumber6": {
+      "picture": "BlackNumber6.png",
+      "uri": "pieces/BlackNumber6.png",
+      "showBorder": false
+    },
+    "BlackNumber7": {
+      "picture": "BlackNumber7.png",
+      "uri": "pieces/BlackNumber7.png",
+      "showBorder": false
+    },
+    "BlackNumber8": {
+      "picture": "BlackNumber8.png",
+      "uri": "pieces/BlackNumber8.png",
+      "showBorder": false
+    },
+    "BlackNumber9": {
+      "picture": "BlackNumber9.png",
+      "uri": "pieces/BlackNumber9.png",
+      "showBorder": false
+    },
+    "BlackNumber1Visited": {
+      "picture": "BlackNumber1Visited.png",
+      "uri": "pieces/BlackNumber1Visited.png",
+      "showBorder": false
+    },
+    "BlackNumber2Visited": {
+      "picture": "BlackNumber2Visited.png",
+      "uri": "pieces/BlackNumber2Visited.png",
+      "showBorder": false
+    },
+    "BlackNumber3Visited": {
+      "picture": "BlackNumber3Visited.png",
+      "uri": "pieces/BlackNumber3Visited.png",
+      "showBorder": false
+    },
+    "BlackNumber4Visited": {
+      "picture": "BlackNumber4Visited.png",
+      "uri": "pieces/BlackNumber4Visited.png",
+      "showBorder": false
+    },
+    "BlackNumber5Visited": {
+      "picture": "BlackNumber5Visited.png",
+      "uri": "pieces/BlackNumber5Visited.png",
+      "showBorder": false
+    },
+    "BlackNumber6Visited": {
+      "picture": "BlackNumber6Visited.png",
+      "uri": "pieces/BlackNumber6Visited.png",
+      "showBorder": false
+    },
+    "BlackNumber7Visited": {
+      "picture": "BlackNumber7Visited.png",
+      "uri": "pieces/BlackNumber7Visited.png",
+      "showBorder": false
+    },
+    "BlackNumber8Visited": {
+      "picture": "BlackNumber8Visited.png",
+      "uri": "pieces/BlackNumber8Visited.png",
+      "showBorder": false
+    },
+    "BlackNumber9Visited": {
+      "picture": "BlackNumber9Visited.png",
+      "uri": "pieces/BlackNumber9Visited.png",
+      "showBorder": false
+    },
+    "Destination": {
+      "picture": "Empty.png",
+      "uri": "pieces/Empty.png",
+      "showBorder": true
+    },
+    "DestinationVisited": {
+      "picture": "DestinationVisited.png",
+      "uri": "pieces/DestinationVisited.png",
+      "showBorder": true
+    },
+    "Empty": {
+      "picture": "Empty.png",
+      "uri": "pieces/Empty.png",
+      "showBorder": false
+    }
+  }
+}

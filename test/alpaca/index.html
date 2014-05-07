@@ -47,6 +47,10 @@ hr {
   margin-top: 40px;
   margin-bottom: 40px;
 }
+
+button.changed {
+    color: red;
+}
 </style>
 	
 	<script>
@@ -74,6 +78,7 @@ hr {
 </div>
 
 	<div id="form1"></div>
+    <button id="reset">Click to reset</button>
 	 
 	<script type="text/javascript">
 $(document).ready(function() {
@@ -168,7 +173,19 @@ $(document).ready(function() {
      * @param control
      */
     var postRenderCallback = function(control) {
-
+        console.log(control.getValue())
+        /* this does not work... */
+        /* maybe watching for changes in individual fields? */
+        control.on("change", function(ctrl) {
+            console.log(control)
+            console.log(ctrl)
+        })
+        /* this works! */
+        for(var i=0; i<control.children.length; i++) {
+            control.children[i].on("change", function(ev) {
+                console.log(ev);
+            })
+        }
     };
 
     /**
@@ -183,6 +200,10 @@ $(document).ready(function() {
         "postRender": postRenderCallback,
         "ui": "bootstrap"
     });
+
+    $("#reset").click(function() {
+        $(this).removeClass("Changed")
+    })
 });	
 
 </script> 

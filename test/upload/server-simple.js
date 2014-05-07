@@ -6,6 +6,7 @@ var express = require('express');
 
 var app = express()
 
+var ObjectId = require('objectid')
 
 app.configure(function() {
   app.set("view options", {layout: false});

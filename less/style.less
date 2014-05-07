@@ -2,55 +2,6 @@ html {
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
-.admin {
-	margin: 20px;
-	background-color: #eee;
-	-webkit-border-radius: 10px;
-	h1 {
-		background-color: #cee;
-		padding: 8px;
-		margin: 0px;
-		-webkit-border-radius: 10px 10px 0px 0px;
-	}
-	.admin-nav {
-		background-color: #fed;
-		padding: 10px 20px;
-		a {
-		 text-decoration: none;
-		}
-	}
-	.admin-body {
-		background-color: #ffd;
-		margin: 0px;
-		padding: 10px 20px;
-		-webkit-border-radius: 0px 0px 10px 10px;
-		.panel {
-			background-color: red;
-			margin: 20px 0px;
-			padding: 0px;
-			-webkit-border-radius: 12px;
-			>h2 {
-				background-color: #cee;
-				padding: 8px;
-				margin: 0px;
-				-webkit-border-radius: 10px 10px 0px 0px;
-			}
-			>.panel-body {
-				background-color: #ded;
-				margin: 0px;
-				padding: 10px 20px;
-				-webkit-border-radius: 0px 0px 10px 10px;
-				label > span {
-					display: inline-block;
-					width: 160px;
-				}
-				.buttons {
-					padding: 10px;
-				}
-			}
-		}
-	}
-}
 
 .modal_dialog {
 	width: 480px;
@@ -135,4 +86,86 @@ html {
         width: 100%;
         height: 100%;
     }
+}
+
+/* SVG shadows */
+
+.shadowed {
+	-webkit-filter: drop-shadow(12px 12px 7px rgba(0,0,0,0.5));
+	filter: url(#drop-shadow);
+}
+
+.glow {
+	filter: url(#glow) !important;
+}
+.glow2 {
+	filter: url(#glow2) !important;
+}
+
+.dusk {
+	filter :url(#dusk);
+}
+
+.wow-widget.plain {
+	 pointer-events: none;
+	 image {
+	 	pointer-events: auto;
+	 }
+}
+
+/* current video selection */
+.youtube-results .wow-widget.plain:hover {
+	.glow;
+}
+.wow-widget.iconbutton:hover,
+.wow-widget.bigbutton:hover
+{
+	.glow;
+}
+
+.theme.darkness {
+	.glow {
+		filter: url(#glow-darkness);
+	}
+	.glow2 {
+		filter: url(#glow2-darkness);
+	}
+}
+
+.wow-overlay-background {
+	width: 960px;
+	height: 600px;
+	fill: black;
+	fill-opacity: 0;
+
+	&.transparent {
+		pointer-events: none;
+	}
+}
+
+.softwarekeyboard {
+	.wow-overlay-background {
+		fill-opacity: 0.7;
+	}
+	.key {
+	}
+	.label {
+		font-weight: bold;
+		text-anchor: middle;
+	}
+}
+
+.wow-widget.button {
+	&.disabled {
+	  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); 
+	  /* Firefox 10+, Firefox on Android */
+	  filter: gray; /* IE6-9 */
+	  -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+	}
+}
+
+.wow-button-text {
+}
+
+.wow-button-icon {
 }

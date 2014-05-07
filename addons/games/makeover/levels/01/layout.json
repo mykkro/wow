@@ -1,0 +1,166 @@
+{
+  "$type": "level-layout",
+  "items": {
+    "Ax": {
+      "name": "Ax",
+      "type": "int",
+      "value": 2,
+      "show": false
+    },
+    "Ay": {
+      "name": "Ay",
+      "type": "int",
+      "value": 2,
+      "show": false
+    },
+    "Px": {
+      "name": "Px",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Py": {
+      "name": "Py",
+      "type": "int",
+      "value": 0,
+      "show": false
+    }
+  },
+  "matrices": {
+    "STATE": [
+      {
+        "type": "string",
+        "name": "STATE",
+        "width": 5,
+        "height": 5,
+        "rows": [
+          [
+            "Red",
+            "Red",
+            "Red",
+            "Wood",
+            "Wood"
+          ],
+          [
+            "Red",
+            "Red",
+            "Red",
+            "Wood",
+            "Wood"
+          ],
+          [
+            "Red",
+            "Red",
+            "Empty",
+            "Blue",
+            "Blue"
+          ],
+          [
+            "Wood",
+            "Wood",
+            "Blue",
+            "Blue",
+            "Blue"
+          ],
+          [
+            "Wood",
+            "Wood",
+            "Blue",
+            "Blue",
+            "Blue"
+          ]
+        ]
+      }
+    ],
+    "FINAL": [
+      {
+        "type": "string",
+        "name": "FINAL",
+        "width": 5,
+        "height": 5,
+        "rows": [
+          [
+            "Blue",
+            "Blue",
+            "Blue",
+            "Wood",
+            "Wood"
+          ],
+          [
+            "Blue",
+            "Blue",
+            "Blue",
+            "Wood",
+            "Wood"
+          ],
+          [
+            "Blue",
+            "Blue",
+            "Empty",
+            "Red",
+            "Red"
+          ],
+          [
+            "Wood",
+            "Wood",
+            "Red",
+            "Red",
+            "Red"
+          ],
+          [
+            "Wood",
+            "Wood",
+            "Red",
+            "Red",
+            "Red"
+          ]
+        ]
+      }
+    ],
+    "VALID": [
+      {
+        "type": "boolean",
+        "name": "VALID",
+        "width": 5,
+        "height": 5,
+        "rows": [
+          [
+            false,
+            false,
+            true,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            true,
+            false,
+            false
+          ],
+          [
+            true,
+            true,
+            false,
+            true,
+            true
+          ],
+          [
+            false,
+            false,
+            true,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            true,
+            false,
+            false
+          ]
+        ]
+      }
+    ]
+  }
+}

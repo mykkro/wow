@@ -1,0 +1,8 @@
+{
+  "name": "en",
+  "lang": "en",
+  "title": "Zhasni",
+  "info": "",
+  "rules": "Zhasněte všechna světla. Po zvolení žárovky se přepne její stav a stav čtyř žárovek v jejím nejbližším okolí (vlevo, vpravo, nahoře a dole), pokud to hranice pole dovoluje.",
+  "labels": {}
+}

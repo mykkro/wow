@@ -1,0 +1,25 @@
+{
+  "$type": "game-levels",
+  "levels": [
+    {
+      "name": "01",
+      "uri": "levels/01/description.json"
+    },
+    {
+      "name": "02",
+      "uri": "levels/02/description.json"
+    },
+    {
+      "name": "03",
+      "uri": "levels/03/description.json"
+    },
+    {
+      "name": "04",
+      "uri": "levels/04/description.json"
+    },
+    {
+      "name": "05",
+      "uri": "levels/05/description.json"
+    }
+  ]
+}
