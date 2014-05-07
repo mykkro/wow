@@ -1,0 +1,8 @@
+{
+  "name": "en",
+  "lang": "en",
+  "title": "Sudoku",
+  "info": "",
+  "rules": "Do prázdných polí herní plochy umístěte čísla v rozsahu 1 až 9. V žádném z 9 menších čtverců, řádku ani sloupci se nesmí opakovat žádné z čísel. Jinak řečeno v každém z řádků, sloupců a menších čtverců musí být všechna čísla od 1 po 9.",
+  "labels": {}
+}

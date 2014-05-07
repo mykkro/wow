@@ -1,0 +1,40 @@
+{
+  "$type": "game-pieces",
+  "pieces": {
+    "BoxClosed": {
+      "picture": "BoxClosed.png",
+      "uri": "pieces/BoxClosed.png",
+      "showBorder": false
+    },
+    "BoxOpened": {
+      "picture": "BoxOpened.png",
+      "uri": "pieces/BoxOpened.png",
+      "showBorder": false
+    },
+    "Empty": {
+      "picture": "Empty.png",
+      "uri": "pieces/Empty.png",
+      "showBorder": false
+    },
+    "Scissors": {
+      "picture": "Scissors.png",
+      "uri": "pieces/Scissors.png",
+      "showBorder": false
+    },
+    "Wall": {
+      "picture": "Wall.png",
+      "uri": "pieces/Wall.png",
+      "showBorder": false
+    },
+    "Avatar": {
+      "picture": "Avatar",
+      "uri": "/assets/misc/avatar.png",
+      "showBorder": false
+    },
+    "AvatarOnScissors": {
+      "picture": "Avatar",
+      "uri": "/assets/misc/avatar.png",
+      "showBorder": false
+    }
+  }
+}

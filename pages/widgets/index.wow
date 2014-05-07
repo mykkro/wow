@@ -1,18 +1,3 @@
-<svg 
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:wow="http://example.org/wow"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    unselectable="on" 
-    style="-webkit-user-select: none;"
-    id="svg"
-	tabindex='1'
-	viewBox="0 0 960 600"
-	width="100%"
-	height="100%"
-	preserveAspectRatio="none"
-    >
-
 <wow:grid cols="3" rows="3" valign="center" halign="center" uniformColumns="false" uniformRows="true">
     <wow:piechart name="foo" title="Sales by Region">
       <wow:pieslice label="Northern Region" value="1.23" color="blue"/>
@@ -64,10 +49,6 @@ Multiline text that needs wrapping
 
 
 
-
-<g id="tempgroup" style="display:none;"></g>
-
-
 <!-- alas, transform attribute does not work well with foreignObject forms -->
 <!-- as well as wrapping it into svg element... -->
 <g>
@@ -82,7 +63,4 @@ Multiline text that needs wrapping
     <circle cx="360" cy="80" r="30" fill="#00ff00" fill-opacity="0.5"/>
 </g>
 
-
-
-</svg>
 

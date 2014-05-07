@@ -1,0 +1,11 @@
+{
+  "name": "wow-contrib-games-rulegame-netwalk",
+  "apptype": "wow/app/rulegame",
+  "title": "Netwalk",
+  "description": "",
+  "className": "RuleGame",
+  "version": "0.2",
+  "langs": [
+    "cz"
+  ]
+}

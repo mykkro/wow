@@ -1,0 +1,117 @@
+{
+  "$type": "game-rules",
+  "rules": [
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number0)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number0Filled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number0Filled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number0;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number1)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number1Filled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number1Filled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number1;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number2)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number2Filled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number2Filled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number2;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number3)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number3Filled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number3Filled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number3;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number4)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number4Filled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number4Filled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number4;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number5)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number5Filled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number5Filled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number5;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number6)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number6Filled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number6Filled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number6;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number7)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number7Filled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number7Filled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number7;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number8)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number8Filled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number8Filled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number8;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number9)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number9Filled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Number9Filled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Number9;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Plus)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = PlusFilled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == PlusFilled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Plus;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Minus)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = MinusFilled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == MinusFilled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Minus;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Multiplicator)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = MultiplicatorFilled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == MultiplicatorFilled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Multiplicator;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == Division)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = DivisionFilled;\r\n\t}\r\n    ",
+      "break": true
+    },
+    {
+      "contents": "\r\n\tif (STATE[A.x, A.y] == DivisionFilled)\r\n\t{\r\n\t\tSTATE[A.x, A.y] = Division;\r\n\t}\r\n    ",
+      "break": true
+    }
+  ]
+}

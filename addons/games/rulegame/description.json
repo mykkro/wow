@@ -1,0 +1,14 @@
+{
+  "$type": "game-description",
+  "version": "1.0",
+  "name": "Loydova patnáctka",
+  "rules": "Seřaďte všechna čísla vzestupně od 1 po 15 tak, aby poslední pole zůstalo volné. Čísla lze přesouvat pouze přes prázdné pole a v ortogonálním (kolmém) směru.",
+  "levelTakeTime": "5 minut",
+  "difficulty": "středně těžká",
+  "category": "logická",
+  "piecesUri": "pieces.json",
+  "rulesUri": "rules.json",
+  "settingsUri": "settings.json",
+  "levelsUri": "levels.json",
+  "thumbnailUri": "thumbnail.png"
+}

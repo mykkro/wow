@@ -1,0 +1,280 @@
+{
+  "$type": "game-pieces",
+  "pieces": {
+    "10": {
+      "picture": "10.png",
+      "uri": "pieces/10.png",
+      "showBorder": true
+    },
+    "11": {
+      "picture": "11.png",
+      "uri": "pieces/11.png",
+      "showBorder": true
+    },
+    "12": {
+      "picture": "12.png",
+      "uri": "pieces/12.png",
+      "showBorder": true
+    },
+    "13": {
+      "picture": "13.png",
+      "uri": "pieces/13.png",
+      "showBorder": true
+    },
+    "14": {
+      "picture": "14.png",
+      "uri": "pieces/14.png",
+      "showBorder": true
+    },
+    "15": {
+      "picture": "15.png",
+      "uri": "pieces/15.png",
+      "showBorder": true
+    },
+    "16": {
+      "picture": "16.png",
+      "uri": "pieces/16.png",
+      "showBorder": true
+    },
+    "17": {
+      "picture": "17.png",
+      "uri": "pieces/17.png",
+      "showBorder": true
+    },
+    "18": {
+      "picture": "18.png",
+      "uri": "pieces/18.png",
+      "showBorder": true
+    },
+    "19": {
+      "picture": "19.png",
+      "uri": "pieces/19.png",
+      "showBorder": true
+    },
+    "20": {
+      "picture": "20.png",
+      "uri": "pieces/20.png",
+      "showBorder": true
+    },
+    "21": {
+      "picture": "21.png",
+      "uri": "pieces/21.png",
+      "showBorder": true
+    },
+    "22": {
+      "picture": "22.png",
+      "uri": "pieces/22.png",
+      "showBorder": true
+    },
+    "23": {
+      "picture": "23.png",
+      "uri": "pieces/23.png",
+      "showBorder": true
+    },
+    "24": {
+      "picture": "24.png",
+      "uri": "pieces/24.png",
+      "showBorder": true
+    },
+    "25": {
+      "picture": "25.png",
+      "uri": "pieces/25.png",
+      "showBorder": true
+    },
+    "26": {
+      "picture": "26.png",
+      "uri": "pieces/26.png",
+      "showBorder": true
+    },
+    "27": {
+      "picture": "27.png",
+      "uri": "pieces/27.png",
+      "showBorder": true
+    },
+    "28": {
+      "picture": "28.png",
+      "uri": "pieces/28.png",
+      "showBorder": true
+    },
+    "29": {
+      "picture": "29.png",
+      "uri": "pieces/29.png",
+      "showBorder": true
+    },
+    "30": {
+      "picture": "30.png",
+      "uri": "pieces/30.png",
+      "showBorder": true
+    },
+    "31": {
+      "picture": "31.png",
+      "uri": "pieces/31.png",
+      "showBorder": true
+    },
+    "32": {
+      "picture": "32.png",
+      "uri": "pieces/32.png",
+      "showBorder": true
+    },
+    "33": {
+      "picture": "33.png",
+      "uri": "pieces/33.png",
+      "showBorder": true
+    },
+    "34": {
+      "picture": "34.png",
+      "uri": "pieces/34.png",
+      "showBorder": true
+    },
+    "35": {
+      "picture": "35.png",
+      "uri": "pieces/35.png",
+      "showBorder": true
+    },
+    "36": {
+      "picture": "36.png",
+      "uri": "pieces/36.png",
+      "showBorder": true
+    },
+    "37": {
+      "picture": "37.png",
+      "uri": "pieces/37.png",
+      "showBorder": true
+    },
+    "38": {
+      "picture": "38.png",
+      "uri": "pieces/38.png",
+      "showBorder": true
+    },
+    "39": {
+      "picture": "39.png",
+      "uri": "pieces/39.png",
+      "showBorder": true
+    },
+    "40": {
+      "picture": "40.png",
+      "uri": "pieces/40.png",
+      "showBorder": true
+    },
+    "41": {
+      "picture": "41.png",
+      "uri": "pieces/41.png",
+      "showBorder": true
+    },
+    "42": {
+      "picture": "42.png",
+      "uri": "pieces/42.png",
+      "showBorder": true
+    },
+    "43": {
+      "picture": "43.png",
+      "uri": "pieces/43.png",
+      "showBorder": true
+    },
+    "44": {
+      "picture": "44.png",
+      "uri": "pieces/44.png",
+      "showBorder": true
+    },
+    "45": {
+      "picture": "45.png",
+      "uri": "pieces/45.png",
+      "showBorder": true
+    },
+    "46": {
+      "picture": "46.png",
+      "uri": "pieces/46.png",
+      "showBorder": true
+    },
+    "47": {
+      "picture": "47.png",
+      "uri": "pieces/47.png",
+      "showBorder": true
+    },
+    "48": {
+      "picture": "48.png",
+      "uri": "pieces/48.png",
+      "showBorder": true
+    },
+    "49": {
+      "picture": "49.png",
+      "uri": "pieces/49.png",
+      "showBorder": true
+    },
+    "50": {
+      "picture": "50.png",
+      "uri": "pieces/50.png",
+      "showBorder": true
+    },
+    "01": {
+      "picture": "01.png",
+      "uri": "pieces/01.png",
+      "showBorder": true
+    },
+    "02": {
+      "picture": "02.png",
+      "uri": "pieces/02.png",
+      "showBorder": true
+    },
+    "03": {
+      "picture": "03.png",
+      "uri": "pieces/03.png",
+      "showBorder": true
+    },
+    "04": {
+      "picture": "04.png",
+      "uri": "pieces/04.png",
+      "showBorder": true
+    },
+    "05": {
+      "picture": "05.png",
+      "uri": "pieces/05.png",
+      "showBorder": true
+    },
+    "06": {
+      "picture": "06.png",
+      "uri": "pieces/06.png",
+      "showBorder": true
+    },
+    "07": {
+      "picture": "07.png",
+      "uri": "pieces/07.png",
+      "showBorder": true
+    },
+    "08": {
+      "picture": "08.png",
+      "uri": "pieces/08.png",
+      "showBorder": true
+    },
+    "09": {
+      "picture": "09.png",
+      "uri": "pieces/09.png",
+      "showBorder": true
+    },
+    "Border": {
+      "picture": "Border.png",
+      "uri": "pieces/Border.png",
+      "showBorder": false
+    },
+    "EmptyCorner": {
+      "picture": "Empty.png",
+      "uri": "pieces/Empty.png",
+      "showBorder": false
+    },
+    "Empty": {
+      "picture": "Empty.png",
+      "uri": "pieces/Empty.png",
+      "showBorder": true
+    },
+    "Point": {
+      "picture": "Point.png",
+      "uri": "pieces/Point.png",
+      "showBorder": true
+    },
+    "Filled": {
+      "picture": "Filled.png",
+      "uri": "pieces/Filled.png",
+      "showBorder": true
+    }
+  }
+}

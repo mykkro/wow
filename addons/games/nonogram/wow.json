@@ -1,0 +1,11 @@
+{
+  "name": "wow-contrib-games-rulegame-nonogram",
+  "apptype": "wow/app/rulegame",
+  "title": "Nonogramy",
+  "description": "",
+  "className": "RuleGame",
+  "version": "0.2",
+  "langs": [
+    "cz"
+  ]
+}

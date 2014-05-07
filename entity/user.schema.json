@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "title": "User",
+  "properties": {
+    "ownerAdminId": {
+      "title": "Owner ID",
+      "type": "number",
+      "required": true
+    },
+    "created": {
+      "title": "Created",
+      "type": "string",
+      "required": false
+    },
+    "title": {
+      "title": "Title",
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "title": "Description",
+      "type": "string",
+      "required": false
+    },
+    "password": {
+      "title": "Password",
+      "type": "string",
+      "required": false
+    },
+    "usesPassword": {
+      "title": "Uses password?",
+      "type": "boolean",
+      "required": false
+    }
+  }
+}

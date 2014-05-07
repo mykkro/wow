@@ -1,0 +1,8 @@
+{
+  "name": "de",
+  "lang": "de",
+  "title": "Jezdcova procházka",
+  "info": "",
+  "rules": "Vyjeďte jezdcem ze startovního pole a postupně s ním projděte všechna prázdná pole šachovnice tak, abyste skončili opět na výchozím poli. Každé pole musí být navštíveno právě jednou a jezdec smí táhnout jen v souladu s šachovými pravidly.",
+  "labels": {}
+}

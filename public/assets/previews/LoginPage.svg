@@ -42,12 +42,6 @@
                     ADMIN
                 </tspan>
             </text>
-            <g>
-                <path d="M1173.958 123.587a50.405 50.405 0 1 1-100.811 0 50.405 50.405 0 1 1 100.811 0z" transform="translate(180.91 -557.933) translate(-1261.922 228.503)" fill="#ff0"/>
-                <path d="M-148.777 344.721a9.756 9.756 0 1 1-19.512 0 9.756 9.756 0 1 1 19.512 0z" transform="translate(180.91 -557.933) translate(2.233 3.162)" fill="#fff"/>
-                <path transform="translate(180.91 -557.933) translate(37.745 3.162)" d="M-148.777 344.721a9.756 9.756 0 1 1-19.512 0 9.756 9.756 0 1 1 19.512 0z" fill="#fff"/>
-                <path d="M-212.451 395.192a23.993 22.995 0 1 1-47.931-.643l23.95 1.372z" transform="matrix(1 0 0 .595 278.831 -416.469)" fill="#fff"/>
-            </g>
             <rect ry="34.959" y="-280.675" x="-32.46" height="200" width="150" class="overlay" fill="none"/>
         </g>
         <g class="login-button button" style="display:none;">

@@ -50,844 +50,820 @@ somewhere in the source-code-comment or the "about" of your project and give cre
 */
 module.exports = function(window, svgsvg) {
 
-var svgNS = "http://www.w3.org/2000/svg"
-var document = window.document
-var Timer = require("./timer")(window)
+    var svgNS = "http://www.w3.org/2000/svg"
+    var document = window.document
+    var Timer = require("./timer")(window)
 
 
-function textbox(d) {
-	// d = {id: parentNode: defaultVal: maxChars: x: y: boxWidth: boxHeight: textYOffset: textStyles: boxStyles: cursorStyles: selBoxStyles: allowedChars: functionToCall:}
-	this.id = d.id; //the id of the textbox
-	this.parentNode = d.parentNode;  //can be of type string (id) or node reference (svg or g node)
-	this.maxChars = d.maxChars; //maximum characters allowed
-	this.defaultVal = d.defaultVal.toString(); //default value to be filled in when textbox is created
-	this.x = d.x; //left of background rectangle
-	this.y = d.y; //top of background rectangle
-	this.boxWidth = d.boxWidth; //background rectangle width
-	this.boxHeight = d.boxHeight; //background rectangle height
-	this.textYOffset = d.textYOffset; //the offset of the text element in relation to the upper side of the textbox rectangle
-	this.textStyles = d.textStyles; //array containing text attributes
-	if (!this.textStyles["font-size"]) {
-		this.textStyles["font-size"] = 15;
-	}
-	this.boxStyles = d.boxStyles; //array containing box styles attributes
-	this.cursorStyles = d.cursorStyles; //array containing text attributes
-	this.selBoxStyles = d.selBoxStyles; //array containing box styles attributes
-	//allowedChars contains regular expressions of allowed character ranges
-	if (d.allowedChars) {
-		if (typeof(d.allowedChars) == "string") {
-			if (d.allowedChars.length > 0) {
-				this.RegExp = new RegExp(d.allowedChars);
-			}
-		}
-	}
-	else {
-		this.RegExp = undefined;
-	}
-	this.functionToCall = d.functionToCall; //function to be called if textbox looses focus or enter key is pressed
-	this.textboxRect = null; //later holds reference to rect element
-	this.textboxText = null; //later holds reference to text element
-	this.textboxTextContent = null; //later holds reference to content of text element (first child)
-	this.textboxCursor = null; //later holds reference to cursor
-	this.textboxStatus = 0; //status 0 means unitialized, 1 means partially initalized, 2 means fully initialized and ready to remove event listeners again, 5 means new value was set by method .setValue()
-	this.cursorPosition = 0; //position in whole string
-	this.transX = 0; //offset on the left if text string is larger than box
-	this.textVal = this.defaultVal; //this is the current text string of the content
-	this.shiftDown = false; //boolean value that says if shift was pressed
-	this.mouseDown = false; //boolean value that says if mousedown is active
-	this.startSelection = 0; //position of the start of the selection
-	this.startOrigSelection = 0; //original start position of selection
-	this.endSelection = 0; //position of the end of the selection
-	this.selectionRectVisible = false; //indicates if selection rect is visible or not
-	this.svg = null; //later a nested svg that does clipping
-	this.supportsCharGeom = true; //defines if viewer supports geometry calculations on individual characters, such as .getCharAtPosition(SVGPoint)
+    function textbox(d) {
+        // d = {id: parentNode: defaultVal: maxChars: x: y: boxWidth: boxHeight: textYOffset: textStyles: boxStyles: cursorStyles: selBoxStyles: allowedChars: functionToCall:}
+        this.id = d.id; //the id of the textbox
+        this.parentNode = d.parentNode; //can be of type string (id) or node reference (svg or g node)
+        this.maxChars = d.maxChars; //maximum characters allowed
+        this.defaultVal = d.defaultVal.toString(); //default value to be filled in when textbox is created
+        this.x = d.x; //left of background rectangle
+        this.y = d.y; //top of background rectangle
+        this.boxWidth = d.boxWidth; //background rectangle width
+        this.boxHeight = d.boxHeight; //background rectangle height
+        this.textYOffset = d.textYOffset; //the offset of the text element in relation to the upper side of the textbox rectangle
+        this.textStyles = d.textStyles; //array containing text attributes
+        if (!this.textStyles["font-size"]) {
+            this.textStyles["font-size"] = 15;
+        }
+        this.boxStyles = d.boxStyles; //array containing box styles attributes
+        this.cursorStyles = d.cursorStyles; //array containing text attributes
+        this.selBoxStyles = d.selBoxStyles; //array containing box styles attributes
+        //allowedChars contains regular expressions of allowed character ranges
+        if (d.allowedChars) {
+            if (typeof(d.allowedChars) == "string") {
+                if (d.allowedChars.length > 0) {
+                    this.RegExp = new RegExp(d.allowedChars);
+                }
+            }
+        } else {
+            this.RegExp = undefined;
+        }
+        this.functionToCall = d.functionToCall; //function to be called if textbox looses focus or enter key is pressed
+        this.textboxRect = null; //later holds reference to rect element
+        this.textboxText = null; //later holds reference to text element
+        this.textboxTextContent = null; //later holds reference to content of text element (first child)
+        this.textboxCursor = null; //later holds reference to cursor
+        this.textboxStatus = 0; //status 0 means unitialized, 1 means partially initalized, 2 means fully initialized and ready to remove event listeners again, 5 means new value was set by method .setValue()
+        this.cursorPosition = 0; //position in whole string
+        this.transX = 0; //offset on the left if text string is larger than box
+        this.textVal = this.defaultVal; //this is the current text string of the content
+        this.shiftDown = false; //boolean value that says if shift was pressed
+        this.mouseDown = false; //boolean value that says if mousedown is active
+        this.startSelection = 0; //position of the start of the selection
+        this.startOrigSelection = 0; //original start position of selection
+        this.endSelection = 0; //position of the end of the selection
+        this.selectionRectVisible = false; //indicates if selection rect is visible or not
+        this.svg = null; //later a nested svg that does clipping
+        this.supportsCharGeom = true; //defines if viewer supports geometry calculations on individual characters, such as .getCharAtPosition(SVGPoint)
 
-	this.timer = new Timer(this); //a Timer instance for calling the functionToCall
-	this.timerMs = 200; //a constant of this object that is used in conjunction with the timer - functionToCall is called after 200 ms
-	this.createTextbox(); //method to initialize textbox
-}
-
-//create textbox
-textbox.prototype.createTextbox = function() {
-	var result = this.testParent();
-	if (result) {
-		//create a textbox parent group
-		this.textboxParent = document.createElementNS(svgNS,"g");
-		this.parentGroup.appendChild(this.textboxParent);
-		
-		//create background rect
-		this.textboxRect = document.createElementNS(svgNS,"rect");
-		this.textboxRect.setAttributeNS(null,"x",this.x);
-		this.textboxRect.setAttributeNS(null,"y",this.y);
-		this.textboxRect.setAttributeNS(null,"width",this.boxWidth);
-		this.textboxRect.setAttributeNS(null,"height",this.boxHeight);
-		this.textboxRect.setAttributeNS(null,"pointer-events","fill");
-		for (var attrib in this.boxStyles) {
-			this.textboxRect.setAttributeNS(null,attrib,this.boxStyles[attrib]);
-		}
-		this.textboxParent.appendChild(this.textboxRect);
-		
-		this.svg = document.createElementNS(svgNS,"svg");
-		this.svg.setAttributeNS(null,"x",this.x + this.textStyles["font-size"] / 4);
-		this.svg.setAttributeNS(null,"y",this.y + this.boxHeight * 0.02);
-		this.svg.setAttributeNS(null,"width",this.boxWidth - (this.textStyles["font-size"]) / 2);
-		this.svg.setAttributeNS(null,"height",this.boxHeight * 0.96);
-		this.svg.setAttributeNS(null,"viewBox",(this.x + this.textStyles["font-size"] / 4)+" "+(this.y + this.boxHeight * 0.02)+" "+(this.boxWidth - (this.textStyles["font-size"]) / 2)+" "+(this.boxHeight * 0.96));
-		this.textboxParent.appendChild(this.svg);
-		
-		//create group to hold text, selectionRect and cursor
-		this.textboxTextGroup = document.createElementNS(svgNS,"g");
-		this.svg.appendChild(this.textboxTextGroup);
-		
-		//create text element
-		this.textboxText = document.createElementNS(svgNS,"text");
-		this.textboxText.setAttributeNS(null,"x",(this.x + this.textStyles["font-size"] / 3));
-		this.textboxText.setAttributeNS(null,"y",(this.y + this.textYOffset));
-		for (var attrib in this.textStyles) {
-			value = this.textStyles[attrib];
-			if (attrib == "font-size") {
-				value += "px";
-			}
-			this.textboxText.setAttributeNS(null,attrib,value);
-		}
-		this.textboxText.setAttributeNS(null,"id",this.id+"Text");
-		this.textboxText.setAttributeNS(null,"pointer-events","none");
-		this.textboxText.setAttributeNS("http://www.w3.org/XML/1998/namespace","space","preserve");
-		//check if defaultVal is longer than maxChars and truncate if necessary
-		if (this.defaultVal.length <= this.maxChars) {
-			this.textboxTextContent = document.createTextNode(this.defaultVal);
-			this.cursorPosition = this.defaultVal.length - 1;
-		}
-		else {
-			alert("the default textbox value is longer than the maximum of allowed characters\nDefault val will be truncated.");
-			this.textVal = this.defaultVal.substr(0,(this.maxChars - 1));
-			this.textboxTextContent = document.createTextNode(this.textVal);
-			this.cursorPosition = this.maxChars - 1;
-		}
-		this.textboxText.appendChild(this.textboxTextContent);
-		this.textboxTextGroup.appendChild(this.textboxText);
-    	
-		//create selection rectangle
-		this.selectionRect = document.createElementNS(svgNS,"rect");
-		this.selectionRect.setAttributeNS(null,"x",(this.x + this.textStyles["font-size"] / 3));
-		this.selectionRect.setAttributeNS(null,"y",(this.y + this.textYOffset - this.textStyles["font-size"] * 0.9));
-		this.selectionRect.setAttributeNS(null,"width",(this.textStyles["font-size"] * 2));
-		this.selectionRect.setAttributeNS(null,"height",this.textStyles["font-size"] * 1.1);
-		for (var attrib in this.selBoxStyles) {
-			this.selectionRect.setAttributeNS(null,attrib,this.selBoxStyles[attrib]);
-		}
-		this.selectionRect.setAttributeNS(null,"display","none");
-		this.textboxTextGroup.appendChild(this.selectionRect);
-			
-		//create cursor element
-		this.textboxCursor = document.createElementNS(svgNS,"line");
-		this.textboxCursor.setAttributeNS(null,"x1",this.x);
-		this.textboxCursor.setAttributeNS(null,"y1",(this.y + this.textYOffset + this.textStyles["font-size"] * 0.2));
-		this.textboxCursor.setAttributeNS(null,"x2",this.x);
-		this.textboxCursor.setAttributeNS(null,"y2",(this.y + this.textYOffset - this.textStyles["font-size"] * 0.9));
-		for (var attrib in this.cursorStyles) {
-			this.textboxCursor.setAttributeNS(null,attrib,this.cursorStyles[attrib]);
-		}
-		this.textboxCursor.setAttributeNS(null,"id",this.id+"Cursor");
-		this.textboxCursor.setAttributeNS(null,"visibility","hidden");
-		this.textboxTextGroup.appendChild(this.textboxCursor);
-    	
-		// add event listeners to the textbox group
-		this.textboxParent.addEventListener("mousedown",this,false);
-		this.textboxParent.addEventListener("mousemove",this,false);
-		this.textboxParent.addEventListener("mouseup",this,false);
-		//this.textboxParent.addEventListener("keypress",this,false);
-		//this.textboxParent.addEventListener("keydown",this,false);
-		this.textboxParent.setAttributeNS(null,"cursor","text");
-		
-		//test if the svgviewer supports getting geometries of individual characters
-		this.timer.setTimeout("testSupportsChar",this.timerMs);
-	}
-	else {
-		alert("could not create or reference 'parentNode' of textbox with id '"+this.id+"'");
-	}
-}
-
-textbox.prototype.testSupportsChar = function() {
-	//determine whether viewer is capable of charGeom functions
-	var isEmpty = false;
-	//temporarily create a space to test if getStartPosition is available
-	if (this.textVal.length == 0) {
-		isEmpty = true;
-		this.textboxTextContent.nodeValue = " ";
-	}		
-	try {
-		var dummy = this.textboxText.getStartPositionOfChar(0).x;
-	}
-	catch(er) {
-		this.supportsCharGeom = false;
-	}
-	if (isEmpty) {
-		this.textboxTextContent.nodeValue = "";
-	}
-}
-
-//test if window group exists or create a new group at the end of the file
-textbox.prototype.testParent = function() {
-    //test if of type object
-    var nodeValid = false;
-    if (typeof(this.parentNode) == "object") {
-    	if (this.parentNode.nodeName == "svg" || this.parentNode.nodeName == "g" || this.parentNode.nodeName == "svg:svg" || this.parentNode.nodeName == "svg:g") {
-    		this.parentGroup = this.parentNode;
-    		nodeValid = true;
-    	}
+        this.timer = new Timer(this); //a Timer instance for calling the functionToCall
+        this.timerMs = 200; //a constant of this object that is used in conjunction with the timer - functionToCall is called after 200 ms
+        this.createTextbox(); //method to initialize textbox
     }
-    else if (typeof(this.parentNode) == "string") { 
-    	//first test if textbox group exists
-    	if (!document.getElementById(this.parentNode)) {
-        	this.parentGroup = document.createElementNS(svgNS,"g");
-        	this.parentGroup.setAttributeNS(null,"id",this.parentNode);
-        	svgsvg.appendChild(this.parentGroup);
-        	nodeValid = true;
-   		}
-   		else {
-       		this.parentGroup = document.getElementById(this.parentNode);
-       		nodeValid = true;
-   		}
-   	}
-   	return nodeValid;
-}
 
-//remove all textbox elements
-textbox.prototype.removeTextbox = function() {
-	this.parentGroup.removeChild(this.textboxParent);
-}
+    //create textbox
+    textbox.prototype.createTextbox = function() {
+        var result = this.testParent();
+        if (result) {
+            //create a textbox parent group
+            this.textboxParent = document.createElementNS(svgNS, "g");
+            this.parentGroup.appendChild(this.textboxParent);
 
-//event handler functions
-textbox.prototype.handleEvent = function(evt) {
-	this.enterPressed = false 
-	if (evt.type == "mousedown") {
-		//this case is when the user mousedowns outside the textbox; in this case the textbox should behave like the user
-		//pressed the enter key
-		if ((evt.currentTarget.nodeName == "svg" || evt.currentTarget.nodeName == "svg:svg") && this.textboxStatus == 2) {
-			this.release();
-		}
-		else {
-			//this is for preparing the textbox with first mousedown and to reposition cursor with each subsequent mousedowns
-			if (evt.currentTarget.nodeName == "g" || evt.currentTarget.nodeName == "svg:g") {
-				this.calcCursorPosFromMouseEvt(evt);
-				// set event listeners, this is only done on first mousedown in the textbox
-				if (this.textboxStatus == 0) {
-					window.addEventListener("keydown",this,false);
-					window.addEventListener("keypress",this,false);
-					svgsvg.addEventListener("mousedown",this,false);
-					svgsvg.addEventListener("mouseup",this,false);
-					svgsvg.addEventListener("mousemove",this,false);
-					// set textbox status
-					this.textboxStatus = 1;
-					// set cursor visibility
-					this.textboxCursor.setAttributeNS(null,"visibility","visible");
-				}
-				else {
-					evt.stopPropagation();
-				}
-				this.setCursorPos();
-				//start text selection
-				this.startOrigSelection = this.cursorPosition + 1;
-				this.startSelection = this.cursorPosition + 1;
-				this.endSelection = this.cursorPosition + 2;
-				//remove previous selections
-				this.selectionRect.setAttributeNS(null,"display","none");
-				this.selectionRectVisible = false;
-				//set status of shiftDown and mouseDown
-				this.shiftDown = true;
-				this.mouseDown = true;
-			}
-			//this mouseup should be received from background rectangle (received via document element)
-			else {
-				this.textboxStatus = 2;
-			}
-		}
-	}
-	if (evt.type == "mousemove") {
-		if (this.textboxStatus == 2 && this.shiftDown && this.mouseDown && this.supportsCharGeom) {
-				this.calcCursorPosFromMouseEvt(evt);
-				this.setCursorPos();
-				if (this.cursorPosition + 1 != this.startOrigSelection) {
-					if (this.cursorPosition + 1 < this.startOrigSelection) {
-						this.endSelection = this.startOrigSelection;
-						this.startSelection = this.cursorPosition + 1;				
-					}
-					else {
-						this.startSelection = this.startOrigSelection;
-						this.endSelection = this.cursorPosition + 1;				
-					}
-					this.selectionRect.setAttributeNS(null,"display","inherit");
-					this.selectionRectVisible = true;
-					var rectX = this.textboxText.getStartPositionOfChar(this.startSelection).x
-					this.selectionRect.setAttributeNS(null,"x",rectX);
-					this.selectionRect.setAttributeNS(null,"width",(this.textboxText.getEndPositionOfChar(this.endSelection - 1).x - rectX));
-					var cursorX = parseInt(this.textboxCursor.getAttributeNS(null,"x1"));
-					//if cursor runs out on the right, scroll to the right
-					if ((cursorX + this.transX) > (this.x + this.boxWidth - this.textStyles["font-size"] / 3)) {
-						this.transX = (this.x + this.boxWidth - this.textStyles["font-size"] / 3) - cursorX;
-						this.textboxTextGroup.setAttributeNS(null,"transform","translate("+this.transX+",0)");
-					}
-					//if cursor runs out on the left, scroll to the left
-					if ((cursorX + this.transX) < (this.x + this.textStyles["font-size"] / 3)) {
-						this.transX += (this.x + this.textStyles["font-size"] / 3) - (cursorX + this.transX);
-						if (this.transX * -1 < (this.boxWidth - this.textStyles["font-size"])) {
-							this.transX = 0;
-						}
-						this.textboxTextGroup.setAttributeNS(null,"transform","translate("+this.transX+",0)");
-					}
-				}
-		}
-	}
-	if (evt.type == "mouseup") {
-		if (this.textboxStatus == 2 && this.shiftDown && this.mouseDown) {
-				this.mouseDown = false;
-		}
-	}
-	if (evt.type == "keydown") {
-		//console.log(evt.keyCode)
-		this.specialCharacters(evt);
-	}	
-	if (evt.type == "keypress") {			
+            //create background rect
+            this.textboxRect = document.createElementNS(svgNS, "rect");
+            this.textboxRect.setAttributeNS(null, "x", this.x);
+            this.textboxRect.setAttributeNS(null, "y", this.y);
+            this.textboxRect.setAttributeNS(null, "width", this.boxWidth);
+            this.textboxRect.setAttributeNS(null, "height", this.boxHeight);
+            this.textboxRect.setAttributeNS(null, "pointer-events", "fill");
+            for (var attrib in this.boxStyles) {
+                this.textboxRect.setAttributeNS(null, attrib, this.boxStyles[attrib]);
+            }
+            this.textboxParent.appendChild(this.textboxRect);
+
+            this.svg = document.createElementNS(svgNS, "svg");
+            this.svg.setAttributeNS(null, "x", this.x + this.textStyles["font-size"] / 4);
+            this.svg.setAttributeNS(null, "y", this.y + this.boxHeight * 0.02);
+            this.svg.setAttributeNS(null, "width", this.boxWidth - (this.textStyles["font-size"]) / 2);
+            this.svg.setAttributeNS(null, "height", this.boxHeight * 0.96);
+            this.svg.setAttributeNS(null, "viewBox", (this.x + this.textStyles["font-size"] / 4) + " " + (this.y + this.boxHeight * 0.02) + " " + (this.boxWidth - (this.textStyles["font-size"]) / 2) + " " + (this.boxHeight * 0.96));
+            this.textboxParent.appendChild(this.svg);
+
+            //create group to hold text, selectionRect and cursor
+            this.textboxTextGroup = document.createElementNS(svgNS, "g");
+            this.svg.appendChild(this.textboxTextGroup);
+
+            //create text element
+            this.textboxText = document.createElementNS(svgNS, "text");
+            this.textboxText.setAttributeNS(null, "x", (this.x + this.textStyles["font-size"] / 3));
+            this.textboxText.setAttributeNS(null, "y", (this.y + this.textYOffset));
+            for (var attrib in this.textStyles) {
+                value = this.textStyles[attrib];
+                if (attrib == "font-size") {
+                    value += "px";
+                }
+                this.textboxText.setAttributeNS(null, attrib, value);
+            }
+            this.textboxText.setAttributeNS(null, "id", this.id + "Text");
+            this.textboxText.setAttributeNS(null, "pointer-events", "none");
+            this.textboxText.setAttributeNS("http://www.w3.org/XML/1998/namespace", "space", "preserve");
+            //check if defaultVal is longer than maxChars and truncate if necessary
+            if (this.defaultVal.length <= this.maxChars) {
+                this.textboxTextContent = document.createTextNode(this.defaultVal);
+                this.cursorPosition = this.defaultVal.length - 1;
+            } else {
+                alert("the default textbox value is longer than the maximum of allowed characters\nDefault val will be truncated.");
+                this.textVal = this.defaultVal.substr(0, (this.maxChars - 1));
+                this.textboxTextContent = document.createTextNode(this.textVal);
+                this.cursorPosition = this.maxChars - 1;
+            }
+            this.textboxText.appendChild(this.textboxTextContent);
+            this.textboxTextGroup.appendChild(this.textboxText);
+
+            //create selection rectangle
+            this.selectionRect = document.createElementNS(svgNS, "rect");
+            this.selectionRect.setAttributeNS(null, "x", (this.x + this.textStyles["font-size"] / 3));
+            this.selectionRect.setAttributeNS(null, "y", (this.y + this.textYOffset - this.textStyles["font-size"] * 0.9));
+            this.selectionRect.setAttributeNS(null, "width", (this.textStyles["font-size"] * 2));
+            this.selectionRect.setAttributeNS(null, "height", this.textStyles["font-size"] * 1.1);
+            for (var attrib in this.selBoxStyles) {
+                this.selectionRect.setAttributeNS(null, attrib, this.selBoxStyles[attrib]);
+            }
+            this.selectionRect.setAttributeNS(null, "display", "none");
+            this.textboxTextGroup.appendChild(this.selectionRect);
+
+            //create cursor element
+            this.textboxCursor = document.createElementNS(svgNS, "line");
+            this.textboxCursor.setAttributeNS(null, "x1", this.x);
+            this.textboxCursor.setAttributeNS(null, "y1", (this.y + this.textYOffset + this.textStyles["font-size"] * 0.2));
+            this.textboxCursor.setAttributeNS(null, "x2", this.x);
+            this.textboxCursor.setAttributeNS(null, "y2", (this.y + this.textYOffset - this.textStyles["font-size"] * 0.9));
+            for (var attrib in this.cursorStyles) {
+                this.textboxCursor.setAttributeNS(null, attrib, this.cursorStyles[attrib]);
+            }
+            this.textboxCursor.setAttributeNS(null, "id", this.id + "Cursor");
+            this.textboxCursor.setAttributeNS(null, "visibility", "hidden");
+            this.textboxTextGroup.appendChild(this.textboxCursor);
+
+            // add event listeners to the textbox group
+            this.textboxParent.addEventListener("mousedown", this, false);
+            this.textboxParent.addEventListener("mousemove", this, false);
+            this.textboxParent.addEventListener("mouseup", this, false);
+            //this.textboxParent.addEventListener("keypress",this,false);
+            //this.textboxParent.addEventListener("keydown",this,false);
+            this.textboxParent.setAttributeNS(null, "cursor", "text");
+
+            //test if the svgviewer supports getting geometries of individual characters
+            this.timer.setTimeout("testSupportsChar", this.timerMs);
+        } else {
+            alert("could not create or reference 'parentNode' of textbox with id '" + this.id + "'");
+        }
+    }
+
+    textbox.prototype.testSupportsChar = function() {
+        //determine whether viewer is capable of charGeom functions
+        var isEmpty = false;
+        //temporarily create a space to test if getStartPosition is available
+        if (this.textVal.length == 0) {
+            isEmpty = true;
+            this.textboxTextContent.nodeValue = " ";
+        }
+        try {
+            var dummy = this.textboxText.getStartPositionOfChar(0).x;
+        } catch (er) {
+            this.supportsCharGeom = false;
+        }
+        if (isEmpty) {
+            this.textboxTextContent.nodeValue = "";
+        }
+    }
+
+    //test if window group exists or create a new group at the end of the file
+    textbox.prototype.testParent = function() {
+        //test if of type object
+        var nodeValid = false;
+        if (typeof(this.parentNode) == "object") {
+            if (this.parentNode.nodeName == "svg" || this.parentNode.nodeName == "g" || this.parentNode.nodeName == "svg:svg" || this.parentNode.nodeName == "svg:g") {
+                this.parentGroup = this.parentNode;
+                nodeValid = true;
+            }
+        } else if (typeof(this.parentNode) == "string") {
+            //first test if textbox group exists
+            if (!document.getElementById(this.parentNode)) {
+                this.parentGroup = document.createElementNS(svgNS, "g");
+                this.parentGroup.setAttributeNS(null, "id", this.parentNode);
+                svgsvg.appendChild(this.parentGroup);
+                nodeValid = true;
+            } else {
+                this.parentGroup = document.getElementById(this.parentNode);
+                nodeValid = true;
+            }
+        }
+        return nodeValid;
+    }
+
+    //remove all textbox elements
+    textbox.prototype.removeTextbox = function() {
+        this.parentGroup.removeChild(this.textboxParent);
+    }
+
+    textbox.prototype.onFocused = function() {
+        console.log('I am focused!')
+    }
+
+    //event handler functions
+    textbox.prototype.handleEvent = function(evt) {
+        this.enterPressed = false
+        if (evt.type == "mousedown") {
+            //this case is when the user mousedowns outside the textbox; in this case the textbox should behave like the user
+            //pressed the enter key
+            if ((evt.currentTarget.nodeName == "svg" || evt.currentTarget.nodeName == "svg:svg") && this.textboxStatus == 2) {
+                this.release();
+            } else {
+                //this is for preparing the textbox with first mousedown and to reposition cursor with each subsequent mousedowns
+                if (evt.currentTarget.nodeName == "g" || evt.currentTarget.nodeName == "svg:g") {
+                    this.focus(evt)
+                    this.onFocused()
+                }
+                //this mouseup should be received from background rectangle (received via document element)
+                else {
+                    this.textboxStatus = 2;
+                }
+            }
+        }
+        if (evt.type == "mousemove") {
+            if (this.textboxStatus == 2 && this.shiftDown && this.mouseDown && this.supportsCharGeom) {
+                this.calcCursorPosFromMouseEvt(evt);
+                this.setCursorPos();
+                if (this.cursorPosition + 1 != this.startOrigSelection) {
+                    if (this.cursorPosition + 1 < this.startOrigSelection) {
+                        this.endSelection = this.startOrigSelection;
+                        this.startSelection = this.cursorPosition + 1;
+                    } else {
+                        this.startSelection = this.startOrigSelection;
+                        this.endSelection = this.cursorPosition + 1;
+                    }
+                    this.selectionRect.setAttributeNS(null, "display", "inherit");
+                    this.selectionRectVisible = true;
+                    var rectX = this.textboxText.getStartPositionOfChar(this.startSelection).x
+                    this.selectionRect.setAttributeNS(null, "x", rectX);
+                    this.selectionRect.setAttributeNS(null, "width", (this.textboxText.getEndPositionOfChar(this.endSelection - 1).x - rectX));
+                    var cursorX = parseInt(this.textboxCursor.getAttributeNS(null, "x1"));
+                    //if cursor runs out on the right, scroll to the right
+                    if ((cursorX + this.transX) > (this.x + this.boxWidth - this.textStyles["font-size"] / 3)) {
+                        this.transX = (this.x + this.boxWidth - this.textStyles["font-size"] / 3) - cursorX;
+                        this.textboxTextGroup.setAttributeNS(null, "transform", "translate(" + this.transX + ",0)");
+                    }
+                    //if cursor runs out on the left, scroll to the left
+                    if ((cursorX + this.transX) < (this.x + this.textStyles["font-size"] / 3)) {
+                        this.transX += (this.x + this.textStyles["font-size"] / 3) - (cursorX + this.transX);
+                        if (this.transX * -1 < (this.boxWidth - this.textStyles["font-size"])) {
+                            this.transX = 0;
+                        }
+                        this.textboxTextGroup.setAttributeNS(null, "transform", "translate(" + this.transX + ",0)");
+                    }
+                }
+            }
+        }
+        if (evt.type == "mouseup") {
+            if (this.textboxStatus == 2 && this.shiftDown && this.mouseDown) {
+                this.mouseDown = false;
+            }
+        }
+        if (evt.type == "keydown") {
+            //console.log(evt.keyCode)
+            this.specialCharacters(evt);
+        }
+        if (evt.type == "keypress") {
+            if (evt.keyCode) {
+                var charCode = evt.keyCode;
+            } else {
+                var charCode = evt.charCode;
+            }
+            var keyCode = parseInt(charCode);
+            var charCode = undefined;
+            this.changed = false; //this tracks if the text was actually changed (if the content was changed)
+            //alert("keyCode="+evt.keyCode+", charCode="+evt.charCode+", shiftKey"+evt.shiftKey);
+
+            this.specialCharacters(evt);
+
+            //all real characters
+            if (keyCode > 31 && keyCode != 127 && keyCode < 65535 && evt.charCode && evt.charCode < 65535) {
+                var textChanged = false;
+                var keychar = String.fromCharCode(keyCode);
+                var result = 0;
+                if (this.RegExp) {
+                    result = keychar.search(this.RegExp);
+                }
+                if (result == 0) {
+                    if (this.shiftDown && this.selectionRectVisible) {
+                        var tempText = this.textVal.substring(0, this.startSelection) + keychar + this.textVal.substring(this.endSelection, this.textVal.length);
+                        this.textVal = tempText;
+                        this.cursorPosition = this.startSelection - 1;
+                        textChanged = true;
+                        this.releaseShift();
+                    } else if (this.textVal.length < this.maxChars) {
+                        if (this.cursorPosition == this.textVal.length - 1) {
+                            this.textVal += keychar; // append new input character
+                        } else {
+                            var tempText = this.textVal.substring(0, (this.cursorPosition + 1)) + keychar + this.textVal.substring((this.cursorPosition + 1), (this.textVal.length));
+                            this.textVal = tempText;
+                        }
+                        textChanged = true;
+                    }
+                    if (this.textVal.length < this.maxChars) {
+                        this.cursorPosition++;
+                    } else {
+                        if (textChanged) {
+                            if (this.cursorPosition < this.textVal.length) {
+                                this.cursorPosition++;
+                            } else {
+                                this.cursorPosition = this.textVal.length - 1;
+                            }
+                        }
+                    }
+                    //make sure that the selections and shift key are resetted
+                    this.startSelection = this.cursorPosition;
+                    this.endSelection = this.cursorPosition;
+                    this.shiftDown = false;
+                    if (textChanged) {
+                        this.textboxTextContent.nodeValue = this.textVal;
+                        this.changed = true;
+                        //update cursor position
+                        this.setCursorPos();
+                        var cursorX = parseInt(this.textboxCursor.getAttributeNS(null, "x1"));
+                        if ((cursorX + this.transX) > (this.x + this.boxWidth - this.textStyles["font-size"] / 3)) {
+                            this.transX = (this.x + this.boxWidth - this.textStyles["font-size"] / 3) - (cursorX + this.transX) + this.transX;
+                            this.textboxTextGroup.setAttributeNS(null, "transform", "translate(" + this.transX + ",0)");
+                        }
+                    }
+                }
+            }
+            //fire function if text changed
+            if (this.changed) {
+                this.timer.setTimeout("fireFunction", this.timerMs);
+            }
+            //suppress unwanted browser shortcuts. e.g. in Opera or Mozilla
+            evt.preventDefault();
+        }
+    }
+
+    textbox.prototype.specialCharacters = function(evt) {
         if (evt.keyCode) {
-        	var charCode = evt.keyCode;
-		}
-		else {
-			var charCode = evt.charCode;
-		}
-		var keyCode = parseInt(charCode);
-		var charCode = undefined;
-		this.changed = false; //this tracks if the text was actually changed (if the content was changed)
-		//alert("keyCode="+evt.keyCode+", charCode="+evt.charCode+", shiftKey"+evt.shiftKey);
-				
-		this.specialCharacters(evt);
-				
-		//all real characters
-		if (keyCode > 31 && keyCode != 127 && keyCode < 65535 && evt.charCode && evt.charCode < 65535) {			
-			var textChanged = false;
-			var keychar = String.fromCharCode(keyCode);
-			var result = 0;
-			if (this.RegExp) {
-				result = keychar.search(this.RegExp);
-			}			
-			if (result == 0) {
-				if (this.shiftDown && this.selectionRectVisible) {
-					var tempText = this.textVal.substring(0,this.startSelection) + keychar + this.textVal.substring(this.endSelection,this.textVal.length);
-					this.textVal = tempText;
-					this.cursorPosition = this.startSelection - 1;
-					textChanged = true;
-					this.releaseShift();
-				}
-				else if (this.textVal.length < this.maxChars) {
-					if (this.cursorPosition == this.textVal.length -1) {
-						this.textVal += keychar; // append new input character
-					}
-					else {
-						var tempText = this.textVal.substring(0,(this.cursorPosition + 1)) + keychar + this.textVal.substring((this.cursorPosition + 1),(this.textVal.length));
-						this.textVal = tempText;
-					}
-					textChanged = true;
-				}
-				if (this.textVal.length < this.maxChars) {
-					this.cursorPosition++;
-				}
-				else {
-					if (textChanged) {
-						if (this.cursorPosition < this.textVal.length) {
-							this.cursorPosition++;	
-						}
-						else {
-							this.cursorPosition = this.textVal.length - 1;
-						}
-					}	
-				}
-				//make sure that the selections and shift key are resetted
-				this.startSelection = this.cursorPosition;
-				this.endSelection = this.cursorPosition;
-				this.shiftDown = false;
-				if (textChanged) {
-					this.textboxTextContent.nodeValue=this.textVal;
-					this.changed = true;
-					//update cursor position
-					this.setCursorPos();
-					var cursorX = parseInt(this.textboxCursor.getAttributeNS(null,"x1"));
-					if ((cursorX + this.transX) > (this.x + this.boxWidth - this.textStyles["font-size"] / 3)) {
-						this.transX = (this.x + this.boxWidth - this.textStyles["font-size"] / 3) - (cursorX + this.transX) + this.transX;
-						this.textboxTextGroup.setAttributeNS(null,"transform","translate("+this.transX+",0)");
-					}
-				}
-			}
-		}
-		//fire function if text changed
-		if (this.changed) {
-			this.timer.setTimeout("fireFunction",this.timerMs);
-		}
-		//suppress unwanted browser shortcuts. e.g. in Opera or Mozilla
-    	evt.preventDefault();
-	}
-}
+            var charCode = evt.keyCode;
+        } else {
+            var charCode = evt.charCode;
+        }
+        var keyCode = parseInt(charCode);
+        var charCode = undefined;
 
-textbox.prototype.specialCharacters = function(evt) {
-        if (evt.keyCode) {
-        	var charCode = evt.keyCode;
-		}
-		else {
-			var charCode = evt.charCode;
-		}
-		var keyCode = parseInt(charCode);
-		var charCode = undefined;
-		
-		//backspace key
-		if (keyCode == 8) {
-			//only do it if there is still text and cursor is not at start position
-			if (this.textVal.length > 0 && this.cursorPosition > -2) {
-				//first deal with text content, delete chars according to cursor position
-				if (this.shiftDown && this.selectionRectVisible) {
-					var tempText = this.textVal.substring(0,this.startSelection) + this.textVal.substring(this.endSelection,this.textVal.length);
-					this.textVal = tempText;
-					this.cursorPosition = this.startSelection - 1;
-					this.releaseShift();
-				}
-				else { 
-					if (this.cursorPosition == this.textVal.length - 1) {
-						//cursor is at the end of textVal
-						this.textVal=this.textVal.substring(0,this.textVal.length-1);
-					}
-					else {
-						//cursor is in between
-						var tempText = this.textVal.substring(0,(this.cursorPosition)) + this.textVal.substring((this.cursorPosition + 1),(this.textVal.length));
-						this.textVal = tempText;
-					}
-					//decrease cursor position
-					if (this.cursorPosition > -1) {
-						this.cursorPosition--;
-					}
-				}
-				this.textboxTextContent.nodeValue=this.textVal;
-				this.setCursorPos();
-				if (this.cursorPosition > 0) {
-					//retransform text element when cursor is at the left side of the box
-					if (this.supportsCharGeom) {
-						var cursorX = this.textboxText.getStartPositionOfChar(this.cursorPosition).x;
-					}
-					else {
-						var bbox = this.textboxText.getBBox();
-						var cursorX = bbox.x + bbox.width;
-					}
-					if ((cursorX + this.transX) < (this.x + this.textStyles["font-size"] / 3)) {
-						this.transX += (this.x + this.textStyles["font-size"] / 3) - (cursorX + this.transX);
-						if (this.transX * -1 < (this.boxWidth - this.textStyles["font-size"])) {
-							this.transX = 0;
-						}
-						this.textboxTextGroup.setAttributeNS(null,"transform","translate("+this.transX+",0)");
-					}
-				}
-				this.changed = true;
-				//fire function if text changed
-				if (this.changed) {
-					this.timer.setTimeout("fireFunction",this.timerMs);
-				}
-				
-			}
-		}
-		//the two enter keys
- 		else if (keyCode == 10 || keyCode == 13) { // press return (enter)
- 			this.enterPressed = true
-			this.release();
-		}
-		//end key
-		else if (keyCode == 35 && !(charCode)) {
-			if (evt.shiftKey) {
-				if (this.shiftDown == false) {
-					this.startOrigSelection = this.cursorPosition + 1;
-					this.startSelection = this.cursorPosition + 1;
-					this.shiftDown = true;
-				}
-			}
-			this.cursorPosition = this.textVal.length - 1;
-			this.setCursorPos();
-			//if text string is too long
-			var cursorX = parseInt(this.textboxCursor.getAttributeNS(null,"x1"));
-			if ((cursorX + this.transX) > (this.x + this.boxWidth - this.textStyles["font-size"] / 3)) {
-				this.transX = (this.x + this.boxWidth - this.textStyles["font-size"] / 3) - cursorX;
-				this.textboxTextGroup.setAttributeNS(null,"transform","translate("+this.transX+",0)");
-			}
-			this.setCursorPos();
-			if (evt.shiftKey) {
-				if (this.shiftDown == false) {
-					this.startOrigSelection = this.cursorPosition;
-					this.startSelection = this.cursorPosition;
-					this.shiftDown = true;
-				}
-				this.endSelection = this.cursorPosition + 1;
-				this.selectionRect.setAttributeNS(null,"display","inherit");
-				this.selectionRectVisible = true;
-				if (this.supportsCharGeom) {
-					var rectX = this.textboxText.getStartPositionOfChar(this.startSelection).x;
-					var width = (this.textboxText.getEndPositionOfChar(this.endSelection - 1).x - rectX);
-				}
-				else {
-					var bbox = this.textboxText.getBBox();
-					var rectX = this.x + this.textStyles["font-size"] / 3;
-					var width = this.x + bbox.width + this.textStyles["font-size"] / 3;
-				}
-				this.selectionRect.setAttributeNS(null,"x",rectX);		
-				this.selectionRect.setAttributeNS(null,"width",width);
-			}
-			if (this.shiftDown && evt.shiftKey == false) {
-				this.releaseShift();
-			}
-		}
-		//home key
-		else if (keyCode == 36 && !(charCode)) {
-			if (evt.shiftKey) {
-				if (this.shiftDown == false) {
-					this.startOrigSelection = this.cursorPosition + 1;
-					this.startSelection = this.cursorPosition + 1;
-					this.shiftDown = true;
-				}
-			}
-			this.cursorPosition = -1;
-			this.textboxText.setAttributeNS(null,"x",(this.x + this.textStyles["font-size"] / 3));
-			this.textboxTextGroup.setAttributeNS(null,"transform","translate(0,0)");
-			this.transX = 0;
-			this.setCursorPos();
-			if (evt.shiftKey) {
-				if (this.shiftDown == false) {
-					this.startOrigSelection = this.cursorPosition;
-					this.startSelection = this.cursorPosition;
-					this.shiftDown = true;
-				}
-				this.endSelection = this.startSelection;
-				this.startSelection = 0;
-				this.selectionRect.setAttributeNS(null,"display","inherit");
-				this.selectionRectVisible = true;
-				if (this.supportsCharGeom) {
-					var rectX = this.textboxText.getStartPositionOfChar(this.startSelection).x;
-					var width = (this.textboxText.getEndPositionOfChar(this.endSelection - 1).x - rectX);
-				}
-				else {
-					var bbox = this.textboxText.getBBox();
-					var rectX = this.x + this.textStyles["font-size"] / 3;
-					var width = this.x + bbox.width + this.textStyles["font-size"] / 3;
-				}
-				this.selectionRect.setAttributeNS(null,"x",rectX);	
-				this.selectionRect.setAttributeNS(null,"width",width);			
-			}
-			if (this.shiftDown && evt.shiftKey == false) {
-					this.releaseShift();
-			}
-		}
-		//left key
-		else if (keyCode == 37 && !(charCode)) {
-			if (this.cursorPosition > -1) {
-				this.cursorPosition--;
-				this.setCursorPos();
-				var cursorX = parseInt(this.textboxCursor.getAttributeNS(null,"x1"));
-				if ((cursorX + this.transX) < (this.x + this.textStyles["font-size"] / 3)) {
-					this.transX += (this.x + this.textStyles["font-size"] / 3) - (cursorX + this.transX);
-					if (this.transX * -1 < (this.boxWidth - this.textStyles["font-size"])) {
-						this.transX = 0;
-					}
-					this.textboxTextGroup.setAttributeNS(null,"transform","translate("+this.transX+",0)");
-				}
-				//do selection if shift key is pressed
-				if (evt.shiftKey && this.supportsCharGeom) {
-					if (this.shiftDown == false) {
-						this.startOrigSelection = this.cursorPosition + 2;
-						this.startSelection = this.cursorPosition + 2;
-						this.shiftDown = true;
-					}
-					this.endSelection = this.startOrigSelection;
-					this.startSelection = this.cursorPosition + 1;
-					this.selectionRect.setAttributeNS(null,"display","inherit");
-					this.selectionRectVisible = true;
-					var rectX = this.textboxText.getStartPositionOfChar(this.startSelection).x
-					this.selectionRect.setAttributeNS(null,"x",rectX);
-					this.selectionRect.setAttributeNS(null,"width",(this.textboxText.getEndPositionOfChar(this.endSelection - 1).x - rectX));
-				}
-				else {
-					if (this.shiftDown) {
-						this.releaseShift();
-					}
-				}
-			}
-		}
-		//right key
-		else if (keyCode == 39 && !(charCode)) {
-			if (this.cursorPosition < this.textVal.length - 1) {
-				this.cursorPosition++;
-				this.setCursorPos();
-				var cursorX = parseInt(this.textboxCursor.getAttributeNS(null,"x1"));
-				if ((cursorX + this.transX) > (this.x + this.boxWidth - this.textStyles["font-size"] / 3)) {
-					this.transX = (this.x + this.boxWidth - this.textStyles["font-size"] / 3) - cursorX;
-					this.textboxTextGroup.setAttributeNS(null,"transform","translate("+this.transX+",0)");
-				}
-				//do selection if shift key is pressed
-				if (evt.shiftKey && this.supportsCharGeom) {
-					if (this.shiftDown == false) {
-						this.startOrigSelection = this.cursorPosition;
-						this.startSelection = this.cursorPosition;
-						this.shiftDown = true;
-					}
-					this.endSelection = this.cursorPosition + 1;
-					this.selectionRect.setAttributeNS(null,"display","inherit");
-					this.selectionRectVisible = true;
-					var rectX = this.textboxText.getStartPositionOfChar(this.startSelection).x
-					this.selectionRect.setAttributeNS(null,"x",rectX);
-					this.selectionRect.setAttributeNS(null,"width",(this.textboxText.getEndPositionOfChar(this.endSelection - 1).x - rectX));
-				}
-				else {
-					if (this.shiftDown) {
-						this.releaseShift();
-					}
-				}
-			}
-		}
-		//delete key
-		else if ((keyCode == 127 || keyCode == 12 || keyCode == 46) && !(charCode)) {
-			if ((this.textVal.length > 0) && (this.cursorPosition < (this.textVal.length))) {
-					var tempText = null;
-					if (this.shiftDown && evt.shiftKey == false && this.startSelection < this.textVal.length) {
-						//we need to delete selected text
-						var tempText = this.textVal.substring(0,this.startSelection) + this.textVal.substring(this.endSelection,this.textVal.length);
-						this.cursorPosition = this.startSelection - 1;
-						this.releaseShift();
-						this.changed = true;
-					}
-					else {
-						if (this.cursorPosition < (this.textVal.length - 1)) {
-							//we need to delete the next character, if cursor is not at the end of the textstring
-							var tempText = this.textVal.substring(0,(this.cursorPosition + 1)) + this.textVal.substring((this.cursorPosition + 2),(this.textVal.length));
-							this.changed = true;
-						}
-					}
-					if (this.changed) {
-						if(tempText != null) {
-							this.textVal = tempText;
-							this.textboxTextContent.nodeValue=this.textVal;
-							this.setCursorPos();
-						}
-					}
-			}
-		}
-}
+        //backspace key
+        if (keyCode == 8) {
+            //only do it if there is still text and cursor is not at start position
+            if (this.textVal.length > 0 && this.cursorPosition > -2) {
+                //first deal with text content, delete chars according to cursor position
+                if (this.shiftDown && this.selectionRectVisible) {
+                    var tempText = this.textVal.substring(0, this.startSelection) + this.textVal.substring(this.endSelection, this.textVal.length);
+                    this.textVal = tempText;
+                    this.cursorPosition = this.startSelection - 1;
+                    this.releaseShift();
+                } else {
+                    if (this.cursorPosition == this.textVal.length - 1) {
+                        //cursor is at the end of textVal
+                        this.textVal = this.textVal.substring(0, this.textVal.length - 1);
+                    } else {
+                        //cursor is in between
+                        var tempText = this.textVal.substring(0, (this.cursorPosition)) + this.textVal.substring((this.cursorPosition + 1), (this.textVal.length));
+                        this.textVal = tempText;
+                    }
+                    //decrease cursor position
+                    if (this.cursorPosition > -1) {
+                        this.cursorPosition--;
+                    }
+                }
+                this.textboxTextContent.nodeValue = this.textVal;
+                this.setCursorPos();
+                if (this.cursorPosition > 0) {
+                    //retransform text element when cursor is at the left side of the box
+                    if (this.supportsCharGeom) {
+                        var cursorX = this.textboxText.getStartPositionOfChar(this.cursorPosition).x;
+                    } else {
+                        var bbox = this.textboxText.getBBox();
+                        var cursorX = bbox.x + bbox.width;
+                    }
+                    if ((cursorX + this.transX) < (this.x + this.textStyles["font-size"] / 3)) {
+                        this.transX += (this.x + this.textStyles["font-size"] / 3) - (cursorX + this.transX);
+                        if (this.transX * -1 < (this.boxWidth - this.textStyles["font-size"])) {
+                            this.transX = 0;
+                        }
+                        this.textboxTextGroup.setAttributeNS(null, "transform", "translate(" + this.transX + ",0)");
+                    }
+                }
+                this.changed = true;
+                //fire function if text changed
+                if (this.changed) {
+                    this.timer.setTimeout("fireFunction", this.timerMs);
+                }
 
-textbox.prototype.setCursorPos = function() {
-		//cursor is not at first position
-		if (this.cursorPosition > -1) {
-			if (this.supportsCharGeom) {
-				if (this.textVal.length > 0) {
-					var cursorPos = this.textboxText.getEndPositionOfChar(this.cursorPosition).x;
-				}
-				else {
-					var cursorPos = (this.x + this.textStyles["font-size"] / 3);
-				}	
-				this.textboxCursor.setAttributeNS(null,"x1",cursorPos);
-				this.textboxCursor.setAttributeNS(null,"x2",cursorPos);
-			}
-			else {
-				//case MozillaSVG 1.5 or other SVG viewers not implementing .getEndPositionOfChar
-				var bbox = this.textboxText.getBBox();
-				this.textboxCursor.setAttributeNS(null,"x1",(bbox.x + bbox.width + this.textStyles["font-size"] / 3));
-				this.textboxCursor.setAttributeNS(null,"x2",(bbox.x + bbox.width + this.textStyles["font-size"] / 3));
-			}
-		}
-		else {
-			//cursor is at first position
-			//reset transformations
-			this.textboxText.setAttributeNS(null,"x",(this.x + this.textStyles["font-size"] / 3));
-			this.textboxTextGroup.setAttributeNS(null,"transform","translate(0,0)");
-			this.transX = 0;
-			if (this.supportsCharGeom) {
-				if (this.textboxTextContent.length > 0) {
-					var cursorPos = this.textboxText.getStartPositionOfChar(0).x;
-				}
-				else {
-					var cursorPos = this.x + this.textStyles["font-size"] / 3;
-				}
-			}
-			else {
-				var cursorPos = this.x + this.textStyles["font-size"] / 3;
-			}
-			this.textboxCursor.setAttributeNS(null,"x1",cursorPos);
-			this.textboxCursor.setAttributeNS(null,"x2",cursorPos);
-		}
-}
+            }
+        }
+        //the two enter keys
+        else if (keyCode == 10 || keyCode == 13) { // press return (enter)
+            this.enterPressed = true
+            this.release();
+        }
+        //end key
+        else if (keyCode == 35 && !(charCode)) {
+            if (evt.shiftKey) {
+                if (this.shiftDown == false) {
+                    this.startOrigSelection = this.cursorPosition + 1;
+                    this.startSelection = this.cursorPosition + 1;
+                    this.shiftDown = true;
+                }
+            }
+            this.cursorPosition = this.textVal.length - 1;
+            this.setCursorPos();
+            //if text string is too long
+            var cursorX = parseInt(this.textboxCursor.getAttributeNS(null, "x1"));
+            if ((cursorX + this.transX) > (this.x + this.boxWidth - this.textStyles["font-size"] / 3)) {
+                this.transX = (this.x + this.boxWidth - this.textStyles["font-size"] / 3) - cursorX;
+                this.textboxTextGroup.setAttributeNS(null, "transform", "translate(" + this.transX + ",0)");
+            }
+            this.setCursorPos();
+            if (evt.shiftKey) {
+                if (this.shiftDown == false) {
+                    this.startOrigSelection = this.cursorPosition;
+                    this.startSelection = this.cursorPosition;
+                    this.shiftDown = true;
+                }
+                this.endSelection = this.cursorPosition + 1;
+                this.selectionRect.setAttributeNS(null, "display", "inherit");
+                this.selectionRectVisible = true;
+                if (this.supportsCharGeom) {
+                    var rectX = this.textboxText.getStartPositionOfChar(this.startSelection).x;
+                    var width = (this.textboxText.getEndPositionOfChar(this.endSelection - 1).x - rectX);
+                } else {
+                    var bbox = this.textboxText.getBBox();
+                    var rectX = this.x + this.textStyles["font-size"] / 3;
+                    var width = this.x + bbox.width + this.textStyles["font-size"] / 3;
+                }
+                this.selectionRect.setAttributeNS(null, "x", rectX);
+                this.selectionRect.setAttributeNS(null, "width", width);
+            }
+            if (this.shiftDown && evt.shiftKey == false) {
+                this.releaseShift();
+            }
+        }
+        //home key
+        else if (keyCode == 36 && !(charCode)) {
+            if (evt.shiftKey) {
+                if (this.shiftDown == false) {
+                    this.startOrigSelection = this.cursorPosition + 1;
+                    this.startSelection = this.cursorPosition + 1;
+                    this.shiftDown = true;
+                }
+            }
+            this.cursorPosition = -1;
+            this.textboxText.setAttributeNS(null, "x", (this.x + this.textStyles["font-size"] / 3));
+            this.textboxTextGroup.setAttributeNS(null, "transform", "translate(0,0)");
+            this.transX = 0;
+            this.setCursorPos();
+            if (evt.shiftKey) {
+                if (this.shiftDown == false) {
+                    this.startOrigSelection = this.cursorPosition;
+                    this.startSelection = this.cursorPosition;
+                    this.shiftDown = true;
+                }
+                this.endSelection = this.startSelection;
+                this.startSelection = 0;
+                this.selectionRect.setAttributeNS(null, "display", "inherit");
+                this.selectionRectVisible = true;
+                if (this.supportsCharGeom) {
+                    var rectX = this.textboxText.getStartPositionOfChar(this.startSelection).x;
+                    var width = (this.textboxText.getEndPositionOfChar(this.endSelection - 1).x - rectX);
+                } else {
+                    var bbox = this.textboxText.getBBox();
+                    var rectX = this.x + this.textStyles["font-size"] / 3;
+                    var width = this.x + bbox.width + this.textStyles["font-size"] / 3;
+                }
+                this.selectionRect.setAttributeNS(null, "x", rectX);
+                this.selectionRect.setAttributeNS(null, "width", width);
+            }
+            if (this.shiftDown && evt.shiftKey == false) {
+                this.releaseShift();
+            }
+        }
+        //left key
+        else if (keyCode == 37 && !(charCode)) {
+            if (this.cursorPosition > -1) {
+                this.cursorPosition--;
+                this.setCursorPos();
+                var cursorX = parseInt(this.textboxCursor.getAttributeNS(null, "x1"));
+                if ((cursorX + this.transX) < (this.x + this.textStyles["font-size"] / 3)) {
+                    this.transX += (this.x + this.textStyles["font-size"] / 3) - (cursorX + this.transX);
+                    if (this.transX * -1 < (this.boxWidth - this.textStyles["font-size"])) {
+                        this.transX = 0;
+                    }
+                    this.textboxTextGroup.setAttributeNS(null, "transform", "translate(" + this.transX + ",0)");
+                }
+                //do selection if shift key is pressed
+                if (evt.shiftKey && this.supportsCharGeom) {
+                    if (this.shiftDown == false) {
+                        this.startOrigSelection = this.cursorPosition + 2;
+                        this.startSelection = this.cursorPosition + 2;
+                        this.shiftDown = true;
+                    }
+                    this.endSelection = this.startOrigSelection;
+                    this.startSelection = this.cursorPosition + 1;
+                    this.selectionRect.setAttributeNS(null, "display", "inherit");
+                    this.selectionRectVisible = true;
+                    var rectX = this.textboxText.getStartPositionOfChar(this.startSelection).x
+                    this.selectionRect.setAttributeNS(null, "x", rectX);
+                    this.selectionRect.setAttributeNS(null, "width", (this.textboxText.getEndPositionOfChar(this.endSelection - 1).x - rectX));
+                } else {
+                    if (this.shiftDown) {
+                        this.releaseShift();
+                    }
+                }
+            }
+        }
+        //right key
+        else if (keyCode == 39 && !(charCode)) {
+            if (this.cursorPosition < this.textVal.length - 1) {
+                this.cursorPosition++;
+                this.setCursorPos();
+                var cursorX = parseInt(this.textboxCursor.getAttributeNS(null, "x1"));
+                if ((cursorX + this.transX) > (this.x + this.boxWidth - this.textStyles["font-size"] / 3)) {
+                    this.transX = (this.x + this.boxWidth - this.textStyles["font-size"] / 3) - cursorX;
+                    this.textboxTextGroup.setAttributeNS(null, "transform", "translate(" + this.transX + ",0)");
+                }
+                //do selection if shift key is pressed
+                if (evt.shiftKey && this.supportsCharGeom) {
+                    if (this.shiftDown == false) {
+                        this.startOrigSelection = this.cursorPosition;
+                        this.startSelection = this.cursorPosition;
+                        this.shiftDown = true;
+                    }
+                    this.endSelection = this.cursorPosition + 1;
+                    this.selectionRect.setAttributeNS(null, "display", "inherit");
+                    this.selectionRectVisible = true;
+                    var rectX = this.textboxText.getStartPositionOfChar(this.startSelection).x
+                    this.selectionRect.setAttributeNS(null, "x", rectX);
+                    this.selectionRect.setAttributeNS(null, "width", (this.textboxText.getEndPositionOfChar(this.endSelection - 1).x - rectX));
+                } else {
+                    if (this.shiftDown) {
+                        this.releaseShift();
+                    }
+                }
+            }
+        }
+        //delete key
+        else if ((keyCode == 127 || keyCode == 12 || keyCode == 46) && !(charCode)) {
+            if ((this.textVal.length > 0) && (this.cursorPosition < (this.textVal.length))) {
+                var tempText = null;
+                if (this.shiftDown && evt.shiftKey == false && this.startSelection < this.textVal.length) {
+                    //we need to delete selected text
+                    var tempText = this.textVal.substring(0, this.startSelection) + this.textVal.substring(this.endSelection, this.textVal.length);
+                    this.cursorPosition = this.startSelection - 1;
+                    this.releaseShift();
+                    this.changed = true;
+                } else {
+                    if (this.cursorPosition < (this.textVal.length - 1)) {
+                        //we need to delete the next character, if cursor is not at the end of the textstring
+                        var tempText = this.textVal.substring(0, (this.cursorPosition + 1)) + this.textVal.substring((this.cursorPosition + 2), (this.textVal.length));
+                        this.changed = true;
+                    }
+                }
+                if (this.changed) {
+                    if (tempText != null) {
+                        this.textVal = tempText;
+                        this.textboxTextContent.nodeValue = this.textVal;
+                        this.setCursorPos();
+                    }
+                }
+            }
+        }
+    }
 
-textbox.prototype.fireFunction = function() {
-	var ep = this.enterPressed
-	this.enterPressed = false
-	var changeType = "change";
-	if (this.textboxStatus == 0) {
-		changeType = "release";
-	}
-	if (this.textboxStatus == 5) {
-		this.textboxStatus = 0;
-		changeType = "set";
-	}
-	if (typeof(this.functionToCall) == "function") {
-		this.functionToCall(this.id,this.textVal,changeType, ep);
-	}
-	if (typeof(this.functionToCall) == "object") {
-		this.functionToCall.textboxChanged(this.id,this.textVal,changeType, ep);	
-	}
-	if (typeof(this.functionToCall) == undefined) {
-		return;
-	}
-}
+    textbox.prototype.setCursorPos = function() {
+        //cursor is not at first position
+        if (this.cursorPosition > -1) {
+            if (this.supportsCharGeom) {
+                if (this.textVal.length > 0) {
+                    var cursorPos = this.textboxText.getEndPositionOfChar(this.cursorPosition).x;
+                } else {
+                    var cursorPos = (this.x + this.textStyles["font-size"] / 3);
+                }
+                this.textboxCursor.setAttributeNS(null, "x1", cursorPos);
+                this.textboxCursor.setAttributeNS(null, "x2", cursorPos);
+            } else {
+                //case MozillaSVG 1.5 or other SVG viewers not implementing .getEndPositionOfChar
+                var bbox = this.textboxText.getBBox();
+                this.textboxCursor.setAttributeNS(null, "x1", (bbox.x + bbox.width + this.textStyles["font-size"] / 3));
+                this.textboxCursor.setAttributeNS(null, "x2", (bbox.x + bbox.width + this.textStyles["font-size"] / 3));
+            }
+        } else {
+            //cursor is at first position
+            //reset transformations
+            this.textboxText.setAttributeNS(null, "x", (this.x + this.textStyles["font-size"] / 3));
+            this.textboxTextGroup.setAttributeNS(null, "transform", "translate(0,0)");
+            this.transX = 0;
+            if (this.supportsCharGeom) {
+                if (this.textboxTextContent.length > 0) {
+                    var cursorPos = this.textboxText.getStartPositionOfChar(0).x;
+                } else {
+                    var cursorPos = this.x + this.textStyles["font-size"] / 3;
+                }
+            } else {
+                var cursorPos = this.x + this.textStyles["font-size"] / 3;
+            }
+            this.textboxCursor.setAttributeNS(null, "x1", cursorPos);
+            this.textboxCursor.setAttributeNS(null, "x2", cursorPos);
+        }
+    }
 
-textbox.prototype.getValue = function() {
-	return this.textVal;
-}	
+    textbox.prototype.fireFunction = function() {
+        var ep = this.enterPressed
+        this.enterPressed = false
+        var changeType = "change";
+        if (this.textboxStatus == 0) {
+            changeType = "release";
+        }
+        if (this.textboxStatus == 5) {
+            this.textboxStatus = 0;
+            changeType = "set";
+        }
+        if (typeof(this.functionToCall) == "function") {
+            this.functionToCall(this.id, this.textVal, changeType, ep);
+        }
+        if (typeof(this.functionToCall) == "object") {
+            this.functionToCall.textboxChanged(this.id, this.textVal, changeType, ep);
+        }
+        if (typeof(this.functionToCall) == undefined) {
+            return;
+        }
+    }
 
-textbox.prototype.setValue = function(value,fireFunction) {
-	this.textVal = value.toString();
-	this.textboxTextContent.nodeValue=this.textVal;
-	//set the cursor to beginning and remove previous transforms
-	this.cursorPosition = -1;
-	this.setCursorPos();
-	if (fireFunction == true) {
-		this.textboxStatus = 5; //5 means is set by setValue
-		this.fireFunction();
-	}
-}
+    textbox.prototype.getValue = function() {
+        return this.textVal;
+    }
 
-textbox.prototype.release = function() {
-	// set textbox status
-	this.textboxStatus = 0;
-	// remove event listeners
-	window.removeEventListener("keydown",this,false);
-	window.removeEventListener("keypress",this,false);
-	svgsvg.removeEventListener("mousedown",this,false);
-	svgsvg.removeEventListener("mousemove",this,false);
-	svgsvg.removeEventListener("mouseup",this,false);
-	//set cursor and text selection to invisible
-	this.textboxCursor.setAttributeNS(null,"visibility","hidden");
-	this.releaseShift();
-	this.timer.setTimeout("fireFunction",this.timerMs);	
-}
+    textbox.prototype.setValue = function(value, fireFunction) {
+        this.textVal = value.toString();
+        this.textboxTextContent.nodeValue = this.textVal;
+        //set the cursor to beginning and remove previous transforms
+        this.cursorPosition = -1;
+        this.setCursorPos();
+        if (fireFunction == true) {
+            this.textboxStatus = 5; //5 means is set by setValue
+            this.fireFunction();
+        }
+    }
 
-textbox.prototype.releaseShift = function() {
-	this.selectionRect.setAttributeNS(null,"display","none");
-	this.selectionRectVisible = false;
-	this.shiftDown = false;	
-}
+    textbox.prototype.focus = function(evt) {
+        if (evt) this.calcCursorPosFromMouseEvt(evt);
+        else this.cursorPosition = -1
+            // set event listeners, this is only done on first mousedown in the textbox
+        if (this.textboxStatus == 0) {
+            window.addEventListener("keydown", this, false);
+            window.addEventListener("keypress", this, false);
+            svgsvg.addEventListener("mousedown", this, false);
+            svgsvg.addEventListener("mouseup", this, false);
+            svgsvg.addEventListener("mousemove", this, false);
+            // set textbox status
+            this.textboxStatus = 1;
+            // set cursor visibility
+            this.textboxCursor.setAttributeNS(null, "visibility", "visible");
+        } else {
+            if (evt) evt.stopPropagation();
+        }
+        this.setCursorPos();
+        //start text selection
+        this.startOrigSelection = this.cursorPosition + 1;
+        this.startSelection = this.cursorPosition + 1;
+        this.endSelection = this.cursorPosition + 2;
+        //remove previous selections
+        this.selectionRect.setAttributeNS(null, "display", "none");
+        this.selectionRectVisible = false;
+        //set status of shiftDown and mouseDown
+        this.shiftDown = true;
+        this.mouseDown = true;
+    }
+
+    textbox.prototype.release = function() {
+        // set textbox status
+        this.textboxStatus = 0;
+        // remove event listeners
+        window.removeEventListener("keydown", this, false);
+        window.removeEventListener("keypress", this, false);
+        svgsvg.removeEventListener("mousedown", this, false);
+        svgsvg.removeEventListener("mousemove", this, false);
+        svgsvg.removeEventListener("mouseup", this, false);
+        //set cursor and text selection to invisible
+        this.textboxCursor.setAttributeNS(null, "visibility", "hidden");
+        this.releaseShift();
+        this.timer.setTimeout("fireFunction", this.timerMs);
+    }
+
+    textbox.prototype.releaseShift = function() {
+        this.selectionRect.setAttributeNS(null, "display", "none");
+        this.selectionRectVisible = false;
+        this.shiftDown = false;
+    }
 
 
-textbox.prototype.calcCoord = function(evt,ctmNode) {
-	var svgPoint = svgsvg.createSVGPoint();
-	svgPoint.x = evt.clientX;
-	svgPoint.y = evt.clientY;
-	if (!svgsvg.getScreenCTM) {
-		//undo the effect of transformations
-		if (ctmNode) {
-			var matrix = getTransformToRootElement(ctmNode);
-		}
-		else {
-			var matrix = getTransformToRootElement(evt.target);			
-		}
-  		svgPoint = svgPoint.matrixTransform(matrix.inverse().multiply(this.m));
-	}
-	else {
-		//case getScreenCTM is available
-		if (ctmNode) {
-			var matrix = ctmNode.getScreenCTM();
-		}
-		else {
-			var matrix = evt.target.getScreenCTM();		
-		}
-  	svgPoint = svgPoint.matrixTransform(matrix.inverse());
-	}
-  //undo the effect of viewBox and zoomin/scroll
-	return svgPoint;
-}
+    textbox.prototype.calcCoord = function(evt, ctmNode) {
+        var svgPoint = svgsvg.createSVGPoint();
+        svgPoint.x = evt.clientX;
+        svgPoint.y = evt.clientY;
+        if (!svgsvg.getScreenCTM) {
+            //undo the effect of transformations
+            if (ctmNode) {
+                var matrix = getTransformToRootElement(ctmNode);
+            } else {
+                var matrix = getTransformToRootElement(evt.target);
+            }
+            svgPoint = svgPoint.matrixTransform(matrix.inverse().multiply(this.m));
+        } else {
+            //case getScreenCTM is available
+            if (ctmNode) {
+                var matrix = ctmNode.getScreenCTM();
+            } else {
+                var matrix = evt.target.getScreenCTM();
+            }
+            svgPoint = svgPoint.matrixTransform(matrix.inverse());
+        }
+        //undo the effect of viewBox and zoomin/scroll
+        return svgPoint;
+    }
 
-textbox.prototype.calcCursorPosFromMouseEvt = function(evt) {
-	//determine cursor position of mouse event
-	var myCoords = this.calcCoord(evt,this.textboxText);
-	//create an SVG Point object
-	var mySVGPoint = svgsvg.createSVGPoint();
-	mySVGPoint.x = myCoords.x;
-	mySVGPoint.y = myCoords.y;
-	//set new cursor position
-	if (this.textboxTextContent.length > 0) {
-		if (this.supportsCharGeom) {
-			//for regular SVG viewers that support .getCharNumAtPosition
-			this.cursorPosition = this.textboxText.getCharNumAtPosition(mySVGPoint);
-			if (this.cursorPosition > this.textVal.length - 1) {
-				this.cursorPosition = this.textVal.length - 1;
-			}
-			//in this case the user did not correctly touch the text element
-			if (this.cursorPosition == -1) {
-				//first check if we can fix the position by moving the y-coordinate
-				mySVGPoint.y = (this.textboxText.getBBox().y + this.textStyles["font-size"] * 0.5);
-				this.cursorPosition = this.textboxText.getCharNumAtPosition(mySVGPoint);
-				//check if cursor is to the right of the end of the text
-				if (this.cursorPosition == -1) {
-					if (mySVGPoint.x > (this.textboxText.getBBox().x + this.textboxText.getBBox().width)) {
-						this.cursorPosition = this.textVal.length - 1;
-					}
-				}
-			}
-		}
-		else {
-			//workaround for firefox 1.5/2.0 and other viewers not supporting .getCharNumAtPosition
-			var bbox = this.textboxText.getBBox();
-			var diffLeft = Math.abs(mySVGPoint.x - bbox.x);
-			var diffRight = Math.abs(mySVGPoint.x - (bbox.x + bbox.width));
-			if (diffLeft < diffRight) {
-				this.cursorPosition = -1;
-			}
-			else {
-				this.cursorPosition = this.textVal.length - 1;
-			}
-		}
-	}
-	else {
-		//in case the text is empty
-		this.cursorPosition = -1;				
-	}	
-}
+    textbox.prototype.calcCursorPosFromMouseEvt = function(evt) {
+        //determine cursor position of mouse event
+        var myCoords = this.calcCoord(evt, this.textboxText);
+        //create an SVG Point object
+        var mySVGPoint = svgsvg.createSVGPoint();
+        mySVGPoint.x = myCoords.x;
+        mySVGPoint.y = myCoords.y;
+        //set new cursor position
+        if (this.textboxTextContent.length > 0) {
+            if (this.supportsCharGeom) {
+                //for regular SVG viewers that support .getCharNumAtPosition
+                this.cursorPosition = this.textboxText.getCharNumAtPosition(mySVGPoint);
+                if (this.cursorPosition > this.textVal.length - 1) {
+                    this.cursorPosition = this.textVal.length - 1;
+                }
+                //in this case the user did not correctly touch the text element
+                if (this.cursorPosition == -1) {
+                    //first check if we can fix the position by moving the y-coordinate
+                    mySVGPoint.y = (this.textboxText.getBBox().y + this.textStyles["font-size"] * 0.5);
+                    this.cursorPosition = this.textboxText.getCharNumAtPosition(mySVGPoint);
+                    //check if cursor is to the right of the end of the text
+                    if (this.cursorPosition == -1) {
+                        if (mySVGPoint.x > (this.textboxText.getBBox().x + this.textboxText.getBBox().width)) {
+                            this.cursorPosition = this.textVal.length - 1;
+                        }
+                    }
+                }
+            } else {
+                //workaround for firefox 1.5/2.0 and other viewers not supporting .getCharNumAtPosition
+                var bbox = this.textboxText.getBBox();
+                var diffLeft = Math.abs(mySVGPoint.x - bbox.x);
+                var diffRight = Math.abs(mySVGPoint.x - (bbox.x + bbox.width));
+                if (diffLeft < diffRight) {
+                    this.cursorPosition = -1;
+                } else {
+                    this.cursorPosition = this.textVal.length - 1;
+                }
+            }
+        } else {
+            //in case the text is empty
+            this.cursorPosition = -1;
+        }
+    }
 
-textbox.prototype.moveTo = function(moveX,moveY) {
-	this.x = moveX;
-	this.y = moveY;
-	//reposition textbox
-	this.textboxRect.setAttributeNS(null,"x",this.x);
-	this.textboxRect.setAttributeNS(null,"y",this.y);
-	//reposition svg element
-	this.svg.setAttributeNS(null,"x",this.x + this.textStyles["font-size"] / 4);
-	this.svg.setAttributeNS(null,"y",this.y + this.boxHeight * 0.02);
-	this.svg.setAttributeNS(null,"viewBox",(this.x + this.textStyles["font-size"] / 4)+" "+(this.y + this.boxHeight * 0.02)+" "+(this.boxWidth - (this.textStyles["font-size"]) / 2)+" "+(this.boxHeight * 0.96));
-	//reposition text element
-	this.textboxText.setAttributeNS(null,"x",(this.x + this.textStyles["font-size"] / 3));
-	this.textboxText.setAttributeNS(null,"y",(this.y + this.textYOffset));
-	//reposition selection element
-	this.selectionRect.setAttributeNS(null,"x",(this.x + this.textStyles["font-size"] / 3));
-	this.selectionRect.setAttributeNS(null,"y",(this.y + this.textYOffset - this.textStyles["font-size"] * 0.9));
-	//reposition cursor
-	this.textboxCursor.setAttributeNS(null,"x1",this.x);
-	this.textboxCursor.setAttributeNS(null,"y1",(this.y + this.textYOffset + this.textStyles["font-size"] * 0.2));
-	this.textboxCursor.setAttributeNS(null,"x2",this.x);
-	this.textboxCursor.setAttributeNS(null,"y2",(this.y + this.textYOffset - this.textStyles["font-size"] * 0.9));
-	//set the cursor to beginning and remove previous transforms
-	this.cursorPosition = -1;
-	this.setCursorPos();	
-}
+    textbox.prototype.moveTo = function(moveX, moveY) {
+        this.x = moveX;
+        this.y = moveY;
+        //reposition textbox
+        this.textboxRect.setAttributeNS(null, "x", this.x);
+        this.textboxRect.setAttributeNS(null, "y", this.y);
+        //reposition svg element
+        this.svg.setAttributeNS(null, "x", this.x + this.textStyles["font-size"] / 4);
+        this.svg.setAttributeNS(null, "y", this.y + this.boxHeight * 0.02);
+        this.svg.setAttributeNS(null, "viewBox", (this.x + this.textStyles["font-size"] / 4) + " " + (this.y + this.boxHeight * 0.02) + " " + (this.boxWidth - (this.textStyles["font-size"]) / 2) + " " + (this.boxHeight * 0.96));
+        //reposition text element
+        this.textboxText.setAttributeNS(null, "x", (this.x + this.textStyles["font-size"] / 3));
+        this.textboxText.setAttributeNS(null, "y", (this.y + this.textYOffset));
+        //reposition selection element
+        this.selectionRect.setAttributeNS(null, "x", (this.x + this.textStyles["font-size"] / 3));
+        this.selectionRect.setAttributeNS(null, "y", (this.y + this.textYOffset - this.textStyles["font-size"] * 0.9));
+        //reposition cursor
+        this.textboxCursor.setAttributeNS(null, "x1", this.x);
+        this.textboxCursor.setAttributeNS(null, "y1", (this.y + this.textYOffset + this.textStyles["font-size"] * 0.2));
+        this.textboxCursor.setAttributeNS(null, "x2", this.x);
+        this.textboxCursor.setAttributeNS(null, "y2", (this.y + this.textYOffset - this.textStyles["font-size"] * 0.9));
+        //set the cursor to beginning and remove previous transforms
+        this.cursorPosition = -1;
+        this.setCursorPos();
+    }
 
-textbox.prototype.resize = function(newWidth) {
-	this.boxWidth = newWidth;
-	//resize textbox rectangle
-	this.textboxRect.setAttributeNS(null,"width",this.boxWidth);
-	//resize svg element
-	this.svg.setAttributeNS(null,"width",this.boxWidth - (this.textStyles["font-size"]) / 2);
-	this.svg.setAttributeNS(null,"viewBox",(this.x + this.textStyles["font-size"] / 4)+" "+(this.y + this.boxHeight * 0.02)+" "+(this.boxWidth - (this.textStyles["font-size"]) / 2)+" "+(this.boxHeight * 0.96));
-	//set the cursor to beginning and remove previous transforms
-	this.cursorPosition = -1;
-	this.setCursorPos();	
-}
+    textbox.prototype.resize = function(newWidth) {
+        this.boxWidth = newWidth;
+        //resize textbox rectangle
+        this.textboxRect.setAttributeNS(null, "width", this.boxWidth);
+        //resize svg element
+        this.svg.setAttributeNS(null, "width", this.boxWidth - (this.textStyles["font-size"]) / 2);
+        this.svg.setAttributeNS(null, "viewBox", (this.x + this.textStyles["font-size"] / 4) + " " + (this.y + this.boxHeight * 0.02) + " " + (this.boxWidth - (this.textStyles["font-size"]) / 2) + " " + (this.boxHeight * 0.96));
+        //set the cursor to beginning and remove previous transforms
+        this.cursorPosition = -1;
+        this.setCursorPos();
+    }
 
-return textbox
+    return textbox
 
 }

@@ -1,10 +1,11 @@
-module.exports = function(window, $, SVG, i18n) {
-	var page = {
-		init: function(Widgetizer, data, next) {
-			/* continue when finished */
-			if(next) next(page)
-		}
-	}
-	return page
+module.exports = function(Wow) {
+    var BasePage = require("../../js/BasePage")
+
+    return BasePage.extend({
+        init: function(data, next) {
+            /* continue when finished */
+            if (next) next(this)
+        }
+    })
 
 }

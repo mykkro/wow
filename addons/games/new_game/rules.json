@@ -1,0 +1,13 @@
+{
+  "$type": "game-rules",
+  "rules": [
+    {
+      "contents": "\r\n    ",
+      "break": false
+    },
+    {
+      "contents": "\r\n    ",
+      "break": false
+    }
+  ]
+}

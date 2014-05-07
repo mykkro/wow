@@ -1,0 +1,316 @@
+{
+  "$type": "level-layout",
+  "items": {
+    "Ax": {
+      "name": "Ax",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Ay": {
+      "name": "Ay",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Px": {
+      "name": "Px",
+      "type": "int",
+      "value": 0,
+      "show": false
+    },
+    "Py": {
+      "name": "Py",
+      "type": "int",
+      "value": 0,
+      "show": false
+    }
+  },
+  "matrices": {
+    "STATE": [
+      {
+        "type": "string",
+        "name": "STATE",
+        "width": 15,
+        "height": 5,
+        "rows": [
+          [
+            "Number4",
+            "Number2",
+            "Minus",
+            "Number1",
+            "Number2",
+            "Number4",
+            "Plus",
+            "Number7",
+            "Number1",
+            "Equal",
+            "Number5",
+            "Multiplicator",
+            "Number7",
+            "Minus",
+            "Number6"
+          ],
+          [
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space"
+          ],
+          [
+            "Number4",
+            "Number2",
+            "Minus",
+            "Number1",
+            "Number2",
+            "Number4",
+            "Plus",
+            "Number7",
+            "Number1",
+            "Equal",
+            "Number5",
+            "Multiplicator",
+            "Number7",
+            "Minus",
+            "Number6"
+          ],
+          [
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space"
+          ],
+          [
+            "Number4",
+            "Number2",
+            "Minus",
+            "Number1",
+            "Number2",
+            "Number4",
+            "Plus",
+            "Number7",
+            "Number1",
+            "Equal",
+            "Number5",
+            "Multiplicator",
+            "Number7",
+            "Minus",
+            "Number6"
+          ]
+        ]
+      }
+    ],
+    "FINAL": [
+      {
+        "type": "string",
+        "name": "FINAL",
+        "width": 15,
+        "height": 5,
+        "rows": [
+          [
+            "Number4",
+            "Number2",
+            "Minus",
+            "Number1",
+            "Number2Filled",
+            "Number4",
+            "Plus",
+            "Number7Filled",
+            "Number1",
+            "Equal",
+            "Number5",
+            "Multiplicator",
+            "Number7",
+            "Minus",
+            "Number6"
+          ],
+          [
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space"
+          ],
+          [
+            "Number4",
+            "Number2Filled",
+            "Minus",
+            "Number1Filled",
+            "Number2",
+            "Number4",
+            "Plus",
+            "Number7",
+            "Number1",
+            "Equal",
+            "Number5",
+            "MultiplicatorFilled",
+            "Number7",
+            "Minus",
+            "Number6"
+          ],
+          [
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space",
+            "Space"
+          ],
+          [
+            "Number4",
+            "Number2",
+            "Minus",
+            "Number1",
+            "Number2Filled",
+            "Number4",
+            "Plus",
+            "Number7",
+            "Number1Filled",
+            "Equal",
+            "Number5",
+            "Multiplicator",
+            "Number7",
+            "MinusFilled",
+            "Number6Filled"
+          ]
+        ]
+      }
+    ],
+    "VALID": [
+      {
+        "type": "boolean",
+        "name": "VALID",
+        "width": 15,
+        "height": 5,
+        "rows": [
+          [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        ]
+      }
+    ]
+  }
+}

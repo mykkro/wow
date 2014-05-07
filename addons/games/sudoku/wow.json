@@ -1,0 +1,11 @@
+{
+  "name": "wow-contrib-games-rulegame-sudoku",
+  "apptype": "wow/app/rulegame",
+  "title": "Sudoku",
+  "description": "",
+  "className": "RuleGame",
+  "version": "0.2",
+  "langs": [
+    "cz"
+  ]
+}

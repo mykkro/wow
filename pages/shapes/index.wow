@@ -1,32 +1,18 @@
-<svg 
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:wow="http://example.org/wow"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    unselectable="on" 
-    id="svg"
-    style="-webkit-user-select: none;"
-	tabindex='1'
-	width="400"
-	height="400"
-    >
+<defs>
+  <pattern id="checkerPattern" width="80" height="80"
+    patternUnits="userSpaceOnUse">
 
- <defs>
-    <pattern id="checkerPattern" width="80" height="80"
-      patternUnits="userSpaceOnUse">
-
-      <rect fill="red" fill-opacity="0.2" x="0" y="0" width="40" height="40" />
-      <rect fill="blue" fill-opacity="0.2" fill="blue" x="40" y="0" width="40" height="40" />
-      <rect fill="blue" fill-opacity="0.2" x="0" y="40" width="40" height="40" />
-      <rect fill="red" fill-opacity="0.2" x="40" y="40" width="40" height="40" />
+    <rect fill="red" fill-opacity="0.2" x="0" y="0" width="40" height="40" />
+    <rect fill="blue" fill-opacity="0.2" fill="blue" x="40" y="0" width="40" height="40" />
+    <rect fill="blue" fill-opacity="0.2" x="0" y="40" width="40" height="40" />
+    <rect fill="red" fill-opacity="0.2" x="40" y="40" width="40" height="40" />
 
 
-    </pattern>
-  </defs>
+  </pattern>
+</defs>
 
-  <g transform="translate(50,50)">
-    <rect fill="url(#checkerPattern)" x="0"
-      y="0" width="400" height="400" />
-  </g>
+<g transform="translate(50,50)">
+  <rect fill="url(#checkerPattern)" x="0"
+    y="0" width="400" height="400" />
+</g>
 
-</svg>
