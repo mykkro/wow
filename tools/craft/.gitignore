@@ -1,2 +1,6 @@
 output/
 node_modules/
+!output/lib/Storage.js
+!output/lib/Downloader.js
+!output/lib/Uploader.js
+!output/lib/dao/SchemedDAO.js
