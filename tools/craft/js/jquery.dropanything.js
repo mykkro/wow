@@ -79,6 +79,9 @@ $.fn.dropAnything = function (settings) {
             if(out.subtype == "image") {
                 var src = out.uploaded ? out.uploaded.thumbnailUri : out.url 
                 return makeImage(src)
+            } else if(out.subtype == "video") {
+                var src = out.uploaded.thumbnailUri
+                return makeImage(src)
             } else if(out.subtype == "youtube") {
                 return makeImage(out.thumbnailUrl)
             } else {
@@ -111,6 +114,11 @@ $.fn.dropAnything = function (settings) {
         return(uu.match(/\.(jpeg|jpg|gif|png)$/) != null);
     }
 
+    var checkVideoUrl = function(url) {
+        var uu = url.toLowerCase()
+        return(uu.match(/\.(ogv|webm|mov|avi|mp4|3gp|flv)$/) != null);
+    }
+	
     // http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
     function youtube_parser(url){
         var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
@@ -192,6 +200,10 @@ $.fn.dropAnything = function (settings) {
             // TODO better test with <img src> construction
             out.subtype = "image"
             handleImage(out, cb)
+		} else if(checkVideoUrl(out.url)) {
+			// video
+			out.subtype = "video"
+			handleVideo(out, cb)
         } else {
             // other classes....
             cb(null, out)
@@ -199,6 +211,14 @@ $.fn.dropAnything = function (settings) {
     }
 
     function handleImage(info, cb) {
+        // download the image and store it locally...
+        downloadFile(info.url, function(err, res) {
+            if(err) cb(err);
+            else cb(null, $.extend(info, {uploaded:res}))
+        })
+    }
+
+	function handleVideo(info, cb) {
         // download the image and store it locally...
         downloadFile(info.url, function(err, res) {
             if(err) cb(err);
