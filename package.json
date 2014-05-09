@@ -83,7 +83,8 @@
     "download": "~0.1.16",
     "mmmagic": "~0.3.7",
     "socketio-file-upload": "~0.2.7",
-    "socket.io": "~0.9.16"
+    "socket.io": "~0.9.16",
+    "sanitize-filename": "~1.0.1"
   },
   "repository": {
     "type": "git",

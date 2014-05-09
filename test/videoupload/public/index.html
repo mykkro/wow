@@ -1,0 +1,88 @@
+<head>
+	<script src="/socket.io/socket.io.js"></script>
+</head>
+<body> 
+    <div id="uploadBox">
+        <h2>Video Uploader</h2>
+        <span id='uploadArea'>
+            <label for="fileBox">Choose A File: </label><input type="file" id="fileBox"><br>
+            <label for="nameBox">name: </label><input type="text" id="nameBox"><br>
+ 
+            <button  type='button' id='uploadBtn' class='button'>Upload</button>
+        </span>
+    </div>
+    <script>
+	window.addEventListener("load", onload); 
+	 
+	function onload(){ 
+	    if(window.File && window.FileReader){ //These are the relevant HTML5 objects that we are going to use 
+	        document.getElementById('uploadBtn').addEventListener('click', startUpload);  
+	        document.getElementById('fileBox').addEventListener('change', fileChosen);
+	    } else {
+	        document.getElementById('uploadArea').innerHTML = "Your Browser Doesn't Support The File API Please Update Your Browser";
+	    }
+	}
+
+	var ready;
+	function fileChosen(evnt) {
+	    ready = evnt.target.files[0];
+	    console.log("fileChosen:", ready)
+	    document.getElementById('nameBox').value = ready.name;
+	}
+
+	var socket = io.connect('http://localhost:9999');
+	var fileReader;
+	var name;
+	function startUpload(){		
+	    if(document.getElementById('fileBox').value != "")
+	    {
+	    	console.log("startUpload")
+	        fileReader = new FileReader();
+	        name = document.getElementById('nameBox').value;
+	        var content = "<span id='nameArea'>Uploading " + ready.name + " as " + name + "</span>";
+	        content += '<div id="progressContainer"><div id="progressBar"></div></div><span id="percent">0%</span>';
+	        content += "<span id='uploaded'> - <span id='MBytes'>0</span>/" + Math.round(ready.size / 1048576) + "MB</span>";
+	        document.getElementById('uploadArea').innerHTML = content;
+	        fileReader.onload = function(evnt) {
+	        	console.log("fileReader.onload", evnt.target)
+	            socket.emit('upload', { name : name, data : evnt.target.result });
+	        }
+	        socket.emit('start', { name : name, size : ready.size });
+	    }
+	    else
+	    {
+	        alert("Please Select A File");
+	    }
+	}	
+
+	socket.on('moreData', function (data){
+		console.log("socket:moreData", data)
+	    updateProgressBar(data.percent);
+	    var place = data.place * 524288; //The Next Blocks Starting Position
+	    var newFile; //The Variable that will hold the new Block of Data
+	    newFile = ready.slice(place, place + Math.min(524288, (ready.size-place)));
+	    fileReader.readAsBinaryString(newFile);
+	});
+	 
+	function updateProgressBar(percent){
+	    document.getElementById('progressBar').style.width = percent + '%';
+	    document.getElementById('percent').innerHTML = (Math.round(percent*100)/100) + '%';
+	    var mBytesDone = Math.round(((percent/100.0) * ready.size) / 1048576);
+	    document.getElementById('MBytes').innerHTML = mBytesDone;
+	}	
+
+	var path = "http://localhost:9999/";
+	 
+	socket.on('done', function (data){
+	    var content = "Video Successfully Uploaded !!"
+	    content += "<img id='thumb' src='" + path + data.image + "' alt='" + name + "'><br>";
+	    content += "<button type='button' name='upload' value='' id='restartBtn' class='button'>Upload Another</button>";
+	    document.getElementById('uploadArea').innerHTML = content;
+	    document.getElementById('restartBtn').addEventListener('click', refresh);
+	});
+	function refresh(){
+	    location.reload(true);
+	}
+
+    </script>
+</body>
