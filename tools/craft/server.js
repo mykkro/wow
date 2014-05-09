@@ -90,7 +90,7 @@ app.get('/upload/:uuid', function(req, res) {
   var uuid = req.params.uuid
   uploader.get(uuid, function(err, resp) {
     if(err) {
-      sendError(res, 'Ah crap! Something bad happened', err)
+      sendError(res, err)
     } else if(!resp) {
       sendError(res, "File not found")
     } else {      
@@ -104,7 +104,7 @@ app.delete('/upload/:uuid', function(req, res) {
   var uuid = req.params.uuid
   uploader.remove(uuid, function(err, resp) {
     if(err) {
-      sendError(res, 'Ah crap! Something bad happened', err)
+      sendError(res, err)
     } else {
       console.log("File deleted!", resp)
       res.send({"deleted":uuid})
@@ -121,7 +121,7 @@ app.post('/download', function(req, res) {
   var uuid = req.body.uuid
   downloader.download(src, function(err, fileInfo) {
     if(err) {
-      sendError(res, 'Ah crap! Something bad happened', err)
+      sendError(res, err)
       return
     }
     // console.log("Downloaded file:", file)
@@ -162,7 +162,7 @@ var uploadFile = function(fileInfo, uuid, res) {
       function(err, file) {
         if(err) {
 		  console.error(err)
-          sendError(res, 'Ah crap! Something bad happened', err)
+          sendError(res, err)
           return;
         }
         res.send(withLinks({

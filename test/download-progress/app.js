@@ -19,11 +19,16 @@ progress(request(src), {
 })
 .on('error', function (err) {
     // Do something with err
+    console.error(err)
+})
+.on('end', function (err) {
+    console.log("Download ends!")
+})
+.on('response', function(res) {
+    console.log("Got response!")
+    var mime = res.headers['content-type'];
+    var size = res.headers['content-length']
+    console.log("MIME type: "+mime)
+    console.log("Size: "+size)
 })
 .pipe(fs.createWriteStream(dst))
-.on('error', function (err) {
-    // Do something with err
-})
-.on('close', function (err) {
-    // Saved to doogle.png!
-})
