@@ -17,6 +17,8 @@ app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
 server.listen(9999);
  
+ // convert video by ffmpeg...
+var spawn = require("./spawn")
 
 var files = {};
 
@@ -78,7 +80,25 @@ io.sockets.on('connection', function (socket) {
                         //Let's create thumbnail!
                         exec("ffmpeg -i upload/" + filename  + " -ss 01:30 -r 1 -an -vframes 1 -f mjpeg upload/" + filename  + ".jpg", function(err){
                             socket.emit('done', {'image' : 'upload/' + filename + '.jpg'});
-                        });                      
+                            // convert it!
+                            spawn({
+                                "file": "upload/"+filename,
+                                "outfile": "upload/"+filename+".webm", 
+                                started: function(data) {
+                                    socket.emit("conversionStarts", data)
+                                },
+                                finished: function(data) {
+                                    socket.emit("conversionFinished", data)
+                                },
+                                progress: function(data) {
+                                    socket.emit("conversionProgress", data)
+                                },
+                                error: function(msg, data) {
+                                    socket.emit("conversionError", {msg:msg, data:data})
+                                }
+                            })
+
+                        });                                              
                     });
                 });
               });

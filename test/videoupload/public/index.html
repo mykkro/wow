@@ -63,6 +63,18 @@
 	    newFile = ready.slice(place, place + Math.min(524288, (ready.size-place)));
 	    fileReader.readAsBinaryString(newFile);
 	});
+
+	socket.on("conversionStarts", function(data) {
+		console.log("Conversion starts!", data)
+	})
+
+	socket.on("conversionFinished", function(data) {
+		console.log("Conversion finished!", data)
+	})
+
+	socket.on("conversionProgress", function(data) {
+		console.log("Conversion progress: "+ data.percent)
+	})
 	 
 	function updateProgressBar(percent){
 	    document.getElementById('progressBar').style.width = percent + '%';
