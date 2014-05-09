@@ -1,6 +1,5 @@
 /* wow server */
 
-var express = require('express');
 var path = require("path")
 var http = require('http');
 var mustache = require('mustache')
@@ -9,8 +8,12 @@ var mv = require('mv')
 var uuid = require('node-uuid');
 var cfg = require("./craft.json")
 var merge = require("merge")
+var io = require('socket.io')
 
-var app = express()
+var express = require('express')
+  , app = express()
+  , server = http.createServer(app)
+  , io = require('socket.io').listen(server);
 
 var API = require("./output/lib/api/API")
 var REST = require("./output/lib/api/REST")
@@ -18,7 +21,7 @@ var Storage = require("./output/lib/Storage")
 var Uploader = require("./output/lib/Uploader")
 var uploader = new Uploader()
 var Downloader = require("./output/lib/Downloader")
-var downloader = new Downloader()
+
 
 function getExtension(filename) {
     var ext = path.extname(filename||'').split('.');
@@ -26,25 +29,36 @@ function getExtension(filename) {
 }
 
 var allowedFiletypes = {
-  "jpg":1, "png":1, "gif":1
+  "jpg":1, 
+  "png":1, 
+  "gif":1, 
+  "jpeg":1, 
+  "avi":1, 
+  "mp4":1, 
+  "ogv": 1, 
+  "webm":1, 
+  "3gp":1, 
+  "mov": 1, 
+  "flv": 1
 }
 
 var allowedFilesize = 10000000
 
+var downloader = new Downloader({allowedExtensions:allowedFiletypes, maxFilesize:allowedFilesize})
 
 app.configure(function(){
 	app.use(express.json());
 	app.use(express.urlencoded());   
-  app.use(express.limit(allowedFilesize));
-  app.use(express.multipart());
+	app.use(express.limit(allowedFilesize));
+	app.use(express.multipart());
 	app.use(express.methodOverride());
 	app.use(express.cookieParser());
 	app.use( app.router );
 	app.use('/js', express.static(__dirname + '/js'));
-  app.use('/css', express.static(__dirname + '/css'));
+	app.use('/css', express.static(__dirname + '/css'));
 	app.use(express.static(__dirname + '/output/public'));
 	app.use(express.static(__dirname + '/../../public'));
-  app.use('/uploads',express.static(Storage.uploadDir));
+	app.use('/uploads',express.static(Storage.uploadDir));
 
 	REST(app, API)
 });
@@ -147,6 +161,7 @@ var uploadFile = function(fileInfo, uuid, res) {
       },
       function(err, file) {
         if(err) {
+		  console.error(err)
           sendError(res, 'Ah crap! Something bad happened', err)
           return;
         }
@@ -164,9 +179,17 @@ var uploadFile = function(fileInfo, uuid, res) {
 
 }
 
+// demo code for socket.io
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
+
 Storage.init(function() {
   var port = cfg.options.testserver.port
-  app.listen(port, function() {
+  server.listen(port, function() {
     console.log('Listening on port '+port);
   });
 })
