@@ -65,14 +65,25 @@ $.fn.dropAnything = function (settings) {
         })
     }
 
+	var makeImage = function(src) {
+		return $("<img>").attr("src", src)
+	}
+	
+	var makeYouTubeEmbedCode = function(videoId) {
+		return $('<object type="application/x-shockwave-flash" style="width:450px; height:366px;" data="http://www.youtube.com/v/'+videoId+'"><param name="movie" value="http://www.youtube.com/v/'+videoId+'" /><param name="allowFullScreen" value="true" /><param name="allowscriptaccess" value="always" /></object>')	
+	}
+		
+	
     var display = function(out) {
         if(out.type == "link") {
             if(out.subtype == "image") {
                 var src = out.uploaded ? out.uploaded.thumbnailUri : out.url 
-                return $("<img>").attr("src", src)
+                return makeImage(src)
+            } else if(out.subtype == "video") {
+                var src = out.uploaded.thumbnailUri
+                return makeImage(src)
             } else if(out.subtype == "youtube") {
-                var code = '<object type="application/x-shockwave-flash" style="width:450px; height:366px;" data="http://www.youtube.com/v/'+out.videoId+'"><param name="movie" value="http://www.youtube.com/v/'+out.videoId+'" /><param name="allowFullScreen" value="true" /><param name="allowscriptaccess" value="always" /></object>'
-                return $(code)
+                return makeImage(out.thumbnailUrl)
             } else {
                 // just a link
                 return $("<a>").attr("href", out.url).text(out.url)
@@ -103,6 +114,11 @@ $.fn.dropAnything = function (settings) {
         return(uu.match(/\.(jpeg|jpg|gif|png)$/) != null);
     }
 
+    var checkVideoUrl = function(url) {
+        var uu = url.toLowerCase()
+        return(uu.match(/\.(ogv|webm|mov|avi|mp4|3gp|flv)$/) != null);
+    }
+	
     // http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
     function youtube_parser(url){
         var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
@@ -154,6 +170,14 @@ $.fn.dropAnything = function (settings) {
         cb(null, out)
     }
 
+	function getYouTubeThumbnail(videoId, opts) {
+		var o = opts || {}
+		var type = opts.type || 'default'
+		// type can be one of:
+		// default, 0, 1, 2, 3, hqdefault, mqdefault, sddefault, maxresdefault
+		return "http://i3.ytimg.com/vi/"+videoId+"/"+type+".jpg"
+	}
+	
     function handleDirectLink(dt, cb) {
         var out = {}
         out.type = "link"
@@ -165,6 +189,7 @@ $.fn.dropAnything = function (settings) {
             if(ytId) {
                 out.subtype = "youtube"
                 out.videoId = ytId
+				out.thumbnailUrl = getYouTubeThumbnail(ytId, {type:"default"})
                 cb(null, out)
             } else {
                 // youtube ID not found...
@@ -175,6 +200,10 @@ $.fn.dropAnything = function (settings) {
             // TODO better test with <img src> construction
             out.subtype = "image"
             handleImage(out, cb)
+		} else if(checkVideoUrl(out.url)) {
+			// video
+			out.subtype = "video"
+			handleVideo(out, cb)
         } else {
             // other classes....
             cb(null, out)
@@ -182,6 +211,14 @@ $.fn.dropAnything = function (settings) {
     }
 
     function handleImage(info, cb) {
+        // download the image and store it locally...
+        downloadFile(info.url, function(err, res) {
+            if(err) cb(err);
+            else cb(null, $.extend(info, {uploaded:res}))
+        })
+    }
+
+	function handleVideo(info, cb) {
         // download the image and store it locally...
         downloadFile(info.url, function(err, res) {
             if(err) cb(err);

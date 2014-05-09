@@ -11,7 +11,7 @@ module.exports = function(grunt) {
                 app_name: 'wow',
                 app_version: '0.1'
             },
-            src: ['./**/*'] // Your node-wekit app
+            src: ['./**/*'] // Your node-webkit app
         },
         browserify: {
             basic: {
@@ -268,21 +268,6 @@ module.exports = function(grunt) {
                     ]
                 }
             }
-            /*
-        production: {
-          options: {
-            paths: ["./css"],
-            cleancss: true
-          },
-          files: {
-            "public/css/bundle.min.css": [
-              "public/css/wow-libs.css",
-              "less/style.less",
-              "less/game.less"
-              ]
-          }
-        }
-        */
         },
         execute: {
             target: {
@@ -296,7 +281,7 @@ module.exports = function(grunt) {
                     archive: 'dist/wow-0.9.0.zip'
                 },
                 files: [{
-                    src: ['assets/**', 'css/**', 'fonts/**', 'js/**', 'lib/**', 'locales/**', 'media/**', 'pages/**', 'public/**', 'routes/**', 'templates/**', 'views/**']
+                    src: ['js/**', 'lib/**', 'locales/**', 'tools/**', '!tools/tibor/**', 'pages/**', 'public/**', 'routes/**', 'templates/**', 'views/**']
                 }, {
                     src: ['run.bat', 'run7.bat', 'run.js', 'server.js', 'package.json', 'main.js']
                 }, {
@@ -315,8 +300,7 @@ module.exports = function(grunt) {
                         '!node_modules/grunt-node-webkit-builder/**',
                         '!node_modules/grunt-downloadfile/**',
                         '!node_modules/node-chrome/**',
-                        '!node_modules/pouchdb/**',
-                        '!tools/**'
+                        '!node_modules/pouchdb/**'
                     ]
                 }]
             }
