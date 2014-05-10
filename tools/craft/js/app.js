@@ -200,37 +200,46 @@ var removeUploadedFile = function(uuid, cb) {
     })                  
 }
 
+var makeAjaxFileControl = function(fc, opts) {
+    var previousUUID = null
+    return fc.AjaxFileUpload({
+      action: "/upload",
+      onComplete: function(filename, response) {
+        previousUUID = response.uuid
+        if(opts.uploaded) opts.uploaded(response)
+      },
+      onSubmit : function(id, fileName){
+        // additional data to be sent in form submit...
+        return { uuid: previousUUID }
+      }
+    });
+}
+
 // TODO use mustache...
 // make it jQuery plugin
-var makeUploadControl = function() {
-    var previousUUID = null
+var makeUploadControl = function(opts) {
     $("#remove-upload").click(function() {
-      if(previousUUID) {
-        removeUploadedFile(previousUUID, function() {
+      var uuid = $("#upload-uuid").val()
+      if(uuid) {
+        removeUploadedFile(uuid, function() {
           console.log("File deleted!")
           previousUUID = null
           $("#upload-thumb").empty()
           $("#remove-upload").hide()
-          $("#upload-uuid").val(previousUUID)
+          $("#upload-uuid").val("")
         })                  
         return false
       }
     }).hide()
-    $("#upload-selectfile").AjaxFileUpload({
-      action: previousUUID ? "/upload?uuid="+previousUUID : "/upload",
-      onComplete: function(filename, response) {
+    makeAjaxFileControl($("#upload-selectfile"), {    
+      uploaded: function(response) {
         $("#upload-thumb").html(
           $("<img />").attr("src", response.thumbnailUri).attr("width", 200)
         );
-        previousUUID = response.uuid
         $("#remove-upload").show()
-        $("#upload-uuid").val(previousUUID)
-      },
-      onSubmit : function(id, fileName){
-        // send additionsl data to be send in form submit...
-        return { uuid: previousUUID }
+        $("#upload-uuid").val(response.uuid)
       }
-    });
+   })
 }
 
 
