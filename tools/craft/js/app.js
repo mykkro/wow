@@ -223,7 +223,6 @@ var makeUploadControl = function(opts) {
       if(uuid) {
         removeUploadedFile(uuid, function() {
           console.log("File deleted!")
-          previousUUID = null
           $("#upload-thumb").empty()
           $("#remove-upload").hide()
           $("#upload-uuid").val("")
