@@ -15,12 +15,15 @@ $.fn.dropAnything = function (settings) {
 
     var afterDrop = settings.dropped || $.noop
 
+    var lastUUID = null
+
     function uploadFile(file, cb) {
         // Open our formData Object
         var formData = new FormData();
      
         // Append our file to the formData object
         formData.append('file', file);
+        formData.append('uuid', lastUUID)
      
         // Create our XMLHttpRequest Object
         var xhr = new XMLHttpRequest();
@@ -49,11 +52,11 @@ $.fn.dropAnything = function (settings) {
         xhr.send(formData);
     }
 
-    function downloadFile(src, cb) {
+    function downloadFile(src, uuid, cb) {
         $.ajax({
           url: '/download',
           type: 'POST',
-          data: JSON.stringify({url:src}),
+          data: JSON.stringify({url:src, uuid:uuid}),
           dataType: 'json',
           contentType: "application/json; charset=utf-8"
         }).then(function(res) {
@@ -212,7 +215,7 @@ $.fn.dropAnything = function (settings) {
 
     function handleImage(info, cb) {
         // download the image and store it locally...
-        downloadFile(info.url, function(err, res) {
+        downloadFile(info.url, lastUUID, function(err, res) {
             if(err) cb(err);
             else cb(null, $.extend(info, {uploaded:res}))
         })
@@ -220,7 +223,7 @@ $.fn.dropAnything = function (settings) {
 
 	function handleVideo(info, cb) {
         // download the image and store it locally...
-        downloadFile(info.url, function(err, res) {
+        downloadFile(info.url, lastUUID, function(err, res) {
             if(err) cb(err);
             else cb(null, $.extend(info, {uploaded:res}))
         })
@@ -257,19 +260,19 @@ $.fn.dropAnything = function (settings) {
             // single file
             // upload it!
             if(files[0].size > settings.maxUploadFilesize) {
-                cb("File too big for upload!")
-            } else {
-                uploadFile(files[0], function(err, fileData) {
-                    if(!err) {
-                        cb(null, { type: "file", uploaded: fileData})
-                    } else {
-                        cb(err)
-                    }
-                })                
-            }
+                return cb(new Error("File too big for upload!"))
+            } 
+            uploadFile(files[0], function(err, fileData) {
+                if(err) {
+                    return cb(err)
+                }
+                // remember UUID!
+                lastUUID = fileData.uuid
+                return cb(null, { type: "file", uploaded: fileData})
+            })                
         } else {
             // multiple files
-            cb("Only single file uploads supported!")
+            return cb(new Error("Only single file uploads supported!"))
         }
     }
 

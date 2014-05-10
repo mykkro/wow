@@ -15,180 +15,16 @@
   <script type="text/javascript" src="/js/jquery.dropanything.js"></script>
    <script src="/js/bundle.js"></script>
   <script src="/js/craft.bundle.js"></script>
-  <script src="/js/app.js"></script>
-  
   <script src="/socket.io/socket.io.js"></script>
-<script>
-  var socket = io.connect('http://localhost:9999');
-  socket.on('news', function (data) {  
-    console.log("SOCKET: ",data);
-    socket.emit('my other event', { my: 'data' });
-  });
-</script>
-  
-<script>
-var JsonUtils = require("JsonUtils")
+  <script src="/js/app.js"></script>
+  <script>
+  tabInfo = [
+    {{#tabs}}
+    "{{name}}",
+    {{/tabs}}
+  ]
 
-var doAjax = function(method, uri, data, cb) {
-  var opts = (method == "GET") 
-    ? {
-      url: uri,
-      type: method,
-      contentType: "application/json; charset=utf-8"
-    }
-    : {
-      url: uri,
-      type: method,
-      data: JSON.stringify(data),
-      dataType: 'json',
-      contentType: "application/json; charset=utf-8"
-    }
-    $.ajax(opts).then(function(res) {
-      console.log("Response from server:", res)
-      if(!res.error) {
-        cb(null, res.response)
-      } else {
-        cb(res.error)
-      }
-    })
-}
-
-var formSubmitted = function(type, action, control, value, next) {
-  console.log("Form "+type+"."+action+" submitted!")
-  console.log(value)
-  if(action == "add") {
-    var uri = "/api/"+type+"/new"
-    var data = value
-    doAjax('POST', uri, data, function(err, res) {
-      if(!err) {
-        console.log("Data received: ", res)
-        if(next) next(res[0])
-      }
-    })
-  } else if(action=="edit") {
-    var id = $("#tabs-"+tabindexes[type]+"-edit input[name=itemid]").val()
-    var uri = "/api/"+type+"/" + id
-    var data = value
-    doAjax('PUT', uri, data, function(err, res) {
-      if(!err) {
-        console.log("Data received: ", res)
-       if(next) next($.extend({_id:id},data))
-      }
-    })
-  }
-}
-
-var refreshListView = function() {
-  if(currentIndex>0) {
-    var main = $("#tabs-"+currentIndex+"-list")
-    var div = main.find(".list")
-    var uri = "/api/"+currentTab+"/search"
-    doAjax('GET', uri, {}, function(err, res) {
-      if(!err) console.log("Data received: ", res)
-        div.html(displayItems(currentTab, res))
-    })
-  }
-}
-
-var removeItem = function(type, id) {
-    var uri = "/api/"+type+"/" + id
-    doAjax('DELETE', uri, {}, function(err, res) {
-      if(!err) console.log("Data received: ", res)
-        refreshListView()
-    })
-}
-
-var viewItem = function(type, item) {
-  var tabIndex = tabindexes[type]
-  // show item view...
-  var div = $("#tabs-"+tabIndex+"-view .content")
-  console.log(item, div)
-  div.html(JSON.stringify(item, null, 2))
-  tabbers[tabIndex].show(5) // view tab
-}
-
-var editItem = function(type, item) {
-  var tabIndex = tabindexes[type]
-  var control = tabeditforms[tabIndex]
-  control.form.setValue(item)
-  var hidn = $("#tabs-"+tabIndex+'-edit input[name=itemid]')
-  hidn.val(item._id)
-  var div = $("#tabs-"+tabIndex+"-edit .content")
-  console.log(item, div)
-  tabbers[tabIndex].show(6) // edit tab
-}
-
-var displayItems = function(type, items) {
-  var out = $("<div>")
-  out.append($("<div>").text("Displaying items: "+items.length))
-  _.each(items, function(it) {
-    out.append(displayItem(type, it))
-  })
-  return out
-}
-
-var displayItem = function(type, item) {
-  var out = $("<div>")
-  out.append($("<span>").text("#"+item._id+" "+item.title))
-  var viewLink = $("<a>").attr("href", "#").addClass("viewitem").text(" view ").click(function() {
-    viewItem(type, item)
-    return false
-  })
-  var editLink = $("<a>").attr("href", "#").addClass("edititem").text(" edit ").click(function() {
-    editItem(type, item)
-    return false
-  })
-  var removeLink = $("<a>").attr("href", "#").addClass("removeitem").text(" remove ").click(function() {
-    removeItem(type, item._id)
-    return false
-  })
-  out.append(viewLink, editLink, removeLink)
-  return out
-}
-
-var tabInfo = [
-  {{#tabs}}
-  "{{name}}",
-  {{/tabs}}
-]
-
-var tabbers = {}
-var tabnames = {}
-var tabindexes = {}
-var tabeditforms = {}
-var tabaddforms = {}
-
-var currentTab = null
-var currentIndex = null
-
-$(document).ready(function() {
-  console.log("Ready!")
-
-  var tabber1 = new Yetii({
-      id: 'tabs-container-1',
-      active: 1,
-      tabclass: 'ui-tabs-panel',
-      callback: function(tabnumber) {
-        if(tabnumber>=1) {
-          var tabName = tabInfo[tabnumber-1]
-          currentTab = tabName
-          currentIndex = tabnumber
-        }
-      }
-  });  
-
-  $("a.disabled").click(function(e) {
-    e.preventDefault();
-  });
-
-  $('#allpurpose-dropzone').dropAnything({
-      dropped: function(data) {
-          console.log("Dropped!", data)
-      }
-  })  
-
-})
-</script>
+  </script>
 </head>
 <body>
   <header>
@@ -223,29 +59,8 @@ $(document).ready(function() {
           <div id="tabs-{{index}}-add" class="ui-subtabs-panel">
             <div class="form"></div>
             <script>
-            $(function() {              
-              var entitySchema = {{{schema}}}
-              var formParams = {{{formParams}}}
-              var schema = formParams.schema || entitySchema
-              var options = formParams.options || {}
-              var data = {{{defaultData}}}
-              var form = $("#tabs-{{index}}-add .form").alpaca({
-                schema:schema, 
-                options:options, 
-                data:data,
-                postRender: function(control) {
-                  // console.log("postRender: ")
-                  tabaddforms[{{index}}] = control              
-                  $(control.container).find("[name=submit]").click(function() {
-                    // clicked on submit button...
-                    formSubmitted("{{name}}", "add", control, control.form.getValue(), function(rr) {
-                      // show item's view
-                      viewItem("{{name}}", rr)
-                    })
-                    return false;
-                  })
-                }
-              })
+            $(function() {   
+              createAddForm({{{schema}}}, {{{formParams}}}, {{{defaultData}}}, {{index}}, "{{name}}")
             })
             </script>
           </div>
@@ -263,28 +78,7 @@ $(document).ready(function() {
             <div class="form"></div>
             <script>
             $(function() {              
-              var entitySchema = {{{schema}}}
-              var formParams = {{{formParams}}}
-              var schema = formParams.schema || entitySchema
-              var options = formParams.options || {}
-              var data = {{{defaultData}}}
-              var form = $("#tabs-{{index}}-edit .form").alpaca({
-                schema:schema, 
-                options:options, 
-                data:data,
-                postRender: function(control) {
-                  // console.log("postRender: ")
-                  tabeditforms[{{index}}] = control              
-                  $(control.container).find("[name=submit]").click(function() {
-                    // clicked on submit button...
-                    formSubmitted("{{name}}", "edit", control, control.form.getValue(), function(rr) {
-                      viewItem("{{name}}", rr)
-                    })
-                    return false;
-                  })
-                }
-              })
-              console.log(form)
+              createEditForm({{{schema}}}, {{{formParams}}}, {{{defaultData}}}, {{index}}, "{{name}}")
             })
             </script>            
           </div>
@@ -327,50 +121,6 @@ $(document).ready(function() {
           <div id="allpurpose-dropzone" class="dropzone">
             Drop anything here
           </div>
-          <script type="text/javascript">
-
-            $(document).ready(function() {
-              var previousUUID = null
-              $("#remove-upload").click(function() {
-                if(previousUUID) {
-                  console.log("Deleting "+previousUUID)
-                  var opts = {
-                    url: "/upload/"+previousUUID,
-                    type: "DELETE",
-                    contentType: "application/json; charset=utf-8"
-                  }
-                  $.ajax(opts).then(function(res) {
-                    console.log("Response from server:", res)
-                    if(!res.error) {
-                      console.log("File deleted!")
-                      previousUUID = null
-                      $("#upload-thumb").empty()
-                      $("#remove-upload").hide()
-                      $("#upload-uuid").val(previousUUID)
-                    } 
-                  })                  
-                  return false
-                }
-              }).hide()
-              $("#demo1").AjaxFileUpload({
-                action: previousUUID ? "/upload?uuid="+previousUUID : "/upload",
-                onComplete: function(filename, response) {
-                  console.log("Uploaded!", filename, response)
-                  $("#upload-thumb").html(
-                    $("<img />").attr("src", response.thumbnailUri).attr("width", 200)
-                  );
-                  previousUUID = response.uuid
-                  $("#remove-upload").show()
-                  $("#upload-uuid").val(previousUUID)
-                },
-                onSubmit : function(id, fileName){
-                  // send additionsl data to be send in form submit...
-                  return { uuid: previousUUID }
-                }
-              });
-            });
-
-          </script>
       </div>
     </div>
   </div>

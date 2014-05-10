@@ -6,10 +6,10 @@ module.exports = function(app, api) {
 	// helper function to return the results
 	var out = function(res, err, rr) {
     	if(!err) {
-    		res.json({status: "ok", response: rr})
+    		res.json(rr)
     	} else {
     		console.error(err)
-    		res.json({status: "error", error: err})
+    		res.json({ error: err })
     	}
 	}
 

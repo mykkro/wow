@@ -39,7 +39,9 @@ var allowedFiletypes = {
   "webm":1, 
   "3gp":1, 
   "mov": 1, 
-  "flv": 1
+  "flv": 1,
+  "mpg": 1,
+  "mpeg": 1
 }
 
 var allowedFilesize = 10000000
@@ -124,7 +126,6 @@ app.post('/download', function(req, res) {
       sendError(res, err)
       return
     }
-    // console.log("Downloaded file:", file)
     uploadFile(fileInfo, uuid, res)
   })
 })
