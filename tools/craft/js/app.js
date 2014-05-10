@@ -216,7 +216,7 @@ var makeUploadControl = function() {
         return false
       }
     }).hide()
-    $("#demo1").AjaxFileUpload({
+    $("#upload-selectfile").AjaxFileUpload({
       action: previousUUID ? "/upload?uuid="+previousUUID : "/upload",
       onComplete: function(filename, response) {
         $("#upload-thumb").html(
