@@ -187,24 +187,31 @@ var currentTab = null
 var currentIndex = null
 
 
+var removeUploadedFile = function(uuid, cb) {
+    var opts = {
+      url: "/upload/"+uuid,
+      type: "DELETE",
+      contentType: "application/json; charset=utf-8"
+    }
+    $.ajax(opts).then(function(res) {
+      if(!res.error) {
+        cb()
+      } 
+    })                  
+}
+
 // TODO use mustache...
+// make it jQuery plugin
 var makeUploadControl = function() {
     var previousUUID = null
     $("#remove-upload").click(function() {
       if(previousUUID) {
-        var opts = {
-          url: "/upload/"+previousUUID,
-          type: "DELETE",
-          contentType: "application/json; charset=utf-8"
-        }
-        $.ajax(opts).then(function(res) {
-          if(!res.error) {
-            console.log("File deleted!")
-            previousUUID = null
-            $("#upload-thumb").empty()
-            $("#remove-upload").hide()
-            $("#upload-uuid").val(previousUUID)
-          } 
+        removeUploadedFile(previousUUID, function() {
+          console.log("File deleted!")
+          previousUUID = null
+          $("#upload-thumb").empty()
+          $("#remove-upload").hide()
+          $("#upload-uuid").val(previousUUID)
         })                  
         return false
       }
