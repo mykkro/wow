@@ -11,6 +11,7 @@
 			"plural": "admins",
 			"title": "Administrator",
 			"description": "Administrator profile.",
+			"thumbnail": "/assets/thumbs/admin.png",
 			"entity": {
 				"collectionName": "admins",
 				"schema": {
@@ -255,6 +256,7 @@
 			"plural": "apps",
 			"title": "App",
 			"description": "Imported App",
+			"thumbnail": "/assets/thumbs/app.png",
 			"entity": {
 				"collectionName": "apps",
 				"schema": {
@@ -370,6 +372,7 @@
 			"plural": "articles",
 			"title": "Article",
 			"description": "Text article.",
+			"thumbnail": "/assets/thumbs/article.png",
 			"entity": {
 				"collectionName": "articles",
 				"schema": {
@@ -459,6 +462,7 @@
 			"plural": "jsons",
 			"title": "JSON",
 			"description": "JSON Data.",
+			"thumbnail": "/assets/thumbs/json.png",
 			"entity": {
 				"collectionName": "jsons",
 				"schema": {
@@ -552,6 +556,7 @@
 			"plural": "netRadios",
 			"title": "Internet Radio",
 			"description": "Internet Radio.",
+			"thumbnail": "/assets/thumbs/netradio.png",
 			"entity": {
 				"collectionName": "netradios",
 				"schema": {
@@ -642,6 +647,7 @@
 			"plural": "user",
 			"title": "User",
 			"description": "User profile.",
+			"thumbnail": "/assets/thumbs/user.png",
 			"entity": {
 				"collectionName": "users",
 				"schema": {
@@ -783,6 +789,7 @@
 			"plural": "youTubeVideos",
 			"title": "YouTube video",
 			"description": "YouTube Video.",
+			"thumbnail": "/assets/thumbs/youtubevideo.png",
 			"entity": {
 				"collectionName": "youtubevideos",
 				"schema":  {
@@ -917,6 +924,7 @@
 			"plural": "files",
 			"title": "File",
 			"description": "Uploaded file.",
+			"thumbnail": "/assets/thumbs/file.png",
 			"entity": {
 				"collectionName": "files",
 				"schema":  {

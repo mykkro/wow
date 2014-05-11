@@ -66,6 +66,10 @@ module.exports = function(app, api) {
 	  	})
 	});	
 
+	app.get('/thumbs/{{name}}',function(req,res) {
+		res.writeHead(302, {location: "{{{thumbnail}}}" });
+		res.end();
+	});
 
 {{/daos}}
 }

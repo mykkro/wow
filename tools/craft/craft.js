@@ -68,7 +68,7 @@ var craftREST = function(nodes) {
 	var targetDir = path.join(outDir, 'lib', 'api')
 	fs.mkdirpSync(targetDir)
 	var daos = _.map(nodes, function(n) { 
-		return { name: n.name }
+		return { name: n.name, thumbnail: n.thumbnail }
 	})
 	var content = mustache.render(restTpl, {daos: daos})
 	fs.writeFileSync(path.join(targetDir, "REST.js"), content, "utf8")
@@ -102,7 +102,7 @@ for(var nodeName in cfg.nodes) {
 	var node = cfg.nodes[nodeName]
 	var opts = merge(cfg.options, node.options)
 	craft(nodeName, node, opts)
-	nodes.push({name: nodeName, node:node, options:opts})
+	nodes.push({name: nodeName, node:node, options:opts, thumbnail:node.thumbnail})
 }
 
 if(argv.api || argv.all) craftAPI(nodes)
@@ -117,6 +117,7 @@ if(argv.html || argv.all) {
 				index: i+1,
 				title: n.node.title,
 				name: n.name,
+				thumbnail: n.thumbnail,
 				defaultData: JSON.stringify(n.node.entity.defaults, null, 2),
 				schema: JSON.stringify(n.node.entity.schema, null, 2),
 				viewParams: JSON.stringify(n.node.views.default, null, 2),
