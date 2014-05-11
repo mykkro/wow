@@ -105,6 +105,7 @@ var out = mustache.render(indexTpl, {
 			defaultData: JSON.stringify(n.node.entity.defaults, null, 2),
 			schema: JSON.stringify(n.node.entity.schema, null, 2),
 			formParams: JSON.stringify(n.node.forms.add, null, 2),
+			editFormParams: JSON.stringify(n.node.forms.edit || n.node.forms.add, null, 2),
 			schemaView: JsonUtils.highlight(n.node.entity.schema),
 			defaultsView: JsonUtils.highlight(n.node.entity.defaults)
 		}

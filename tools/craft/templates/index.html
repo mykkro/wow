@@ -23,7 +23,10 @@
     "{{name}}",
     {{/tabs}}
   ]
-
+  {{#tabs}}
+  tabnames[{{index}}] = "{{name}}"
+  tabindexes["{{name}}"] = {{index}}
+  {{/tabs}}
   </script>
 </head>
 <body>
@@ -60,7 +63,7 @@
             <div class="form"></div>
             <script>
             $(function() {   
-              createAddForm({{{schema}}}, {{{formParams}}}, {{{defaultData}}}, {{index}}, "{{name}}")
+              createAddForm("{{name}}", {{{schema}}}, {{{formParams}}}, {{{defaultData}}})
             })
             </script>
           </div>
@@ -78,7 +81,7 @@
             <div class="form"></div>
             <script>
             $(function() {              
-              createEditForm({{{schema}}}, {{{formParams}}}, {{{defaultData}}}, {{index}}, "{{name}}")
+              createEditForm("{{name}}", {{{schema}}}, {{{editFormParams}}}, {{{defaultData}}})
             })
             </script>            
           </div>
@@ -95,9 +98,7 @@
         </script>
       </div>
       <script>
-      tabnames[{{index}}] = "{{name}}"
-      tabindexes["{{name}}"] = {{index}}
-      tabbers[{{index}}] = new Yetii({
+        tabbers[{{index}}] = new Yetii({
           id: 'tabs-subcontainer-{{index}}-1',
           tabclass: 'ui-subtabs-panel',
           callback: function(tabnumber) {
@@ -106,7 +107,7 @@
               refreshListView()
             }
           }
-      });  
+        });  
       </script>
       {{/tabs}}
       <div id="tabs-testing" class="ui-tabs-panel">

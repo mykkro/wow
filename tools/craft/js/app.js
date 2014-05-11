@@ -123,29 +123,24 @@ var displayItem = function(type, item) {
 }
 
 
-/**
- * Create Alpaca form
- * @param {object} entitySchema
- * @param {obnect} formParams
- * @param {object} data
- * @param {number} index
- * @param {string} name
- */
-var createAddForm = function(entitySchema, formParams, data, index, name) {
-    var schema = formParams.schema || entitySchema
-    var options = formParams.options || {}
-    var form = $("#tabs-"+index+"-add .form").alpaca({
+var createForm = function(type, action, schema, options, data) {
+    var index = tabindexes[type]
+    var form = $("#tabs-"+index+"-"+action+" .form").alpaca({
       schema:schema, 
       options:options, 
       data:data,
       postRender: function(control) {
         // console.log("postRender: ")
-        tabaddforms[index] = control              
+        if(action=="add") {
+          tabaddforms[index] = control              
+        } else if(action=="edit") {
+          tabeditforms[index] = control
+        }
         $(control.container).find("[name=submit]").click(function() {
           // clicked on submit button...
-          formSubmitted(name, "add", control, control.form.getValue(), function(rr) {
+          formSubmitted(type, action, control, control.form.getValue(), function(rr) {
             // show item's view
-            viewItem(name, rr)
+            viewItem(type, rr)
           })
           return false;
         })
@@ -153,25 +148,48 @@ var createAddForm = function(entitySchema, formParams, data, index, name) {
     })    
 }
 
-var createEditForm = function(entitySchema, formParams, data, index, name) {
+var createAddForm = function(type, entitySchema, formParams, data) {
+    if(type == "admin") {
+      createAdminAddForm(type, entitySchema, formParams, data)      
+      return
+    } 
     var schema = formParams.schema || entitySchema
     var options = formParams.options || {}
-    var form = $("#tabs-"+index+"-edit .form").alpaca({
-      schema:schema, 
-      options:options, 
-      data:data,
-      postRender: function(control) {
-        // console.log("postRender: ")
-        tabeditforms[index] = control              
-        $(control.container).find("[name=submit]").click(function() {
-          // clicked on submit button...
-          formSubmitted(name, "edit", control, control.form.getValue(), function(rr) {
-            viewItem(name, rr)
-          })
-          return false;
-        })
-      }
-    })
+    createForm(type, "add", schema, options, data)
+}
+
+var passwordMatchValidator = function(control, callback) {
+    var controlVal = control.getValue();
+    if(!controlVal) {
+      // no value yet...
+        callback({
+            "message": "Form is empty",
+            "status": false
+        });
+    } else if (controlVal['password'] != controlVal['repeatPassword']) {
+        callback({
+            "message": "Passwords should match!",
+            "status": false
+        });
+    } else {
+        callback({
+            "message": "Fields valid",
+            "status": true
+        });
+    }
+}
+
+// add custom validator to options
+var createAdminAddForm = function(type, entitySchema, formParams, data) {
+    var schema = formParams.schema || entitySchema
+    var options = $.extend({ validator: passwordMatchValidator }, formParams.options)
+    createForm(type, "add", schema, options, data)
+}
+
+var createEditForm = function(type, entitySchema, formParams, data) {
+    var schema = formParams.schema || entitySchema
+    var options = formParams.options || {}
+    createForm(type, "edit", schema, options, data)
 }
 
 

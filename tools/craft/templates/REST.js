@@ -53,7 +53,8 @@ module.exports = function(app, api) {
 
 	// api.{{name}}.update
 	app.put('/api/{{name}}/:id', function(req, res) {
-		api.{{name}}.update(req.params.id, req.body, function(err, rr) {
+		//api.{{name}}.update(req.params.id, req.body, function(err, rr) {
+		api.{{name}}.set(req.params.id, req.body, function(err, rr) {
 	    	out(res, err, rr)
 	  	})
 	});	
