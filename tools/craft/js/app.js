@@ -186,6 +186,13 @@ var createForm = function(type, action, schema, options, data) {
           })
           return false;
         })
+        /*
+        $(control.container).find(".dropzone").each(function() {
+          var da = $(this)
+          var inp = $(this).parent().children("input")
+          console.log("Droparea found: ", inp.val())
+        })
+        */
       }
     })    
 }
@@ -326,6 +333,7 @@ $(document).ready(function() {
   });
 
   $('#allpurpose-dropzone').dropAnything({
+      uuid: 'aa577c3a-c2f1-43f7-ba2b-0feaccd7b46b',
       dropped: function(data) {
         console.log("Dropped!", data)
       },

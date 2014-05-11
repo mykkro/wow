@@ -89,6 +89,19 @@ var withLinks = function(file) {
     return out
 }
 
+app.get('/upload/:uuid/thumb', function(req, res) {
+  var uuid = req.params.uuid
+  uploader.get(uuid, function(err, resp) {
+    if(err) {
+      sendError(res, err)
+    } else {
+      var thumbnailUri = '/uploads/' + path.relative(Storage.uploadDir, resp.thumbnailPath)
+      res.writeHead(302, {location: thumbnailUri });
+      res.end();      
+    }
+  })
+})
+
 app.get('/upload/:uuid', function(req, res) {
   var uuid = req.params.uuid
   uploader.get(uuid, function(err, resp) {

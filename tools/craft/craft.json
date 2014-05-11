@@ -39,7 +39,7 @@
 							"type":"string",
 							"required":false
 						},
-						"avatarUUID": {
+						"avatar": {
 							"title": "Avatar",
 							"type":"string",
 							"required":false
@@ -72,8 +72,7 @@
 					"description": "",
 					"canCreateAdmins": false,
 					"canCreateUsers": true,
-					"canImportApps": true,
-					"password": "admin"
+					"canImportApps": true
 				}
 			},
 			"forms": {
@@ -98,7 +97,7 @@
 								"type":"string",
 								"required":false
 							},
-							"avatarUUID": {
+							"avatar": {
 								"title": "Avatar",
 								"type":"string",
 								"required":false
@@ -159,8 +158,11 @@
 					        },
 					        "repeatPassword": {
 					        	"type": "password"
-					        }       
-					    }						
+					        },
+							"avatar": {
+					        	"type": "uuid"
+					        }
+   					    }						
 					}
 				},
 				"edit": {
@@ -184,7 +186,7 @@
 								"type":"string",
 								"required":false
 							},
-							"avatarUUID": {
+							"avatar": {
 								"title": "Avatar",
 								"type":"string",
 								"required":false
@@ -230,12 +232,9 @@
 					            "type":"textarea",
 					            "placeholder": "Enter description here..."
 					        },
-					        "password": {
-					        	"type": "password"
-					        },
-					        "repeatPassword": {
-					        	"type": "password"
-					        }       
+							"avatar": {
+					        	"type": "uuid"
+					        }
 					    }						
 					}
 				}

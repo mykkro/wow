@@ -33,6 +33,9 @@ var API = {
 		find: function(data, next) {
 			{{varname}}().findItems(data, next)
 		},
+		findOne: function(data, next) {
+			{{varname}}().findOne(data, next)
+		},
 		count: function(data, next) {
 			{{varname}}().countItems(data, next)
 		}

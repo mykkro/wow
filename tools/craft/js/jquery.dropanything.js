@@ -14,7 +14,8 @@ $.fn.dropAnything = function (settings) {
         filesOnly: true,
         imagesOnly: true,
         dropped: null,
-        uploaded: null
+        uploaded: null,
+        uuid: null
     }, settings);
 
     var imageMimetypes = {
@@ -27,7 +28,8 @@ $.fn.dropAnything = function (settings) {
     var afterDrop = settings.dropped || $.noop
     var afterFile = settings.uploaded || $.noop
 
-    var lastUUID = null
+    var lastUUID = settings.uuid
+    // TODO display file fhumbnail if UUID is given
 
     function uploadFile(file, cb) {
         // Open our formData Object
@@ -332,6 +334,10 @@ $.fn.dropAnything = function (settings) {
                 .bind('dragover', cancel)
                 .bind('dragenter', cancel)
                 .bind('dragleave', cancel);
+            if(lastUUID) {
+                // display thumbnail associated with the UUID of the uploaded file
+                $this.html($("<img>").attr("src", "/upload/"+lastUUID+"/thumb"))
+            }
         }
     );
 };
