@@ -71,5 +71,13 @@ module.exports = function(app, api) {
 		res.end();
 	});
 
+	app.get('/{{name}}/:id/thumb',function(req,res) {
+		var id = req.params.id
+		console.log("Thumbnail: "+id)
+		// default thumbnail:
+		res.writeHead(302, {location: "/thumbs/{{name}}" });
+		res.end();
+	});
+
 {{/daos}}
 }
