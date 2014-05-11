@@ -32,6 +32,7 @@ var allowedFiletypes = {
   "jpg":1, 
   "png":1, 
   "gif":1, 
+  "svg": 1,
   "jpeg":1, 
   "avi":1, 
   "mp4":1, 

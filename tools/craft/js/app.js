@@ -264,7 +264,10 @@ $(document).ready(function() {
 
   $('#allpurpose-dropzone').dropAnything({
       dropped: function(data) {
-          console.log("File uploaded!", data)
+        console.log("Dropped!", data)
+      },
+      uploaded: function(data) {
+        console.log("Uploaded!", data)
       }
   })  
 

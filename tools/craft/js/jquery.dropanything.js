@@ -10,10 +10,22 @@ $.fn.dropAnything = function (settings) {
 
     settings = $.extend({
         // css: 'dropzone'
-        maxUploadFilesize: 10000000
+        maxUploadFilesize: 10000000,
+        filesOnly: true,
+        imagesOnly: true,
+        dropped: null,
+        uploaded: null
     }, settings);
 
+    var imageMimetypes = {
+        "image/jpeg":1,
+        "image/png": 1,
+        "image/gif": 1,
+        "image/svg+xml": 1
+    }
+
     var afterDrop = settings.dropped || $.noop
+    var afterFile = settings.uploaded || $.noop
 
     var lastUUID = null
 
@@ -24,7 +36,7 @@ $.fn.dropAnything = function (settings) {
         // Append our file to the formData object
         formData.append('file', file);
         formData.append('uuid', lastUUID)
-     
+
         // Create our XMLHttpRequest Object
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
@@ -114,7 +126,7 @@ $.fn.dropAnything = function (settings) {
 
     var checkImageUrl = function(url) {
         var uu = url.toLowerCase()
-        return(uu.match(/\.(jpeg|jpg|gif|png)$/) != null);
+        return(uu.match(/\.(jpeg|jpg|gif|png|svg)$/) != null);
     }
 
     var checkVideoUrl = function(url) {
@@ -145,8 +157,14 @@ $.fn.dropAnything = function (settings) {
         if("text/uri-list" in tm) {
             handleLink(dt, tm, cb)
         } else if("text/html" in tm) {
+            if(settings.filesOnly) {
+                return cb("Only files allowed")
+            }
             handleRichText(dt, cb)
         } else if("text/plain" in tm) {
+            if(settings.filesOnly) {
+                return cb("Only files allowed")
+            }
             handlePlainText(dt, cb)
         } else if("Files" in tm) {
             handleFile(dt, cb)
@@ -187,6 +205,9 @@ $.fn.dropAnything = function (settings) {
         out.subtype = "general"
         out.url = dt.getData("text/plain")
         if(isYouTubeUrl(out.url)) {
+            if(settings.filesOnly) {
+                return cb("Only files allowed")
+            }
             // extract youtube ID
             var ytId = youtube_parser(out.url)
             if(ytId) {
@@ -205,9 +226,15 @@ $.fn.dropAnything = function (settings) {
             handleImage(out, cb)
 		} else if(checkVideoUrl(out.url)) {
 			// video
+            if(settings.imagesOnly) {
+                return cb("Only images allowed")
+            }
 			out.subtype = "video"
 			handleVideo(out, cb)
         } else {
+            if(settings.filesOnly) {
+                return cb("Only files allowed")
+            }
             // other classes....
             cb(null, out)
         }
@@ -260,8 +287,11 @@ $.fn.dropAnything = function (settings) {
             // single file
             // upload it!
             if(files[0].size > settings.maxUploadFilesize) {
-                return cb(new Error("File too big for upload!"))
+                return cb("File too big for upload!")
             } 
+            if(settings.imagesOnly && !(files[0].type in imageMimetypes)) {
+                return cb("Only images allowed.")
+            }
             uploadFile(files[0], function(err, fileData) {
                 if(err) {
                     return cb(err)
@@ -272,7 +302,7 @@ $.fn.dropAnything = function (settings) {
             })                
         } else {
             // multiple files
-            return cb(new Error("Only single file uploads supported!"))
+            return cb("Only single file uploads supported!")
         }
     }
 
@@ -286,6 +316,9 @@ $.fn.dropAnything = function (settings) {
             } else {
                 $this.html(display(res))
                 afterDrop(res)
+                if(res.uploaded) {
+                    afterFile(res.uploaded)
+                }
             }
         })
         return false;
