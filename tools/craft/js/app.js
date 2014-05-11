@@ -113,11 +113,17 @@ var viewGetItem = function(type, item) {
 
 var viewItem = function(type, item) {  
   var tabIndex = tabindexes[type]
+  var schema = tabschemas[type]
+  var params = tabviews[type]
   // show item view...
   var div = $("#tabs-"+tabIndex+"-view .content")
-  console.log(item, div)
-  div.html(JSON.stringify(item, null, 2))
+  div.html(renderItemView(type, schema, params, item))
   tabbers[tabIndex].show(5) // view tab
+}
+
+var renderItemView = function(type, schema, params, item) {
+  console.log("render item:", item, schema, params)
+  return $("<pre>").text(JSON.stringify(item, null, 2))
 }
 
 var editItem = function(type, item) {
@@ -127,7 +133,6 @@ var editItem = function(type, item) {
   var hidn = $("#tabs-"+tabIndex+'-edit input[name=itemid]')
   hidn.val(item._id)
   var div = $("#tabs-"+tabIndex+"-edit .content")
-  console.log(item, div)
   tabbers[tabIndex].show(6) // edit tab
 }
 
@@ -237,6 +242,7 @@ var tabnames = {}
 var tabindexes = {}
 var tabeditforms = {}
 var tabaddforms = {}
+var tabviews = {}
 var tabdata = {}
 var tabschemas = {}
 

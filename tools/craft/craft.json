@@ -239,6 +239,15 @@
 					}
 				}
 			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+
+						}
+					}
+				}
+			},
 			"options": {}
 		},
 		"app": {
@@ -345,6 +354,15 @@
 					}
 				}
 			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
 			"options": {}
 		},
 		"article": {
@@ -425,6 +443,15 @@
 					}
 				}
 			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},			
 			"options": {}
 		},		
 		"json": {
@@ -509,6 +536,15 @@
 					}
 				}
 			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
 			"options": {}
 		},		
 		"netRadio": {
@@ -587,6 +623,15 @@
 					        	"type": "url"
 					        }       
 					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
 					}
 				}
 			},
@@ -722,6 +767,15 @@
 					}
 				}
 			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
 			"options": {}
 		},		
 		"youTubeVideo": {
@@ -847,6 +901,15 @@
 					}
 				}
 			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
 			"options": {}
 		},
 		"file": {
@@ -946,6 +1009,15 @@
 					            "placeholder": "Enter description here..."
 					        }
 					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
 					}
 				}
 			},
