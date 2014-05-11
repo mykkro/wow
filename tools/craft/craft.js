@@ -1,3 +1,13 @@
+/**
+ * Craft the application skeleton.
+ *
+ * CLI options:
+ * --html	Generate index.html file.
+ * --dao 	Generate DAO files.
+ * --api 	Generate API.js
+ * --rest 	Generate REST.js
+ * --all	Generate all of the above
+ */
 var fs = require("fs-extra")
 var path = require("path")
 var merge = require("merge")
@@ -12,6 +22,8 @@ var outDir = path.join(__dirname, 'output')
 var daoTpl = fs.readFileSync("templates/DAO.js", "utf8")
 var apiTpl = fs.readFileSync("templates/API.js", "utf8")
 var restTpl = fs.readFileSync("templates/REST.js", "utf8")
+
+
 
 function capFirst(string)
 {
@@ -65,11 +77,13 @@ var craftREST = function(nodes) {
 var craft = function(name, node, options) {
 	console.log('Crafting '+name)
 	craftManifest(name, node, options)
-	craftDAO(name, node, options)
+	if(argv.dao || argv.all) craftDAO(name, node, options)
 
 }
 
 /**************************************************/
+var argv = require('yargs').argv;
+
 var webDir = path.join(outDir, 'public')
 var jsDir = path.join(webDir, 'js')
 var cssDir = path.join(webDir, 'css')
@@ -91,24 +105,26 @@ for(var nodeName in cfg.nodes) {
 	nodes.push({name: nodeName, node:node, options:opts})
 }
 
-craftAPI(nodes)
-craftREST(nodes)
+if(argv.api || argv.all) craftAPI(nodes)
+if(argv.rest || argv.all) craftREST(nodes)
 
-// write out index.html file
-var indexTpl = fs.readFileSync("templates/index.html", "utf8")
-var out = mustache.render(indexTpl, {
-	tabs: _.map(nodes, function(n, i) {
-		return {
-			index: i+1,
-			title: n.node.title,
-			name: n.name,
-			defaultData: JSON.stringify(n.node.entity.defaults, null, 2),
-			schema: JSON.stringify(n.node.entity.schema, null, 2),
-			formParams: JSON.stringify(n.node.forms.add, null, 2),
-			editFormParams: JSON.stringify(n.node.forms.edit || n.node.forms.add, null, 2),
-			schemaView: JsonUtils.highlight(n.node.entity.schema),
-			defaultsView: JsonUtils.highlight(n.node.entity.defaults)
-		}
-	})	
-})
-fs.writeFileSync(path.join(webDir, "index.html"), out, "utf8")
+if(argv.html || argv.all) {
+	// write out index.html file
+	var indexTpl = fs.readFileSync("templates/index.html", "utf8")
+	var out = mustache.render(indexTpl, {
+		tabs: _.map(nodes, function(n, i) {
+			return {
+				index: i+1,
+				title: n.node.title,
+				name: n.name,
+				defaultData: JSON.stringify(n.node.entity.defaults, null, 2),
+				schema: JSON.stringify(n.node.entity.schema, null, 2),
+				formParams: JSON.stringify(n.node.forms.add, null, 2),
+				editFormParams: JSON.stringify(n.node.forms.edit || n.node.forms.add, null, 2),
+				schemaView: JsonUtils.highlight(n.node.entity.schema),
+				defaultsView: JsonUtils.highlight(n.node.entity.defaults)
+			}
+		})	
+	})
+	fs.writeFileSync(path.join(webDir, "index.html"), out, "utf8")
+}

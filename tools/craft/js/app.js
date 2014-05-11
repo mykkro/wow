@@ -29,9 +29,37 @@ var doAjax = function(method, uri, data, cb) {
     })
 }
 
-var formSubmitted = function(type, action, control, value, next) {
-  console.log("Form "+type+"."+action+" submitted!")
+var filterData = function(value, schema) {
+  for(var key in value) {
+    if(!(key in schema.properties)) {
+      delete value[key]
+    }
+  }
+  return value
+}
+
+// password should be hashed on the server...
+var hashPassword = function(pwd) {
+  return pwd
+}
+
+var postProcessData = function(type, action, value) {
+  console.log("postProcessData: Form "+type+"."+action+" submitted!")
   console.log(value)
+  // custom post-processing...
+  /*
+  if(type=="admin" && action=="add") {
+    // hash password...
+    value.password = hashPassword(value.password)
+  }
+  */
+  var schema = tabschemas[type]
+  // filter out items not in schema...
+  return filterData(value, schema)
+}
+
+var formSubmitted = function(type, action, control, value, next) {
+  value = postProcessData(type, action, value)
   if(action == "add") {
     var uri = "/api/"+type+"/new"
     var data = value
@@ -74,7 +102,16 @@ var removeItem = function(type, id) {
     })
 }
 
-var viewItem = function(type, item) {
+var viewGetItem = function(type, item) {
+    var id = item._id
+    var uri = "/api/"+type+"/"+id
+    doAjax('GET', uri, {}, function(err, res) {
+      if(!err) console.log("Data received: ", res)
+        viewItem(type, res)
+    })
+}
+
+var viewItem = function(type, item) {  
   var tabIndex = tabindexes[type]
   // show item view...
   var div = $("#tabs-"+tabIndex+"-view .content")
@@ -107,7 +144,7 @@ var displayItem = function(type, item) {
   var out = $("<div>")
   out.append($("<span>").text("#"+item._id+" "+item.title))
   var viewLink = $("<a>").attr("href", "#").addClass("viewitem").text(" view ").click(function() {
-    viewItem(type, item)
+    viewGetItem(type, item)
     return false
   })
   var editLink = $("<a>").attr("href", "#").addClass("edititem").text(" edit ").click(function() {
@@ -140,7 +177,7 @@ var createForm = function(type, action, schema, options, data) {
           // clicked on submit button...
           formSubmitted(type, action, control, control.form.getValue(), function(rr) {
             // show item's view
-            viewItem(type, rr)
+            viewGetItem(type, rr)
           })
           return false;
         })
@@ -200,6 +237,8 @@ var tabnames = {}
 var tabindexes = {}
 var tabeditforms = {}
 var tabaddforms = {}
+var tabdata = {}
+var tabschemas = {}
 
 var currentTab = null
 var currentIndex = null

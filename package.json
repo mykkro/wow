@@ -88,7 +88,8 @@
     "fluent-ffmpeg": "1.7.1",
     "child-process-promise": "~0.2.0-SNAPSHOT.1389671754086",
     "request-progress": "~0.3.1",
-    "phantomjs": "~1.9.7-5"
+    "phantomjs": "~1.9.7-5",
+    "bcrypt-nodejs": "0.0.3"
   },
   "repository": {
     "type": "git",
