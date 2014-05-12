@@ -4,6 +4,5 @@
   "description": "",
   "canCreateAdmins": false,
   "canCreateUsers": true,
-  "canImportApps": true,
-  "password": "admin"
+  "canImportApps": true
 }

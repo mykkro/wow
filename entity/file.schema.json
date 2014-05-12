@@ -33,6 +33,11 @@
       "type": "string",
       "required": true
     },
+    "thumbnailPath": {
+      "title": "Thumbnail path",
+      "type": "string",
+      "required": false
+    },
     "size": {
       "title": "Size",
       "type": "number",

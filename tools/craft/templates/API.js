@@ -16,7 +16,7 @@ var _{{tplvarname}} = null
 var {{tplvarname}} = function() {
 	if(!_{{tplvarname}}) 
 		console.log(__dirname)
-		_{{tplvarname}} = fs.readFileSync(path.join(__dirname, "../../templates/{{name}}.default.html"), "utf8")
+		_{{tplvarname}} = fs.readFileSync(path.join(__dirname, "../../templates/nodes/{{name}}.default.html"), "utf8")
 	return _{{tplvarname}}
 }
 {{/daos}}

@@ -456,6 +456,276 @@
 			},			
 			"options": {}
 		},		
+		"image": {
+			"name": "image",
+			"plural": "images",
+			"title": "Image",
+			"description": "Image.",
+			"thumbnail": "/assets/thumbs/image.png",
+			"entity": {
+				"collectionName": "images",
+				"schema": {
+					"type":"object",
+					"$schema": "http://json-schema.org/draft-03/schema",
+					"title": "Image",
+					"properties":{
+						"ownerAdminId": {
+							"title": "Owner ID",
+							"type":"number",
+							"required":true
+						},
+						"created": {
+							"title": "Created",
+							"type":"string",
+							"required":false
+						},
+						"title": {
+							"title": "Title",
+							"type":"string",
+							"required":true
+						},
+						"description": {
+							"title": "Description",
+							"type":"string",
+							"required":false
+						},
+						"imageUUID": {
+							"title": "Image",
+							"type":"string",
+							"required":true
+						}
+					}
+				},
+				"defaults": {
+			    	"ownerAdminId": -1,
+					"title": "Untitled Image", 
+					"description": "No description"
+				}
+			},
+			"forms": {
+				"add": {
+					"options": {
+					    "renderForm":true,
+						"hideInitValidationError": true,
+					    "form":{
+					        "attributes":{
+					            "action":"echo.php",
+					            "method":"post"
+					        },
+					        "buttons":{
+					            "submit":{},
+					            "reset":{}
+					        }
+					    },
+					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
+					        "created":{
+					            "hidden" : true
+					        },
+					        "description":{
+					            "type":"textarea",
+					            "placeholder": "Enter description here..."
+					        },
+					        "imageUUID": {
+					        	"type": "uuid"
+					        }
+					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},			
+			"options": {}
+		},		
+		"video": {
+			"name": "video",
+			"plural": "videos",
+			"title": "Video",
+			"description": "Video clip.",
+			"thumbnail": "/assets/thumbs/video.png",
+			"entity": {
+				"collectionName": "videos",
+				"schema": {
+					"type":"object",
+					"$schema": "http://json-schema.org/draft-03/schema",
+					"title": "Video",
+					"properties":{
+						"ownerAdminId": {
+							"title": "Owner ID",
+							"type":"number",
+							"required":true
+						},
+						"created": {
+							"title": "Created",
+							"type":"string",
+							"required":false
+						},
+						"title": {
+							"title": "Title",
+							"type":"string",
+							"required":true
+						},
+						"description": {
+							"title": "Description",
+							"type":"string",
+							"required":false
+						},
+						"videoUUID": {
+							"title": "Video",
+							"type":"string",
+							"required":true
+						}
+					}
+				},
+				"defaults": {
+			    	"ownerAdminId": -1,
+					"title": "Untitled Video", 
+					"description": "No description"
+				}
+			},
+			"forms": {
+				"add": {
+					"options": {
+					    "renderForm":true,
+						"hideInitValidationError": true,
+					    "form":{
+					        "attributes":{
+					            "action":"echo.php",
+					            "method":"post"
+					        },
+					        "buttons":{
+					            "submit":{},
+					            "reset":{}
+					        }
+					    },
+					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
+					        "created":{
+					            "hidden" : true
+					        },
+					        "description":{
+					            "type":"textarea",
+					            "placeholder": "Enter description here..."
+					        },
+					        "videoUUID": {
+					        	"type": "uuid"
+					        }
+					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},			
+			"options": {}
+		},		
+		"voice": {
+			"name": "voice",
+			"plural": "voices",
+			"title": "Voice",
+			"description": "Audio clip.",
+			"thumbnail": "/assets/thumbs/voice.png",
+			"entity": {
+				"collectionName": "voices",
+				"schema": {
+					"type":"object",
+					"$schema": "http://json-schema.org/draft-03/schema",
+					"title": "Audio clip",
+					"properties":{
+						"ownerAdminId": {
+							"title": "Owner ID",
+							"type":"number",
+							"required":true
+						},
+						"created": {
+							"title": "Created",
+							"type":"string",
+							"required":false
+						},
+						"title": {
+							"title": "Title",
+							"type":"string",
+							"required":true
+						},
+						"description": {
+							"title": "Description",
+							"type":"string",
+							"required":false
+						},
+						"voiceUUID": {
+							"title": "Audio clip",
+							"type":"string",
+							"required":true
+						}
+					}
+				},
+				"defaults": {
+			    	"ownerAdminId": -1,
+					"title": "Untitled Audio Clip", 
+					"description": "No description"
+				}
+			},
+			"forms": {
+				"add": {
+					"options": {
+					    "renderForm":true,
+						"hideInitValidationError": true,
+					    "form":{
+					        "attributes":{
+					            "action":"echo.php",
+					            "method":"post"
+					        },
+					        "buttons":{
+					            "submit":{},
+					            "reset":{}
+					        }
+					    },
+					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
+					        "created":{
+					            "hidden" : true
+					        },
+					        "description":{
+					            "type":"textarea",
+					            "placeholder": "Enter description here..."
+					        },
+					        "voiceUUID": {
+					        	"type": "uuid"
+					        }
+					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},			
+			"options": {}
+		},		
 		"json": {
 			"name": "json",
 			"plural": "jsons",
