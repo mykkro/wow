@@ -226,6 +226,7 @@ module.exports = function(grunt) {
                     "js/vendor/soundmanager2.js",
                     "js/vendor/jquery.playable.js",
                     "js/vendor/jquery.youtubedrop.js",
+                    "js/vendor/jquery.tmpl.js",
                     "js/vendor/gamepad.min.js",
                     "js/vendor/mustache.js",
                     // tried newer alpaca (in js/vendor/alpaca), but there are some problems

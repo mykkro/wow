@@ -1,90 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset=utf-8 />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-	
-	<title>Alpaca forms testing page</title>
-
-	<script type="text/javascript" src="../../js/jquery/jquery-2.0.3.min.js"></script>
-	<script type="text/javascript" src="../../js/jquery.tmpl/jquery.tmpl.js"></script>
-	
-    <link href="../../js/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <script src="../../js/bootstrap/js/bootstrap.min.js"></script>
-
-	<link type="text/css" href="../../js/alpaca/alpaca.css" rel="stylesheet"/>
-	<link type="text/css" href="../../js/alpaca/alpaca-bootstrap.css" rel="stylesheet" />	
-	<script type="text/javascript" src="../../js/alpaca/alpaca.min.js"></script>
-
-	<style type="text/css">
-	.container {
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-h4 {
-  margin-top: 25px;
-}
-.row {
-  margin-bottom: 20px;
-}
-.row .row {
-  margin-top: 10px;
-  margin-bottom: 0;
-}
-[class*="col-"] {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  background-color: #eee;
-  border: 1px solid #ddd;
-  background-color: rgba(86,61,124,.15);
-  border: 1px solid rgba(86,61,124,.2);
-}
-
-hr {
-  margin-top: 40px;
-  margin-bottom: 40px;
-}
-
-button.changed {
-    color: red;
-}
-</style>
-	
-	<script>
-	$(document).ready(function() {
-		console.log("Ready!")
-	})
-	</script>
-</head>
-<body>
-
- <div class="container">
-
-      <div class="page-header">
-        <h1>Bootstrap grid examples</h1>
-        <p class="lead">Basic grid layouts to get you familiar with building within the Bootstrap grid system.</p>
-      </div>
-
-      <h3>Three equal columns</h3>
-      <p>Get three equal-width columns <strong>starting at desktops and scaling to large desktops</strong>. On mobile devices, tablets and below, the columns will automatically stack.</p>
-      <div class="row">
-        <div class="col-md-4">.col-md-4</div>
-        <div class="col-md-4">.col-md-4</div>
-        <div class="col-md-4">.col-md-4</div>
-      </div>
-</div>
-
-	<div id="form1"></div>
-    <button id="reset">Click to reset</button>
-	 
-	<script type="text/javascript">
 $(document).ready(function() {
 
-//	Alpaca.logLevel = Alpaca.DEBUG;
-
+	// To turn on debugging, uncomment this line
+	// Alpaca.logLevel = Alpaca.DEBUG;
+	
     /**
      * Initial data
      *
@@ -173,39 +91,20 @@ $(document).ready(function() {
      * @param control
      */
     var postRenderCallback = function(control) {
-        console.log(control.getValue())
-        /* this does not work... */
-        /* maybe watching for changes in individual fields? */
-        control.on("change", function(ctrl) {
-            console.log(control)
-            console.log(ctrl)
-        })
-        /* this works! */
-        for(var i=0; i<control.children.length; i++) {
-            control.children[i].on("change", function(ev) {
-                console.log(ev);
-            })
-        }
+
     };
 
     /**
      * Render the form.
      *
      * We call alpaca() with the data, schema and options to tell Alpaca to render into the selected dom element(s).
+     *
      */
-    $("#form1").alpaca({
+    $("#form").alpaca({
         "data": data,
         "schema": schema,
         "options": options,
         "postRender": postRenderCallback,
-        "ui": "bootstrap"
+        "view": "VIEW_WEB_EDIT"
     });
-
-    $("#reset").click(function() {
-        $(this).removeClass("Changed")
-    })
-});	
-
-</script> 
-</body>
-</html>
+});

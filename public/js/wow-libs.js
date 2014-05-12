@@ -6771,6 +6771,490 @@ $.fn.youTubeDrop = function (settings) {
         }
     );
 };
+;/*!
+ * jQuery Templates Plugin 1.0.0pre
+ * http://github.com/jquery/jquery-tmpl
+ * Requires jQuery 1.4.2
+ *
+ * Copyright 2011, Software Freedom Conservancy, Inc.
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ */
+(function( jQuery, undefined ){
+	var oldManip = jQuery.fn.domManip, tmplItmAtt = "_tmplitem", htmlExpr = /^[^<]*(<[\w\W]+>)[^>]*$|\{\{\! /,
+		newTmplItems = {}, wrappedItems = {}, appendToTmplItems, topTmplItem = { key: 0, data: {} }, itemKey = 0, cloneIndex = 0, stack = [];
+
+	function newTmplItem( options, parentItem, fn, data ) {
+		// Returns a template item data structure for a new rendered instance of a template (a 'template item').
+		// The content field is a hierarchical array of strings and nested items (to be
+		// removed and replaced by nodes field of dom elements, once inserted in DOM).
+		var newItem = {
+			data: data || (data === 0 || data === false) ? data : (parentItem ? parentItem.data : {}),
+			_wrap: parentItem ? parentItem._wrap : null,
+			tmpl: null,
+			parent: parentItem || null,
+			nodes: [],
+			calls: tiCalls,
+			nest: tiNest,
+			wrap: tiWrap,
+			html: tiHtml,
+			update: tiUpdate
+		};
+		if ( options ) {
+			jQuery.extend( newItem, options, { nodes: [], parent: parentItem });
+		}
+		if ( fn ) {
+			// Build the hierarchical content to be used during insertion into DOM
+			newItem.tmpl = fn;
+			newItem._ctnt = newItem._ctnt || newItem.tmpl( jQuery, newItem );
+			newItem.key = ++itemKey;
+			// Keep track of new template item, until it is stored as jQuery Data on DOM element
+			(stack.length ? wrappedItems : newTmplItems)[itemKey] = newItem;
+		}
+		return newItem;
+	}
+
+	// Override appendTo etc., in order to provide support for targeting multiple elements. (This code would disappear if integrated in jquery core).
+	jQuery.each({
+		appendTo: "append",
+		prependTo: "prepend",
+		insertBefore: "before",
+		insertAfter: "after",
+		replaceAll: "replaceWith"
+	}, function( name, original ) {
+		jQuery.fn[ name ] = function( selector ) {
+			var ret = [], insert = jQuery( selector ), elems, i, l, tmplItems,
+				parent = this.length === 1 && this[0].parentNode;
+
+			appendToTmplItems = newTmplItems || {};
+			if ( parent && parent.nodeType === 11 && parent.childNodes.length === 1 && insert.length === 1 ) {
+				insert[ original ]( this[0] );
+				ret = this;
+			} else {
+				for ( i = 0, l = insert.length; i < l; i++ ) {
+					cloneIndex = i;
+					elems = (i > 0 ? this.clone(true) : this).get();
+					jQuery( insert[i] )[ original ]( elems );
+					ret = ret.concat( elems );
+				}
+				cloneIndex = 0;
+				ret = this.pushStack( ret, name, insert.selector );
+			}
+			tmplItems = appendToTmplItems;
+			appendToTmplItems = null;
+			jQuery.tmpl.complete( tmplItems );
+			return ret;
+		};
+	});
+
+	jQuery.fn.extend({
+		// Use first wrapped element as template markup.
+		// Return wrapped set of template items, obtained by rendering template against data.
+		tmpl: function( data, options, parentItem ) {
+			return jQuery.tmpl( this[0], data, options, parentItem );
+		},
+
+		// Find which rendered template item the first wrapped DOM element belongs to
+		tmplItem: function() {
+			return jQuery.tmplItem( this[0] );
+		},
+
+		// Consider the first wrapped element as a template declaration, and get the compiled template or store it as a named template.
+		template: function( name ) {
+			return jQuery.template( name, this[0] );
+		},
+
+		domManip: function( args, table, callback, options ) {
+			if ( args[0] && jQuery.isArray( args[0] )) {
+				var dmArgs = jQuery.makeArray( arguments ), elems = args[0], elemsLength = elems.length, i = 0, tmplItem;
+				while ( i < elemsLength && !(tmplItem = jQuery.data( elems[i++], "tmplItem" ))) {}
+				if ( tmplItem && cloneIndex ) {
+					dmArgs[2] = function( fragClone ) {
+						// Handler called by oldManip when rendered template has been inserted into DOM.
+						jQuery.tmpl.afterManip( this, fragClone, callback );
+					};
+				}
+				oldManip.apply( this, dmArgs );
+			} else {
+				oldManip.apply( this, arguments );
+			}
+			cloneIndex = 0;
+			if ( !appendToTmplItems ) {
+				jQuery.tmpl.complete( newTmplItems );
+			}
+			return this;
+		}
+	});
+
+	jQuery.extend({
+		// Return wrapped set of template items, obtained by rendering template against data.
+		tmpl: function( tmpl, data, options, parentItem ) {
+			var ret, topLevel = !parentItem;
+			if ( topLevel ) {
+				// This is a top-level tmpl call (not from a nested template using {{tmpl}})
+				parentItem = topTmplItem;
+				tmpl = jQuery.template[tmpl] || jQuery.template( null, tmpl );
+				wrappedItems = {}; // Any wrapped items will be rebuilt, since this is top level
+			} else if ( !tmpl ) {
+				// The template item is already associated with DOM - this is a refresh.
+				// Re-evaluate rendered template for the parentItem
+				tmpl = parentItem.tmpl;
+				newTmplItems[parentItem.key] = parentItem;
+				parentItem.nodes = [];
+				if ( parentItem.wrapped ) {
+					updateWrapped( parentItem, parentItem.wrapped );
+				}
+				// Rebuild, without creating a new template item
+				return jQuery( build( parentItem, null, parentItem.tmpl( jQuery, parentItem ) ));
+			}
+			if ( !tmpl ) {
+				return []; // Could throw...
+			}
+			if ( typeof data === "function" ) {
+				data = data.call( parentItem || {} );
+			}
+			if ( options && options.wrapped ) {
+				updateWrapped( options, options.wrapped );
+			}
+			ret = jQuery.isArray( data ) ?
+				jQuery.map( data, function( dataItem ) {
+					return dataItem ? newTmplItem( options, parentItem, tmpl, dataItem ) : null;
+				}) :
+				[ newTmplItem( options, parentItem, tmpl, data ) ];
+			return topLevel ? jQuery( build( parentItem, null, ret ) ) : ret;
+		},
+
+		// Return rendered template item for an element.
+		tmplItem: function( elem ) {
+			var tmplItem;
+			if ( elem instanceof jQuery ) {
+				elem = elem[0];
+			}
+			while ( elem && elem.nodeType === 1 && !(tmplItem = jQuery.data( elem, "tmplItem" )) && (elem = elem.parentNode) ) {}
+			return tmplItem || topTmplItem;
+		},
+
+		// Set:
+		// Use $.template( name, tmpl ) to cache a named template,
+		// where tmpl is a template string, a script element or a jQuery instance wrapping a script element, etc.
+		// Use $( "selector" ).template( name ) to provide access by name to a script block template declaration.
+
+		// Get:
+		// Use $.template( name ) to access a cached template.
+		// Also $( selectorToScriptBlock ).template(), or $.template( null, templateString )
+		// will return the compiled template, without adding a name reference.
+		// If templateString includes at least one HTML tag, $.template( templateString ) is equivalent
+		// to $.template( null, templateString )
+		template: function( name, tmpl ) {
+			if (tmpl) {
+				// Compile template and associate with name
+				if ( typeof tmpl === "string" ) {
+					// This is an HTML string being passed directly in.
+					tmpl = buildTmplFn( tmpl );
+				} else if ( tmpl instanceof jQuery ) {
+					tmpl = tmpl[0] || {};
+				}
+				if ( tmpl.nodeType ) {
+					// If this is a template block, use cached copy, or generate tmpl function and cache.
+					tmpl = jQuery.data( tmpl, "tmpl" ) || jQuery.data( tmpl, "tmpl", buildTmplFn( tmpl.innerHTML ));
+					// Issue: In IE, if the container element is not a script block, the innerHTML will remove quotes from attribute values whenever the value does not include white space.
+					// This means that foo="${x}" will not work if the value of x includes white space: foo="${x}" -> foo=value of x.
+					// To correct this, include space in tag: foo="${ x }" -> foo="value of x"
+				}
+				return typeof name === "string" ? (jQuery.template[name] = tmpl) : tmpl;
+			}
+			// Return named compiled template
+			return name ? (typeof name !== "string" ? jQuery.template( null, name ):
+				(jQuery.template[name] ||
+					// If not in map, and not containing at least on HTML tag, treat as a selector.
+					// (If integrated with core, use quickExpr.exec)
+					jQuery.template( null, htmlExpr.test( name ) ? name : jQuery( name )))) : null;
+		},
+
+		encode: function( text ) {
+			// Do HTML encoding replacing < > & and ' and " by corresponding entities.
+			return ("" + text).split("<").join("&lt;").split(">").join("&gt;").split('"').join("&#34;").split("'").join("&#39;");
+		}
+	});
+
+	jQuery.extend( jQuery.tmpl, {
+		tag: {
+			"tmpl": {
+				_default: { $2: "null" },
+				open: "if($notnull_1){__=__.concat($item.nest($1,$2));}"
+				// tmpl target parameter can be of type function, so use $1, not $1a (so not auto detection of functions)
+				// This means that {{tmpl foo}} treats foo as a template (which IS a function).
+				// Explicit parens can be used if foo is a function that returns a template: {{tmpl foo()}}.
+			},
+			"wrap": {
+				_default: { $2: "null" },
+				open: "$item.calls(__,$1,$2);__=[];",
+				close: "call=$item.calls();__=call._.concat($item.wrap(call,__));"
+			},
+			"each": {
+				_default: { $2: "$index, $value" },
+				open: "if($notnull_1){$.each($1a,function($2){with(this){",
+				close: "}});}"
+			},
+			"if": {
+				open: "if(($notnull_1) && $1a){",
+				close: "}"
+			},
+			"else": {
+				_default: { $1: "true" },
+				open: "}else if(($notnull_1) && $1a){"
+			},
+			"html": {
+				// Unecoded expression evaluation.
+				open: "if($notnull_1){__.push($1a);}"
+			},
+			"=": {
+				// Encoded expression evaluation. Abbreviated form is ${}.
+				_default: { $1: "$data" },
+				open: "if($notnull_1){__.push($.encode($1a));}"
+			},
+			"!": {
+				// Comment tag. Skipped by parser
+				open: ""
+			}
+		},
+
+		// This stub can be overridden, e.g. in jquery.tmplPlus for providing rendered events
+		complete: function( items ) {
+			newTmplItems = {};
+		},
+
+		// Call this from code which overrides domManip, or equivalent
+		// Manage cloning/storing template items etc.
+		afterManip: function afterManip( elem, fragClone, callback ) {
+			// Provides cloned fragment ready for fixup prior to and after insertion into DOM
+			var content = fragClone.nodeType === 11 ?
+				jQuery.makeArray(fragClone.childNodes) :
+				fragClone.nodeType === 1 ? [fragClone] : [];
+
+			// Return fragment to original caller (e.g. append) for DOM insertion
+			callback.call( elem, fragClone );
+
+			// Fragment has been inserted:- Add inserted nodes to tmplItem data structure. Replace inserted element annotations by jQuery.data.
+			storeTmplItems( content );
+			cloneIndex++;
+		}
+	});
+
+	//========================== Private helper functions, used by code above ==========================
+
+	function build( tmplItem, nested, content ) {
+		// Convert hierarchical content into flat string array
+		// and finally return array of fragments ready for DOM insertion
+		var frag, ret = content ? jQuery.map( content, function( item ) {
+			return (typeof item === "string") ?
+				// Insert template item annotations, to be converted to jQuery.data( "tmplItem" ) when elems are inserted into DOM.
+				(tmplItem.key ? item.replace( /(<\w+)(?=[\s>])(?![^>]*_tmplitem)([^>]*)/g, "$1 " + tmplItmAtt + "=\"" + tmplItem.key + "\" $2" ) : item) :
+				// This is a child template item. Build nested template.
+				build( item, tmplItem, item._ctnt );
+		}) :
+		// If content is not defined, insert tmplItem directly. Not a template item. May be a string, or a string array, e.g. from {{html $item.html()}}.
+		tmplItem;
+		if ( nested ) {
+			return ret;
+		}
+
+		// top-level template
+		ret = ret.join("");
+
+		// Support templates which have initial or final text nodes, or consist only of text
+		// Also support HTML entities within the HTML markup.
+		ret.replace( /^\s*([^<\s][^<]*)?(<[\w\W]+>)([^>]*[^>\s])?\s*$/, function( all, before, middle, after) {
+			frag = jQuery( middle ).get();
+
+			storeTmplItems( frag );
+			if ( before ) {
+				frag = unencode( before ).concat(frag);
+			}
+			if ( after ) {
+				frag = frag.concat(unencode( after ));
+			}
+		});
+		return frag ? frag : unencode( ret );
+	}
+
+	function unencode( text ) {
+		// Use createElement, since createTextNode will not render HTML entities correctly
+		var el = document.createElement( "div" );
+		el.innerHTML = text;
+		return jQuery.makeArray(el.childNodes);
+	}
+
+	// Generate a reusable function that will serve to render a template against data
+	function buildTmplFn( markup ) {
+		return new Function("jQuery","$item",
+			// Use the variable __ to hold a string array while building the compiled template. (See https://github.com/jquery/jquery-tmpl/issues#issue/10).
+			"var $=jQuery,call,__=[],$data=$item.data;" +
+
+			// Introduce the data as local variables using with(){}
+			"with($data){__.push('" +
+
+			// Convert the template into pure JavaScript
+			jQuery.trim(markup)
+				.replace( /([\\'])/g, "\\$1" )
+				.replace( /[\r\t\n]/g, " " )
+				.replace( /\$\{([^\}]*)\}/g, "{{= $1}}" )
+				.replace( /\{\{(\/?)(\w+|.)(?:\(((?:[^\}]|\}(?!\}))*?)?\))?(?:\s+(.*?)?)?(\(((?:[^\}]|\}(?!\}))*?)\))?\s*\}\}/g,
+				function( all, slash, type, fnargs, target, parens, args ) {
+					var tag = jQuery.tmpl.tag[ type ], def, expr, exprAutoFnDetect;
+					if ( !tag ) {
+						throw "Unknown template tag: " + type;
+					}
+					def = tag._default || [];
+					if ( parens && !/\w$/.test(target)) {
+						target += parens;
+						parens = "";
+					}
+					if ( target ) {
+						target = unescape( target );
+						args = args ? ("," + unescape( args ) + ")") : (parens ? ")" : "");
+						// Support for target being things like a.toLowerCase();
+						// In that case don't call with template item as 'this' pointer. Just evaluate...
+						expr = parens ? (target.indexOf(".") > -1 ? target + unescape( parens ) : ("(" + target + ").call($item" + args)) : target;
+						exprAutoFnDetect = parens ? expr : "(typeof(" + target + ")==='function'?(" + target + ").call($item):(" + target + "))";
+					} else {
+						exprAutoFnDetect = expr = def.$1 || "null";
+					}
+					fnargs = unescape( fnargs );
+					return "');" +
+						tag[ slash ? "close" : "open" ]
+							.split( "$notnull_1" ).join( target ? "typeof(" + target + ")!=='undefined' && (" + target + ")!=null" : "true" )
+							.split( "$1a" ).join( exprAutoFnDetect )
+							.split( "$1" ).join( expr )
+							.split( "$2" ).join( fnargs || def.$2 || "" ) +
+						"__.push('";
+				}) +
+			"');}return __;"
+		);
+	}
+	function updateWrapped( options, wrapped ) {
+		// Build the wrapped content.
+		options._wrap = build( options, true,
+			// Suport imperative scenario in which options.wrapped can be set to a selector or an HTML string.
+			jQuery.isArray( wrapped ) ? wrapped : [htmlExpr.test( wrapped ) ? wrapped : jQuery( wrapped ).html()]
+		).join("");
+	}
+
+	function unescape( args ) {
+		return args ? args.replace( /\\'/g, "'").replace(/\\\\/g, "\\" ) : null;
+	}
+	function outerHtml( elem ) {
+		var div = document.createElement("div");
+		div.appendChild( elem.cloneNode(true) );
+		return div.innerHTML;
+	}
+
+	// Store template items in jQuery.data(), ensuring a unique tmplItem data data structure for each rendered template instance.
+	function storeTmplItems( content ) {
+		var keySuffix = "_" + cloneIndex, elem, elems, newClonedItems = {}, i, l, m;
+		for ( i = 0, l = content.length; i < l; i++ ) {
+			if ( (elem = content[i]).nodeType !== 1 ) {
+				continue;
+			}
+			elems = elem.getElementsByTagName("*");
+			for ( m = elems.length - 1; m >= 0; m-- ) {
+				processItemKey( elems[m] );
+			}
+			processItemKey( elem );
+		}
+		function processItemKey( el ) {
+			var pntKey, pntNode = el, pntItem, tmplItem, key;
+			// Ensure that each rendered template inserted into the DOM has its own template item,
+			if ( (key = el.getAttribute( tmplItmAtt ))) {
+				while ( pntNode.parentNode && (pntNode = pntNode.parentNode).nodeType === 1 && !(pntKey = pntNode.getAttribute( tmplItmAtt ))) { }
+				if ( pntKey !== key ) {
+					// The next ancestor with a _tmplitem expando is on a different key than this one.
+					// So this is a top-level element within this template item
+					// Set pntNode to the key of the parentNode, or to 0 if pntNode.parentNode is null, or pntNode is a fragment.
+					pntNode = pntNode.parentNode ? (pntNode.nodeType === 11 ? 0 : (pntNode.getAttribute( tmplItmAtt ) || 0)) : 0;
+					if ( !(tmplItem = newTmplItems[key]) ) {
+						// The item is for wrapped content, and was copied from the temporary parent wrappedItem.
+						tmplItem = wrappedItems[key];
+						tmplItem = newTmplItem( tmplItem, newTmplItems[pntNode]||wrappedItems[pntNode] );
+						tmplItem.key = ++itemKey;
+						newTmplItems[itemKey] = tmplItem;
+					}
+					if ( cloneIndex ) {
+						cloneTmplItem( key );
+					}
+				}
+				el.removeAttribute( tmplItmAtt );
+			} else if ( cloneIndex && (tmplItem = jQuery.data( el, "tmplItem" )) ) {
+				// This was a rendered element, cloned during append or appendTo etc.
+				// TmplItem stored in jQuery data has already been cloned in cloneCopyEvent. We must replace it with a fresh cloned tmplItem.
+				cloneTmplItem( tmplItem.key );
+				newTmplItems[tmplItem.key] = tmplItem;
+				pntNode = jQuery.data( el.parentNode, "tmplItem" );
+				pntNode = pntNode ? pntNode.key : 0;
+			}
+			if ( tmplItem ) {
+				pntItem = tmplItem;
+				// Find the template item of the parent element.
+				// (Using !=, not !==, since pntItem.key is number, and pntNode may be a string)
+				while ( pntItem && pntItem.key != pntNode ) {
+					// Add this element as a top-level node for this rendered template item, as well as for any
+					// ancestor items between this item and the item of its parent element
+					pntItem.nodes.push( el );
+					pntItem = pntItem.parent;
+				}
+				// Delete content built during rendering - reduce API surface area and memory use, and avoid exposing of stale data after rendering...
+				delete tmplItem._ctnt;
+				delete tmplItem._wrap;
+				// Store template item as jQuery data on the element
+				jQuery.data( el, "tmplItem", tmplItem );
+			}
+			function cloneTmplItem( key ) {
+				key = key + keySuffix;
+				tmplItem = newClonedItems[key] =
+					(newClonedItems[key] || newTmplItem( tmplItem, newTmplItems[tmplItem.parent.key + keySuffix] || tmplItem.parent ));
+			}
+		}
+	}
+
+	//---- Helper functions for template item ----
+
+	function tiCalls( content, tmpl, data, options ) {
+		if ( !content ) {
+			return stack.pop();
+		}
+		stack.push({ _: content, tmpl: tmpl, item:this, data: data, options: options });
+	}
+
+	function tiNest( tmpl, data, options ) {
+		// nested template, using {{tmpl}} tag
+		return jQuery.tmpl( jQuery.template( tmpl ), data, options, this );
+	}
+
+	function tiWrap( call, wrapped ) {
+		// nested template, using {{wrap}} tag
+		var options = call.options || {};
+		options.wrapped = wrapped;
+		// Apply the template, which may incorporate wrapped content,
+		return jQuery.tmpl( jQuery.template( call.tmpl ), call.data, options, call.item );
+	}
+
+	function tiHtml( filter, textOnly ) {
+		var wrapped = this._wrap;
+		return jQuery.map(
+			jQuery( jQuery.isArray( wrapped ) ? wrapped.join("") : wrapped ).filter( filter || "*" ),
+			function(e) {
+				return textOnly ?
+					e.innerText || e.textContent :
+					e.outerHTML || outerHtml(e);
+			});
+	}
+
+	function tiUpdate() {
+		var coll = this.nodes;
+		jQuery.tmpl( null, null, null, this).insertBefore( coll[0] );
+		jQuery( coll ).remove();
+	}
+})( jQuery );
 ;!function(a){"use strict";var b=function(){},c={getType:function(){return"null"},isSupported:function(){return!1},update:b},d=function(a){var c=this,d=window;this.update=b;this.requestAnimationFrame=a||d.requestAnimationFrame||d.webkitRequestAnimationFrame||d.mozRequestAnimationFrame;this.tickFunction=function(){c.update();c.startTicker()};this.startTicker=function(){c.requestAnimationFrame.apply(d,[c.tickFunction])}};d.prototype.start=function(a){this.update=a||b;this.startTicker()};var e=function(){};e.prototype.update=b;e.prototype.start=function(a){this.update=a||b};var f=function(a,b){this.listener=a;this.gamepadGetter=b;this.knownGamepads=[]};f.factory=function(a){var b=c,d=window&&window.navigator;d&&("undefined"!=typeof d.webkitGamepads?b=new f(a,function(){return d.webkitGamepads}):"undefined"!=typeof d.webkitGetGamepads&&(b=new f(a,function(){return d.webkitGetGamepads()})));return b};f.getType=function(){return"WebKit"},f.prototype.getType=function(){return f.getType()},f.prototype.isSupported=function(){return!0};f.prototype.update=function(){var a,b,c=this,d=Array.prototype.slice.call(this.gamepadGetter(),0);for(b=this.knownGamepads.length-1;b>=0;b--){a=this.knownGamepads[b];if(d.indexOf(a)<0){this.knownGamepads.splice(b,1);this.listener._disconnect(a)}}for(b=0;b<d.length;b++){a=d[b];if(a&&c.knownGamepads.indexOf(a)<0){c.knownGamepads.push(a);c.listener._connect(a)}}};var g=function(a){this.listener=a;window.addEventListener("gamepadconnected",function(b){a._connect(b.gamepad)});window.addEventListener("gamepaddisconnected",function(b){a._disconnect(b.gamepad)})};g.factory=function(a){var b=c;window&&"undefined"!=typeof window.addEventListener&&(b=new g(a));return b};g.getType=function(){return"Firefox"},g.prototype.getType=function(){return g.getType()},g.prototype.isSupported=function(){return!0};g.prototype.update=b;var h=function(a){this.updateStrategy=a||new d;this.gamepads=[];this.listeners={};this.platform=c;this.deadzone=.03;this.maximizeThreshold=.97};h.UpdateStrategies={AnimFrameUpdateStrategy:d,ManualUpdateStrategy:e};h.PlatformFactories=[f.factory,g.factory];h.Type={PLAYSTATION:"playstation",LOGITECH:"logitech",XBOX:"xbox",UNKNOWN:"unknown"};h.Event={CONNECTED:"connected",UNSUPPORTED:"unsupported",DISCONNECTED:"disconnected",TICK:"tick",BUTTON_DOWN:"button-down",BUTTON_UP:"button-up",AXIS_CHANGED:"axis-changed"};h.StandardButtons=["FACE_1","FACE_2","FACE_3","FACE_4","LEFT_TOP_SHOULDER","RIGHT_TOP_SHOULDER","LEFT_BOTTOM_SHOULDER","RIGHT_BOTTOM_SHOULDER","SELECT_BACK","START_FORWARD","LEFT_STICK","RIGHT_STICK","DPAD_UP","DPAD_DOWN","DPAD_LEFT","DPAD_RIGHT","HOME"];h.StandardAxes=["LEFT_STICK_X","LEFT_STICK_Y","RIGHT_STICK_X","RIGHT_STICK_Y"];var i=function(a,b,c){return b<a.length?a[b]:c+(b-a.length+1)};h.StandardMapping={env:{},buttons:{byButton:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]},axes:{byAxis:[0,1,2,3]}};h.Mappings=[{env:{platform:g.getType(),type:h.Type.PLAYSTATION},buttons:{byButton:[14,13,15,12,10,11,8,9,0,3,1,2,4,6,7,5,16]},axes:{byAxis:[0,1,2,3]}},{env:{platform:f.getType(),type:h.Type.LOGITECH},buttons:{byButton:[1,2,0,3,4,5,6,7,8,9,10,11,11,12,13,14,10]},axes:{byAxis:[0,1,2,3]}},{env:{platform:g.getType(),type:h.Type.LOGITECH},buttons:{byButton:[0,1,2,3,4,5,-1,-1,6,7,8,9,11,12,13,14,10],byAxis:[-1,-1,-1,-1,-1,-1,[2,0,1],[2,0,-1]]},axes:{byAxis:[0,1,3,4]}}];h.prototype.init=function(){var a=h.resolvePlatform(this),b=this;this.platform=a;this.updateStrategy.start(function(){b._update()});return a.isSupported()};h.prototype.bind=function(a,b){"undefined"==typeof this.listeners[a]&&(this.listeners[a]=[]);this.listeners[a].push(b);return this};h.prototype.unbind=function(a,b){if("undefined"!=typeof a){if("undefined"!=typeof b){if("undefined"==typeof this.listeners[a])return!1;for(var c=0;c<this.listeners[a].length;c++)if(this.listeners[a][c]===b){this.listeners[a].splice(c,1);return!0}return!1}this.listeners[a]=[]}else this.listeners={}};h.prototype.count=function(){return this.gamepads.length};h.prototype._fire=function(a,b){if("undefined"!=typeof this.listeners[a])for(var c=0;c<this.listeners[a].length;c++)this.listeners[a][c].apply(this.listeners[a][c],[b])};h.getNullPlatform=function(){return Object.create(c)};h.resolvePlatform=function(a){var b,d=c;for(b=0;!d.isSupported()&&b<h.PlatformFactories.length;b++)d=h.PlatformFactories[b](a);return d};h.prototype._connect=function(a){var b,c,d=this._resolveMapping(a);a.state={};a.lastState={};a.updater=[];b=d.buttons.byButton.length;for(c=0;b>c;c++)this._addButtonUpdater(a,d,c);b=d.axes.byAxis.length;for(c=0;b>c;c++)this._addAxisUpdater(a,d,c);this.gamepads[a.index]=a;this._fire(h.Event.CONNECTED,a)};h.prototype._addButtonUpdater=function(a,c,d){var e=b,f=i(h.StandardButtons,d,"EXTRA_BUTTON_"),g=this._createButtonGetter(a,c.buttons,d),j=this,k={gamepad:a,control:f};a.state[f]=0;a.lastState[f]=0;e=function(){var b=g(),c=a.lastState[f],d=b>.5,e=c>.5;a.state[f]=b;d&&!e?j._fire(h.Event.BUTTON_DOWN,Object.create(k)):!d&&e&&j._fire(h.Event.BUTTON_UP,Object.create(k));0!==b&&1!==b&&b!==c&&j._fireAxisChangedEvent(a,f,b);a.lastState[f]=b};a.updater.push(e)};h.prototype._addAxisUpdater=function(a,c,d){var e=b,f=i(h.StandardAxes,d,"EXTRA_AXIS_"),g=this._createAxisGetter(a,c.axes,d),j=this;a.state[f]=0;a.lastState[f]=0;e=function(){var b=g(),c=a.lastState[f];a.state[f]=b;b!==c&&j._fireAxisChangedEvent(a,f,b);a.lastState[f]=b};a.updater.push(e)};h.prototype._fireAxisChangedEvent=function(a,b,c){var d={gamepad:a,axis:b,value:c};this._fire(h.Event.AXIS_CHANGED,d)};h.prototype._createButtonGetter=function(){var a=function(){return 0},b=function(b,c,d){var e=a;d>c?e=function(){var a=d-c,e=b();e=(e-c)/a;return 0>e?0:e}:c>d&&(e=function(){var a=c-d,e=b();e=(e-d)/a;return e>1?0:1-e});return e},c=function(a){return"[object Array]"===Object.prototype.toString.call(a)};return function(d,e,f){var g,h=a,i=this;g=e.byButton[f];if(-1!==g)"number"==typeof g&&g<d.buttons.length&&(h=function(){return d.buttons[g]});else if(e.byAxis&&f<e.byAxis.length){g=e.byAxis[f];if(c(g)&&3==g.length&&g[0]<d.axes.length){h=function(){var a=d.axes[g[0]];return i._applyDeadzoneMaximize(a)};h=b(h,g[1],g[2])}}return h}}();h.prototype._createAxisGetter=function(){var a=function(){return 0};return function(b,c,d){var e,f=a,g=this;e=c.byAxis[d];-1!==e&&"number"==typeof e&&e<b.axes.length&&(f=function(){var a=b.axes[e];return g._applyDeadzoneMaximize(a)});return f}}();h.prototype._disconnect=function(a){var b,c=[];"undefined"!=typeof this.gamepads[a.index]&&delete this.gamepads[a.index];for(b=0;b<this.gamepads.length;b++)"undefined"!=typeof this.gamepads[b]&&(c[b]=this.gamepads[b]);this.gamepads=c;this._fire(h.Event.DISCONNECTED,a)};h.prototype._resolveControllerType=function(a){a=a.toLowerCase();return-1!==a.indexOf("playstation")?h.Type.PLAYSTATION:-1!==a.indexOf("logitech")||-1!==a.indexOf("wireless gamepad")?h.Type.LOGITECH:-1!==a.indexOf("xbox")||-1!==a.indexOf("360")?h.Type.XBOX:h.Type.UNKNOWN};h.prototype._resolveMapping=function(a){var b,c,d=h.Mappings,e=null,f={platform:this.platform.getType(),type:this._resolveControllerType(a.id)};for(b=0;!e&&b<d.length;b++){c=d[b];h.envMatchesFilter(c.env,f)&&(e=c)}return e||h.StandardMapping};h.envMatchesFilter=function(a,b){var c,d=!0;for(c in a)a[c]!==b[c]&&(d=!1);return d};h.prototype._update=function(){this.platform.update();this.gamepads.forEach(function(a){a&&a.updater.forEach(function(a){a()})});this.gamepads.length>0&&this._fire(h.Event.TICK,this.gamepads)},h.prototype._applyDeadzoneMaximize=function(a,b,c){b="undefined"!=typeof b?b:this.deadzone;c="undefined"!=typeof c?c:this.maximizeThreshold;a>=0?b>a?a=0:a>c&&(a=1):a>-b?a=0:-c>a&&(a=-1);return a};a.Gamepad=h}("undefined"!=typeof module&&module.exports||window);;/*!
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
  * http://github.com/janl/mustache.js
