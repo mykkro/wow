@@ -1,4 +1,4 @@
-  var socket = io.connect('http://localhost:9999');
+var socket = io.connect('http://localhost:9999');
   socket.on('news', function (data) {  
     console.log("SOCKET: ",data);
     socket.emit('my other event', { my: 'data' });
@@ -65,7 +65,7 @@ var formSubmitted = function(type, action, control, value, next) {
     var data = value
     doAjax('POST', uri, data, function(err, res) {
       if(!err) {
-        console.log("Data received: ", res)
+        // console.log("Data received: ", res)
         if(next) next(res[0])
       }
     })
@@ -75,7 +75,6 @@ var formSubmitted = function(type, action, control, value, next) {
     var data = value
     doAjax('PUT', uri, data, function(err, res) {
       if(!err) {
-        console.log("Data received: ", res)
        if(next) next($.extend({_id:id},data))
       }
     })
@@ -88,7 +87,7 @@ var refreshListView = function() {
     var div = main.find(".list")
     var uri = "/api/"+currentTab+"/search"
     doAjax('GET', uri, {}, function(err, res) {
-      if(!err) console.log("Data received: ", res)
+      if(!err) 
         div.html(displayItems(currentTab, res))
     })
   }
@@ -97,7 +96,7 @@ var refreshListView = function() {
 var removeItem = function(type, id) {
     var uri = "/api/"+type+"/" + id
     doAjax('DELETE', uri, {}, function(err, res) {
-      if(!err) console.log("Data received: ", res)
+      if(!err)
         refreshListView()
     })
 }
@@ -155,11 +154,31 @@ var displayItem = function(type, item) {
 }
 
 
+var FormIt = {
+  createForm: function(div, opts) {
+    var schema = opts.schema
+    var options = opts.options
+    var data = opts.data
+    // creating form from schema
+    console.log("FormIt.createForm", schema, options, data)
+  }
+}
+
+
+// Alpaca-based form creation
 var createForm = function(type, action, schema, options, data) {
     var index = tabindexes[type]
-    var form = $("#tabs-"+index+"-"+action+" .form").alpaca({
+    var form = $("#tabs-"+index+"-"+action+" .form")
+    // ...............
+    FormIt.createForm(form, {
       schema:schema, 
       options:options, 
+      data:data})
+    // ..................
+    form.alpaca({
+      schema:schema, 
+      // !!!!! options object is probably changing in alpaca form...
+      options:$.extend({}, options),
       data:data,
       postRender: function(control) {
         // console.log("postRender: ")
@@ -185,12 +204,13 @@ var createForm = function(type, action, schema, options, data) {
 }
 
 var createAddForm = function(type, entitySchema, formParams, data) {
+    // console.log("createAddForm:", type, entitySchema, formParams, data)
     if(type == "admin") {
       createAdminAddForm(type, entitySchema, formParams, data)      
       return
     } 
     var schema = formParams.schema || entitySchema
-    var options = formParams.options || {}
+    var options = $.extend({}, formParams.options)
     createForm(type, "add", schema, options, data)
 }
 
@@ -223,8 +243,9 @@ var createAdminAddForm = function(type, entitySchema, formParams, data) {
 }
 
 var createEditForm = function(type, entitySchema, formParams, data) {
+    // console.log("createEditForm:", type, entitySchema, formParams, data)
     var schema = formParams.schema || entitySchema
-    var options = formParams.options || {}
+    var options = $.extend({}, formParams.options)
     createForm(type, "edit", schema, options, data)
 }
 
@@ -279,7 +300,7 @@ var makeUploadControl = function(opts) {
       var uuid = $("#upload-uuid").val()
       if(uuid) {
         removeUploadedFile(uuid, function() {
-          console.log("File deleted!")
+          // console.log("File deleted!")
           $("#upload-thumb").empty()
           $("#remove-upload").hide()
           $("#upload-uuid").val("")
