@@ -102,28 +102,18 @@ var removeItem = function(type, id) {
     })
 }
 
-var viewGetItem = function(type, item) {
-    var id = item._id
-    var uri = "/api/"+type+"/"+id
-    doAjax('GET', uri, {}, function(err, res) {
-      if(!err) console.log("Data received: ", res)
-        viewItem(type, res)
-    })
-}
-
-var viewItem = function(type, item) {  
+// rendering on server...
+var viewItem = function(type, id) {  
   var tabIndex = tabindexes[type]
-  var schema = tabschemas[type]
-  var params = tabviews[type]
-  // show item view...
   var div = $("#tabs-"+tabIndex+"-view .content")
-  div.html(renderItemView(type, schema, params, item))
+  renderAjaxView(div, type, id)
   tabbers[tabIndex].show(5) // view tab
 }
 
-var renderItemView = function(type, schema, params, item) {
-  console.log("render item:", item, schema, params)
-  return $("<pre>").text(JSON.stringify(item, null, 2))
+var renderAjaxView = function(div, type, id) {
+  $.get("/"+type+"/"+id+"/view").done(function(v) {
+    div.html(v)
+  })
 }
 
 var editItem = function(type, item) {
@@ -149,7 +139,7 @@ var displayItem = function(type, item) {
   var out = $("<div>")
   out.append($("<span>").text("#"+item._id+" "+item.title))
   var viewLink = $("<a>").attr("href", "#").addClass("viewitem").text(" view ").click(function() {
-    viewGetItem(type, item)
+    viewItem(type, item._id)
     return false
   })
   var editLink = $("<a>").attr("href", "#").addClass("edititem").text(" edit ").click(function() {
@@ -182,17 +172,10 @@ var createForm = function(type, action, schema, options, data) {
           // clicked on submit button...
           formSubmitted(type, action, control, control.form.getValue(), function(rr) {
             // show item's view
-            viewGetItem(type, rr)
+            viewItem(type, rr._id)
           })
           return false;
         })
-        /*
-        $(control.container).find(".dropzone").each(function() {
-          var da = $(this)
-          var inp = $(this).parent().children("input")
-          console.log("Droparea found: ", inp.val())
-        })
-        */
       }
     })    
 }

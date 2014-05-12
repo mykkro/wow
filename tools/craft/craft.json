@@ -962,7 +962,7 @@
 							"required":true
 						},
 						"thumbnailPath": {
-							"title": "Path",
+							"title": "Thumbnail path",
 							"type":"string",
 							"required":false
 						},
