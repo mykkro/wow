@@ -22,8 +22,8 @@
          * @param {Function} errorCallback Error callback.
          */
         constructor: function(container, data, options, schema, view, connector, errorCallback) {
-            console.log("UUID field: constructor")
-            this.base(container, data, options, schema, view, connector, errorCallback);
+            console.log("UUID field: constructor", options)
+            this.base(container, data, options, schema, view, connector, errorCallback);            
         },
 
         /**
@@ -39,19 +39,14 @@
         /**
          * @see Alpaca.Fields.TextField#postRender
          */
-        postRender: function(callback) {
-            console.log("UUID field: postRender")
-
+        postRender: function() {
             var self = this;
 
-            this.base(function() {
-                console.log("UUID field: after postRender")
+            this.base();
 
-                if (self.fieldContainer) {
-                    self.fieldContainer.addClass('alpaca-controlfield-uuid');
-                }
-                callback(); // the droparea stuff should be here - but this is never called!
-            });
+            if (self.fieldContainer) {
+                self.fieldContainer.addClass('alpaca-controlfield-uuid');
+            }
 
             if(this.field) {
                 $(this.field).hide()
@@ -107,18 +102,15 @@
          */
         setValue: function(value) {
             console.log("Uuid field: setValue: ",value)
-            $(this.field).val(value);
+            this.base(value)
             this.createDropArea(value)
-
-            // be sure to call into base method
-            this.base(value);
         },
 
         /**
          * @see Alpaca.Fields.TextField#getValue
          */
         getValue: function() {
-            return $(this.field).val();
+            return this.base();
         },//__BUILDER_HELPERS
 
         /**

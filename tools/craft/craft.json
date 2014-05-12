@@ -160,7 +160,8 @@
 					        	"type": "password"
 					        },
 							"avatar": {
-					        	"type": "uuid"
+					        	"type": "uuid",
+					        	"imagesOnly": true
 					        }
    					    }						
 					}
@@ -233,7 +234,8 @@
 					            "placeholder": "Enter description here..."
 					        },
 							"avatar": {
-					        	"type": "uuid"
+					        	"type": "uuid",
+					        	"imagesOnly": true
 					        }
 					    }						
 					}
@@ -529,7 +531,8 @@
 					            "placeholder": "Enter description here..."
 					        },
 					        "imageUUID": {
-					        	"type": "uuid"
+					        	"type": "uuid",
+					        	"imagesOnly": true
 					        }
 					    }
 					}
@@ -619,7 +622,8 @@
 					            "placeholder": "Enter description here..."
 					        },
 					        "videoUUID": {
-					        	"type": "uuid"
+					        	"type": "uuid",
+					        	"videoOnly": true
 					        }
 					    }
 					}
@@ -709,7 +713,8 @@
 					            "placeholder": "Enter description here..."
 					        },
 					        "voiceUUID": {
-					        	"type": "uuid"
+					        	"type": "uuid",
+					        	"audioOnly": true
 					        }
 					    }
 					}
@@ -801,7 +806,7 @@
 					            "placeholder": "Enter description here..."
 					        },
 					        "content": {
-					        	"type": "mytextarea",
+					        	"type": "textarea",
 					        	"rows": 12,
         						"cols": 60
 					        }       
@@ -1049,7 +1054,8 @@
 					        	"type": "password"
 					        },
 					        "avatar": {
-					        	"type": "uuid"
+					        	"type": "uuid",
+					        	"imagesOnly": true
 					        }
 					    }
 					}
