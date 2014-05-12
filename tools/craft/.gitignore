@@ -1,5 +1,7 @@
 media/audio/
 output/
+testing/
+!testing/thumb.sh
 node_modules/
 !output/lib/Storage.js
 !output/lib/Downloader.js
