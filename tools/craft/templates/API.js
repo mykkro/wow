@@ -4,60 +4,73 @@ var merge = require("merge")
 var fs = require('fs'); // require the filesystem api
 var path = require("path")
 var mustache = require("mustache")
+var Base = require("basejs")
 
 {{#daos}}
 var _{{varname}} = null
 var {{varname}} = function() {
 	if(!_{{varname}}) 
-		_{{varname}} = new (require("../dao/{{daoname}}"))
-	return _{{varname}}
+		_{{varname}} = require("../dao/{{daoname}}")
+	return new (_{{varname}})
 }
 var _{{tplvarname}} = null
 var {{tplvarname}} = function() {
 	if(!_{{tplvarname}}) 
-		console.log(__dirname)
 		_{{tplvarname}} = fs.readFileSync(path.join(__dirname, "../../templates/nodes/{{name}}.default.html"), "utf8")
 	return _{{tplvarname}}
 }
 {{/daos}}
 
+/* Business-logic object */
+var NodeApi = Base.extend({
+	constructor: function(name, dao, tpl) {
+		this.name = name
+		this.dao = dao
+		this.tpl = tpl
+	},
+	create: function(data, next) {
+		console.log("create: ", this.name, data)
+		this.dao().create(data, next)
+	},
+	set: function(id, data, next) {
+		this.dao().set(id, data, next)
+	},
+	update: function(id, data, next) {
+		var newData = merge({_id:id}, data)
+		this.dao().update(newData, next)
+	},
+	delete: function(id, next) {
+		this.dao().remove(id, next)
+	},
+	get: function(id, next) {
+		this.dao().get(id, next)
+	},
+	find: function(data, next) {
+		this.dao().findItems(data, next)
+	},
+	findOne: function(data, next) {
+		this.dao().findOne(data, next)
+	},
+	count: function(data, next) {
+		this.dao().countItems(data, next)
+	},
+	viewTemplate: function() {
+		return this.tpl()
+	},
+	renderView: function(data, view) {
+		view = view || 'default'
+		// TODO use correct template...
+		return mustache.render(this.tpl(), data)
+	}
+})
+
+var makeApi = function(name, dao, tpl) {
+	return new NodeApi(name, dao, tpl)
+}
+
 var API = {
 	{{#daos}}
-	{{name}}: {
-		create: function(data, next) {
-			{{varname}}().create(data, next)
-		},
-		set: function(id, data, next) {
-			{{varname}}().set(id, data, next)
-		},
-		update: function(id, data, next) {
-			var newData = merge({_id:id}, data)
-			{{varname}}().update(newData, next)
-		},
-		delete: function(id, next) {
-			{{varname}}().remove(id, next)
-		},
-		get: function(id, next) {
-			{{varname}}().get(id, next)
-		},
-		find: function(data, next) {
-			{{varname}}().findItems(data, next)
-		},
-		findOne: function(data, next) {
-			{{varname}}().findOne(data, next)
-		},
-		count: function(data, next) {
-			{{varname}}().countItems(data, next)
-		},
-		viewTemplate: function() {
-			return {{tplvarname}}()
-		},
-		renderView: function(data, view) {
-			view = view || 'default'
-			// TODO use correct template...
-			return mustache.render(this.viewTemplate(), data)
-		}
-	},
+	{{name}}: makeApi("{{name}}", {{varname}}, {{tplvarname}}),
 	{{/daos}}
 }
 

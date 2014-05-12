@@ -171,6 +171,10 @@ var createForm = function(type, action, schema, options, data) {
         $(control.container).find("[name=submit]").click(function() {
           // clicked on submit button...
           formSubmitted(type, action, control, control.form.getValue(), function(rr) {
+            // reset form
+            console.log("Resetting form...")
+            // TODO this does not work! how to properly reset a form?
+            control.form.clear()
             // show item's view
             viewItem(type, rr._id)
           })

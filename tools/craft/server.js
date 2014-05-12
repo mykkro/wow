@@ -168,7 +168,7 @@ var uploadFile = function(fileInfo, uuid, res) {
       return
     }
     // do upload...      
-    console.log("Uploader.uploadFile: Uploading "+fileInfo.name+" as "+fileInfo.path+", extension: "+ext+" size: "+size+" uuid: "+uuid)    
+    console.log("server.uploadFile: Uploading "+fileInfo.name+" as "+fileInfo.path+", extension: "+ext+" size: "+size+" uuid: "+uuid)    
     uploader.copy({
         path: fileInfo.path, 
         originalFilename: fileInfo.name, 
@@ -178,7 +178,7 @@ var uploadFile = function(fileInfo, uuid, res) {
         uuid: uuid
       },
       function(err, file) {
-        console.log("Uploader.uploadFile ended")
+        // console.log("server.uploadFile ended")
         if(err) {
 		      console.error(err)
           sendError(res, err)
