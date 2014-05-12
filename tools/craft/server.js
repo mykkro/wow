@@ -42,7 +42,10 @@ var allowedFiletypes = {
   "mov": 1, 
   "flv": 1,
   "mpg": 1,
-  "mpeg": 1
+  "mpeg": 1,
+  "wav": 1,
+  "ogg": 1,
+  "mp3": 1
 }
 
 var allowedFilesize = 10000000

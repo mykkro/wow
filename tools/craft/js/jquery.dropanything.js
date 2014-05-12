@@ -12,7 +12,9 @@ $.fn.dropAnything = function (settings) {
         // css: 'dropzone'
         maxUploadFilesize: 10000000,
         filesOnly: true,
-        imagesOnly: true,
+        imagesOnly: false,
+        audioOnly: false,
+        videoOnly: false,
         dropped: null,
         uploaded: null,
         uuid: null
@@ -23,6 +25,21 @@ $.fn.dropAnything = function (settings) {
         "image/png": 1,
         "image/gif": 1,
         "image/svg+xml": 1
+    }
+
+    var audioMimetypes = {
+        "audio/wav":1,
+        "audio/ogg": 1,
+        "audio/mp3": 1
+    }
+
+    var videoMimetypes = {
+        "video/3gpp": 1,
+        "video/x-msvideo": 1,
+        "video/x-flv": 1,
+        "video/mp4": 1,
+        "video/ogg": 1,
+        "video/webm": 1
     }
 
     var afterDrop = settings.dropped || $.noop
@@ -224,12 +241,21 @@ $.fn.dropAnything = function (settings) {
         } else if(checkImageUrl(out.url)) {
             // we have an image!
             // TODO better test with <img src> construction
+            if(settings.audioOnly) {
+                return cb("Only audio allowed")
+            }
+            if(settings.videoOnly) {
+                return cb("Only video allowed")
+            }
             out.subtype = "image"
             handleImage(out, cb)
 		} else if(checkVideoUrl(out.url)) {
 			// video
             if(settings.imagesOnly) {
                 return cb("Only images allowed")
+            }
+            if(settings.audioOnly) {
+                return cb("Only audio allowed")
             }
 			out.subtype = "video"
 			handleVideo(out, cb)
@@ -293,6 +319,12 @@ $.fn.dropAnything = function (settings) {
             } 
             if(settings.imagesOnly && !(files[0].type in imageMimetypes)) {
                 return cb("Only images allowed.")
+            }
+            if(settings.audioOnly && !(files[0].type in audioMimetypes)) {
+                return cb("Only audio files allowed.")
+            }
+            if(settings.videoOnly && !(files[0].type in videoMimetypes)) {
+                return cb("Only video files allowed.")
             }
             uploadFile(files[0], function(err, fileData) {
                 if(err) {

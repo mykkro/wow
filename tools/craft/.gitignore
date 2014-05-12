@@ -1,3 +1,4 @@
+media/audio/
 output/
 node_modules/
 !output/lib/Storage.js
