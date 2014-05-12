@@ -944,6 +944,11 @@
 							"type":"string",
 							"required":false
 						},
+						"avatar": {
+							"title": "Avatar",
+							"type":"string",
+							"required":false
+						},			
 						"password": {
 							"title": "Password",
 							"type":"string",
@@ -991,6 +996,11 @@
 								"type":"string",
 								"required":false
 							},
+							"avatar": {
+								"title": "Avatar",
+								"type":"string",
+								"required":false
+							},							
 							"password": {
 								"title": "Password",
 								"type":"string",
@@ -1037,7 +1047,10 @@
 					        },       
 					        "repeatPassword": {
 					        	"type": "password"
-					        }       
+					        },
+					        "avatar": {
+					        	"type": "uuid"
+					        }
 					    }
 					}
 				}
