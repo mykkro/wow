@@ -11,10 +11,23 @@ $.fn.dropAnything = function (settings) {
     settings = $.extend({
         // css: 'dropzone'
         maxUploadFilesize: 10000000,
-        filesOnly: true,
+        // accept only files
+        filesOnly: false,
+        // accept only zip archives
+        zipOnly: false,
+        // accept only images
         imagesOnly: false,
+        // accept only audio files
         audioOnly: false,
+        // accept only videos
         videoOnly: false,
+        // accept only links
+        linksOnly: false,
+        // accept only YouTube links
+        youtubeOnly: false,
+        // automatically download video and image links
+        downloadLinkContent: true,
+        // events...
         dropped: null,
         uploaded: null,
         uuid: null
@@ -46,7 +59,8 @@ $.fn.dropAnything = function (settings) {
     var afterFile = settings.uploaded || $.noop
 
     var lastUUID = settings.uuid
-    // TODO display file fhumbnail if UUID is given
+    var lastYouTubeId = settings.ytid
+    var container
 
     function uploadFile(file, cb) {
         // Open our formData Object
@@ -64,17 +78,17 @@ $.fn.dropAnything = function (settings) {
                    var obj = JSON.parse(xhr.responseText);
                    // return result...
                    if(obj.error) {
-                        cb(obj.error)
+                        flash(obj.error, cb)
                    } else {
                         cb(null, obj)
                    }
                 } else {
-                    cb("Server error: "+xhr.status);         
+                    flash("Server error: "+xhr.status, cb);         
                 }
             }
         };
         xhr.onerror = function () { 
-            cb("Server error: "+xhr.status); 
+            flash("Server error: "+xhr.status, $.noop); 
         };         
         // Open our connection using the POST method
         xhr.open("POST", '/upload');
@@ -94,7 +108,7 @@ $.fn.dropAnything = function (settings) {
           if(!res.error) {
             cb(null, res)
           } else {
-            cb(res.error)
+            flash(res.error, cb)
           }
         })
     }
@@ -169,27 +183,60 @@ $.fn.dropAnything = function (settings) {
       return false; // required by IE
     }   
 
+    /**
+     * Display error flash message.
+     */
+    var flash = function(msg, cb) {
+        var $this = $(this);
+        var div = $("<div>")
+            .css({"width":"100%", "height":"100%", "position":"absolute", "left":"0px", "top":"0px", "background": "#888"})
+            .append(
+                $("<img>")
+                    .attr("src", "/assets/icons/no-entry.png")
+                    .css({width: "80px", height: "80px", "position":"absolute", "top":"30px", "left":"50px"}),
+                $("<p>")
+                    .text(msg)
+                    .css({position:"absolute", width: "100%", "text-align": "center", "left": "0px", "top": "120px"})
+            )
+        div.appendTo(container)
+        div.fadeOut(3000, function() {
+            div.remove();
+        });
+        cb(msg)
+    }
+
     var dropIt = function(dt, cb) {
         var types = dt.types
         var tm = {}
         for(var i=0; i<types.length; i++) tm[types[i]] = true
         if("text/uri-list" in tm) {
             handleLink(dt, tm, cb)
-        } else if("text/html" in tm) {
+            return
+        } 
+        if(settings.linksOnly || settings.youtubeOnly) {
+            flash("Only links allowed", cb)
+            return
+        }
+        if("text/html" in tm) {
             if(settings.filesOnly) {
-                return cb("Only files allowed")
+                return flash("Only files allowed", cb)
             }
             handleRichText(dt, cb)
-        } else if("text/plain" in tm) {
+            return
+        } 
+        if("text/plain" in tm) {
             if(settings.filesOnly) {
-                return cb("Only files allowed")
+                return flash("Only files allowed", cb)
             }
             handlePlainText(dt, cb)
-        } else if("Files" in tm) {
+            return
+        } 
+        if("Files" in tm) {
             handleFile(dt, cb)
+            return
         } else {
             // something else...
-            cb("Don't know what to do with this..." + types.join(","))
+            flash("Don't know what to do with this..." + types.join(","), cb)
         }
     }
 
@@ -225,7 +272,7 @@ $.fn.dropAnything = function (settings) {
         out.url = dt.getData("text/plain")
         if(isYouTubeUrl(out.url)) {
             if(settings.filesOnly) {
-                return cb("Only files allowed")
+                return flash("Only files allowed", cb)
             }
             // extract youtube ID
             var ytId = youtube_parser(out.url)
@@ -236,36 +283,52 @@ $.fn.dropAnything = function (settings) {
                 cb(null, out)
             } else {
                 // youtube ID not found...
-                cb("YouTube ID not found!")
+                flash("YouTube ID not found!", cb)
             }
-        } else if(checkImageUrl(out.url)) {
+            return
+        } 
+        if(settings.youtubeOnly) {
+            flash("Only YouTube links allowed!", cb)
+            return
+        }        
+        if(checkImageUrl(out.url)) {
             // we have an image!
             // TODO better test with <img src> construction
             if(settings.audioOnly) {
-                return cb("Only audio allowed")
+                return flash("Only audio allowed", cb)
             }
             if(settings.videoOnly) {
-                return cb("Only video allowed")
+                return flash("Only video allowed", cb)
             }
             out.subtype = "image"
-            handleImage(out, cb)
-		} else if(checkVideoUrl(out.url)) {
+            if(settings.downloadLinkContent) {
+                handleImage(out, cb)
+            } else {
+                cb(null, out)
+            }
+            return
+		} 
+        if(checkVideoUrl(out.url)) {
 			// video
             if(settings.imagesOnly) {
-                return cb("Only images allowed")
+                return flash("Only images allowed", cb)
             }
             if(settings.audioOnly) {
-                return cb("Only audio allowed")
+                return flash("Only audio allowed", cb)
             }
 			out.subtype = "video"
-			handleVideo(out, cb)
-        } else {
-            if(settings.filesOnly) {
-                return cb("Only files allowed")
+            if(settings.downloadLinkContent) {
+                handleVideo(out, cb)
+            } else {
+                cb(null, out)
             }
-            // other classes....
-            cb(null, out)
+            return
+        } 
+        if(settings.filesOnly) {
+            return flash("Only files allowed", cb)
         }
+        // other classes....
+        cb(null, out)
     }
 
     function handleImage(info, cb) {
@@ -291,10 +354,12 @@ $.fn.dropAnything = function (settings) {
         out.type = "link"
         out.url = regex.exec(html)[1];
         if(!out.url) {
-            cb("Not an image! " + html)
-        } else {
+            flash("Not an image! " + html, cb)
+        } else if(settings.downloadLinkContent) {
             out.subtype = "image"
             handleImage(out, cb)
+        } else {
+            cb(null, out)
         }
     }
 
@@ -303,7 +368,12 @@ $.fn.dropAnything = function (settings) {
         if("text/plain" in tm) {
             // we got link (URL)...
             handleDirectLink(dt, cb)
-        } else if("text/html" in tm) {
+            return
+        } 
+        if("text/html" in tm) {
+            if(settings.youtubeOnly) {
+                return flash("Only YouTube links allowed", cb)
+            }
             // we got <img src="..."/>
             handleWrappedImageLink(dt, cb)           
         }                  
@@ -315,20 +385,20 @@ $.fn.dropAnything = function (settings) {
             // single file
             // upload it!
             if(files[0].size > settings.maxUploadFilesize) {
-                return cb("File too big for upload!")
+                return flash("File too big for upload!", cb)
             } 
             if(settings.imagesOnly && !(files[0].type in imageMimetypes)) {
-                return cb("Only images allowed.")
+                return flash("Only images allowed.", cb)
             }
             if(settings.audioOnly && !(files[0].type in audioMimetypes)) {
-                return cb("Only audio files allowed.")
+                return flash("Only audio files allowed.", cb)
             }
             if(settings.videoOnly && !(files[0].type in videoMimetypes)) {
-                return cb("Only video files allowed.")
+                return flash("Only video files allowed.", cb)
             }
             uploadFile(files[0], function(err, fileData) {
                 if(err) {
-                    return cb(err)
+                    return flash(err, cb)
                 }
                 // remember UUID!
                 lastUUID = fileData.uuid
@@ -336,7 +406,7 @@ $.fn.dropAnything = function (settings) {
             })                
         } else {
             // multiple files
-            return cb("Only single file uploads supported!")
+            return flash("Only single file uploads supported!", cb)
         }
     }
 
@@ -358,17 +428,34 @@ $.fn.dropAnything = function (settings) {
         return false;
       }
 
+    // TODO this will work well only if just one element is selected...
     return this.each(
         function() {
             var $this = $(this);
+            container = $this            
             $this
+                .css("position", "relative")
                 .bind('drop', drop)
                 .bind('dragover', cancel)
                 .bind('dragenter', cancel)
                 .bind('dragleave', cancel);
             if(lastUUID) {
                 // display thumbnail associated with the UUID of the uploaded file
-                $this.html($("<img>").attr("src", "/upload/"+lastUUID+"/thumb"))
+                var obj = {
+                    type: "file",
+                    uploaded: {
+                        thumbnailUri: "/upload/"+lastUUID+"/thumb"
+                    }
+                }
+                $this.html(display(obj))
+            } else if(lastYouTubeId) {
+                // display youTube thumbnail
+                var obj = {
+                    type: "link",
+                    subtype: "youtube",
+                    thumbnailUrl: getYouTubeThumbnail(lastYouTubeId, {type:"default"})
+                }
+                $this.html(display(obj))
             }
         }
     );
