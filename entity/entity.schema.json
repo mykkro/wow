@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "title": "Entity",
+  "properties": {
+    "ownerAdminId": {
+      "title": "Owner ID",
+      "type": "number",
+      "required": true
+    },
+    "created": {
+      "title": "Created",
+      "type": "string",
+      "required": false
+    },
+    "title": {
+      "title": "Title",
+      "type": "string",
+      "required": false
+    },
+    "description": {
+      "title": "Description",
+      "type": "string",
+      "required": false
+    },
+    "tags": {
+      "title": "Tags",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "required": false
+    },
+    "type": {
+      "title": "Entity type",
+      "type": "string",
+      "required": true
+    },
+    "eid": {
+      "title": "Entity ID",
+      "type": "number",
+      "required": true
+    }
+  }
+}
