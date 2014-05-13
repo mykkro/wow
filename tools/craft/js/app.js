@@ -149,6 +149,12 @@ var displayItem = function(type, item) {
     removeItem(type, item._id)
     return false
   })
+  /**/
+  var previewDiv = $("<div>").appendTo(out)
+  $.get("/"+type+"/"+item._id+"/preview").done(function(p) {
+    previewDiv.html(p)
+  })
+  /**/
   out.append(viewLink, editLink, removeLink)
   return out
 }
