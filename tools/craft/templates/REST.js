@@ -31,6 +31,24 @@ module.exports = function(app, api) {
 	  	})	
 	}		
 
+	var renderPreview = function(name, req, res) {
+		api[name].get(req.params.id, function(err, rr) {
+	    	if(!err) {
+	    		if(!rr) {
+	    			res.status(404)
+	    			res.end('not found')
+	    			return
+	    		}
+				var tpl = api[name].renderPreview(rr)
+    			res.send(tpl)
+    		} else {
+    			console.error(err)
+    			res.status(500);
+    			res.end('error')
+    		}
+	  	})	
+	}		
+
 	// common functionality for all API calls
 	// returned data are in JSON
 	app.use("/api", function(req, res, next) {
@@ -100,6 +118,11 @@ module.exports = function(app, api) {
 	app.get('/{{name}}/:id/view',function(req,res) {
 		// return default view...		
 		renderView("{{name}}", req, res)
+	});
+
+	app.get('/{{name}}/:id/preview',function(req,res) {
+		// return default view...		
+		renderPreview("{{name}}", req, res)
 	});
 
 {{/daos}}

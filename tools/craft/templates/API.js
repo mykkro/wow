@@ -6,6 +6,7 @@ var path = require("path")
 var mustache = require("mustache")
 var Base = require("basejs")
 
+
 {{#daos}}
 var _{{varname}} = null
 var {{varname}} = function() {
@@ -20,6 +21,14 @@ var {{tplvarname}} = function() {
 	return _{{tplvarname}}
 }
 {{/daos}}
+
+
+var __previewTemplate = null
+var previewTemplate = function() {
+	if(!__previewTemplate)
+		__previewTemplate = fs.readFileSync(path.join(__dirname, "../../templates/nodes/preview.html"), "utf8")
+	return __previewTemplate
+}
 
 /* Business-logic object */
 var NodeApi = Base.extend({
@@ -57,10 +66,25 @@ var NodeApi = Base.extend({
 	viewTemplate: function() {
 		return this.tpl()
 	},
+	getTypeThumbnailUri: function() {
+		return '/thumbs/'+this.name
+	},
+	getThumbnailUri: function() {
+		return null
+	},
 	renderView: function(data, view) {
 		view = view || 'default'
 		// TODO use correct template...
 		return mustache.render(this.tpl(), data)
+	},
+	renderPreview: function(data) {
+		console.log("Rendering preview", data)
+		var obj = {
+			title: data.title,
+			typeThumbnailUrl: this.getTypeThumbnailUri(),
+			thumbnailUrl: this.getThumbnailUri()
+		}
+		return mustache.render(previewTemplate(), obj)
 	}
 })
 
