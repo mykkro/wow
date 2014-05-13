@@ -169,12 +169,12 @@ var FormIt = {
 var createForm = function(type, action, schema, options, data) {
     var index = tabindexes[type]
     var form = $("#tabs-"+index+"-"+action+" .form")
-    // ...............
+    /*
     FormIt.createForm(form, {
       schema:schema, 
       options:options, 
       data:data})
-    // ..................
+    */
     form.alpaca({
       schema:schema, 
       // !!!!! options object is probably changing in alpaca form...

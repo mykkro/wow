@@ -1,12 +1,8 @@
-/**
- * File upload field, showing drop box and saving uploaded files under their UUID.
- * Compatible with Alpaca 1.1.1
- */
 (function($) {
 
     var Alpaca = $.alpaca;
 
-    Alpaca.Fields.UuidField = Alpaca.Fields.TextField.extend(
+    Alpaca.Fields.YouTubeField = Alpaca.Fields.TextField.extend(
     /**
      * @lends Alpaca.Fields.UuidField.prototype
      */
@@ -35,7 +31,7 @@
         setup: function() {
             this.base();
 
-            this.controlFieldTemplateDescriptor = this.view.getTemplateDescriptor("controlFieldUuid");
+            this.controlFieldTemplateDescriptor = this.view.getTemplateDescriptor("controlFieldYouTube");
         },
 
         /**
@@ -47,7 +43,7 @@
             this.base();
 
             if (self.fieldContainer) {
-                self.fieldContainer.addClass('alpaca-controlfield-uuid');
+                self.fieldContainer.addClass('alpaca-controlfield-youtube');
             }
 
             if(this.field) {
@@ -57,7 +53,7 @@
 
         },
 
-        createDropArea: function(uuid) {
+        createDropArea: function(ytid) {
             var self = this
             if(this.droparea) {
                 this.droparea.remove()
@@ -67,15 +63,12 @@
             // use dropAnything plugin
             // TODO option setting does not work!
             self.droparea.dropAnything({
-                  uuid: uuid,
-                  filesOnly: self.options.filesOnly,
-                  imagesOnly: self.options.imagesOnly,
-                  audioOnly: self.options.audioOnly,
-                  videoOnly: self.options.videoOnly,
-                  uploaded: function(data) {
+                  ytid: ytid,
+                  youtubeOnly: true,
+                  dropped: function(data) {
                     // got uploaded file!
-                    var uuid = data.uuid
-                    self.setValue(uuid)
+                    console.log("Dropped!", data)
+                    self.setValue(data.videoId)
                     return false
                   }
             })  
@@ -103,7 +96,6 @@
          *@see Alpaca.Fields.TextField#setValue
          */
         setValue: function(value) {
-            console.log("Uuid field: setValue: ",value)
             this.base(value)
             this.createDropArea(value)
         },
@@ -122,30 +114,6 @@
         getSchemaOfOptions: function() {
             return Alpaca.merge(this.base(), {
                 "properties": {
-                    "audioOnly": {
-                        "title": "Audio only",
-                        "description": "True if only audio files are accepted.",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "imagesOnly": {
-                        "title": "Images only",
-                        "description": "True if only image files are accepted.",
-                        "type": "boolean",
-                        "default": true
-                    },
-                    "videoOnly": {
-                        "title": "Video only",
-                        "description": "True if only video files are accepted.",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "filesOnly": {
-                        "title": "Files only",
-                        "description": "True if only files are accepted.",
-                        "type": "boolean",
-                        "default": false
-                    }
                 }
             });
         },
@@ -157,18 +125,6 @@
         getOptionsForOptions: function() {
             return Alpaca.merge(this.base(), {
                 "fields": {
-                    "audioOnly": {
-                        "type": "boolean"
-                    },
-                    "imagesOnly": {
-                        "type": "boolean"
-                    },
-                    "videoOnly": {
-                        "type": "boolean"
-                    },
-                    "filesOnly": {
-                        "type": "boolean"
-                    }
                 }
             });
         },
@@ -177,21 +133,21 @@
          * @see Alpaca.Fields.TextField#getTitle
          */
         getTitle: function() {
-            return "UUID Field";
+            return "YouTube Field";
         },
 
         /**
          * @see Alpaca.Fields.TextField#getDescription
          */
         getDescription: function() {
-            return "UUID Field.";
+            return "YouTube Field.";
         },
 
         /**
          * @see Alpaca.Fields.TextField#getFieldType
          */
         getFieldType: function() {
-            return "uuid";
+            return "youtube";
         }//__END_OF_BUILDER_HELPERS
 
     });
@@ -200,7 +156,7 @@
 //        "wordLimitExceeded": "The maximum word limit of {0} has been exceeded."
     });
 
-    Alpaca.registerTemplate("controlFieldUuid", '<input type="text" class="uuid" id="${id}" {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each options.data}}data-${fieldId}="${value}"{{/each}}/>');
-    Alpaca.registerFieldClass("uuid", Alpaca.Fields.UuidField);
+    Alpaca.registerTemplate("controlFieldYouTube", '<input type="text" class="youtubeId" id="${id}" {{if options.readonly}}readonly="readonly"{{/if}} {{if name}}name="${name}"{{/if}} {{each options.data}}data-${fieldId}="${value}"{{/each}}/>');
+    Alpaca.registerFieldClass("youtube", Alpaca.Fields.YouTubeField);
 
 })(jQuery);
