@@ -21,7 +21,7 @@ var {{apiname}} = NodeAPI.extend({
 	constructor: function() {
 		this.base("{{name}}", {{varname}}, {{tplvarname}})
 	},
-	getThumbnailUri: function() {
+	getThumbnailUri: function(data) {		
 		return null
 	}
 })
