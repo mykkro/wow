@@ -39,6 +39,14 @@
 							"type":"string",
 							"required":false
 						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						},
 						"avatar": {
 							"title": "Avatar",
 							"type":"string",
@@ -96,6 +104,14 @@
 								"title": "Description",
 								"type":"string",
 								"required":false
+							},
+							"tags": {
+								"title": "Tags",
+								"type": "array",
+					            "items": {
+					                "type": "string"
+					            },
+								"required": false
 							},
 							"avatar": {
 								"title": "Avatar",
@@ -162,6 +178,9 @@
 							"avatar": {
 					        	"type": "uuid",
 					        	"accept": "image"
+					        },
+					        "tags":{
+					        	"type": "tag"
 					        }
    					    }						
 					}
@@ -186,6 +205,14 @@
 								"title": "Description",
 								"type":"string",
 								"required":false
+							},
+							"tags": {
+								"title": "Tags",
+								"type": "array",
+					            "items": {
+					                "type": "string"
+					            },
+								"required": false
 							},
 							"avatar": {
 								"title": "Avatar",
@@ -236,6 +263,9 @@
 							"avatar": {
 					        	"type": "uuid",
 					        	"accept": "image"
+					        },
+					        "tags":{
+					        	"type": "tag"
 					        }
 					    }						
 					}
@@ -284,6 +314,14 @@
 							"title": "Description",
 							"type":"string",
 							"required":false
+						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
 						},
 						"apptype": {
 							"title": "App type",
@@ -352,7 +390,10 @@
 					        },
 					        "uri": {
 					        	"type": "text"
-					        }  
+					        },  
+					        "tags":{
+					        	"type": "tag"
+					        }
 					    }
 					}
 				}
@@ -401,6 +442,14 @@
 							"type":"string",
 							"required":false
 						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						},
 						"content": {
 							"title": "Content",
 							"type":"string",
@@ -442,6 +491,9 @@
 					        },
 					        "content": {
 					        	"type": "textarea"
+					        },
+					        "tags":{
+					        	"type": "tag"
 					        }
 					    }
 					}
@@ -491,6 +543,14 @@
 							"type":"string",
 							"required":false
 						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						},
 						"imageUUID": {
 							"title": "Image",
 							"type":"string",
@@ -533,6 +593,9 @@
 					        "imageUUID": {
 					        	"type": "uuid",
 					        	"accept": "image"
+					        },
+					        "tags":{
+					        	"type": "tag"
 					        }
 					    }
 					}
@@ -582,6 +645,14 @@
 							"type":"string",
 							"required":false
 						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						},
 						"videoUUID": {
 							"title": "Video",
 							"type":"string",
@@ -624,6 +695,9 @@
 					        "videoUUID": {
 					        	"type": "uuid",
 					        	"accept": "video"
+					        },
+					        "tags":{
+					        	"type": "tag"
 					        }
 					    }
 					}
@@ -673,6 +747,14 @@
 							"type":"string",
 							"required":false
 						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						},
 						"voiceUUID": {
 							"title": "Audio clip",
 							"type":"string",
@@ -715,6 +797,9 @@
 					        "voiceUUID": {
 					        	"type": "uuid",
 					        	"accept": "audio"
+					        },
+					        "tags":{
+					        	"type": "tag"
 					        }
 					    }
 					}
@@ -764,6 +849,14 @@
 							"type":"string",
 							"required":false
 						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						},
 						"content": {
 							"title": "JSON",
 							"type":"string",
@@ -806,10 +899,11 @@
 					            "placeholder": "Enter description here..."
 					        },
 					        "content": {
-					        	"type": "textarea",
-					        	"rows": 12,
-        						"cols": 60
-					        }       
+					        	"type": "textarea"
+					        },       
+					        "tags":{
+					        	"type": "tag"
+					        }
 					    }
 					}
 				}
@@ -858,6 +952,14 @@
 							"type":"string",
 							"required":false
 						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						},
 						"url": {
 							"title": "Radio Stream URL",
 							"type":"string",
@@ -900,7 +1002,10 @@
 					        },
 					        "url": {
 					        	"type": "url"
-					        }       
+					        },       
+					        "tags":{
+					        	"type": "tag"
+					        }
 					    }
 					}
 				}
@@ -948,6 +1053,14 @@
 							"title": "Description",
 							"type":"string",
 							"required":false
+						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
 						},
 						"avatar": {
 							"title": "Avatar",
@@ -1000,6 +1113,14 @@
 								"title": "Description",
 								"type":"string",
 								"required":false
+							},
+							"tags": {
+								"title": "Tags",
+								"type": "array",
+					            "items": {
+					                "type": "string"
+					            },
+								"required": false
 							},
 							"avatar": {
 								"title": "Avatar",
@@ -1056,6 +1177,9 @@
 					        "avatar": {
 					        	"type": "uuid",
 					        	"accept": "image"
+					        },
+					        "tags":{
+					        	"type": "tag"
 					        }
 					    }
 					}
@@ -1104,6 +1228,14 @@
 							"title": "Description",
 							"type":"string",
 							"required":false
+						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
 						},
 						"ytId": {
 							"title": "YouTube ID",
@@ -1194,6 +1326,9 @@
 					        },
 					        "ytId": {
 					        	"type": "youtube"
+					        },
+					        "tags":{
+					        	"type": "tag"
 					        }
 					    }
 					}
@@ -1242,6 +1377,14 @@
 							"title": "Description",
 							"type":"string",
 							"required":false
+						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
 						},
 						"originalFilename": {
 							"title": "Original filename",
@@ -1306,6 +1449,9 @@
 					        "description":{
 					            "type":"textarea",
 					            "placeholder": "Enter description here..."
+					        },
+					        "tags":{
+					        	"type": "tag"
 					        }
 					    }
 					}
