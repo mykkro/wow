@@ -3,5 +3,6 @@
   "title": "User",
   "description": "",
   "usesPassword": false,
-  "password": "wow"
+  "password": "wow",
+  "tags": []
 }

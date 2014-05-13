@@ -5,96 +5,15 @@ var fs = require('fs'); // require the filesystem api
 var path = require("path")
 var mustache = require("mustache")
 var Base = require("basejs")
-
+var NodeAPI = require("./NodeAPI")
 
 {{#daos}}
-var _{{varname}} = null
-var {{varname}} = function() {
-	if(!_{{varname}}) 
-		_{{varname}} = require("../dao/{{daoname}}")
-	return new (_{{varname}})
-}
-var _{{tplvarname}} = null
-var {{tplvarname}} = function() {
-	if(!_{{tplvarname}}) 
-		_{{tplvarname}} = fs.readFileSync(path.join(__dirname, "../../templates/nodes/{{name}}.default.html"), "utf8")
-	return _{{tplvarname}}
-}
+var {{apiname}} = require("./{{apiname}}")
 {{/daos}}
-
-
-var __previewTemplate = null
-var previewTemplate = function() {
-	if(!__previewTemplate)
-		__previewTemplate = fs.readFileSync(path.join(__dirname, "../../templates/nodes/preview.html"), "utf8")
-	return __previewTemplate
-}
-
-/* Business-logic object */
-var NodeApi = Base.extend({
-	constructor: function(name, dao, tpl) {
-		this.name = name
-		this.dao = dao
-		this.tpl = tpl
-	},
-	create: function(data, next) {
-		console.log("create: ", this.name, data)
-		this.dao().create(data, next)
-	},
-	set: function(id, data, next) {
-		this.dao().set(id, data, next)
-	},
-	update: function(id, data, next) {
-		var newData = merge({_id:id}, data)
-		this.dao().update(newData, next)
-	},
-	delete: function(id, next) {
-		this.dao().remove(id, next)
-	},
-	get: function(id, next) {
-		this.dao().get(id, next)
-	},
-	find: function(data, next) {
-		this.dao().findItems(data, next)
-	},
-	findOne: function(data, next) {
-		this.dao().findOne(data, next)
-	},
-	count: function(data, next) {
-		this.dao().countItems(data, next)
-	},
-	viewTemplate: function() {
-		return this.tpl()
-	},
-	getTypeThumbnailUri: function() {
-		return '/thumbs/'+this.name
-	},
-	getThumbnailUri: function() {
-		return null
-	},
-	renderView: function(data, view) {
-		view = view || 'default'
-		// TODO use correct template...
-		return mustache.render(this.tpl(), data)
-	},
-	renderPreview: function(data) {
-		console.log("Rendering preview", data)
-		var obj = {
-			title: data.title,
-			typeThumbnailUrl: this.getTypeThumbnailUri(),
-			thumbnailUrl: this.getThumbnailUri()
-		}
-		return mustache.render(previewTemplate(), obj)
-	}
-})
-
-var makeApi = function(name, dao, tpl) {
-	return new NodeApi(name, dao, tpl)
-}
 
 var API = {
 	{{#daos}}
-	{{name}}: makeApi("{{name}}", {{varname}}, {{tplvarname}}),
+	{{name}}: new {{apiname}}(),
 	{{/daos}}
 }
 

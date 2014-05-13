@@ -4,5 +4,6 @@
   "description": "",
   "canCreateAdmins": false,
   "canCreateUsers": true,
-  "canImportApps": true
+  "canImportApps": true,
+  "tags": []
 }

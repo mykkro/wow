@@ -3,5 +3,6 @@
   "ownerAdminId": -1,
   "title": "JSON",
   "description": "",
-  "content": "{}"
+  "content": "{}",
+  "tags": []
 }

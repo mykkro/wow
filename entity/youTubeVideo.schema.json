@@ -23,6 +23,14 @@
       "type": "string",
       "required": false
     },
+    "tags": {
+      "title": "Tags",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "required": false
+    },
     "ytId": {
       "title": "YouTube ID",
       "type": "string",
@@ -46,27 +54,27 @@
       "required": false
     },
     "likeCount": {
-      "title": "Likes",
+      "title": "Like Count",
       "type": "number",
       "required": false
     },
     "ratingCount": {
-      "title": "Ratings",
+      "title": "Rating Count",
       "type": "number",
       "required": false
     },
     "viewCount": {
-      "title": "Views",
+      "title": "View Count",
       "type": "number",
       "required": false
     },
     "favoriteCount": {
-      "title": "Favorites",
+      "title": "Favorite Count",
       "type": "number",
       "required": false
     },
     "commentCount": {
-      "title": "Comments",
+      "title": "Comment Count",
       "type": "number",
       "required": false
     }

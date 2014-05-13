@@ -23,6 +23,19 @@
       "type": "string",
       "required": false
     },
+    "tags": {
+      "title": "Tags",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "required": false
+    },
+    "avatar": {
+      "title": "Avatar",
+      "type": "string",
+      "required": false
+    },
     "password": {
       "title": "Password",
       "type": "string",

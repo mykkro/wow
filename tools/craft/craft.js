@@ -22,6 +22,7 @@ var outDir = path.join(__dirname, 'output')
 
 var daoTpl = fs.readFileSync("templates/DAO.js", "utf8")
 var apiTpl = fs.readFileSync("templates/API.js", "utf8")
+var entityApiTpl = fs.readFileSync("templates/EntityAPI.js", "utf8")
 var restTpl = fs.readFileSync("templates/REST.js", "utf8")
 
 
@@ -33,6 +34,10 @@ function capFirst(string)
 
 var daoName = function(name) {
 	return capFirst(name) + "DAO"
+}
+
+var apiName = function(name) {
+	return capFirst(name) + "API"
 }
 
 var templateName = function(name) {
@@ -65,10 +70,22 @@ var craftAPI = function(nodes) {
 	var targetDir = path.join(outDir, 'lib', 'api')
 	fs.mkdirpSync(targetDir)
 	var daos = _.map(nodes, function(n) { 
-		return { name: n.name, daoname: daoName(n.name), varname: n.name + "DAO", tplname: templateName(n.name), tplvarname: n.name + "Tpl" }
+		return { 
+			name: n.name, 
+			daoname: daoName(n.name), 
+			apiname: apiName(n.name), 
+			varname: n.name + "DAO", 
+			tplname: templateName(n.name), 
+			tplvarname: n.name + "Tpl" 
+		}
 	})
 	var content = mustache.render(apiTpl, {daos: daos})
 	fs.writeFileSync(path.join(targetDir, "API.js"), content, "utf8")
+	for(var key in daos) {
+		var n = daos[key]
+		var content = mustache.render(entityApiTpl, n)
+		fs.writeFileSync(path.join(targetDir, apiName(n.name)+".js"), content, "utf8")
+	}
 }
 
 var craftREST = function(nodes) {
