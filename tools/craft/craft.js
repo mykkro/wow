@@ -76,7 +76,8 @@ var craftAPI = function(nodes) {
 			apiname: apiName(n.name), 
 			varname: n.name + "DAO", 
 			tplname: templateName(n.name), 
-			tplvarname: n.name + "Tpl" 
+			tplvarname: n.name + "Tpl",
+			parentClass: n.name=="entity" ? "NodeAPI" : "IndexedNodeAPI"
 		}
 	})
 	var content = mustache.render(apiTpl, {daos: daos})

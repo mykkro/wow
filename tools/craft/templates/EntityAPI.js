@@ -2,7 +2,7 @@
 
 var fs = require('fs'); 
 var path = require("path")
-var NodeAPI = require("./NodeAPI")
+var {{parentClass}} = require("./{{parentClass}}")
 
 var _{{varname}} = null
 var {{varname}} = function() {
@@ -17,7 +17,7 @@ var {{tplvarname}} = function() {
 	return _{{tplvarname}}
 }
 
-var {{apiname}} = NodeAPI.extend({
+var {{apiname}} = {{parentClass}}.extend({
 	constructor: function() {
 		this.base("{{name}}", {{varname}}, {{tplvarname}})
 	},
