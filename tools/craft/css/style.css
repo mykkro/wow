@@ -18,16 +18,44 @@ a.disabled {
   margin: 0 3px -2px 0;
   padding: 0;
 }
+.ui-tabs .ui-tabs-nav li:first-child {
+  margin-left: 20px;
+}
 .ui-tabs .ui-tabs-nav li a {
   display: block;
-  padding: 10px 20px;
+  padding: 8px 16px;
   background: #f0f0f0;
-  border: 2px #ccc solid;
+  border-radius: 10px 10px 0px 0px; 
+  -moz-border-radius: 10px 10px 0px 0px; 
+  -webkit-border-radius: 10px 10px 0px 0px; 
+  border: 1px solid #BA8AA3;
   border-bottom-color: #ccc;
   outline: none;
+  text-decoration: none;
 }
+
+.ui-tabs .ui-tabs-nav li.activeli a {
+  background-color: white;
+  border-bottom-color: #fff;
+}
+
+.ui-tabs .ui-tabs-nav li a img {
+  width: 80px;
+  height: 80px;
+}
+
+.ui-tabs .ui-tabs-nav li a span {
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;  
+}
+
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
-  padding: 10px 20px 12px 20px;
+  padding: 8px 16px 8px 16px;
   background: #fff;
   border-bottom-style: none;
 }
@@ -36,7 +64,7 @@ a.disabled {
 .ui-tabs .ui-tabs-nav li.ui-state-processing a {
   cursor: default;
 }
-.ui-tabs .ui-tabs-nav li a,
+.ui-tabs .ui-tabs-nav li div,
 .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
   cursor: pointer;
 }
