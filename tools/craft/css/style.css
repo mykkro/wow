@@ -104,6 +104,7 @@ html, body {
 .dropzone {
     width: 160px;
     height: 160px;
+    overflow: hidden;
 }
 .dropzone > img {
   width: 100%;

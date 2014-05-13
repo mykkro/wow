@@ -68,10 +68,8 @@
             // TODO option setting does not work!
             self.droparea.dropAnything({
                   uuid: uuid,
-                  filesOnly: self.options.filesOnly,
-                  imagesOnly: self.options.imagesOnly,
-                  audioOnly: self.options.audioOnly,
-                  videoOnly: self.options.videoOnly,
+                  accept: self.options.accept,
+                  exclude: self.options.exclude,
                   uploaded: function(data) {
                     // got uploaded file!
                     var uuid = data.uuid
@@ -122,28 +120,16 @@
         getSchemaOfOptions: function() {
             return Alpaca.merge(this.base(), {
                 "properties": {
-                    "audioOnly": {
-                        "title": "Audio only",
-                        "description": "True if only audio files are accepted.",
-                        "type": "boolean",
+                    "accept": {
+                        "title": "Accepted types",
+                        "description": "Accepted type(s)",
+                        "type": "string",
                         "default": false
                     },
-                    "imagesOnly": {
-                        "title": "Images only",
-                        "description": "True if only image files are accepted.",
-                        "type": "boolean",
-                        "default": true
-                    },
-                    "videoOnly": {
-                        "title": "Video only",
-                        "description": "True if only video files are accepted.",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "filesOnly": {
-                        "title": "Files only",
-                        "description": "True if only files are accepted.",
-                        "type": "boolean",
+                    "exclude": {
+                        "title": "Excluded types",
+                        "description": "Excluded type(s)",
+                        "type": "string",
                         "default": false
                     }
                 }
@@ -157,17 +143,11 @@
         getOptionsForOptions: function() {
             return Alpaca.merge(this.base(), {
                 "fields": {
-                    "audioOnly": {
-                        "type": "boolean"
+                    "accept": {
+                        "type": "string"
                     },
-                    "imagesOnly": {
-                        "type": "boolean"
-                    },
-                    "videoOnly": {
-                        "type": "boolean"
-                    },
-                    "filesOnly": {
-                        "type": "boolean"
+                    "exclude": {
+                        "type": "string"
                     }
                 }
             });

@@ -65,6 +65,7 @@
             self.droparea.dropAnything({
                   ytid: ytid,
                   youtubeOnly: true,
+                  accept: 'youtubelink',
                   dropped: function(data) {
                     // got uploaded file!
                     console.log("Dropped!", data)

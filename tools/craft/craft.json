@@ -161,7 +161,7 @@
 					        },
 							"avatar": {
 					        	"type": "uuid",
-					        	"imagesOnly": true
+					        	"accept": "image"
 					        }
    					    }						
 					}
@@ -235,7 +235,7 @@
 					        },
 							"avatar": {
 					        	"type": "uuid",
-					        	"imagesOnly": true
+					        	"accept": "image"
 					        }
 					    }						
 					}
@@ -532,7 +532,7 @@
 					        },
 					        "imageUUID": {
 					        	"type": "uuid",
-					        	"imagesOnly": true
+					        	"accept": "image"
 					        }
 					    }
 					}
@@ -623,7 +623,7 @@
 					        },
 					        "videoUUID": {
 					        	"type": "uuid",
-					        	"videoOnly": true
+					        	"accept": "video"
 					        }
 					    }
 					}
@@ -714,7 +714,7 @@
 					        },
 					        "voiceUUID": {
 					        	"type": "uuid",
-					        	"audioOnly": true
+					        	"accept": "audio"
 					        }
 					    }
 					}
@@ -1055,7 +1055,7 @@
 					        },
 					        "avatar": {
 					        	"type": "uuid",
-					        	"imagesOnly": true
+					        	"accept": "image"
 					        }
 					    }
 					}

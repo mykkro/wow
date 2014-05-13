@@ -11,20 +11,11 @@ $.fn.dropAnything = function (settings) {
     settings = $.extend({
         // css: 'dropzone'
         maxUploadFilesize: 10000000,
-        // accept only files
-        filesOnly: false,
-        // accept only zip archives
-        zipOnly: false,
-        // accept only images
-        imagesOnly: false,
-        // accept only audio files
-        audioOnly: false,
-        // accept only videos
-        videoOnly: false,
-        // accept only links
-        linksOnly: false,
-        // accept only YouTube links
-        youtubeOnly: false,
+        // accept and exclude parameters can be strings or arrays of strings
+        // and are optional
+        // by default: all is accepted, nothing is excluded
+        accept: null, // if set, only those types are accepted 'image' '*'
+        exclude: null, // if set, those types are not accepted ['text','image']
         // automatically download video and image links
         downloadLinkContent: true,
         // events...
@@ -32,6 +23,68 @@ $.fn.dropAnything = function (settings) {
         uploaded: null,
         uuid: null
     }, settings);
+
+    // not intelligent, but quick'n'dirty
+    var getAllSubtypes = function(type) {
+        switch(type) {
+            case '*': 
+                return {'link':1, 'youtubelink':1, 'imagelink':1, 'videolink':1, 'text':1, 'plaintext':1, 'richtext':1, 'file':1, 'image':1, 'audio':1, 'video':1, 'pdf':1, 'zip':1}            
+            case 'file': 
+                return {'file':1, 'image':1, 'audio':1, 'video':1, 'pdf':1, 'zip':1}            
+            case 'link': 
+                return {'link':1, 'youtubelink':1, 'imagelink':1, 'videolink':1}            
+            case 'text': 
+                return {'text':1, 'plaintext':1, 'richtext':1}            
+            default:
+                return {}
+        }
+    }
+
+    var setAccExcType = function(type, out, val) {
+        // get all subtypes of the type
+        out[type] = val
+        var st = getAllSubtypes(type)
+        for(var key in st) {
+            out[key] = val
+        }
+        return out
+    }
+
+    var setAccExcTypes = function(types, out, val) {
+        if(types) {
+            if(typeof(types) == "string") {
+                var types = types.split(",")
+                for(var i=0; i<types.length; i++) {
+                    setAccExcType(types[i], out, val)
+                }
+            } else {
+                // we expect object...
+                for(var key in types) {
+                    setAccExcType(types[key], out, val)
+                }
+            }
+        }
+        return out
+    }
+
+    // TODO fill those arrays
+    var acceptedTypes = {'file':1, 'link':1, 'youtubelink':1, 'imagelink':1, 'videolink':1, 'text':1, 'plaintext':1, 'richtext':1, 'file':1, 'image':1, 'audio':1, 'video':1, 'pdf':1, 'zip':1}
+    var excludedTypes = {}
+    if(settings.accept) {
+        acceptedTypes = {}
+        setAccExcTypes(settings.accept, acceptedTypes, 1)
+    }
+    if(settings.exclude) {
+        excludedTypes = {}
+        setAccExcTypes(settings.exclude, excludedTypes, 1)
+    }
+    console.log("Accepted:", acceptedTypes, "Excluded:", excludedTypes)
+
+    /* process 'accept' and 'exclude' options */
+    function isAccepted(type) {
+        // type is accepted if it is in the accept list and it isn't in exclude list
+        return (type in acceptedTypes && !(type in excludedTypes))
+    }
 
     var imageMimetypes = {
         "image/jpeg":1,
@@ -209,34 +262,24 @@ $.fn.dropAnything = function (settings) {
         var types = dt.types
         var tm = {}
         for(var i=0; i<types.length; i++) tm[types[i]] = true
-        if("text/uri-list" in tm) {
+        if("text/uri-list" in tm && (isAccepted("link") || isAccepted("youtubelink") || isAccepted("imagelink") || isAccepted("videolink")))  {
             handleLink(dt, tm, cb)
             return
         } 
-        if(settings.linksOnly || settings.youtubeOnly) {
-            flash("Only links allowed", cb)
-            return
-        }
-        if("text/html" in tm) {
-            if(settings.filesOnly) {
-                return flash("Only files allowed", cb)
-            }
+        if("text/html" in tm && (isAccepted("text") || isAccepted("richtext"))) {
             handleRichText(dt, cb)
             return
         } 
-        if("text/plain" in tm) {
-            if(settings.filesOnly) {
-                return flash("Only files allowed", cb)
-            }
+        if("text/plain" in tm && (isAccepted("text") || isAccepted("plaintext"))) {
             handlePlainText(dt, cb)
             return
         } 
-        if("Files" in tm) {
+        if("Files" in tm && (isAccepted("file") || isAccepted("audio") || isAccepted("video") || isAccepted("image") || isAccepted("pdf") || isAccepted("zip"))) {
             handleFile(dt, cb)
             return
         } else {
-            // something else...
-            flash("Don't know what to do with this..." + types.join(","), cb)
+            // dropped something that is not supported
+            flash("Not allowed here", cb)
         }
     }
 
@@ -270,10 +313,7 @@ $.fn.dropAnything = function (settings) {
         out.type = "link"
         out.subtype = "general"
         out.url = dt.getData("text/plain")
-        if(isYouTubeUrl(out.url)) {
-            if(settings.filesOnly) {
-                return flash("Only files allowed", cb)
-            }
+        if(isYouTubeUrl(out.url) && isAccepted("youtubelink")) {
             // extract youtube ID
             var ytId = youtube_parser(out.url)
             if(ytId) {
@@ -287,19 +327,9 @@ $.fn.dropAnything = function (settings) {
             }
             return
         } 
-        if(settings.youtubeOnly) {
-            flash("Only YouTube links allowed!", cb)
-            return
-        }        
-        if(checkImageUrl(out.url)) {
+        if(checkImageUrl(out.url) && isAccepted("imagelink")) {
             // we have an image!
             // TODO better test with <img src> construction
-            if(settings.audioOnly) {
-                return flash("Only audio allowed", cb)
-            }
-            if(settings.videoOnly) {
-                return flash("Only video allowed", cb)
-            }
             out.subtype = "image"
             if(settings.downloadLinkContent) {
                 handleImage(out, cb)
@@ -308,14 +338,8 @@ $.fn.dropAnything = function (settings) {
             }
             return
 		} 
-        if(checkVideoUrl(out.url)) {
+        if(checkVideoUrl(out.url) && isAccepted("videolink")) {
 			// video
-            if(settings.imagesOnly) {
-                return flash("Only images allowed", cb)
-            }
-            if(settings.audioOnly) {
-                return flash("Only audio allowed", cb)
-            }
 			out.subtype = "video"
             if(settings.downloadLinkContent) {
                 handleVideo(out, cb)
@@ -324,9 +348,6 @@ $.fn.dropAnything = function (settings) {
             }
             return
         } 
-        if(settings.filesOnly) {
-            return flash("Only files allowed", cb)
-        }
         // other classes....
         cb(null, out)
     }
@@ -370,13 +391,21 @@ $.fn.dropAnything = function (settings) {
             handleDirectLink(dt, cb)
             return
         } 
-        if("text/html" in tm) {
-            if(settings.youtubeOnly) {
-                return flash("Only YouTube links allowed", cb)
-            }
+        if("text/html" in tm && isAccepted("imagelink")) {
             // we got <img src="..."/>
             handleWrappedImageLink(dt, cb)           
         }                  
+    }
+
+    function doUpload(file, cb) {
+        uploadFile(file, function(err, fileData) {
+            if(err) {
+                return flash(err, cb)
+            }
+            // remember UUID!
+            lastUUID = fileData.uuid
+            return cb(null, { type: "file", uploaded: fileData})
+        })    
     }
 
     function handleFile(dt, cb) {
@@ -387,23 +416,23 @@ $.fn.dropAnything = function (settings) {
             if(files[0].size > settings.maxUploadFilesize) {
                 return flash("File too big for upload!", cb)
             } 
-            if(settings.imagesOnly && !(files[0].type in imageMimetypes)) {
-                return flash("Only images allowed.", cb)
+            if((files[0].type in imageMimetypes) && isAccepted("image")) {
+                // proceed with upload
+                return doUpload(files[0], cb)
             }
-            if(settings.audioOnly && !(files[0].type in audioMimetypes)) {
-                return flash("Only audio files allowed.", cb)
+            if((files[0].type in audioMimetypes) && isAccepted("audio")) {
+                return doUpload(files[0], cb)
             }
-            if(settings.videoOnly && !(files[0].type in videoMimetypes)) {
-                return flash("Only video files allowed.", cb)
-            }
-            uploadFile(files[0], function(err, fileData) {
-                if(err) {
-                    return flash(err, cb)
-                }
-                // remember UUID!
-                lastUUID = fileData.uuid
-                return cb(null, { type: "file", uploaded: fileData})
-            })                
+            if((files[0].type in videoMimetypes) && isAccepted("video")) {
+                return doUpload(files[0], cb)
+            }        
+            if(files[0].type == 'application/zip' && isAccepted("zip")) {
+                return doUpload(files[0], cb)
+            }        
+            if(files[0].type == 'application/pdf' && isAccepted("pdf")) {
+                return doUpload(files[0], cb)
+            }        
+            return flash("Not accepted here: "+files[0].type, cb)            
         } else {
             // multiple files
             return flash("Only single file uploads supported!", cb)

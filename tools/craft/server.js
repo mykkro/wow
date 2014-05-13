@@ -45,7 +45,9 @@ var allowedFiletypes = {
   "mpeg": 1,
   "wav": 1,
   "ogg": 1,
-  "mp3": 1
+  "mp3": 1,
+  "zip": 1,
+  "pdf": 1
 }
 
 var allowedFilesize = 10000000
