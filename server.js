@@ -3,7 +3,7 @@
 var express = require('express');
 var routescan = require('express-routescan');	
 var path = require("path")
-var storage = require("./lib/storage")
+var Storage = require("./lib/Storage")
 var rpcMethods = require('./lib/rpc/methods');
 var http = require('http');
 var mustache = require('mustache')
@@ -20,7 +20,7 @@ var
   hashids = new Hashids('this is my salt', 8);
     
     // ensure that some directories exist...
-    storage.init()
+    Storage.init()
 
 // use this: https://npmjs.org/package/express-restify-mongoose
 
@@ -95,7 +95,7 @@ var WowServer = {
           app.use(express.methodOverride());
           app.use( app.router );
     		  routescan(app) // this must be AFTER bodyparser/etc. to make RPC work
-	        app.use("/imports", express.static(storage.importDir))
+	        app.use("/imports", express.static(Storage.importDir))
           app.use("/locales", express.static(currentDir+"/locales"))
           app.use("/userdata", express.static(currentDir+"/userdata"))
 	        app.use(express.static(currentDir + '/public'));
@@ -321,7 +321,7 @@ app.post('/fileupload', function(req, res) {
                 Imports.create(adminId, data, function(err, res2) {
                   if(!err) {
                     var newName = hashids.encrypt(res2._id.id)
-                    var newPath = path.join(storage.importDir, newName)
+                    var newPath = path.join(Storage.importDir, newName)
                     fs.rename(ddd.dirPath, newPath, function(err) {
                       if(!err) {
                         res2.importName = newName

@@ -1,6 +1,6 @@
 'use strict';
 
-var Storage = require("../../lib/storage")
+var Storage = require("../../lib/Storage")
 
 module.exports = {
 
