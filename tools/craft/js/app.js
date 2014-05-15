@@ -363,7 +363,7 @@ $(document).ready(function() {
           case 'link': 
             switch(data.subtype) {
               case 'youtube':
-                console.log("YouTube link dropped: "+data)
+                console.log("YouTube link dropped: "+data.videoId)
                 return
               default:
                 console.log("Link dropped: "+data.url)
