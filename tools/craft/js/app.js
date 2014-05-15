@@ -66,7 +66,9 @@ var formSubmitted = function(type, action, control, value, next) {
     doAjax('POST', uri, data, function(err, res) {
       if(!err) {
         // console.log("Data received: ", res)
-        if(next) next(res[0])
+        if(next) next(null, res[0])
+      } else {
+        next(err)
       }
     })
   } else if(action=="edit") {
@@ -75,10 +77,95 @@ var formSubmitted = function(type, action, control, value, next) {
     var data = value
     doAjax('PUT', uri, data, function(err, res) {
       if(!err) {
-       if(next) next($.extend({_id:id},data))
+       if(next) next(null, $.extend({_id:id},data))
+      } else {
+        next(err)
       }
     })
   }
+}
+
+var putImage = function(dropData, next) {
+  console.log("Store image to DB", dropData)
+  var data = {
+    ownerAdminId: -1,
+    title: dropData.uploaded.originalFilename,
+    description: "Uploaded image file",
+    tags: [],
+    imageUUID: dropData.uploaded.uuid
+  }
+  var uri = '/api/image/new'
+  doAjax('POST', uri, data, function(err, res) {
+      if(!err) {
+        if(next) next(null, res[0])
+      } else next(err)
+    })
+}
+
+var putVideo = function(dropData, next) {
+  console.log("Store video to DB", dropData)
+  var data = {
+    ownerAdminId: -1,
+    title: dropData.uploaded.originalFilename,
+    description: "Uploaded video file",
+    tags: [],
+    videoUUID: dropData.uploaded.uuid
+  }
+  var uri = '/api/video/new'
+  doAjax('POST', uri, data, function(err, res) {
+      if(!err) {
+        if(next) next(null, res[0])
+      } else next(err)
+    })
+}
+
+var putAudio = function(dropData, next) {
+  console.log("Store audio to DB", dropData)
+  var data = {
+    ownerAdminId: -1,
+    title: dropData.uploaded.originalFilename,
+    description: "Uploaded audio file",
+    tags: [],
+    voiceUUID: dropData.uploaded.uuid
+  }
+  var uri = '/api/voice/new'
+  doAjax('POST', uri, data, function(err, res) {
+      if(!err) {
+        if(next) next(null, res[0])
+      } else next(err)
+    })
+}
+
+var putArticle = function(dropData, next) {
+  console.log("Store article to DB", dropData)
+  var data = {
+    ownerAdminId: -1,
+    title: "Untitled Article",
+    description: "An article",
+    tags: [],
+    content: dropData.html || dropData.text
+  }
+  var uri = '/api/article/new'
+  doAjax('POST', uri, data, function(err, res) {
+      if(!err) {
+        if(next) next(null, res[0])
+      } else next(err)
+    })
+}
+
+var putYouTube = function(dropData, next) {
+  console.log("Store youtube to DB", dropData)
+  var data = {
+    ownerAdminId: -1,
+    tags: [],
+    ytId: dropData.videoId
+  }
+  var uri = '/api/youTubeVideo/new'
+  doAjax('POST', uri, data, function(err, res) {
+      if(!err) {
+        if(next) next(null, res[0])
+      } else next(err)
+    })
 }
 
 var refreshListView = function() {
@@ -195,7 +282,11 @@ var createForm = function(type, action, schema, options, data) {
         }
         $(control.container).find("[name=submit]").click(function() {
           // clicked on submit button...
-          formSubmitted(type, action, control, control.form.getValue(), function(rr) {
+          formSubmitted(type, action, control, control.form.getValue(), function(err, rr) {
+            if(err) {
+              console.error(err)
+              return false
+            }
             // reset form
             console.log("Resetting form...")
             // TODO this does not work! how to properly reset a form?
@@ -346,6 +437,14 @@ $(document).ready(function() {
     e.preventDefault();
   });
 
+  function afterPut(err, data) {
+    if(!err) {
+      console.log("Stored into DB: ", data)
+    } else {
+      console.error("Storing into DB failed")
+    }    
+  }
+
   $('#allpurpose-dropzone').dropAnything({
       accept: '*',
       dropped: function(data) {
@@ -355,16 +454,17 @@ $(document).ready(function() {
             switch(data.subtype) {
               case 'html':
                 console.log("Rich Text dropped: "+data.html)
-                return
+                return putArticle(data, afterPut)
               default:
                 console.log("Text droped: "+data.text)
+                return putArticle(data, afterPut)
             }
             return
           case 'link': 
             switch(data.subtype) {
               case 'youtube':
                 console.log("YouTube link dropped: "+data.videoId)
-                return
+                return putYouTube(data, afterPut)
               default:
                 console.log("Link dropped: "+data.url)
             }
@@ -373,13 +473,13 @@ $(document).ready(function() {
             switch(data.subtype) {
               case "image":
                 console.log("Image uploaded: "+data.uploaded.uuid)
-                return
+                return putImage(data, afterPut)
               case "audio":
                 console.log("Audio uploaded: "+data.uploaded.uuid)
-                return
+                return putAudio(data, afterPut)
               case "video":
                 console.log("Video uploaded: "+data.uploaded.uuid)
-                return
+                return putVideo(data, afterPut)
               case "pdf":
                 console.log("PDF uploaded: "+data.uploaded.uuid)
                 return
