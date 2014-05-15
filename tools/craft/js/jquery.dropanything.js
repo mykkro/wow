@@ -96,7 +96,8 @@ $.fn.dropAnything = function (settings) {
     var audioMimetypes = {
         "audio/wav":1,
         "audio/ogg": 1,
-        "audio/mp3": 1
+        "audio/mp3": 1,
+        "audio/weba": 1
     }
 
     var videoMimetypes = {
@@ -105,6 +106,7 @@ $.fn.dropAnything = function (settings) {
         "video/x-flv": 1,
         "video/mp4": 1,
         "video/ogg": 1,
+        "video/mpeg": 1,
         "video/webm": 1
     }
 

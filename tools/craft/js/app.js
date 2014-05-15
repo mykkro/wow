@@ -350,6 +350,49 @@ $(document).ready(function() {
       accept: '*',
       dropped: function(data) {
         console.log("Dropped!", data)
+        switch(data.type) {
+          case 'text':
+            switch(data.subtype) {
+              case 'html':
+                console.log("Rich Text dropped: "+data.html)
+                return
+              default:
+                console.log("Text droped: "+data.text)
+            }
+            return
+          case 'link': 
+            switch(data.subtype) {
+              case 'youtube':
+                console.log("YouTube link dropped: "+data)
+                return
+              default:
+                console.log("Link dropped: "+data.url)
+            }
+            return
+          case 'file':
+            switch(data.subtype) {
+              case "image":
+                console.log("Image uploaded: "+data.uploaded.uuid)
+                return
+              case "audio":
+                console.log("Audio uploaded: "+data.uploaded.uuid)
+                return
+              case "video":
+                console.log("Video uploaded: "+data.uploaded.uuid)
+                return
+              case "pdf":
+                console.log("PDF uploaded: "+data.uploaded.uuid)
+                return
+              case "zip":
+                console.log("ZIP file uploaded: "+data.uploaded.uuid)
+                return
+              default:
+                console.log("Unsupported file subtype: "+data.subtype)
+            }
+            return
+          default:
+            console.log("Unsupported drop type: "+data.type)
+        }
       },
       uploaded: function(data) {
         console.log("Uploaded!", data)
