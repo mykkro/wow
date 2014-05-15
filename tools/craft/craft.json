@@ -1254,13 +1254,13 @@
 						"url": {
 							"title": "Video URL",
 							"type":"string",
-							"required":true,
+							"required":false,
 							"format": "uri"
 						},
 						"thumbnailUrl": {
 							"title": "Thumbnail URL",
 							"type":"string",
-							"required":true,
+							"required":false,
 							"format": "uri"
 						},
 						"duration": {
@@ -1304,6 +1304,46 @@
 			},
 			"forms": {
 				"add": {
+					"schema":  {
+						"type":"object",
+						"$schema": "http://json-schema.org/draft-03/schema",
+						"title": "YouTube video",
+						"properties":{
+							"ownerAdminId": {
+								"title": "Owner ID",
+								"type":"number",
+								"required":true
+							},
+							"created": {
+								"title": "Created",
+								"type":"string",
+								"required":false
+							},
+							"title": {
+								"title": "Title",
+								"type":"string",
+								"required":true
+							},
+							"description": {
+								"title": "Description",
+								"type":"string",
+								"required":false
+							},
+							"tags": {
+								"title": "Tags",
+								"type": "array",
+					            "items": {
+					                "type": "string"
+					            },
+								"required": false
+							},
+							"ytId": {
+								"title": "YouTube ID",
+								"type":"string",
+								"required":true
+							}
+						}
+					},
 					"options": {
 					    "renderForm":true,
 					    "hideInitValidationError": true,
