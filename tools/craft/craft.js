@@ -82,10 +82,12 @@ var craftAPI = function(nodes) {
 	})
 	var content = mustache.render(apiTpl, {daos: daos})
 	fs.writeFileSync(path.join(targetDir, "API.js"), content, "utf8")
-	for(var key in daos) {
-		var n = daos[key]
-		var content = mustache.render(entityApiTpl, n)
-		fs.writeFileSync(path.join(targetDir, apiName(n.name)+".js"), content, "utf8")
+	if(argv.apiclasses || argv.all) {
+		for(var key in daos) {
+			var n = daos[key]
+			var content = mustache.render(entityApiTpl, n)
+			fs.writeFileSync(path.join(targetDir, apiName(n.name)+".js"), content, "utf8")
+		}
 	}
 }
 
