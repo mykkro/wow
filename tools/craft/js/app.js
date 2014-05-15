@@ -347,9 +347,7 @@ $(document).ready(function() {
   });
 
   $('#allpurpose-dropzone').dropAnything({
-      // uuid: 'aa577c3a-c2f1-43f7-ba2b-0feaccd7b46b',
-      // ytid: 'gonBdNO7VbY',
-      accept: 'zip',
+      accept: '*',
       dropped: function(data) {
         console.log("Dropped!", data)
       },

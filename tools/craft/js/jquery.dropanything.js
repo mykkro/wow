@@ -28,11 +28,11 @@ $.fn.dropAnything = function (settings) {
     var getAllSubtypes = function(type) {
         switch(type) {
             case '*': 
-                return {'link':1, 'youtubelink':1, 'imagelink':1, 'videolink':1, 'text':1, 'plaintext':1, 'richtext':1, 'file':1, 'image':1, 'audio':1, 'video':1, 'pdf':1, 'zip':1}            
+                return {'link':1, 'youtubelink':1, 'imagelink':1, 'videolink':1, 'audiolink':1, 'pdflink':1, 'ziplink':1, 'text':1, 'plaintext':1, 'richtext':1, 'file':1, 'image':1, 'audio':1, 'video':1, 'pdf':1, 'zip':1}            
             case 'file': 
                 return {'file':1, 'image':1, 'audio':1, 'video':1, 'pdf':1, 'zip':1}            
             case 'link': 
-                return {'link':1, 'youtubelink':1, 'imagelink':1, 'videolink':1}            
+                return {'link':1, 'youtubelink':1, 'imagelink':1, 'videolink':1, 'audiolink': 1, 'pdflink': 1, 'ziplink': 1}            
             case 'text': 
                 return {'text':1, 'plaintext':1, 'richtext':1}            
             default:
@@ -177,11 +177,13 @@ $.fn.dropAnything = function (settings) {
 	
     var display = function(out) {
         if(out.type == "link") {
-            if(out.subtype == "image") {
-                var src = out.uploaded ? out.uploaded.thumbnailUri : out.url 
-                return makeImage(src)
-            } else if(out.subtype == "video") {
+            if(out.uploaded) {
+                // we have associated uploaded data...
                 var src = out.uploaded.thumbnailUri
+                return makeImage(src)
+            }
+            if(out.subtype == "image") {
+                var src = out.url 
                 return makeImage(src)
             } else if(out.subtype == "youtube") {
                 return makeImage(out.thumbnailUrl)
@@ -217,7 +219,22 @@ $.fn.dropAnything = function (settings) {
 
     var checkVideoUrl = function(url) {
         var uu = url.toLowerCase()
-        return(uu.match(/\.(ogv|webm|mov|avi|mp4|3gp|flv)$/) != null);
+        return(uu.match(/\.(m4v|ogv|webm|mov|avi|mp4|3gp|flv)$/) != null);
+    }
+
+    var checkAudioUrl = function(url) {
+        var uu = url.toLowerCase()
+        return(uu.match(/\.(ogg|weba|mp3|wav|aac)$/) != null);
+    }
+
+    var checkZipUrl = function(url) {
+        var uu = url.toLowerCase()
+        return(uu.match(/\.(zip)$/) != null);
+    }
+
+    var checkPdfUrl = function(url) {
+        var uu = url.toLowerCase()
+        return(uu.match(/\.(pdf)$/) != null);
     }
 	
     // http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
@@ -262,7 +279,7 @@ $.fn.dropAnything = function (settings) {
         var types = dt.types
         var tm = {}
         for(var i=0; i<types.length; i++) tm[types[i]] = true
-        if("text/uri-list" in tm && (isAccepted("link") || isAccepted("youtubelink") || isAccepted("imagelink") || isAccepted("videolink")))  {
+        if("text/uri-list" in tm && (isAccepted("link") || isAccepted("youtubelink") || isAccepted("imagelink") || isAccepted("videolink") || isAccepted("audiolink") || isAccepted("ziplink") || isAccepted("pdflink")))  {
             handleLink(dt, tm, cb)
             return
         } 
@@ -348,12 +365,41 @@ $.fn.dropAnything = function (settings) {
             }
             return
         } 
+        if(checkAudioUrl(out.url) && isAccepted("audiolink")) {
+            // video
+            out.subtype = "audio"
+            if(settings.downloadLinkContent) {
+                handleAudio(out, cb)
+            } else {
+                cb(null, out)
+            }
+            return
+        } 
+        if(checkZipUrl(out.url) && isAccepted("ziplink")) {
+            // video
+            out.subtype = "zip"
+            if(settings.downloadLinkContent) {
+                handleZip(out, cb)
+            } else {
+                cb(null, out)
+            }
+            return
+        } 
+        if(checkPdfUrl(out.url) && isAccepted("pdflink")) {
+            // video
+            out.subtype = "pdf"
+            if(settings.downloadLinkContent) {
+                handlePdf(out, cb)
+            } else {
+                cb(null, out)
+            }
+            return
+        } 
         // other classes....
         cb(null, out)
     }
 
     function handleImage(info, cb) {
-        // download the image and store it locally...
         downloadFile(info.url, lastUUID, function(err, res) {
             if(err) cb(err);
             else cb(null, $.extend(info, {uploaded:res}))
@@ -361,7 +407,27 @@ $.fn.dropAnything = function (settings) {
     }
 
 	function handleVideo(info, cb) {
-        // download the image and store it locally...
+        downloadFile(info.url, lastUUID, function(err, res) {
+            if(err) cb(err);
+            else cb(null, $.extend(info, {uploaded:res}))
+        })
+    }
+
+    function handleAudio(info, cb) {
+        downloadFile(info.url, lastUUID, function(err, res) {
+            if(err) cb(err);
+            else cb(null, $.extend(info, {uploaded:res}))
+        })
+    }
+
+    function handleZip(info, cb) {
+        downloadFile(info.url, lastUUID, function(err, res) {
+            if(err) cb(err);
+            else cb(null, $.extend(info, {uploaded:res}))
+        })
+    }
+
+    function handlePdf(info, cb) {
         downloadFile(info.url, lastUUID, function(err, res) {
             if(err) cb(err);
             else cb(null, $.extend(info, {uploaded:res}))
@@ -397,14 +463,14 @@ $.fn.dropAnything = function (settings) {
         }                  
     }
 
-    function doUpload(file, cb) {
+    function doUpload(file, subtype, cb) {
         uploadFile(file, function(err, fileData) {
             if(err) {
                 return flash(err, cb)
             }
             // remember UUID!
             lastUUID = fileData.uuid
-            return cb(null, { type: "file", uploaded: fileData})
+            return cb(null, { type: "file", subtype: subtype, uploaded: fileData})
         })    
     }
 
@@ -418,19 +484,19 @@ $.fn.dropAnything = function (settings) {
             } 
             if((files[0].type in imageMimetypes) && isAccepted("image")) {
                 // proceed with upload
-                return doUpload(files[0], cb)
+                return doUpload(files[0], "image", cb)
             }
             if((files[0].type in audioMimetypes) && isAccepted("audio")) {
-                return doUpload(files[0], cb)
+                return doUpload(files[0], "audio", cb)
             }
             if((files[0].type in videoMimetypes) && isAccepted("video")) {
-                return doUpload(files[0], cb)
+                return doUpload(files[0], "video", cb)
             }        
             if(files[0].type == 'application/zip' && isAccepted("zip")) {
-                return doUpload(files[0], cb)
+                return doUpload(files[0], "zip", cb)
             }        
             if(files[0].type == 'application/pdf' && isAccepted("pdf")) {
-                return doUpload(files[0], cb)
+                return doUpload(files[0], "pdf", cb)
             }        
             return flash("Not accepted here: "+files[0].type, cb)            
         } else {
