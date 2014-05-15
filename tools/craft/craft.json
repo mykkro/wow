@@ -178,7 +178,7 @@
 					        },
 							"avatar": {
 					        	"type": "uuid",
-					        	"accept": "image"
+					        	"accept": ["image", "imagelink"]
 					        },
 					        "tags":{
 					        	"type": "tag"
@@ -263,7 +263,7 @@
 					        },
 							"avatar": {
 					        	"type": "uuid",
-					        	"accept": "image"
+					        	"accept": ["image","imagelink"]
 					        },
 					        "tags":{
 					        	"type": "tag"
@@ -596,7 +596,7 @@
 					        },
 					        "imageUUID": {
 					        	"type": "uuid",
-					        	"accept": "image"
+					        	"accept": ["image","imagelink"]
 					        },
 					        "tags":{
 					        	"type": "tag"
@@ -699,7 +699,7 @@
 					        },
 					        "videoUUID": {
 					        	"type": "uuid",
-					        	"accept": "video"
+					        	"accept": ["video","videolink"]
 					        },
 					        "tags":{
 					        	"type": "tag"
@@ -802,7 +802,7 @@
 					        },
 					        "voiceUUID": {
 					        	"type": "uuid",
-					        	"accept": "audio"
+					        	"accept": ["audio", "audiolink"]
 					        },
 					        "tags":{
 					        	"type": "tag"
@@ -1185,7 +1185,7 @@
 					        },
 					        "avatar": {
 					        	"type": "uuid",
-					        	"accept": "image"
+					        	"accept": ["image", "imagelink"]
 					        },
 					        "tags":{
 					        	"type": "tag"
