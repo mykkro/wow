@@ -21,7 +21,8 @@ $.fn.dropAnything = function (settings) {
         // events...
         dropped: null,
         uploaded: null,
-        uuid: null
+        uuid: null,
+        reuseUUID: true
     }, settings);
 
     // not intelligent, but quick'n'dirty
@@ -113,7 +114,7 @@ $.fn.dropAnything = function (settings) {
     var afterDrop = settings.dropped || $.noop
     var afterFile = settings.uploaded || $.noop
 
-    var lastUUID = settings.uuid
+    var lastUUID = settings.reuseUUID ? settings.uuid : null
     var lastYouTubeId = settings.ytid
     var container
 
@@ -471,7 +472,9 @@ $.fn.dropAnything = function (settings) {
                 return flash(err, cb)
             }
             // remember UUID!
-            lastUUID = fileData.uuid
+            if(settings.reuseUUID) {
+                lastUUID = fileData.uuid
+            }
             return cb(null, { type: "file", subtype: subtype, uploaded: fileData})
         })    
     }

@@ -460,6 +460,7 @@ $(document).ready(function() {
   }
 
   $('#allpurpose-dropzone').dropAnything({
+      reuseUUID: false,
       accept: '*',
       dropped: function(data) {
         console.log("Dropped!", data)
