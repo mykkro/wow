@@ -42,7 +42,9 @@ API.getNode = function(type, id) {
 		deferred.resolve(merge({
 			node: {
 				type:type, 
-				thumb: API[type].getThumbnailUri(res) || API[type].getTypeThumbnailUri()
+				thumbnailUri: API[type].getThumbnailUri(res) || API[type].getTypeThumbnailUri(),
+				previewUri: '/' + type + '/' + id + '/preview',
+				viewUri: '/' + type + '/' + id + '/view'
 			}
 		}, res));
 	})

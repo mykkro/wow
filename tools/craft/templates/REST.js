@@ -129,6 +129,7 @@ module.exports = function(app, api) {
 
 
 	/* parameter can be string or array of strings */
+	// TODO handle LIKE queries and ignoring case
 	var constructQuery = function(qs) {
 		var query = {}
 		if(typeof(qs) == "string") {
@@ -179,8 +180,6 @@ module.exports = function(app, api) {
 	// 	 limit
 	//   skip
 	app.get('/api/search', function(req, res) {
-		console.log("Search:")
-		console.log(req.query)
 		var query = req.query
 		// assemble query object...
 		var q = {
@@ -189,8 +188,10 @@ module.exports = function(app, api) {
 			query: constructQuery(query.query),
 			sort: constructSort(query.sort)
 		}
-		api.findNodes(q).done(console.log)
-		out(res, null, q)
+		// TODO handle fail condition
+		api.findNodes(q).done(function(data) {
+			out(res, null, data)
+		})
 
 	})
 
