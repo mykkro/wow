@@ -32,17 +32,27 @@ API.findEntities = function(d) {
 	})
 	return deferred.promise;
 }
+
 API.getNode = function(type, id) {
 	var deferred = Q.defer();
 	API[type].get(id, function(err, res) {
 		if(err) {
 			return deferred.reject(err);
 		}
-		deferred.resolve(merge({nodetype:type}, res));
+		deferred.resolve(merge({
+			node: {
+				type:type, 
+				thumb: API[type].getThumbnailUri(res) || API[type].getTypeThumbnailUri()
+			}
+		}, res));
 	})
 	return deferred.promise;
 }
-// TODO fail conditions...
+
+/**
+ *  Find nodes 
+ *  d = { query: { ... }, skip: RECORDS_TO_SKIP, limit: RECORD_COUNT, sort: { ... } }
+ */
 API.findNodes = function(d) {
 	var deferred = Q.defer();
 	API.findEntities(d).done(function(data) {
@@ -50,7 +60,7 @@ API.findNodes = function(d) {
 		Q.all(promises).done(function(nodes) {
 			// combine with IDs from data
 			for(var i=0; i<nodes.length; i++) {
-				nodes[i].nodeid = data[i]._id
+				nodes[i].node.eid = data[i]._id
 			}
 			deferred.resolve(nodes);
 		})
