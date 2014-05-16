@@ -425,7 +425,7 @@ function updateRecentItemsPreview() {
     var out = $("#recentitems")
     out.empty()
     for(var i=0; i<previewUris.length; i++) {
-      $("<div>").load(previewUris[i]).appendTo(out)
+      $("<div>").addClass("node-preview-wrapper").load(previewUris[i]).appendTo(out)
     }
   })
 }
@@ -530,5 +530,6 @@ $(document).ready(function() {
   })  
 
   makeUploadControl()
+  updateRecentItemsPreview()
 
 })

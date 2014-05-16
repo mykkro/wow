@@ -36,7 +36,7 @@
 </head>
 <body>
   <header>
-    <h2>Craft testing page</h2>
+    <h2>Wow Admin</h2>
   </header>
   <div id="content">
     <div id="tabs-container-1" class="ui-tabs">
@@ -52,7 +52,7 @@
         <li>
           <a href="#tabs-testing">
             <img src="/assets/icons/testtube.png"></img>
-            <span>Testing</span>
+            <span>Quick Start</span>
           </a>          
         </li>
       </ul>
@@ -61,19 +61,11 @@
         <h2>{{title}}</h2>
         <div id="tabs-subcontainer-{{index}}-1" class="ui-tabs">
           <ul id="tabs-subcontainer-{{index}}-1-nav" class="ui-tabs-nav">
-            <li><a href="#tabs-{{index}}-schema">Schema</a></li>
-            <li><a href="#tabs-{{index}}-defaults">Defaults</a></li>
             <li><a href="#tabs-{{index}}-add">Add</a></li>
             <li><a href="#tabs-{{index}}-list">List</a></li>
             <li><a href="#tabs-{{index}}-view" class="disabled">View</a></li>
             <li><a href="#tabs-{{index}}-edit" class="disabled">Edit</a></li>
           </ul>
-          <div id="tabs-{{index}}-schema" class="ui-subtabs-panel">
-            <pre class="json-view">{{{schemaView}}}</pre>
-          </div>
-          <div id="tabs-{{index}}-defaults" class="ui-subtabs-panel">
-            <pre class="json-view">{{{defaultsView}}}</pre>
-          </div>
           <div id="tabs-{{index}}-add" class="ui-subtabs-panel">
             <div class="form"></div>
             <script>
@@ -126,17 +118,20 @@
       </script>
       {{/tabs}}
       <div id="tabs-testing" class="ui-tabs-panel">
-        <h2>Testing</h2>
+        <h2>Quick Start</h2>
         <div id="testarea">
+        <!--
           <form method="post" action="" enctype="multipart/form-data">
             <input type="file" name="file" id="upload-selectfile" />
             <input type="text" name="uuid" id="upload-uuid"/>
             <div id="upload-thumb"></div>
             <a href="#" id="remove-upload">Remove</a>
           </form>
+          -->
           <div id="allpurpose-dropzone" class="dropzone">
             Drop anything here
           </div>
+          <h3>Most recent items:</h3>
           <div id="recentitems"></div>
       </div>
     </div>

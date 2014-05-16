@@ -5,3 +5,8 @@
 	background-color: {{node.color}};
 }
 {{/nodes}}
+
+.node-preview-wrapper {
+	margin: 4px;
+	display: inline-block;
+}

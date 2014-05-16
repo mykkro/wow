@@ -200,9 +200,9 @@ if(argv.html || argv.all) {
 				schema: JSON.stringify(n.node.entity.schema, null, 2),
 				viewParams: JSON.stringify(n.node.views.default, null, 2),
 				formParams: JSON.stringify(n.node.forms.add, null, 2),
-				editFormParams: JSON.stringify(n.node.forms.edit || n.node.forms.add, null, 2),
-				schemaView: JsonUtils.highlight(n.node.entity.schema),
-				defaultsView: JsonUtils.highlight(n.node.entity.defaults)
+				editFormParams: JSON.stringify(n.node.forms.edit || n.node.forms.add, null, 2)
+				// schemaView: JsonUtils.highlight(n.node.entity.schema),
+				// defaultsView: JsonUtils.highlight(n.node.entity.defaults)
 			}
 		})	
 	})
