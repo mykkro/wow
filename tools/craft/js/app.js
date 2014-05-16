@@ -416,6 +416,19 @@ var makeUploadControl = function(opts) {
    })
 }
 
+function updateRecentItemsPreview() {
+  var uri = "/api/search?&limit=10&sort=created:desc&query=ownerAdminId:-1"
+  $.getJSON(uri).done(function(data) {
+    console.log("Received 10 most recent items:", data)
+    var previewUris = _.map(data, function(d) { return d.node.previewUri })
+    console.log("PreviewUris:", previewUris)
+    var out = $("#recentitems")
+    out.empty()
+    for(var i=0; i<previewUris.length; i++) {
+      $("<div>").load(previewUris[i]).appendTo(out)
+    }
+  })
+}
 
 $(document).ready(function() {
   console.log("Ready!")
@@ -440,6 +453,7 @@ $(document).ready(function() {
   function afterPut(err, data) {
     if(!err) {
       console.log("Stored into DB: ", data)
+      updateRecentItemsPreview()
     } else {
       console.error("Storing into DB failed")
     }    
