@@ -465,6 +465,21 @@ $(document).ready(function() {
               case 'youtube':
                 console.log("YouTube link dropped: "+data.videoId)
                 return putYouTube(data, afterPut)
+              case "image":
+                console.log("Image link dropped and uploaded: "+data.uploaded.uuid)
+                return putImage(data, afterPut)
+              case "audio":
+                console.log("Audio link dropped and uploaded: "+data.uploaded.uuid)
+                return putAudio(data, afterPut)
+              case "video":
+                console.log("Video link dropped and uploaded: "+data.uploaded.uuid)
+                return putVideo(data, afterPut)
+              case "pdf":
+                console.log("PDF link dropped and uploaded: "+data.uploaded.uuid)
+                return
+              case "zip":
+                console.log("ZIP file link dropped and uploaded: "+data.uploaded.uuid)
+                return
               default:
                 console.log("Link dropped: "+data.url)
             }
