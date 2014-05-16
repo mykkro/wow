@@ -24,7 +24,7 @@ var daoTpl = fs.readFileSync("templates/DAO.js", "utf8")
 var apiTpl = fs.readFileSync("templates/API.js", "utf8")
 var entityApiTpl = fs.readFileSync("templates/EntityAPI.js", "utf8")
 var restTpl = fs.readFileSync("templates/REST.js", "utf8")
-
+var cssTpl = fs.readFileSync("templates/nodes.css", "utf8")
 
 
 function capFirst(string)
@@ -69,7 +69,8 @@ var craftDAO = function(name, node, options) {
 var craftAPI = function(nodes) {
 	var targetDir = path.join(outDir, 'lib', 'api')
 	fs.mkdirpSync(targetDir)
-	var daos = _.map(nodes, function(n) { 
+	var daos = _.map(nodes, function(n) {
+		// console.log(n) 
 		return { 
 			name: n.name, 
 			daoname: daoName(n.name), 
@@ -77,7 +78,8 @@ var craftAPI = function(nodes) {
 			varname: n.name + "DAO", 
 			tplname: templateName(n.name), 
 			tplvarname: n.name + "Tpl",
-			parentClass: n.name=="entity" ? "NodeAPI" : "IndexedNodeAPI"
+			parentClass: n.name=="entity" ? "NodeAPI" : "IndexedNodeAPI",
+			opts: JSON.stringify({color:n.node.color})
 		}
 	})
 	var content = mustache.render(apiTpl, {daos: daos})
@@ -89,6 +91,13 @@ var craftAPI = function(nodes) {
 			fs.writeFileSync(path.join(targetDir, apiName(n.name)+".js"), content, "utf8")
 		}
 	}
+}
+
+var craftCSS = function(nodes) {
+	var targetDir = path.join(outDir, 'public', 'css')
+	fs.mkdirpSync(targetDir)
+	var content = mustache.render(cssTpl, {nodes: nodes})
+	fs.writeFileSync(path.join(targetDir, "nodes.css"), content, "utf8")
 }
 
 var craftREST = function(nodes) {
@@ -175,6 +184,7 @@ for(var nodeName in cfg.nodes) {
 if(argv.api || argv.all) craftAPI(nodes)
 if(argv.rest || argv.all) craftREST(nodes)
 if(argv.templates || argv.all) craftTemplates(nodes)
+if(argv.css || argv.all) craftCSS(nodes)
 
 if(argv.html || argv.all) {
 	// write out index.html file

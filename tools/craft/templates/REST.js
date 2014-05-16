@@ -127,6 +127,7 @@ module.exports = function(app, api) {
 		renderPreview("{{name}}", req, res)
 	});
 
+{{/daos}}
 
 	/* parameter can be string or array of strings */
 	// TODO handle LIKE queries and ignoring case
@@ -195,5 +196,4 @@ module.exports = function(app, api) {
 
 	})
 
-{{/daos}}
 }

@@ -24,10 +24,6 @@ a.disabled {
 .ui-tabs .ui-tabs-nav li a {
   display: block;
   padding: 8px 16px;
-  background: #f0f0f0;
-  border-radius: 10px 10px 0px 0px; 
-  -moz-border-radius: 10px 10px 0px 0px; 
-  -webkit-border-radius: 10px 10px 0px 0px; 
   border: 1px solid #BA8AA3;
   border-bottom-color: #ccc;
   outline: none;

@@ -19,7 +19,7 @@ var {{tplvarname}} = function() {
 
 var {{apiname}} = {{parentClass}}.extend({
 	constructor: function() {
-		this.base("{{name}}", {{varname}}, {{tplvarname}})
+		this.base("{{name}}", {{varname}}, {{tplvarname}}, {{{opts}}})
 	},
 	getThumbnailUri: function(data) {		
 		return null

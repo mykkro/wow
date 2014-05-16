@@ -12,6 +12,7 @@
 			"title": "Administrator",
 			"description": "Administrator profile.",
 			"thumbnail": "/assets/thumbs/admin.png",
+			"color": "#ffe",
 			"entity": {
 				"collectionName": "admins",
 				"schema": {
@@ -289,6 +290,7 @@
 			"title": "App",
 			"description": "Imported App",
 			"thumbnail": "/assets/thumbs/app.png",
+			"color": "#fef",
 			"entity": {
 				"collectionName": "apps",
 				"schema": {
@@ -417,6 +419,7 @@
 			"title": "Article",
 			"description": "Text article.",
 			"thumbnail": "/assets/thumbs/article.png",
+			"color": "#eff",
 			"entity": {
 				"collectionName": "articles",
 				"schema": {
@@ -519,6 +522,7 @@
 			"title": "Image",
 			"description": "Image.",
 			"thumbnail": "/assets/thumbs/image.png",
+			"color": "#ffd",
 			"entity": {
 				"collectionName": "images",
 				"schema": {
@@ -622,6 +626,7 @@
 			"title": "Video",
 			"description": "Video clip.",
 			"thumbnail": "/assets/thumbs/video.png",
+			"color": "#fdf",
 			"entity": {
 				"collectionName": "videos",
 				"schema": {
@@ -725,6 +730,7 @@
 			"title": "Voice",
 			"description": "Audio clip.",
 			"thumbnail": "/assets/thumbs/voice.png",
+			"color": "#dff",
 			"entity": {
 				"collectionName": "voices",
 				"schema": {
@@ -828,6 +834,7 @@
 			"title": "JSON",
 			"description": "JSON Data.",
 			"thumbnail": "/assets/thumbs/json.png",
+			"color": "#fed",
 			"entity": {
 				"collectionName": "jsons",
 				"schema": {
@@ -932,6 +939,7 @@
 			"title": "Internet Radio",
 			"description": "Internet Radio.",
 			"thumbnail": "/assets/thumbs/netradio.png",
+			"color": "#def",
 			"entity": {
 				"collectionName": "netradios",
 				"schema": {
@@ -1035,6 +1043,7 @@
 			"title": "User",
 			"description": "User profile.",
 			"thumbnail": "/assets/thumbs/user.png",
+			"color": "#cee",
 			"entity": {
 				"collectionName": "users",
 				"schema": {
@@ -1211,6 +1220,7 @@
 			"title": "YouTube video",
 			"description": "YouTube Video.",
 			"thumbnail": "/assets/thumbs/youtubevideo.png",
+			"color": "#ece",
 			"entity": {
 				"collectionName": "youtubevideos",
 				"schema":  {
@@ -1401,6 +1411,7 @@
 			"title": "File",
 			"description": "Uploaded file.",
 			"thumbnail": "/assets/thumbs/file.png",
+			"color": "#eec",
 			"entity": {
 				"collectionName": "files",
 				"schema":  {
@@ -1525,6 +1536,7 @@
 			"title": "Entity",
 			"description": "Abstract entity.",
 			"thumbnail": "/assets/thumbs/entity.png",
+			"color": "#ced",
 			"entity": {
 				"collectionName": "entities",
 				"schema":  {
