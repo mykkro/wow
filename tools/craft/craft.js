@@ -6,6 +6,9 @@
  * --dao 	Generate DAO files.
  * --api 	Generate API.js
  * --rest 	Generate REST.js
+ * --apiclasses
+ * --templates
+ * --css
  * --all	Generate all of the above
  */
 var fs = require("fs-extra")
