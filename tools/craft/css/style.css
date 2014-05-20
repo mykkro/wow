@@ -86,6 +86,16 @@ html, body {
   overflow: auto;
 }
 
+#allpurpose-dropzone, #node-dropbox {
+  display: inline-block;
+}
+
+#node-dropbox {
+  width: 500px;
+  height: 250px;
+  background-color: #fed;
+}
+
 .dropzone {
   background-color: #fce;
   border: 4px dashed #ccc;
@@ -111,6 +121,7 @@ html, body {
     width:  98px;
     height:  98px;
     border: 1px solid #ddd;
+    pointer-events:none;
 }
 .node-preview .thumbnail {
   width: 100%;

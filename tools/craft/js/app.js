@@ -446,6 +446,17 @@ function getPosition(element) {
     return { x: xPosition, y: yPosition };
 }
 
+function dragStart(ev) {
+  console.log("Drag started")
+   ev.dataTransfer.effectAllowed='copy';
+   ev.dataTransfer.setData("nodeId", ev.target.getAttribute("id")); // --> nothing is passed; maybe Chrome-specific?
+}
+
+function dragEnd(ev) {
+  console.log("Drag ended")
+}
+
+//$.event.props.push('dataTransfer');
 function updateRecentItemsPreview() {
   var uri = "/api/search?&limit=10&sort=created:desc&query=ownerAdminId:-1"
   $.getJSON(uri).done(function(data) {
@@ -455,33 +466,17 @@ function updateRecentItemsPreview() {
     var out = $("#recentitems").css("position","relative")
     out.empty()
     for(var i=0; i<previewUris.length; i++) {
-      $("<div>").addClass("node-preview-wrapper").load(previewUris[i]).appendTo(out)
-        .drag("start",function(){
-          return $( this ).clone()
-            .css("position","absolute")
-            .css("opacity", .75 )
-            .appendTo( document.body );
-        })
-        .drag(function( ev, dd ){
-          //console.log(dd)
-          $( dd.proxy ).css({
-            top: dd.offsetY,
-            left: dd.offsetX
-          });
-        })
-        .drag("end",function( ev, dd ){
-          $( this ).animate({
-            top: dd.offsetY,
-            left: dd.offsetX
-          }, 420 );
-          $( dd.proxy ).remove();
-        });
+      var id = "node-"+ data[i].node.type + "-" + data[i]._id
+      var el = $("<div>").attr("draggable","true").attr("id", id).addClass("node-preview-wrapper").load(previewUris[i]).appendTo(out)
+      el.get(0).addEventListener('dragstart', dragStart, false);
+      el.get(0).addEventListener('dragend', dragEnd, false);
     }
   })
 }
 
 $(document).ready(function() {
   console.log("Ready!")
+  // jQuery.event.props.push("dataTransfer");
 
   var tabber1 = new Yetii({
       id: 'tabs-container-1',
@@ -592,5 +587,22 @@ $(document).ready(function() {
 
   makeUploadControl()
   updateRecentItemsPreview()
+
+    function cancel(e) {
+      if (e.preventDefault) e.preventDefault(); // required by FF + Safari
+      return false; // required by IE
+    }   
+
+  $("#node-dropbox")
+    .bind('dragover', cancel)
+    .bind('dragenter', cancel)
+    .bind('dragleave', cancel)
+    .bind('drop', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log("Dropped!", e)
+        console.log(e.dataTransfer.getData("nodeId"))
+        return false;
+    })
 
 })
