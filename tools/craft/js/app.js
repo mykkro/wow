@@ -168,6 +168,22 @@ var putYouTube = function(dropData, next) {
     })
 }
 
+var tryToImportApp = function(dropData, next) {
+  console.log("Trying to import application", dropData)
+  var data = {
+    ownerAdminId: -1,
+    tags: [],
+    title: dropData.uploaded.originalFilename,
+    archiveUUID: dropData.uploaded.uuid
+  }
+  var uri = '/api/app/import'
+  doAjax('POST', uri, data, function(err, res) {
+      if(!err) {
+        if(next) next(null, res[0])
+      } else next(err)
+    })
+}
+
 var refreshListView = function() {
   if(currentIndex>0) {
     var main = $("#tabs-"+currentIndex+"-list")
@@ -450,6 +466,17 @@ $(document).ready(function() {
     e.preventDefault();
   });
 
+  function afterPutApp(err, data) {
+    if(!err) {
+      console.log("App imported: ", data)
+      var thumbUri = data.thumbnailUri
+      $("#allpurpose-dropzone img").attr("src", thumbUri)
+      afterPut(err, data)
+    } else {
+    }    
+  }
+
+
   function afterPut(err, data) {
     if(!err) {
       console.log("Stored into DB: ", data)
@@ -515,7 +542,7 @@ $(document).ready(function() {
                 return
               case "zip":
                 console.log("ZIP file uploaded: "+data.uploaded.uuid)
-                return
+                return tryToImportApp(data, afterPutApp)
               default:
                 console.log("Unsupported file subtype: "+data.subtype)
             }

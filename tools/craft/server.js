@@ -20,6 +20,8 @@ var REST = require("./output/lib/api/REST")
 var Storage = require("./output/lib/Storage")
 var Uploader = require("./output/lib/Uploader")
 var uploader = new Uploader()
+var Importer = require("./output/lib/Importer")
+var importer = new Importer()
 var Downloader = require("./output/lib/Downloader")
 
 
@@ -68,8 +70,9 @@ app.configure(function(){
 	app.use(express.static(__dirname + '/output/public'));
 	app.use(express.static(__dirname + '/../../public'));
 	app.use('/uploads',express.static(Storage.uploadDir));
+  app.use("/imports", express.static(Storage.importDir))
 
-	REST(app, API)
+	REST(app, API, uploader, importer)
 });
 
 var sendError = function(res, msg, details) {

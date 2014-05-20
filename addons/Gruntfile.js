@@ -6,6 +6,11 @@ module.exports = function (grunt) {
           src: ['books/samplebook/**'],
           dest: 'dist/samplebook.zip'
         },
+        samplebook_old: {
+          cwd: 'books/samplebook-old/',
+          src: ['books/samplebook-old/**'],
+          dest: 'dist/samplebook-old.zip'
+        },
         fifteen: {
           cwd: 'games/fifteen/',
           src: ['games/fifteen/**'],

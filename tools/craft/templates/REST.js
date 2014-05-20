@@ -2,7 +2,7 @@
 
 var _ = require("lodash")
 
-module.exports = function(app, api) {
+module.exports = function(app, api, uploader, importer) {
 
 
 	// helper function to return the results
@@ -194,6 +194,23 @@ module.exports = function(app, api) {
 			out(res, null, data)
 		})
 
+	})
+
+	app.post('/api/app/import', function(req, res) {
+		console.log("Import: ",req.body)
+		var data = req.body
+		var uuid = data.archiveUUID
+		data.archivePath = uploader.getPath(uuid, "zip")
+		importer.import(data, function(err, resp) {
+			if(err) {
+				console.error(err)
+				res.status(500);
+    			res.end('error')
+			} else {
+				console.log(resp)
+				out(res, null, resp)
+			}
+		})
 	})
 
 }

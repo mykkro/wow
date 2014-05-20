@@ -39,13 +39,13 @@
     "url": {
       "title": "Video URL",
       "type": "string",
-      "required": true,
+      "required": false,
       "format": "uri"
     },
     "thumbnailUrl": {
       "title": "Thumbnail URL",
       "type": "string",
-      "required": true,
+      "required": false,
       "format": "uri"
     },
     "duration": {
