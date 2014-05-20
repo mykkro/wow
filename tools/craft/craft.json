@@ -1223,6 +1223,305 @@
 			},
 			"options": {}
 		},		
+		"usergroup": {
+			"name": "usergroup",
+			"plural": "usergroups",
+			"title": "User group",
+			"description": "User group.",
+			"thumbnail": "/assets/thumbs/usergroup.png",
+			"color": "#cbe",
+			"entity": {
+				"collectionName": "usergroups",
+				"schema": {
+					"type":"object",
+					"$schema": "http://json-schema.org/draft-03/schema",
+					"title": "User group",
+					"properties":{
+						"ownerAdminId": {
+							"title": "Owner ID",
+							"type":"number",
+							"required":true
+						},
+						"created": {
+							"title": "Created",
+							"type":"string",
+							"required":false
+						},
+						"title": {
+							"title": "Title",
+							"type":"string",
+							"required":true
+						},
+						"description": {
+							"title": "Description",
+							"type":"string",
+							"required":false
+						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						},
+						"avatar": {
+							"title": "Avatar",
+							"type":"string",
+							"required":false
+						}
+					}
+				},
+				"defaults": {
+			    	"ownerAdminId": -1,
+					"title": "User group",
+					"description": "",
+					"tags": []
+				}
+			},
+			"forms": {
+				"add": {
+					"options": {
+					    "renderForm":true,
+					    "hideInitValidationError": true,					    
+					    "form":{
+					        "attributes":{
+					            "action":"echo.php",
+					            "method":"post"
+					        },
+					        "buttons":{
+					            "submit":{},
+					            "reset":{}
+					        }
+					    },
+					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
+					        "created":{
+					            "hidden" : true
+					        },
+					        "description":{
+					            "type":"textarea",
+					            "placeholder": "Enter description here..."
+					        },
+					        "avatar": {
+					        	"type": "uuid",
+					        	"accept": ["image", "imagelink"]
+					        },
+					        "tags":{
+					        	"type": "tag"
+					        }
+					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
+			"options": {}
+		},		
+		"album": {
+			"name": "album",
+			"plural": "albums",
+			"title": "Album",
+			"description": "Album",
+			"thumbnail": "/assets/thumbs/album.png",
+			"color": "#cbe",
+			"entity": {
+				"collectionName": "albums",
+				"schema": {
+					"type":"object",
+					"$schema": "http://json-schema.org/draft-03/schema",
+					"title": "Album",
+					"properties":{
+						"ownerAdminId": {
+							"title": "Owner ID",
+							"type":"number",
+							"required":true
+						},
+						"created": {
+							"title": "Created",
+							"type":"string",
+							"required":false
+						},
+						"title": {
+							"title": "Title",
+							"type":"string",
+							"required":true
+						},
+						"description": {
+							"title": "Description",
+							"type":"string",
+							"required":false
+						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						}
+					}
+				},
+				"defaults": {
+			    	"ownerAdminId": -1,
+					"title": "Album",
+					"description": "",
+					"tags": []
+				}
+			},
+			"forms": {
+				"add": {
+					"options": {
+					    "renderForm":true,
+					    "hideInitValidationError": true,					    
+					    "form":{
+					        "attributes":{
+					            "action":"echo.php",
+					            "method":"post"
+					        },
+					        "buttons":{
+					            "submit":{},
+					            "reset":{}
+					        }
+					    },
+					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
+					        "created":{
+					            "hidden" : true
+					        },
+					        "description":{
+					            "type":"textarea",
+					            "placeholder": "Enter description here..."
+					        },
+					        "tags":{
+					        	"type": "tag"
+					        }
+					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
+			"options": {}
+		},		
+		"scrapbook": {
+			"name": "scrapbook",
+			"plural": "scrapbooks",
+			"title": "Scrapbook",
+			"description": "Scrapbook",
+			"thumbnail": "/assets/thumbs/scrapbook.png",
+			"color": "#abe",
+			"entity": {
+				"collectionName": "scrapbooks",
+				"schema": {
+					"type":"object",
+					"$schema": "http://json-schema.org/draft-03/schema",
+					"title": "Album",
+					"properties":{
+						"ownerAdminId": {
+							"title": "Owner ID",
+							"type":"number",
+							"required":true
+						},
+						"created": {
+							"title": "Created",
+							"type":"string",
+							"required":false
+						},
+						"title": {
+							"title": "Title",
+							"type":"string",
+							"required":true
+						},
+						"description": {
+							"title": "Description",
+							"type":"string",
+							"required":false
+						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						},
+						"content": {
+							"title": "Content",
+							"type": "object",
+							"required": false
+						}
+					}
+				},
+				"defaults": {
+			    	"ownerAdminId": -1,
+					"title": "Scrapbook",
+					"description": "",
+					"tags": []
+				}
+			},
+			"forms": {
+				"add": {
+					"options": {
+					    "renderForm":true,
+					    "hideInitValidationError": true,					    
+					    "form":{
+					        "attributes":{
+					            "action":"echo.php",
+					            "method":"post"
+					        },
+					        "buttons":{
+					            "submit":{},
+					            "reset":{}
+					        }
+					    },
+					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
+					        "created":{
+					            "hidden" : true
+					        },
+					        "description":{
+					            "type":"textarea",
+					            "placeholder": "Enter description here..."
+					        },
+					        "tags":{
+					        	"type": "tag"
+					        }
+					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
+			"options": {}
+		},		
 		"youTubeVideo": {
 			"name": "youTubeVideo",
 			"plural": "youTubeVideos",
