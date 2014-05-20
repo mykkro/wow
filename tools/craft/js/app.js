@@ -6,6 +6,8 @@ var socket = io.connect('http://localhost:9999');
 
 var JsonUtils = require("JsonUtils")
 
+
+
 var doAjax = function(method, uri, data, cb) {
   var opts = (method == "GET" || method == 'DELETE') 
     ? {
@@ -432,16 +434,48 @@ var makeUploadControl = function(opts) {
    })
 }
 
+function getPosition(element) {
+    var xPosition = 0;
+    var yPosition = 0;
+  
+    while(element) {
+        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+        element = element.offsetParent;
+    }
+    return { x: xPosition, y: yPosition };
+}
+
 function updateRecentItemsPreview() {
   var uri = "/api/search?&limit=10&sort=created:desc&query=ownerAdminId:-1"
   $.getJSON(uri).done(function(data) {
     console.log("Received 10 most recent items:", data)
     var previewUris = _.map(data, function(d) { return d.node.previewUri })
     console.log("PreviewUris:", previewUris)
-    var out = $("#recentitems")
+    var out = $("#recentitems").css("position","relative")
     out.empty()
     for(var i=0; i<previewUris.length; i++) {
       $("<div>").addClass("node-preview-wrapper").load(previewUris[i]).appendTo(out)
+        .drag("start",function(){
+          return $( this ).clone()
+            .css("position","absolute")
+            .css("opacity", .75 )
+            .appendTo( document.body );
+        })
+        .drag(function( ev, dd ){
+          //console.log(dd)
+          $( dd.proxy ).css({
+            top: dd.offsetY,
+            left: dd.offsetX
+          });
+        })
+        .drag("end",function( ev, dd ){
+          $( this ).animate({
+            top: dd.offsetY,
+            left: dd.offsetX
+          }, 420 );
+          $( dd.proxy ).remove();
+        });
     }
   })
 }

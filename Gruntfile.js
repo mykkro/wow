@@ -227,7 +227,7 @@ module.exports = function(grunt) {
                     "js/vendor/jquery.playable.js",
                     "js/vendor/jquery.youtubedrop.js",
                     "js/vendor/jquery.tmpl.js",
-                    //"js/vendor/jquery.event.drag-2.2.js",
+                    "js/vendor/jquery.event.drag-2.2.js",
                     //"js/vendor/jquery.event.drop-2.2.js",
                     "js/vendor/gamepad.min.js",
                     "js/vendor/mustache.js",
