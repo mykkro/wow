@@ -42,6 +42,12 @@
 .node.preset {
 	background-color: #bcd;
 }
+.node.location {
+	background-color: #bcb;
+}
+.node.shortcut {
+	background-color: #bad;
+}
 .node.file {
 	background-color: #eec;
 }

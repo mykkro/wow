@@ -125,7 +125,9 @@ var Game = Base.extend({
 
 module.exports = Game
 
-},{"./Splash":7,"basejs":12}],"Qz+ab4":[function(require,module,exports){
+},{"./Splash":7,"basejs":12}],"GridController":[function(require,module,exports){
+module.exports=require('Qz+ab4');
+},{}],"Qz+ab4":[function(require,module,exports){
 var Base = require("basejs")
 
 var GridController = Base.extend({
@@ -185,8 +187,8 @@ var GridController = Base.extend({
 
 module.exports = GridController
 
-},{"basejs":12}],"GridController":[function(require,module,exports){
-module.exports=require('Qz+ab4');
+},{"basejs":12}],"MiniLog":[function(require,module,exports){
+module.exports=require('0D1Aa+');
 },{}],"0D1Aa+":[function(require,module,exports){
 "use strict";
 
@@ -236,9 +238,7 @@ var LivesMiniLog = MiniLog.extend({
 
 module.exports = MiniLog
 
-},{"basejs":12}],"MiniLog":[function(require,module,exports){
-module.exports=require('0D1Aa+');
-},{}],7:[function(require,module,exports){
+},{"basejs":12}],7:[function(require,module,exports){
 "use strict";
 
 var Splash = function(options) {

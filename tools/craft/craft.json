@@ -1828,6 +1828,215 @@
 			},
 			"options": {}
 		},
+		"location": {
+			"indexed": true,
+			"name": "location",
+			"plural": "locations",
+			"title": "Location",
+			"description": "Location",
+			"thumbnail": "/assets/thumbs/location.png",
+			"color": "#bcb",
+			"entity": {
+				"collectionName": "locations",
+				"schema":  {
+					"type":"object",
+					"$schema": "http://json-schema.org/draft-03/schema",
+					"title": "Location",
+					"properties":{
+						"ownerAdminId": {
+							"title": "Owner ID",
+							"type":"number",
+							"required":true
+						},
+						"created": {
+							"title": "Created",
+							"type":"string",
+							"required":false
+						},
+						"title": {
+							"title": "Title",
+							"type":"string",
+							"required":true
+						},
+						"description": {
+							"title": "Description",
+							"type":"string",
+							"required":false
+						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						},
+						"latitude": {
+							"title": "Latitude",
+							"type":"number",
+							"required":true
+						},
+						"longitude": {
+							"title": "Longitude",
+							"type":"number",
+							"required":true
+						}
+					}
+				},
+				"defaults": {
+			    	"ownerAdminId": -1,
+					"title": "Location",
+					"description": "",
+					"tags": [],
+					"content": {}
+				}
+			},
+			"forms": {
+				"add": {
+					"options": {
+					    "renderForm":true,
+					    "hideInitValidationError": true,
+					    "form":{
+					        "attributes":{
+					            "action":"echo.php",
+					            "method":"post"
+					        },
+					        "buttons":{
+					            "submit":{},
+					            "reset":{}
+					        }
+					    },
+					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
+					        "created":{
+					            "hidden" : true
+					        },
+					        "description":{
+					            "type":"textarea",
+					            "placeholder": "Enter description here..."
+					        },
+					        "tags":{
+					        	"type": "tag"
+					        }
+					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
+			"options": {}
+		},
+		"shortcut": {
+			"indexed": true,
+			"name": "shortcut",
+			"plural": "shortcuts",
+			"title": "Shortcut",
+			"description": "Shortcut",
+			"thumbnail": "/assets/thumbs/shortcut.png",
+			"color": "#bad",
+			"entity": {
+				"collectionName": "shortcuts",
+				"schema":  {
+					"type":"object",
+					"$schema": "http://json-schema.org/draft-03/schema",
+					"title": "Shortcut",
+					"properties":{
+						"ownerAdminId": {
+							"title": "Owner ID",
+							"type":"number",
+							"required":true
+						},
+						"created": {
+							"title": "Created",
+							"type":"string",
+							"required":false
+						},
+						"title": {
+							"title": "Title",
+							"type":"string",
+							"required":true
+						},
+						"description": {
+							"title": "Description",
+							"type":"string",
+							"required":false
+						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						},
+						"uri": {
+							"title": "URI",
+							"type":"string",
+							"required":true
+						}
+					}
+				},
+				"defaults": {
+			    	"ownerAdminId": -1,
+					"title": "Shortcut",
+					"description": "",
+					"tags": [],
+					"content": {}
+				}
+			},
+			"forms": {
+				"add": {
+					"options": {
+					    "renderForm":true,
+					    "hideInitValidationError": true,
+					    "form":{
+					        "attributes":{
+					            "action":"echo.php",
+					            "method":"post"
+					        },
+					        "buttons":{
+					            "submit":{},
+					            "reset":{}
+					        }
+					    },
+					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
+					        "created":{
+					            "hidden" : true
+					        },
+					        "description":{
+					            "type":"textarea",
+					            "placeholder": "Enter description here..."
+					        },
+					        "tags":{
+					        	"type": "tag"
+					        }
+					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
+			"options": {}
+		},
 		"file": {
 			"indexed": true,
 			"name": "file",
