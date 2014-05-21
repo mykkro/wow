@@ -93,7 +93,8 @@
     "escape-html": "~1.0.1",
     "h": "~0.1.0",
     "q": "~1.0.1",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "sessionstore": "~0.4.5"
   },
   "repository": {
     "type": "git",

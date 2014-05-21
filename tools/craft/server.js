@@ -24,6 +24,79 @@ var Importer = require("./output/lib/Importer")
 var importer = new Importer()
 var Downloader = require("./output/lib/Downloader")
 
+var SessionStore = require("sessionstore")
+
+var passport = require("passport");
+var LocalStrategy = require('passport-local').Strategy;
+
+var Auth = {
+  isAuthenticated: function (req, res, next) {
+    console.log("Auth: isAuthenticated: "+req.isAuthenticated())
+      if(req.isAuthenticated()){
+          next();
+      }else{
+          res.redirect("/login");
+      }
+  },
+  userExist: function(req, res, next) {
+      //User.count({
+        //  email: req.body.email
+      //}, function (err, count) {
+        //  if (count === 0) {
+              next();
+          //} else {
+            //  res.redirect("/signup");
+          //}
+      //});
+  }
+}
+
+
+// see: http://danialk.github.io/blog/2013/02/23/authentication-using-passportjs/
+// https://github.com/DanialK/PassportJS-Authentication
+var UsersAPI = API.user
+
+passport.use(new LocalStrategy(
+  {
+    usernameField: 'username',
+    passwordField: 'password'
+  },  
+  function(username, password, done) {
+    console.log("Passport: trying to authenticate", username, password)
+    UsersAPI.findOne({ username : username }, function(err, user) {
+      console.log("User returned: ", user)
+        if(err) { return done(err); }
+        if(!user){
+            return done(null, false, { message: 'Incorrect username.' });
+        }
+        if (user.password != password) {
+          return done(null, false);
+        }
+        return done(null, user);        
+/*
+        hash( password, user.salt, function (err, hash) {
+            if (err) { return done(err); }
+            if (hash == user.hash) return done(null, user);
+            done(null, false, { message: 'Incorrect password.' });
+        });
+    */
+    });
+}));
+
+passport.serializeUser(function(user, done) {
+    console.log("Serializing user", user)
+    done(null, user._id);
+});
+
+
+passport.deserializeUser(function(id, done) {
+    console.log("Deserializing user", id)
+    UsersAPI.get(id, function(err,user) {
+      if(err) done(err);
+      done(null,user);
+    })
+});
+
 
 function getExtension(filename) {
     var ext = path.extname(filename||'').split('.');
@@ -62,8 +135,13 @@ app.configure(function(){
 	app.use(express.urlencoded());   
 	app.use(express.limit(allowedFilesize));
 	app.use(express.multipart());
-	app.use(express.methodOverride());
-	app.use(express.cookieParser());
+  app.use(express.cookieParser());
+  app.use(express.methodOverride());
+  app.use(express.session({
+      secret: 'keyboard cat'
+  }))
+  app.use(passport.initialize());
+  app.use(passport.session());
 	app.use( app.router );
 	app.use('/js', express.static(__dirname + '/js'));
 	app.use('/css', express.static(__dirname + '/css'));
@@ -97,6 +175,38 @@ var withLinks = function(file) {
     delete out.thumbnailPath
     return out
 }
+
+app.get("/", Auth.isAuthenticated, function(req, res){ 
+    res.sendfile(__dirname+'/output/public/index.html');
+});
+
+app.get("/profile", Auth.isAuthenticated , function(req, res){ 
+    res.send("profile: " + JSON.stringify(req.user));
+});
+
+app.get('/login', function(req, res) {
+  res.sendfile(__dirname+'/output/public/login.html');
+});
+
+app.post('/login',
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/loginFailure'
+  })
+);
+ 
+app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/login');
+  });
+
+app.get('/loginFailure', function(req, res, next) {
+  res.send('Failed to authenticate');
+});
+ 
+app.get('/loginSuccess', function(req, res, next) {
+  res.send('Successfully authenticated');
+});
 
 app.get('/upload/:uuid/thumb', function(req, res) {
   var uuid = req.params.uuid

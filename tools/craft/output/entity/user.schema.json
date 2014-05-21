@@ -36,6 +36,11 @@
       "type": "string",
       "required": false
     },
+    "username": {
+      "title": "Username",
+      "type": "string",
+      "required": true
+    },
     "password": {
       "title": "Password",
       "type": "string",

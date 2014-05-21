@@ -9,7 +9,6 @@ var tapi = new ThemeAPI()
 var Q = require("q")
 var _ = require("lodash")
 
-// TODO ERROR: links are created with same ID!!!
 
 var loc = {
 	title: "Vienna",
