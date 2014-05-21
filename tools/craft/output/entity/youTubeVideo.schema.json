@@ -1,0 +1,82 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "title": "YouTube video",
+  "properties": {
+    "ownerAdminId": {
+      "title": "Owner ID",
+      "type": "number",
+      "required": true
+    },
+    "created": {
+      "title": "Created",
+      "type": "string",
+      "required": false
+    },
+    "title": {
+      "title": "Title",
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "title": "Description",
+      "type": "string",
+      "required": false
+    },
+    "tags": {
+      "title": "Tags",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "required": false
+    },
+    "ytId": {
+      "title": "YouTube ID",
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "title": "Video URL",
+      "type": "string",
+      "required": false,
+      "format": "uri"
+    },
+    "thumbnailUrl": {
+      "title": "Thumbnail URL",
+      "type": "string",
+      "required": false,
+      "format": "uri"
+    },
+    "duration": {
+      "title": "Duration",
+      "type": "number",
+      "required": false
+    },
+    "likeCount": {
+      "title": "Like Count",
+      "type": "number",
+      "required": false
+    },
+    "ratingCount": {
+      "title": "Rating Count",
+      "type": "number",
+      "required": false
+    },
+    "viewCount": {
+      "title": "View Count",
+      "type": "number",
+      "required": false
+    },
+    "favoriteCount": {
+      "title": "Favorite Count",
+      "type": "number",
+      "required": false
+    },
+    "commentCount": {
+      "title": "Comment Count",
+      "type": "number",
+      "required": false
+    }
+  }
+}

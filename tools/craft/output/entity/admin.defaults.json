@@ -1,0 +1,9 @@
+{
+  "ownerAdminId": -1,
+  "title": "Administrator",
+  "description": "",
+  "canCreateAdmins": false,
+  "canCreateUsers": true,
+  "canImportApps": true,
+  "tags": []
+}
