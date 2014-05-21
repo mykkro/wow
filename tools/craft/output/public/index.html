@@ -14,6 +14,9 @@
   <script src="/js/UuidField.js"></script>
   <script src="/js/YouTubeField.js"></script>
 
+  <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'></script>
+  <script src="js/locationpicker.jquery.js"></script>
+
   <script src="/js/bundle.js"></script>
   <script src="/js/craft.bundle.js"></script>
   <script src="/socket.io/socket.io.js"></script>
@@ -1348,6 +1351,12 @@
           <a href="#tabs-testing">
             <img src="/assets/icons/testtube.png"></img>
             <span>Quick Start</span>
+          </a>          
+        </li>
+        <li>
+          <a href="#tabs-testing2">
+            <img src="/assets/icons/testtube.png"></img>
+            <span>Testing</span>
           </a>          
         </li>
       </ul>
@@ -6536,25 +6545,28 @@
         });  
       </script>
       <div id="tabs-testing" class="ui-tabs-panel">
-        <h2>Quick Start</h2>
-        <div id="testarea">
-        <!--
-          <form method="post" action="" enctype="multipart/form-data">
-            <input type="file" name="file" id="upload-selectfile" />
-            <input type="text" name="uuid" id="upload-uuid"/>
-            <div id="upload-thumb"></div>
-            <a href="#" id="remove-upload">Remove</a>
-          </form>
-          -->
+          <h2>Quick Start</h2>
+          <div id="testarea">
+          </div>
           <div>
-          <div id="allpurpose-dropzone" class="dropzone">
-            Drop anything here
-          </div>
-          <div id="node-dropbox">
-          </div>
+            <div id="allpurpose-dropzone" class="dropzone">
+              Drop anything here
+            </div>
+            <div id="node-dropbox">
+            </div>
           </div>
           <h3>Most recent items:</h3>
           <div id="recentitems"></div>
+      </div>
+      <div id="tabs-testing2" class="ui-tabs-panel">
+        <h2>Testing2</h2>
+        <div>
+          <div id="testarea2" style="width: 500px; height: 400px;">
+          </div>
+        </div>
+        <script>
+          $('#testarea2').locationpicker();
+        </script>
       </div>
     </div>
   </div>
