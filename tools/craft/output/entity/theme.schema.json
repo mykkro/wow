@@ -1,7 +1,7 @@
 {
   "type": "object",
   "$schema": "http://json-schema.org/draft-03/schema",
-  "title": "User",
+  "title": "Theme",
   "properties": {
     "ownerAdminId": {
       "title": "Owner ID",
@@ -31,29 +31,14 @@
       },
       "required": false
     },
-    "avatar": {
-      "title": "Avatar",
+    "backgroundUri": {
+      "title": "Background URI",
       "type": "string",
-      "required": false
+      "required": true
     },
-    "password": {
-      "title": "Password",
-      "type": "string",
-      "required": false
-    },
-    "usesPassword": {
-      "title": "Uses password?",
-      "type": "boolean",
-      "required": false
-    },
-    "locationId": {
-      "title": "Location",
-      "type": "number",
-      "required": false
-    },
-    "presetId": {
-      "title": "Preset",
-      "type": "number",
+    "options": {
+      "title": "Options",
+      "type": "object",
       "required": false
     }
   }

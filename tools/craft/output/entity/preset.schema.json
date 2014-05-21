@@ -31,10 +31,30 @@
       },
       "required": false
     },
-    "content": {
-      "title": "Content",
-      "type": "object",
+    "button1LinkId": {
+      "title": "Button 1 Link ID",
+      "type": "number",
       "required": true
+    },
+    "button2LinkId": {
+      "title": "Button 2 Link ID",
+      "type": "number",
+      "required": true
+    },
+    "button3LinkId": {
+      "title": "Button 3 Link ID",
+      "type": "number",
+      "required": true
+    },
+    "themeId": {
+      "title": "Theme ID",
+      "type": "number",
+      "required": true
+    },
+    "options": {
+      "title": "Options",
+      "type": "object",
+      "required": false
     }
   }
 }

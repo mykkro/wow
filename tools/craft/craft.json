@@ -1111,6 +1111,16 @@
 							"title": "Uses password?",							
 							"type":"boolean",
 							"required":false
+						},
+						"locationId": {
+							"title": "Location",
+							"type": "number",
+							"required":false
+						},
+						"presetId": {
+							"title": "Preset",
+							"type": "number",
+							"required":false
 						}
 					}
 				},
@@ -1176,6 +1186,16 @@
 							"usesPassword": {
 								"title": "Uses password?",							
 								"type":"boolean",
+								"required":false
+							},
+							"locationId": {
+								"title": "Location",
+								"type": "number",
+								"required":false
+							},
+							"presetId": {
+								"title": "Preset",
+								"type": "number",
 								"required":false
 							}
 						}
@@ -1769,10 +1789,30 @@
 				            },
 							"required": false
 						},
-						"content": {
-							"title": "Content",
-							"type":"object",
+						"button1LinkId": {
+							"title": "Button 1 Link ID",
+							"type":"number",
 							"required":true
+						},
+						"button2LinkId": {
+							"title": "Button 2 Link ID",
+							"type":"number",
+							"required":true
+						},
+						"button3LinkId": {
+							"title": "Button 3 Link ID",
+							"type":"number",
+							"required":true
+						},
+						"themeId": {
+							"title": "Theme ID",
+							"type":"number",
+							"required":true
+						},
+						"options": {
+							"title": "Options",
+							"type":"object",
+							"required":false
 						}
 					}
 				},
@@ -1889,6 +1929,113 @@
 					"description": "",
 					"tags": [],
 					"content": {}
+				}
+			},
+			"forms": {
+				"add": {
+					"options": {
+					    "renderForm":true,
+					    "hideInitValidationError": true,
+					    "form":{
+					        "attributes":{
+					            "action":"echo.php",
+					            "method":"post"
+					        },
+					        "buttons":{
+					            "submit":{},
+					            "reset":{}
+					        }
+					    },
+					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
+					        "created":{
+					            "hidden" : true
+					        },
+					        "description":{
+					            "type":"textarea",
+					            "placeholder": "Enter description here..."
+					        },
+					        "tags":{
+					        	"type": "tag"
+					        }
+					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
+			"options": {}
+		},
+		"theme": {
+			"indexed": true,
+			"name": "theme",
+			"plural": "themes",
+			"title": "Theme",
+			"description": "Theme",
+			"thumbnail": "/assets/thumbs/theme.png",
+			"color": "#bab",
+			"entity": {
+				"collectionName": "themes",
+				"schema":  {
+					"type":"object",
+					"$schema": "http://json-schema.org/draft-03/schema",
+					"title": "Theme",
+					"properties":{
+						"ownerAdminId": {
+							"title": "Owner ID",
+							"type":"number",
+							"required":true
+						},
+						"created": {
+							"title": "Created",
+							"type":"string",
+							"required":false
+						},
+						"title": {
+							"title": "Title",
+							"type":"string",
+							"required":true
+						},
+						"description": {
+							"title": "Description",
+							"type":"string",
+							"required":false
+						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						},
+						"backgroundUri": {
+							"title": "Background URI",
+							"type":"string",
+							"required":true
+						},
+						"options": {
+							"title": "Options",
+							"type":"object",
+							"required":false
+						}
+					}
+				},
+				"defaults": {
+			    	"ownerAdminId": -1,
+					"title": "Location",
+					"description": "",
+					"tags": [],
+					"options": {}
 				}
 			},
 			"forms": {

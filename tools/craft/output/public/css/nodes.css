@@ -45,6 +45,9 @@
 .node.location {
 	background-color: #bcb;
 }
+.node.theme {
+	background-color: #bab;
+}
 .node.shortcut {
 	background-color: #bad;
 }

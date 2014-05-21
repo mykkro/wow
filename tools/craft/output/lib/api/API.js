@@ -25,6 +25,7 @@ var ScrapbookAPI = require("./ScrapbookAPI")
 var YouTubeVideoAPI = require("./YouTubeVideoAPI")
 var PresetAPI = require("./PresetAPI")
 var LocationAPI = require("./LocationAPI")
+var ThemeAPI = require("./ThemeAPI")
 var ShortcutAPI = require("./ShortcutAPI")
 var FileAPI = require("./FileAPI")
 var EntityAPI = require("./EntityAPI")
@@ -48,6 +49,7 @@ var API = {
 	youTubeVideo: new YouTubeVideoAPI(),
 	preset: new PresetAPI(),
 	location: new LocationAPI(),
+	theme: new ThemeAPI(),
 	shortcut: new ShortcutAPI(),
 	file: new FileAPI(),
 	entity: new EntityAPI(),

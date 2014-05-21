@@ -1,7 +1,7 @@
 {
   "type": "object",
   "$schema": "http://json-schema.org/draft-03/schema",
-  "title": "User",
+  "title": "Shortcut",
   "properties": {
     "ownerAdminId": {
       "title": "Owner ID",
@@ -31,30 +31,10 @@
       },
       "required": false
     },
-    "avatar": {
-      "title": "Avatar",
+    "uri": {
+      "title": "URI",
       "type": "string",
-      "required": false
-    },
-    "password": {
-      "title": "Password",
-      "type": "string",
-      "required": false
-    },
-    "usesPassword": {
-      "title": "Uses password?",
-      "type": "boolean",
-      "required": false
-    },
-    "locationId": {
-      "title": "Location",
-      "type": "number",
-      "required": false
-    },
-    "presetId": {
-      "title": "Preset",
-      "type": "number",
-      "required": false
+      "required": true
     }
   }
 }

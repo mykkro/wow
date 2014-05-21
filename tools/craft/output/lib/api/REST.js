@@ -1078,6 +1078,74 @@ module.exports = function(app, api, uploader, importer) {
 		renderPreview("location", req, res)
 	});
 
+	// generated REST wrappers for entity 'theme'
+
+	// api.theme.find
+	app.get('/api/theme/search', function(req, res) {
+	 	api.theme.find(req.query, function(err, rr) {
+	    	out(res, err, rr)
+	  	})	
+	});
+
+	// api.theme.count
+	app.get('/api/theme/count', function(req, res) {
+	 	api.theme.count(req.query, function(err, rr) {
+	    	out(res, err, rr)
+	  	})	
+	});
+
+	// api.theme.get
+	app.get('/api/theme/:id', function(req, res) {
+	 	api.theme.get(req.params.id, function(err, rr) {
+	    	out(res, err, rr)
+	  	})	
+	});
+
+	// api.theme.delete
+	app.delete('/api/theme/:id', function(req, res) {
+	 	api.theme.delete(req.params.id, function(err, rr) {
+	    	out(res, err, rr)
+	  	})	
+	});
+
+	// api.theme.update
+	app.put('/api/theme/:id', function(req, res) {
+		//api.theme.update(req.params.id, req.body, function(err, rr) {
+		api.theme.set(req.params.id, req.body, function(err, rr) {
+	    	out(res, err, rr)
+	  	})
+	});	
+	 
+	// api.theme.create
+	app.post('/api/theme/new', function(req, res) {
+		api.theme.create(req.body, function(err, rr) {
+	    	out(res, err, rr)
+	  	})
+	});	
+
+	app.get('/thumbs/theme',function(req,res) {
+		res.writeHead(302, {location: "/assets/thumbs/theme.png" });
+		res.end();
+	});
+
+	app.get('/theme/:id/thumb',function(req,res) {
+		var id = req.params.id
+		console.log("Thumbnail: "+id)
+		// default thumbnail:
+		res.writeHead(302, {location: "/thumbs/theme" });
+		res.end();
+	});
+
+	app.get('/theme/:id/view',function(req,res) {
+		// return default view...		
+		renderView("theme", req, res)
+	});
+
+	app.get('/theme/:id/preview',function(req,res) {
+		// return default view...		
+		renderPreview("theme", req, res)
+	});
+
 	// generated REST wrappers for entity 'shortcut'
 
 	// api.shortcut.find
