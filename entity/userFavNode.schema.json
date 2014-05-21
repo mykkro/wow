@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "title": "Entity",
+  "properties": {
+    "userId": {
+      "title": "User ID",
+      "type": "number",
+      "required": true
+    },
+    "nodeId": {
+      "title": "Node ID",
+      "type": "number",
+      "required": true
+    },
+    "entityId": {
+      "title": "Entity ID",
+      "type": "number",
+      "required": true
+    },
+    "entityType": {
+      "title": "Entity Type",
+      "type": "string",
+      "required": true
+    },
+    "favorite": {
+      "title": "Favorite?",
+      "type": "boolean",
+      "required": false
+    }
+  }
+}

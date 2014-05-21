@@ -7,6 +7,7 @@
 	},
 	"nodes": {
 		"admin": {
+			"indexed": true,
 			"name": "admin",
 			"plural": "admins",
 			"title": "Administrator",
@@ -285,6 +286,7 @@
 			"options": {}
 		},
 		"app": {
+			"indexed": true,
 			"name": "app",
 			"plural": "apps",
 			"title": "App",
@@ -423,6 +425,7 @@
 			"options": {}
 		},
 		"article": {
+			"indexed": true,
 			"name": "article",
 			"plural": "articles",
 			"title": "Article",
@@ -526,6 +529,7 @@
 			"options": {}
 		},		
 		"image": {
+			"indexed": true,
 			"name": "image",
 			"plural": "images",
 			"title": "Image",
@@ -630,6 +634,7 @@
 			"options": {}
 		},		
 		"video": {
+			"indexed": true,
 			"name": "video",
 			"plural": "videos",
 			"title": "Video",
@@ -734,6 +739,7 @@
 			"options": {}
 		},		
 		"voice": {
+			"indexed": true,
 			"name": "voice",
 			"plural": "voices",
 			"title": "Voice",
@@ -838,6 +844,7 @@
 			"options": {}
 		},		
 		"json": {
+			"indexed": true,
 			"name": "json",
 			"plural": "jsons",
 			"title": "JSON",
@@ -943,6 +950,7 @@
 			"options": {}
 		},		
 		"netRadio": {
+			"indexed": true,
 			"name": "netRadio",
 			"plural": "netRadios",
 			"title": "Internet Radio",
@@ -1047,6 +1055,7 @@
 			"options": {}
 		},		
 		"user": {
+			"indexed": true,
 			"name": "user",
 			"plural": "user",
 			"title": "User",
@@ -1224,6 +1233,7 @@
 			"options": {}
 		},		
 		"usergroup": {
+			"indexed": true,
 			"name": "usergroup",
 			"plural": "usergroups",
 			"title": "User group",
@@ -1328,6 +1338,7 @@
 			"options": {}
 		},		
 		"album": {
+			"indexed": true,
 			"name": "album",
 			"plural": "albums",
 			"title": "Album",
@@ -1423,6 +1434,7 @@
 			"options": {}
 		},		
 		"scrapbook": {
+			"indexed": true,
 			"name": "scrapbook",
 			"plural": "scrapbooks",
 			"title": "Scrapbook",
@@ -1523,6 +1535,7 @@
 			"options": {}
 		},		
 		"youTubeVideo": {
+			"indexed": true,
 			"name": "youTubeVideo",
 			"plural": "youTubeVideos",
 			"title": "YouTube video",
@@ -1714,6 +1727,7 @@
 			"options": {}
 		},
 		"file": {
+			"indexed": true,
 			"name": "file",
 			"plural": "files",
 			"title": "File",
@@ -1839,6 +1853,7 @@
 			"options": {}
 		},
 		"entity": {
+			"indexed": false,
 			"name": "entity",
 			"plural": "entities",
 			"title": "Entity",
@@ -1942,6 +1957,215 @@
 				}
 			},
 			"options": {}
+		},
+		"albumNode": {
+			"indexed": false,
+			"name": "albumNode",
+			"plural": "albumNodes",
+			"title": "AlbumNode",
+			"description": "AlbumNode",
+			"thumbnail": "/assets/thumbs/entity.png",
+			"color": "#ced",
+			"entity": {
+				"collectionName": "albumNodes",
+				"schema":  {
+					"type":"object",
+					"$schema": "http://json-schema.org/draft-03/schema",
+					"title": "Entity",
+					"properties":{
+						"albumId": {
+							"title": "Album ID",
+							"type":"number",
+							"required":true
+						},
+						"nodeId": {
+							"title": "Node ID",
+							"type":"number",
+							"required":true
+						},
+						"entityId": {
+							"title": "Entity ID",
+							"type":"number",
+							"required":true
+						},
+						"entityType": {
+							"title": "Entity Type",
+							"type":"string",
+							"required":true
+						}
+					}
+				},
+				"defaults": {
+				}
+			},
+			"forms": {
+				"add": {
+					"options": {
+					    "renderForm":true,
+					    "hideInitValidationError": true,
+					    "form":{
+					        "attributes":{
+					            "action":"echo.php",
+					            "method":"post"
+					        },
+					        "buttons":{
+					            "submit":{},
+					            "reset":{}
+					        }
+					    },
+					    "fields":{
+					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
+			"options": {}
+		},
+		"userFavNode": {
+			"indexed": false,
+			"name": "userFavNode",
+			"plural": "userFavNodes",
+			"title": "UserFavNode",
+			"description": "UserFavNode",
+			"thumbnail": "/assets/thumbs/entity.png",
+			"color": "#ced",
+			"entity": {
+				"collectionName": "userFavNodes",
+				"schema":  {
+					"type":"object",
+					"$schema": "http://json-schema.org/draft-03/schema",
+					"title": "Entity",
+					"properties":{
+						"userId": {
+							"title": "User ID",
+							"type":"number",
+							"required":true
+						},
+						"nodeId": {
+							"title": "Node ID",
+							"type":"number",
+							"required":true
+						},
+						"entityId": {
+							"title": "Entity ID",
+							"type":"number",
+							"required":true
+						},
+						"entityType": {
+							"title": "Entity Type",
+							"type":"string",
+							"required":true
+						},
+						"favorite": {
+							"title": "Favorite?",
+							"type": "boolean",
+							"required": false
+						}
+					}
+				},
+				"defaults": {
+				}
+			},
+			"forms": {
+				"add": {
+					"options": {
+					    "renderForm":true,
+					    "hideInitValidationError": true,
+					    "form":{
+					        "attributes":{
+					            "action":"echo.php",
+					            "method":"post"
+					        },
+					        "buttons":{
+					            "submit":{},
+					            "reset":{}
+					        }
+					    },
+					    "fields":{
+					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
+			"options": {}
+		},
+		"usergroupUser": {
+			"indexed": false,
+			"name": "usergroupUser",
+			"plural": "usergroupUsers",
+			"title": "UsergroupUser",
+			"description": "UsergroupUser",
+			"thumbnail": "/assets/thumbs/entity.png",
+			"color": "#ced",
+			"entity": {
+				"collectionName": "usergroupUsers",
+				"schema":  {
+					"type":"object",
+					"$schema": "http://json-schema.org/draft-03/schema",
+					"title": "Entity",
+					"properties":{
+						"usergroupId": {
+							"title": "Usergroup ID",
+							"type":"number",
+							"required":true
+						},
+						"userId": {
+							"title": "User ID",
+							"type":"number",
+							"required":true
+						}
+					}
+				},
+				"defaults": {
+				}
+			},
+			"forms": {
+				"add": {
+					"options": {
+					    "renderForm":true,
+					    "hideInitValidationError": true,
+					    "form":{
+					        "attributes":{
+					            "action":"echo.php",
+					            "method":"post"
+					        },
+					        "buttons":{
+					            "submit":{},
+					            "reset":{}
+					        }
+					    },
+					    "fields":{
+					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
+			"options": {}
 		}
 	}
+
 }

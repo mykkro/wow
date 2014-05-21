@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "title": "Entity",
+  "properties": {
+    "usergroupId": {
+      "title": "Usergroup ID",
+      "type": "number",
+      "required": true
+    },
+    "userId": {
+      "title": "User ID",
+      "type": "number",
+      "required": true
+    }
+  }
+}

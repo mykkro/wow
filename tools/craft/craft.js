@@ -81,7 +81,7 @@ var craftAPI = function(nodes) {
 			varname: n.name + "DAO", 
 			tplname: templateName(n.name), 
 			tplvarname: n.name + "Tpl",
-			parentClass: n.name=="entity" ? "NodeAPI" : "IndexedNodeAPI",
+			parentClass: n.node.indexed ? "IndexedNodeAPI" : "NodeAPI",
 			opts: JSON.stringify({color:n.node.color})
 		}
 	})
