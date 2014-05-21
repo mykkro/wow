@@ -39,6 +39,9 @@
 .node.youTubeVideo {
 	background-color: #ece;
 }
+.node.preset {
+	background-color: #bcd;
+}
 .node.file {
 	background-color: #eec;
 }

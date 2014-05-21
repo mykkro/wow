@@ -35,6 +35,7 @@
     "album",
     "scrapbook",
     "youTubeVideo",
+    "preset",
     "file",
     "entity",
     "albumNode",
@@ -750,8 +751,55 @@
     "fields": {}
   }
 }
-  tabnames[14] = "file"
-  tabindexes["file"] = 14
+  tabnames[14] = "preset"
+  tabindexes["preset"] = 14
+  tabschemas["preset"] = {
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "title": "Preset",
+  "properties": {
+    "ownerAdminId": {
+      "title": "Owner ID",
+      "type": "number",
+      "required": true
+    },
+    "created": {
+      "title": "Created",
+      "type": "string",
+      "required": false
+    },
+    "title": {
+      "title": "Title",
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "title": "Description",
+      "type": "string",
+      "required": false
+    },
+    "tags": {
+      "title": "Tags",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "required": false
+    },
+    "content": {
+      "title": "Content",
+      "type": "object",
+      "required": true
+    }
+  }
+}
+  tabviews["preset"] = {
+  "options": {
+    "fields": {}
+  }
+}
+  tabnames[15] = "file"
+  tabindexes["file"] = 15
   tabschemas["file"] = {
   "type": "object",
   "$schema": "http://json-schema.org/draft-03/schema",
@@ -822,8 +870,8 @@
     "fields": {}
   }
 }
-  tabnames[15] = "entity"
-  tabindexes["entity"] = 15
+  tabnames[16] = "entity"
+  tabindexes["entity"] = 16
   tabschemas["entity"] = {
   "type": "object",
   "$schema": "http://json-schema.org/draft-03/schema",
@@ -874,8 +922,8 @@
     "fields": {}
   }
 }
-  tabnames[16] = "albumNode"
-  tabindexes["albumNode"] = 16
+  tabnames[17] = "albumNode"
+  tabindexes["albumNode"] = 17
   tabschemas["albumNode"] = {
   "type": "object",
   "$schema": "http://json-schema.org/draft-03/schema",
@@ -908,8 +956,8 @@
     "fields": {}
   }
 }
-  tabnames[17] = "userFavNode"
-  tabindexes["userFavNode"] = 17
+  tabnames[18] = "userFavNode"
+  tabindexes["userFavNode"] = 18
   tabschemas["userFavNode"] = {
   "type": "object",
   "$schema": "http://json-schema.org/draft-03/schema",
@@ -947,8 +995,8 @@
     "fields": {}
   }
 }
-  tabnames[18] = "usergroupUser"
-  tabindexes["usergroupUser"] = 18
+  tabnames[19] = "usergroupUser"
+  tabindexes["usergroupUser"] = 19
   tabschemas["usergroupUser"] = {
   "type": "object",
   "$schema": "http://json-schema.org/draft-03/schema",
@@ -1058,32 +1106,38 @@
             <span>YouTube video</span>
           </a>
         </li>
-        <li class="node file">
+        <li class="node preset">
           <a href="#tabs-14">
+            <img src="/assets/thumbs/preset.png"></img>
+            <span>Preset</span>
+          </a>
+        </li>
+        <li class="node file">
+          <a href="#tabs-15">
             <img src="/assets/thumbs/file.png"></img>
             <span>File</span>
           </a>
         </li>
         <li class="node entity">
-          <a href="#tabs-15">
+          <a href="#tabs-16">
             <img src="/assets/thumbs/entity.png"></img>
             <span>Entity</span>
           </a>
         </li>
         <li class="node albumNode">
-          <a href="#tabs-16">
+          <a href="#tabs-17">
             <img src="/assets/thumbs/entity.png"></img>
             <span>AlbumNode</span>
           </a>
         </li>
         <li class="node userFavNode">
-          <a href="#tabs-17">
+          <a href="#tabs-18">
             <img src="/assets/thumbs/entity.png"></img>
             <span>UserFavNode</span>
           </a>
         </li>
         <li class="node usergroupUser">
-          <a href="#tabs-18">
+          <a href="#tabs-19">
             <img src="/assets/thumbs/entity.png"></img>
             <span>UsergroupUser</span>
           </a>
@@ -4451,7 +4505,7 @@
         });  
       </script>
       <div id="tabs-14" class="ui-tabs-panel">
-        <h2>File</h2>
+        <h2>Preset</h2>
         <div id="tabs-subcontainer-14-1" class="ui-tabs">
           <ul id="tabs-subcontainer-14-1-nav" class="ui-tabs-nav">
             <li><a href="#tabs-14-add">Add</a></li>
@@ -4460,6 +4514,215 @@
             <li><a href="#tabs-14-edit" class="disabled">Edit</a></li>
           </ul>
           <div id="tabs-14-add" class="ui-subtabs-panel">
+            <div class="form"></div>
+            <script>
+            $(function() {   
+              createAddForm("preset", {
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "title": "Preset",
+  "properties": {
+    "ownerAdminId": {
+      "title": "Owner ID",
+      "type": "number",
+      "required": true
+    },
+    "created": {
+      "title": "Created",
+      "type": "string",
+      "required": false
+    },
+    "title": {
+      "title": "Title",
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "title": "Description",
+      "type": "string",
+      "required": false
+    },
+    "tags": {
+      "title": "Tags",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "required": false
+    },
+    "content": {
+      "title": "Content",
+      "type": "object",
+      "required": true
+    }
+  }
+}, {
+  "options": {
+    "renderForm": true,
+    "hideInitValidationError": true,
+    "form": {
+      "attributes": {
+        "action": "echo.php",
+        "method": "post"
+      },
+      "buttons": {
+        "submit": {},
+        "reset": {}
+      }
+    },
+    "fields": {
+      "ownerAdminId": {
+        "hidden": true
+      },
+      "created": {
+        "hidden": true
+      },
+      "description": {
+        "type": "textarea",
+        "placeholder": "Enter description here..."
+      },
+      "tags": {
+        "type": "tag"
+      }
+    }
+  }
+}, {
+  "ownerAdminId": -1,
+  "title": "Preset",
+  "description": "",
+  "tags": [],
+  "content": {}
+})
+            })
+            </script>
+          </div>
+          <div id="tabs-14-list" class="ui-subtabs-panel">
+            <button class="refresh">Refresh</button>
+            <div class="list"></div>
+          </div>
+          <div id="tabs-14-view" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-14-list">show list</a>
+            <div class="content"></div>
+          </div>
+          <div id="tabs-14-edit" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-14-list">show list</a>
+            <input type="hidden" name="itemid"/>
+            <div class="form"></div>
+            <script>
+            $(function() {              
+              createEditForm("preset", {
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "title": "Preset",
+  "properties": {
+    "ownerAdminId": {
+      "title": "Owner ID",
+      "type": "number",
+      "required": true
+    },
+    "created": {
+      "title": "Created",
+      "type": "string",
+      "required": false
+    },
+    "title": {
+      "title": "Title",
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "title": "Description",
+      "type": "string",
+      "required": false
+    },
+    "tags": {
+      "title": "Tags",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "required": false
+    },
+    "content": {
+      "title": "Content",
+      "type": "object",
+      "required": true
+    }
+  }
+}, {
+  "options": {
+    "renderForm": true,
+    "hideInitValidationError": true,
+    "form": {
+      "attributes": {
+        "action": "echo.php",
+        "method": "post"
+      },
+      "buttons": {
+        "submit": {},
+        "reset": {}
+      }
+    },
+    "fields": {
+      "ownerAdminId": {
+        "hidden": true
+      },
+      "created": {
+        "hidden": true
+      },
+      "description": {
+        "type": "textarea",
+        "placeholder": "Enter description here..."
+      },
+      "tags": {
+        "type": "tag"
+      }
+    }
+  }
+}, {
+  "ownerAdminId": -1,
+  "title": "Preset",
+  "description": "",
+  "tags": [],
+  "content": {}
+})
+            })
+            </script>            
+          </div>
+        </div>
+        <script>
+        $(function() {              
+          $("#tabs-14 .refresh").click(refreshListView)
+          $("#tabs-14 .showlist").click(function() {
+            // show list subtab...
+            tabbers[14].show(4)
+            return false
+          })
+        })
+        </script>
+      </div>
+      <script>
+        tabbers[14] = new Yetii({
+          id: 'tabs-subcontainer-14-1',
+          tabclass: 'ui-subtabs-panel',
+          callback: function(tabnumber) {
+            if(tabnumber == 4) {
+              // list tab
+              refreshListView()
+            }
+          }
+        });  
+      </script>
+      <div id="tabs-15" class="ui-tabs-panel">
+        <h2>File</h2>
+        <div id="tabs-subcontainer-15-1" class="ui-tabs">
+          <ul id="tabs-subcontainer-15-1-nav" class="ui-tabs-nav">
+            <li><a href="#tabs-15-add">Add</a></li>
+            <li><a href="#tabs-15-list">List</a></li>
+            <li><a href="#tabs-15-view" class="disabled">View</a></li>
+            <li><a href="#tabs-15-edit" class="disabled">Edit</a></li>
+          </ul>
+          <div id="tabs-15-add" class="ui-subtabs-panel">
             <div class="form"></div>
             <script>
             $(function() {   
@@ -4566,16 +4829,16 @@
             })
             </script>
           </div>
-          <div id="tabs-14-list" class="ui-subtabs-panel">
+          <div id="tabs-15-list" class="ui-subtabs-panel">
             <button class="refresh">Refresh</button>
             <div class="list"></div>
           </div>
-          <div id="tabs-14-view" class="ui-subtabs-panel">
-            <a class="showlist" href="#tabs-14-list">show list</a>
+          <div id="tabs-15-view" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-15-list">show list</a>
             <div class="content"></div>
           </div>
-          <div id="tabs-14-edit" class="ui-subtabs-panel">
-            <a class="showlist" href="#tabs-14-list">show list</a>
+          <div id="tabs-15-edit" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-15-list">show list</a>
             <input type="hidden" name="itemid"/>
             <div class="form"></div>
             <script>
@@ -4686,18 +4949,18 @@
         </div>
         <script>
         $(function() {              
-          $("#tabs-14 .refresh").click(refreshListView)
-          $("#tabs-14 .showlist").click(function() {
+          $("#tabs-15 .refresh").click(refreshListView)
+          $("#tabs-15 .showlist").click(function() {
             // show list subtab...
-            tabbers[14].show(4)
+            tabbers[15].show(4)
             return false
           })
         })
         </script>
       </div>
       <script>
-        tabbers[14] = new Yetii({
-          id: 'tabs-subcontainer-14-1',
+        tabbers[15] = new Yetii({
+          id: 'tabs-subcontainer-15-1',
           tabclass: 'ui-subtabs-panel',
           callback: function(tabnumber) {
             if(tabnumber == 4) {
@@ -4707,16 +4970,16 @@
           }
         });  
       </script>
-      <div id="tabs-15" class="ui-tabs-panel">
+      <div id="tabs-16" class="ui-tabs-panel">
         <h2>Entity</h2>
-        <div id="tabs-subcontainer-15-1" class="ui-tabs">
-          <ul id="tabs-subcontainer-15-1-nav" class="ui-tabs-nav">
-            <li><a href="#tabs-15-add">Add</a></li>
-            <li><a href="#tabs-15-list">List</a></li>
-            <li><a href="#tabs-15-view" class="disabled">View</a></li>
-            <li><a href="#tabs-15-edit" class="disabled">Edit</a></li>
+        <div id="tabs-subcontainer-16-1" class="ui-tabs">
+          <ul id="tabs-subcontainer-16-1-nav" class="ui-tabs-nav">
+            <li><a href="#tabs-16-add">Add</a></li>
+            <li><a href="#tabs-16-list">List</a></li>
+            <li><a href="#tabs-16-view" class="disabled">View</a></li>
+            <li><a href="#tabs-16-edit" class="disabled">Edit</a></li>
           </ul>
-          <div id="tabs-15-add" class="ui-subtabs-panel">
+          <div id="tabs-16-add" class="ui-subtabs-panel">
             <div class="form"></div>
             <script>
             $(function() {   
@@ -4803,16 +5066,16 @@
             })
             </script>
           </div>
-          <div id="tabs-15-list" class="ui-subtabs-panel">
+          <div id="tabs-16-list" class="ui-subtabs-panel">
             <button class="refresh">Refresh</button>
             <div class="list"></div>
           </div>
-          <div id="tabs-15-view" class="ui-subtabs-panel">
-            <a class="showlist" href="#tabs-15-list">show list</a>
+          <div id="tabs-16-view" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-16-list">show list</a>
             <div class="content"></div>
           </div>
-          <div id="tabs-15-edit" class="ui-subtabs-panel">
-            <a class="showlist" href="#tabs-15-list">show list</a>
+          <div id="tabs-16-edit" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-16-list">show list</a>
             <input type="hidden" name="itemid"/>
             <div class="form"></div>
             <script>
@@ -4903,18 +5166,18 @@
         </div>
         <script>
         $(function() {              
-          $("#tabs-15 .refresh").click(refreshListView)
-          $("#tabs-15 .showlist").click(function() {
+          $("#tabs-16 .refresh").click(refreshListView)
+          $("#tabs-16 .showlist").click(function() {
             // show list subtab...
-            tabbers[15].show(4)
+            tabbers[16].show(4)
             return false
           })
         })
         </script>
       </div>
       <script>
-        tabbers[15] = new Yetii({
-          id: 'tabs-subcontainer-15-1',
+        tabbers[16] = new Yetii({
+          id: 'tabs-subcontainer-16-1',
           tabclass: 'ui-subtabs-panel',
           callback: function(tabnumber) {
             if(tabnumber == 4) {
@@ -4924,16 +5187,16 @@
           }
         });  
       </script>
-      <div id="tabs-16" class="ui-tabs-panel">
+      <div id="tabs-17" class="ui-tabs-panel">
         <h2>AlbumNode</h2>
-        <div id="tabs-subcontainer-16-1" class="ui-tabs">
-          <ul id="tabs-subcontainer-16-1-nav" class="ui-tabs-nav">
-            <li><a href="#tabs-16-add">Add</a></li>
-            <li><a href="#tabs-16-list">List</a></li>
-            <li><a href="#tabs-16-view" class="disabled">View</a></li>
-            <li><a href="#tabs-16-edit" class="disabled">Edit</a></li>
+        <div id="tabs-subcontainer-17-1" class="ui-tabs">
+          <ul id="tabs-subcontainer-17-1-nav" class="ui-tabs-nav">
+            <li><a href="#tabs-17-add">Add</a></li>
+            <li><a href="#tabs-17-list">List</a></li>
+            <li><a href="#tabs-17-view" class="disabled">View</a></li>
+            <li><a href="#tabs-17-edit" class="disabled">Edit</a></li>
           </ul>
-          <div id="tabs-16-add" class="ui-subtabs-panel">
+          <div id="tabs-17-add" class="ui-subtabs-panel">
             <div class="form"></div>
             <script>
             $(function() {   
@@ -4983,16 +5246,16 @@
             })
             </script>
           </div>
-          <div id="tabs-16-list" class="ui-subtabs-panel">
+          <div id="tabs-17-list" class="ui-subtabs-panel">
             <button class="refresh">Refresh</button>
             <div class="list"></div>
           </div>
-          <div id="tabs-16-view" class="ui-subtabs-panel">
-            <a class="showlist" href="#tabs-16-list">show list</a>
+          <div id="tabs-17-view" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-17-list">show list</a>
             <div class="content"></div>
           </div>
-          <div id="tabs-16-edit" class="ui-subtabs-panel">
-            <a class="showlist" href="#tabs-16-list">show list</a>
+          <div id="tabs-17-edit" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-17-list">show list</a>
             <input type="hidden" name="itemid"/>
             <div class="form"></div>
             <script>
@@ -5046,18 +5309,18 @@
         </div>
         <script>
         $(function() {              
-          $("#tabs-16 .refresh").click(refreshListView)
-          $("#tabs-16 .showlist").click(function() {
+          $("#tabs-17 .refresh").click(refreshListView)
+          $("#tabs-17 .showlist").click(function() {
             // show list subtab...
-            tabbers[16].show(4)
+            tabbers[17].show(4)
             return false
           })
         })
         </script>
       </div>
       <script>
-        tabbers[16] = new Yetii({
-          id: 'tabs-subcontainer-16-1',
+        tabbers[17] = new Yetii({
+          id: 'tabs-subcontainer-17-1',
           tabclass: 'ui-subtabs-panel',
           callback: function(tabnumber) {
             if(tabnumber == 4) {
@@ -5067,16 +5330,16 @@
           }
         });  
       </script>
-      <div id="tabs-17" class="ui-tabs-panel">
+      <div id="tabs-18" class="ui-tabs-panel">
         <h2>UserFavNode</h2>
-        <div id="tabs-subcontainer-17-1" class="ui-tabs">
-          <ul id="tabs-subcontainer-17-1-nav" class="ui-tabs-nav">
-            <li><a href="#tabs-17-add">Add</a></li>
-            <li><a href="#tabs-17-list">List</a></li>
-            <li><a href="#tabs-17-view" class="disabled">View</a></li>
-            <li><a href="#tabs-17-edit" class="disabled">Edit</a></li>
+        <div id="tabs-subcontainer-18-1" class="ui-tabs">
+          <ul id="tabs-subcontainer-18-1-nav" class="ui-tabs-nav">
+            <li><a href="#tabs-18-add">Add</a></li>
+            <li><a href="#tabs-18-list">List</a></li>
+            <li><a href="#tabs-18-view" class="disabled">View</a></li>
+            <li><a href="#tabs-18-edit" class="disabled">Edit</a></li>
           </ul>
-          <div id="tabs-17-add" class="ui-subtabs-panel">
+          <div id="tabs-18-add" class="ui-subtabs-panel">
             <div class="form"></div>
             <script>
             $(function() {   
@@ -5131,16 +5394,16 @@
             })
             </script>
           </div>
-          <div id="tabs-17-list" class="ui-subtabs-panel">
+          <div id="tabs-18-list" class="ui-subtabs-panel">
             <button class="refresh">Refresh</button>
             <div class="list"></div>
           </div>
-          <div id="tabs-17-view" class="ui-subtabs-panel">
-            <a class="showlist" href="#tabs-17-list">show list</a>
+          <div id="tabs-18-view" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-18-list">show list</a>
             <div class="content"></div>
           </div>
-          <div id="tabs-17-edit" class="ui-subtabs-panel">
-            <a class="showlist" href="#tabs-17-list">show list</a>
+          <div id="tabs-18-edit" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-18-list">show list</a>
             <input type="hidden" name="itemid"/>
             <div class="form"></div>
             <script>
@@ -5199,18 +5462,18 @@
         </div>
         <script>
         $(function() {              
-          $("#tabs-17 .refresh").click(refreshListView)
-          $("#tabs-17 .showlist").click(function() {
+          $("#tabs-18 .refresh").click(refreshListView)
+          $("#tabs-18 .showlist").click(function() {
             // show list subtab...
-            tabbers[17].show(4)
+            tabbers[18].show(4)
             return false
           })
         })
         </script>
       </div>
       <script>
-        tabbers[17] = new Yetii({
-          id: 'tabs-subcontainer-17-1',
+        tabbers[18] = new Yetii({
+          id: 'tabs-subcontainer-18-1',
           tabclass: 'ui-subtabs-panel',
           callback: function(tabnumber) {
             if(tabnumber == 4) {
@@ -5220,16 +5483,16 @@
           }
         });  
       </script>
-      <div id="tabs-18" class="ui-tabs-panel">
+      <div id="tabs-19" class="ui-tabs-panel">
         <h2>UsergroupUser</h2>
-        <div id="tabs-subcontainer-18-1" class="ui-tabs">
-          <ul id="tabs-subcontainer-18-1-nav" class="ui-tabs-nav">
-            <li><a href="#tabs-18-add">Add</a></li>
-            <li><a href="#tabs-18-list">List</a></li>
-            <li><a href="#tabs-18-view" class="disabled">View</a></li>
-            <li><a href="#tabs-18-edit" class="disabled">Edit</a></li>
+        <div id="tabs-subcontainer-19-1" class="ui-tabs">
+          <ul id="tabs-subcontainer-19-1-nav" class="ui-tabs-nav">
+            <li><a href="#tabs-19-add">Add</a></li>
+            <li><a href="#tabs-19-list">List</a></li>
+            <li><a href="#tabs-19-view" class="disabled">View</a></li>
+            <li><a href="#tabs-19-edit" class="disabled">Edit</a></li>
           </ul>
-          <div id="tabs-18-add" class="ui-subtabs-panel">
+          <div id="tabs-19-add" class="ui-subtabs-panel">
             <div class="form"></div>
             <script>
             $(function() {   
@@ -5269,16 +5532,16 @@
             })
             </script>
           </div>
-          <div id="tabs-18-list" class="ui-subtabs-panel">
+          <div id="tabs-19-list" class="ui-subtabs-panel">
             <button class="refresh">Refresh</button>
             <div class="list"></div>
           </div>
-          <div id="tabs-18-view" class="ui-subtabs-panel">
-            <a class="showlist" href="#tabs-18-list">show list</a>
+          <div id="tabs-19-view" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-19-list">show list</a>
             <div class="content"></div>
           </div>
-          <div id="tabs-18-edit" class="ui-subtabs-panel">
-            <a class="showlist" href="#tabs-18-list">show list</a>
+          <div id="tabs-19-edit" class="ui-subtabs-panel">
+            <a class="showlist" href="#tabs-19-list">show list</a>
             <input type="hidden" name="itemid"/>
             <div class="form"></div>
             <script>
@@ -5322,18 +5585,18 @@
         </div>
         <script>
         $(function() {              
-          $("#tabs-18 .refresh").click(refreshListView)
-          $("#tabs-18 .showlist").click(function() {
+          $("#tabs-19 .refresh").click(refreshListView)
+          $("#tabs-19 .showlist").click(function() {
             // show list subtab...
-            tabbers[18].show(4)
+            tabbers[19].show(4)
             return false
           })
         })
         </script>
       </div>
       <script>
-        tabbers[18] = new Yetii({
-          id: 'tabs-subcontainer-18-1',
+        tabbers[19] = new Yetii({
+          id: 'tabs-subcontainer-19-1',
           tabclass: 'ui-subtabs-panel',
           callback: function(tabnumber) {
             if(tabnumber == 4) {

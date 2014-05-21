@@ -14,20 +14,8 @@ var schema = require("../../entity/admin.schema.json")
 var AdminDAO = NodeDAO.extend({
 	constructor: function() {
 		this.base(Storage.collection("admins"), schema, defaults)
-	},
-	/* next = function(err, result) */
-	create: function(data, next) {
-		var bcrypt = require("bcrypt-nodejs")
-		var hash = bcrypt.hashSync(data.password)
-		data.password = hash
-		this.base(data, next)
-	},
-	/* next = function(err, result) */
-	/* updates item with an ID to new value */
-	update: function(data, next) {
-		this.base(data, next)
 	}
-})})
+})
 
 module.exports = AdminDAO
 

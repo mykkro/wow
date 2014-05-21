@@ -11,6 +11,15 @@
  * --css
  * --all	Generate all of the above
  */
+
+// # example usage:
+// 
+// # generate all for entities preset,video
+// node craft.js --all --nodes=video,preset
+// 
+// # rebuild the GUI with all entities
+// node craft.js --html --templat --css --rest --api
+
 var fs = require("fs-extra")
 var path = require("path")
 var merge = require("merge")
@@ -28,6 +37,8 @@ var apiTpl = fs.readFileSync("templates/API.js", "utf8")
 var entityApiTpl = fs.readFileSync("templates/EntityAPI.js", "utf8")
 var restTpl = fs.readFileSync("templates/REST.js", "utf8")
 var cssTpl = fs.readFileSync("templates/nodes.css", "utf8")
+
+
 
 
 function capFirst(string)
@@ -160,6 +171,13 @@ var craft = function(name, node, options) {
 
 /**************************************************/
 var argv = require('yargs').argv;
+// --nodes=preset,audio ... limit crafting only to these nodes
+var cls = argv.nodes ? argv.nodes.split(",") : null
+if(cls) {
+	var out = {}
+	_.each(cls, function(c) { out[c] = 1})
+	cls = out	
+}
 
 var webDir = path.join(outDir, 'public')
 var jsDir = path.join(webDir, 'js')
@@ -180,8 +198,10 @@ var nodes = []
 for(var nodeName in cfg.nodes) {
 	var node = cfg.nodes[nodeName]
 	var opts = merge(cfg.options, node.options)
-	craft(nodeName, node, opts)
-	nodes.push({name: nodeName, node:node, options:opts, thumbnail:node.thumbnail})
+	if(!cls || nodeName in cls) {
+		craft(nodeName, node, opts)
+		nodes.push({name: nodeName, node:node, options:opts, thumbnail:node.thumbnail})
+	}
 }
 
 if(argv.api || argv.all) craftAPI(nodes)

@@ -23,6 +23,7 @@ var UsergroupAPI = require("./UsergroupAPI")
 var AlbumAPI = require("./AlbumAPI")
 var ScrapbookAPI = require("./ScrapbookAPI")
 var YouTubeVideoAPI = require("./YouTubeVideoAPI")
+var PresetAPI = require("./PresetAPI")
 var FileAPI = require("./FileAPI")
 var EntityAPI = require("./EntityAPI")
 var AlbumNodeAPI = require("./AlbumNodeAPI")
@@ -43,6 +44,7 @@ var API = {
 	album: new AlbumAPI(),
 	scrapbook: new ScrapbookAPI(),
 	youTubeVideo: new YouTubeVideoAPI(),
+	preset: new PresetAPI(),
 	file: new FileAPI(),
 	entity: new EntityAPI(),
 	albumNode: new AlbumNodeAPI(),

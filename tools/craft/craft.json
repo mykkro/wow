@@ -1726,6 +1726,108 @@
 			},
 			"options": {}
 		},
+		"preset": {
+			"indexed": true,
+			"name": "preset",
+			"plural": "presets",
+			"title": "Preset",
+			"description": "Preset",
+			"thumbnail": "/assets/thumbs/preset.png",
+			"color": "#bcd",
+			"entity": {
+				"collectionName": "presets",
+				"schema":  {
+					"type":"object",
+					"$schema": "http://json-schema.org/draft-03/schema",
+					"title": "Preset",
+					"properties":{
+						"ownerAdminId": {
+							"title": "Owner ID",
+							"type":"number",
+							"required":true
+						},
+						"created": {
+							"title": "Created",
+							"type":"string",
+							"required":false
+						},
+						"title": {
+							"title": "Title",
+							"type":"string",
+							"required":true
+						},
+						"description": {
+							"title": "Description",
+							"type":"string",
+							"required":false
+						},
+						"tags": {
+							"title": "Tags",
+							"type": "array",
+				            "items": {
+				                "type": "string"
+				            },
+							"required": false
+						},
+						"content": {
+							"title": "Content",
+							"type":"object",
+							"required":true
+						}
+					}
+				},
+				"defaults": {
+			    	"ownerAdminId": -1,
+					"title": "Preset",
+					"description": "",
+					"tags": [],
+					"content": {}
+				}
+			},
+			"forms": {
+				"add": {
+					"options": {
+					    "renderForm":true,
+					    "hideInitValidationError": true,
+					    "form":{
+					        "attributes":{
+					            "action":"echo.php",
+					            "method":"post"
+					        },
+					        "buttons":{
+					            "submit":{},
+					            "reset":{}
+					        }
+					    },
+					    "fields":{
+					    	"ownerAdminId": {
+					    		"hidden": true
+					    	},
+					        "created":{
+					            "hidden" : true
+					        },
+					        "description":{
+					            "type":"textarea",
+					            "placeholder": "Enter description here..."
+					        },
+					        "tags":{
+					        	"type": "tag"
+					        }
+					    }
+					}
+				}
+			},
+			"views": {
+				"default": {
+					"options": {
+						"fields": {
+							
+						}
+					}
+				}
+			},
+			"options": {}
+		},
 		"file": {
 			"indexed": true,
 			"name": "file",

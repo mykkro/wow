@@ -22,7 +22,7 @@ var VideoAPI = IndexedNodeAPI.extend({
 		this.base("video", videoDAO, videoTpl, {"color":"#fdf"})
 	},
 	getThumbnailUri: function(data) {		
-		return this.thumbFromUUID(data.videoUUID)
+		return null
 	}
 })
 
