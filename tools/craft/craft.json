@@ -1927,8 +1927,7 @@
 			    	"ownerAdminId": -1,
 					"title": "Location",
 					"description": "",
-					"tags": [],
-					"content": {}
+					"tags": []
 				}
 			},
 			"forms": {

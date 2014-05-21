@@ -1,7 +1,7 @@
 {
   "type": "object",
   "$schema": "http://json-schema.org/draft-03/schema",
-  "title": "User",
+  "title": "Location",
   "properties": {
     "ownerAdminId": {
       "title": "Owner ID",
@@ -31,30 +31,15 @@
       },
       "required": false
     },
-    "avatar": {
-      "title": "Avatar",
-      "type": "string",
-      "required": false
-    },
-    "password": {
-      "title": "Password",
-      "type": "string",
-      "required": false
-    },
-    "usesPassword": {
-      "title": "Uses password?",
-      "type": "boolean",
-      "required": false
-    },
-    "locationId": {
-      "title": "Location",
+    "latitude": {
+      "title": "Latitude",
       "type": "number",
-      "required": false
+      "required": true
     },
-    "presetId": {
-      "title": "Preset",
+    "longitude": {
+      "title": "Longitude",
       "type": "number",
-      "required": false
+      "required": true
     }
   }
 }

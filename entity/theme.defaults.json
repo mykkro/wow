@@ -2,5 +2,6 @@
   "ownerAdminId": -1,
   "title": "Location",
   "description": "",
-  "tags": []
+  "tags": [],
+  "options": {}
 }

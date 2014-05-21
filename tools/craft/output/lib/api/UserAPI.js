@@ -22,7 +22,7 @@ var UserAPI = IndexedNodeAPI.extend({
 		this.base("user", userDAO, userTpl, {"color":"#cee"})
 	},
 	getThumbnailUri: function(data) {		
-		return this.thumbFromUUID(data.avatar)
+		return null
 	}
 })
 
