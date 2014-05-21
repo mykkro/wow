@@ -23,6 +23,26 @@ var UsergroupUserAPI = NodeAPI.extend({
 	},
 	getThumbnailUri: function(data) {		
 		return null
+	},
+	// keeps only one entry of each value type (adminId, nodeId)
+	addToGroup: function(usergroupId, userId, next) {
+		var self = this
+		self.removeFromGroup(usergroupId, userId, function(err, res) {
+			if(err) next(err);
+			else {
+				var entry = {
+					usergroupId: usergroupId,
+					userId: userId
+				}
+				self.create(entry, next)	
+			}
+		})
+	},
+	removeFromGroup: function(usergroupId, userId, next) {
+		this.deleteItems({usergroupId: usergroupId, userId:userId}, next)
+	},
+	getContents: function(usergroupId, next) {
+		this.find({usergroupId: usergroupId}, next)
 	}
 })
 

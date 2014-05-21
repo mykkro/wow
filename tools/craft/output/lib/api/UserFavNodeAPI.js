@@ -23,7 +23,37 @@ var UserFavNodeAPI = NodeAPI.extend({
 	},
 	getThumbnailUri: function(data) {		
 		return null
-	}
-})
+	},
+	// keeps only one entry of each value type (adminId, nodeId)
+	addToCollection: function(userId, nodeId, favorite, next) {
+		var self = this
+		this.eapi.getp(nodeId).done(function(data) {
+			if(!data) {
+				next(new Error("Node not found!"))
+			} else {
+				self.removeFromCollection(userId, nodeId, function(err, res) {
+					if(err) next(err);
+					else {
+						var entry = {
+							userId: userId,
+							nodeId: nodeId,
+							entityType: data.type,
+							entityId: data.eid,
+							favorite: favorite
+						}
+						self.create(entry, next)	
+					}
+				})
+				
+			}
+		})
+
+	},
+	removeFromCollection: function(userId, nodeId, next) {
+		this.deleteItems({userId: userId, nodeId:nodeId}, next)
+	},
+	getContents: function(userId, next) {
+		this.find({userId: userId}, next)
+	}})
 
 module.exports = UserFavNodeAPI
