@@ -1,0 +1,22 @@
+{
+	"$type": "wow/iconset",
+	"name": "Fruit Salad Icons",
+	"version": "1.0",
+	"url": "",
+	"width": 128,
+	"height": 128,
+	"icons": [
+		"apple-icon.png",
+		"grapefruit-icon.png",
+		"starfruit-icon.png",
+		"banana-icon.png",
+		"kiwi-icon.png",
+		"strawberry-icon.png",
+		"cherry-icon.png",
+		"lemon-icon.png",
+		"watermelon-icon.png",
+		"coconut-icon.png",
+		"lime-icon.png",
+		"yellow-watermelon-icon.png"
+	]
+}
