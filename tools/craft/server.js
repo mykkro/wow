@@ -64,15 +64,12 @@ passport.use(new LocalStrategy(
     passwordField: 'password'
   },  
   function(username, password, done) {
-    console.log("Passport: trying to authenticate", username, password)
     UsersAPI.findOne({ username : username }, function(err, user) {
         if(err) { return done(err); }
-        console.log("User returned: ", user)
         if(!user){
             return done(null, false, { message: 'Incorrect username.' });
         }
         if (user.usesPassword && !bcrypt.compareSync(password, user.password)) {
-          console.log("Incorrect password: ", user.password, bcrypt.hashSync(password))
           return done(null, false, { message: 'Incorrect password.' });
         }
         return done(null, user);        
@@ -80,13 +77,11 @@ passport.use(new LocalStrategy(
 }));
 
 passport.serializeUser(function(user, done) {
-    console.log("Serializing user", user)
     done(null, user._id);
 });
 
 
 passport.deserializeUser(function(id, done) {
-    console.log("Deserializing user", id)
     UsersAPI.get(id, function(err,user) {
       if(err) done(err);
       done(null,user);
@@ -172,6 +167,14 @@ var withLinks = function(file) {
     return out
 }
 
+/**
+ * Fills out password if left blank (necessary for passwordless accounts).
+ */
+var passwordFillerMiddleware = function(req, res, next) {
+    if(!req.body.password) req.body.password = 'x'
+    next();
+}
+
 app.get("/", Auth.isAuthenticated, function(req, res){ 
     res.sendfile(__dirname+'/output/public/index.html');
 });
@@ -185,6 +188,7 @@ app.get('/login', function(req, res) {
 });
 
 app.post('/login',
+  passwordFillerMiddleware,
   passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/loginFailure'
