@@ -605,6 +605,13 @@ $(document).ready(function() {
         return false;
     })
 
-    $("#testarea3").html("Test!")
+
+
+    var textinput = $('<input type="text" value="100"></imput>')
+
+    $("#testarea3").empty().append(
+      textinput,
+      picKeyboard({input: textinput})
+    )
 
 })
