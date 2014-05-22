@@ -27,6 +27,7 @@ module.exports = function(grunt) {
               {expand: true, cwd: 'files', src: 'Downloader.js', dest: 'output/lib'},
               {expand: true, cwd: 'files', src: 'Importer.js', dest: 'output/lib'},
               {expand: true, cwd: 'files', src: 'YouTubeUtil.js', dest: 'output/lib'},
+              {expand: true, cwd: 'files', src: 'delegate.js', dest: 'output/lib'},
               {expand: true, cwd: 'files', src: 'NodeDAO.js', dest: 'output/lib/dao'},
               {expand: true, cwd: 'files', src: 'SchemedDAO.js', dest: 'output/lib/dao'},
               {expand: true, cwd: 'files', src: 'NodeAPI.js', dest: 'output/lib/api'},
