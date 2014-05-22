@@ -17,22 +17,40 @@ var userTpl = function() {
 	return _userTpl
 }
 
+var bcrypt = require("bcrypt-nodejs")
+
 var UserAPI = IndexedNodeAPI.extend({
 	constructor: function() {
 		this.base("user", userDAO, userTpl, {"color":"#cee"})
 	},
 	/* next = function(err, result) */
 	create: function(data, next) {
-		var bcrypt = require("bcrypt-nodejs")
-		if(data.usesPassword) {
-			var hash = bcrypt.hashSync(data.password)
-			data.password = hash
-		}
-		this.base(data, next)
+		var self = this
+		// TODO checking for username existence not working!
+		//self.existsp(data.username).done(function(exists) {
+		//	if(exists) {
+		//		next(new Error("User already exists!"));
+		//	} else {
+				// create it...
+				if(data.usesPassword) {
+					var hash = bcrypt.hashSync(data.password)
+					data.password = hash
+				}
+				self.base(data, next)
+		//	}
+		//})
 	},
 	getThumbnailUri: function(data) {		
-		return null
-	}
+		return this.thumbFromUUID(data.avatar)
+	},
+	exists: function(username, next) {
+		this.countp({username:username}).done(function(cnt) {
+			next(null, cnt>0)
+		})
+	},
+	existsp: function(username, next) {
+		return this.countp({username:username})
+	}	
 })
 
 module.exports = UserAPI
