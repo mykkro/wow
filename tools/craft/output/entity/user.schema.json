@@ -39,7 +39,7 @@
     "username": {
       "title": "Username",
       "type": "string",
-      "required": true
+      "required": false
     },
     "password": {
       "title": "Password",

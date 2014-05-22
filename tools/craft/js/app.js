@@ -605,4 +605,6 @@ $(document).ready(function() {
         return false;
     })
 
+    $("#testarea3").html("Test!")
+
 })
