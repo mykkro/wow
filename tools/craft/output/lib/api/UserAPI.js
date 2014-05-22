@@ -21,6 +21,15 @@ var UserAPI = IndexedNodeAPI.extend({
 	constructor: function() {
 		this.base("user", userDAO, userTpl, {"color":"#cee"})
 	},
+	/* next = function(err, result) */
+	create: function(data, next) {
+		var bcrypt = require("bcrypt-nodejs")
+		if(data.usesPassword) {
+			var hash = bcrypt.hashSync(data.password)
+			data.password = hash
+		}
+		this.base(data, next)
+	},
 	getThumbnailUri: function(data) {		
 		return null
 	}

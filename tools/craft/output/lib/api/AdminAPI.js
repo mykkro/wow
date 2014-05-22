@@ -21,6 +21,13 @@ var AdminAPI = IndexedNodeAPI.extend({
 	constructor: function() {
 		this.base("admin", adminDAO, adminTpl, {"color":"#ffe"})
 	},
+	/* next = function(err, result) */
+	create: function(data, next) {
+		var bcrypt = require("bcrypt-nodejs")
+		var hash = bcrypt.hashSync(data.password)
+		data.password = hash
+		this.base(data, next)
+	},
 	getThumbnailUri: function(data) {	
 		return this.thumbFromUUID(data.avatar)
 	}

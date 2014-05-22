@@ -55,6 +55,8 @@ var Auth = {
 // see: http://danialk.github.io/blog/2013/02/23/authentication-using-passportjs/
 // https://github.com/DanialK/PassportJS-Authentication
 var UsersAPI = API.user
+var bcrypt = require("bcrypt-nodejs")
+
 
 passport.use(new LocalStrategy(
   {
@@ -64,22 +66,16 @@ passport.use(new LocalStrategy(
   function(username, password, done) {
     console.log("Passport: trying to authenticate", username, password)
     UsersAPI.findOne({ username : username }, function(err, user) {
-      console.log("User returned: ", user)
         if(err) { return done(err); }
+        console.log("User returned: ", user)
         if(!user){
             return done(null, false, { message: 'Incorrect username.' });
         }
-        if (user.password != password) {
-          return done(null, false);
+        if (user.usesPassword && !bcrypt.compareSync(password, user.password)) {
+          console.log("Incorrect password: ", user.password, bcrypt.hashSync(password))
+          return done(null, false, { message: 'Incorrect password.' });
         }
         return done(null, user);        
-/*
-        hash( password, user.salt, function (err, hash) {
-            if (err) { return done(err); }
-            if (hash == user.hash) return done(null, user);
-            done(null, false, { message: 'Incorrect password.' });
-        });
-    */
     });
 }));
 
