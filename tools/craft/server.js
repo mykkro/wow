@@ -9,11 +9,14 @@ var uuid = require('node-uuid');
 var cfg = require("./craft.json")
 var merge = require("merge")
 var io = require('socket.io')
+var _ = require("lodash")
 
 var express = require('express')
   , app = express()
   , server = http.createServer(app)
   , io = require('socket.io').listen(server);
+
+var mustacheExpress = require('mustache-express');
 
 var API = require("./output/lib/api/API")
 var REST = require("./output/lib/api/REST")
@@ -122,6 +125,9 @@ var allowedFilesize = 10000000
 var downloader = new Downloader({allowedExtensions:allowedFiletypes, maxFilesize:allowedFilesize})
 
 app.configure(function(){
+  app.engine('mustache', mustacheExpress());
+  app.set('view engine', 'mustache');
+  app.set('views', __dirname + '/../../views/mustache');
 	app.use(express.json());
 	app.use(express.urlencoded());   
 	app.use(express.limit(allowedFilesize));
@@ -179,12 +185,27 @@ app.get("/", Auth.isAuthenticated, function(req, res){
     res.sendfile(__dirname+'/output/public/index.html');
 });
 
+app.get("/userlogin", function(req, res) {
+  UsersAPI.find({}, function(err, users) {
+    if(err) {
+       res.status(500);
+       res.send(err.message);
+    } else {
+      _.each(users, function(u) {
+        u.avatarUri = UsersAPI.getThumbnailUri(u) || UsersAPI.getTypeThumbnailUri()
+      })
+      console.log(users)      
+      res.render('userlogin', {users: users})
+    }
+  })
+})
+
 app.get("/profile", Auth.isAuthenticated , function(req, res){ 
     res.send("profile: " + JSON.stringify(req.user));
 });
 
 app.get('/login', function(req, res) {
-  res.sendfile(__dirname+'/output/public/login.html');
+  res.redirect('/userlogin')
 });
 
 app.post('/login',

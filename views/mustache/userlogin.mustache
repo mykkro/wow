@@ -1,0 +1,85 @@
+<html>
+<head>
+  <title>{{title}}</title>
+  <link href="/css/normalize.css" media="all" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="/css/bundle.css" type="text/css" /> 
+  <link rel="stylesheet" href="/css/style.css" />
+  <link href="/css/nodes.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="/icons/PNG/fruitsalad/fruitsalad.css" media="all" rel="stylesheet" type="text/css" />
+  <script src="/js/wow-libs.js"></script>
+  <script type="text/javascript" src="/js/jquery.ajaxfileupload.js"></script>
+  <script type="text/javascript" src="/js/jquery.imagedrop.js"></script>
+  <script type="text/javascript" src="/js/jquery.dropanything.js"></script>
+  <script src="/js/UuidField.js"></script>
+  <script src="/js/YouTubeField.js"></script>
+
+  <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'></script>
+  <script src="js/locationpicker.jquery.js"></script>
+
+  <script src="/js/bundle.js"></script>
+  <script src="/js/craft.bundle.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/pickeyboard.js"></script>
+  <script>
+  $(document).ready(function() {
+  	var logMeIn = function() {
+  		console.log("Logging user in...")
+  		$("#userlogin-form").submit()
+  	} 
+
+  	var showKeyboard = function() {
+  		$("#pickeyboard").show()
+  	}
+
+  	var hideKeyboard = function() {
+  		$("#pickeyboard").hide()
+  	}
+
+  	var userSelected = function() {
+  		console.log("User selected!")
+  		var el = $(this)
+  		var usesPassword = el.find("input[name=usesPassword]").val()
+  		$("#userlogin-username").val(el.find("input[name=username]").val())
+  		if(usesPassword != "true") {
+  			logMeIn()
+  		} else {
+	  		$("#userlogin-password").val("")
+	  		$(".userlogin-user").removeClass("active")
+	  		el.addClass("active")
+	  		$("#pickeyboard").picKeyboard({input:$("#userlogin-password"), onenter: logMeIn, onescape: hideKeyboard})
+	  		showKeyboard()
+  		}
+  	}
+
+  	$(".userlogin-user").each(function() {
+  		$(this).click(userSelected)
+  	})
+  })
+  </script>
+
+</head>
+<body>
+
+<div class="userlogin-users">
+	{{#users}}
+	<div class="userlogin-user">
+		<input type="hidden" name="username" value="{{username}}"></input>
+		<input type="hidden" name="userid" value="{{_id}}"></input>
+		<input type="hidden" name="usesPassword" value="{{usesPassword}}"></input>
+		<img src="{{avatarUri}}"></img>
+		<h3>{{title}}</h3>
+	</div>
+	{{/users}}
+</div>
+<div>
+	<form id="userlogin-form" style="display:none;" action="/login" method="post">
+		<input type="text" name="username" id="userlogin-username"></input>
+		<input type="text" name="password" id="userlogin-password"></input>
+		<input type="submit"></input>		
+	</form>
+</div>
+<div id="pickeyboard"></div>
+
+
+</body>
+</html>

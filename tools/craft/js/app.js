@@ -607,11 +607,8 @@ $(document).ready(function() {
 
 
 
-    var textinput = $('<input type="text" value="100"></imput>')
+    var textinput = $('<input type="text" value="100"></input>').insertBefore($("#testarea3"))
 
-    $("#testarea3").empty().append(
-      textinput,
-      picKeyboard({input: textinput})
-    )
+    $("#testarea3").picKeyboard({input: textinput})
 
 })

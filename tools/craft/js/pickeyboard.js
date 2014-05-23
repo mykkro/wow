@@ -1,17 +1,28 @@
-   var picKeyboard = function(opts) {      
-      var o = $.extend({
+/**
+ * Image keyboard plugin.
+ * 
+ * Myrousz 2014
+ *
+ * MIT license.
+ */
+$.fn.picKeyboard = function (settings) {
+
+    settings = $.extend({
         maxchars: 3
-      }, opts)
+        // additional options:
+        // input
+        // onenter
+    }, settings);
+
       var buffer = ""
-      var picKey = function(i, ch) {
-        return $("<div>").addClass("pickey").addClass("fruit-icon-"+i).attr("data-index", i).attr("data-char", ch)
-      }
+      var display, keys
+
       var setBuffer = function(buf) {
         buffer = buf
         // update buffer
         console.log("Updating buffer: "+buffer)
-        if(o.input) {
-          $(o.input).val(buffer)
+        if(settings.input) {
+          $(settings.input).val(buffer)
         }
         display.empty()
         for(var i=0; i<buffer.length; i++) {
@@ -22,7 +33,7 @@
         }
       }
       var onkey = function(ch) {
-        if(buffer.length < o.maxchars) {
+        if(buffer.length < settings.maxchars) {
           setBuffer(buffer + ch)
         }
       }
@@ -34,19 +45,33 @@
       }
       var onenter = function() {
         keys.hide()
+        if(settings.onenter) {
+          settings.onenter(buffer)
+        }
+      }
+      var onescape = function() {
+        keys.hide()
+        if(settings.onescape) {
+          settings.onescape()
+        }
       }
 
+    var picKey = function(i, ch) {
+      return $("<div>").addClass("pickey").addClass("fruit-icon-"+i).attr("data-index", i).attr("data-char", ch)
+    }
 
+   var picKeyboard = function() {      
       var out = $("<div>").addClass("pickeyboard")
-      var display = $("<div>").addClass("display")
+      display = $("<div>").addClass("display")
       display.click(function() {
-        keys.show()
+        keys.toggle()
       })
-      if(o.input) {
-        setBuffer($(o.input).val())
+      if(settings.input) {
+        settings.input.hide()
+        setBuffer($(settings.input).val())
       }
 
-      var keys = $("<div>").addClass("keys")
+      keys = $("<div>").addClass("keys")
       keys.hide()
       // add keys
       for(var i=0; i<10; i++) {
@@ -61,8 +86,19 @@
       }
       keys.append($("<div>").addClass("pickey").addClass("icon-empty").click(onclear))
       keys.append($("<div>").addClass("pickey").addClass("icon-back").click(onbackspace))
+      keys.append($("<div>").addClass("pickey").addClass("icon-cross").click(onescape))
       keys.append($("<div>").addClass("pickey").addClass("icon-check").click(onenter))
       out.append(display)
       out.append(keys)
       return out
     }
+
+    return this.each(
+        function() {
+            var $this = $(this);
+            $this.html(picKeyboard())
+        }
+    );
+};
+
+

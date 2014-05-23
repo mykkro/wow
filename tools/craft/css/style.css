@@ -219,3 +219,48 @@ html, body {
 .pickeyboard .icon-empty { background-image: url(/icons/PNG/128/empty.png); }
 .pickeyboard .icon-back { background-image: url(/icons/PNG/128/arrow_left.png); }
 .pickeyboard .icon-check { background-image: url(/icons/PNG/128/checkmark.png); }
+.pickeyboard .icon-cross { background-image: url(/icons/PNG/128/cross_red.png); }
+
+.userlogin-users {
+  padding: 20px;
+}
+
+.userlogin-user {
+  border: 1px solid #333;
+  background-color: #ceb;
+  display: inline-block;
+  width: 140px;
+  height: 180px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;  
+}
+
+.userlogin-user.active {
+  background-color: #ebc;
+}
+
+.userlogin-user > img {
+  width: 100px;
+  height: 100px;
+  padding: 9px 18px;
+}
+
+.userlogin-user > h3 {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#pickeyboard {
+    width: 320px;
+    height: 310px;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+}
