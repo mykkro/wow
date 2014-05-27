@@ -158,12 +158,39 @@
 	}
 
 	function updateRecentItemsPreview() {
-	  var uri = "/api/search?&limit=10&sort=created:desc&query=ownerAdminId:-1"
+	  var skip = 0
+	  var limit = 10
+	  var uri = "/api/search?&skip="+skip+"&limit="+limit+"&sort=created:desc&query=ownerAdminId:-1"
+      var out = $("#recentitems").css("position","relative")
+      updateItemsPreview(uri, out)
+	}
+
+	function updateSearchItemsPreview() {
+	  var page = $("input[name=searchpage]").val()
+	  if(page) page = parseInt(page); else page = 1
+	  var query = $("input[name=searchquery]").val()
+	  var skip = 10*(page-1)
+	  var limit = 10
+	  var ownerAdminId = -1
+	  // we search only items that are one of these types...
+	  var types = ['image']
+	  var uri = "/api/search?&skip="+skip+"&limit="+limit+"&sort=created:desc"
+	  if(query) {
+	  	uri += "&query=title:"+encodeURIComponent(query)
+	  	//uri += "&query=description:"+encodeURIComponent(query)
+	  }
+	  if(ownerAdminId) uri += "&query=ownerAdminId:"+ownerAdminId
+	  _.each(types, function(t) {
+	  	uri += '&query=type:'+t
+	  })
+      var out = $("#searchresults").css("position","relative")
+      updateItemsPreview(uri, out)
+	}
+
+	function updateItemsPreview(uri, out) {
 	  $.getJSON(uri).done(function(data) {
-	    console.log("Received 10 most recent items:", data)
+	    console.log("Received items:", data)
 	    var previewUris = _.map(data, function(d) { return d.node.previewUri })
-	    console.log("PreviewUris:", previewUris)
-	    var out = $("#recentitems").css("position","relative")
 	    out.empty()
 	    for(var i=0; i<previewUris.length; i++) {
 	      var id = "node-"+ data[i].node.type + "-" + data[i]._id
@@ -264,6 +291,8 @@
   })  
 
   updateRecentItemsPreview()
+
+  $("#searchbutton").click(updateSearchItemsPreview)
 
     function cancel(e) {
       if (e.preventDefault) e.preventDefault(); // required by FF + Safari

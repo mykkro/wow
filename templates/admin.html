@@ -14,6 +14,7 @@
 		<div id="tabs-container-1" class="ui-tabs">
 			<ul id="tabs-container-1-nav" class="ui-tabs-nav">
 				<li><a href="#tabs-1">Quick Start</a></li>
+				<li><a href="#tabs-2">Search</a></li>
 			</ul>
 			<div id="tabs-1" class="ui-tabs-panel">
 	          <h2>Quick Start</h2>
@@ -28,6 +29,16 @@
 	          </div>
 	          <h3>Most recent items:</h3>
 	          <div id="recentitems"></div>
+			</div>
+			<div id="tabs-2" class="ui-tabs-panel">
+	          <h2>Search</h2>
+	          <div id="searchcontrol">
+	          	<input type="hidden" name="searchpage" value="1"></input>
+	          	<input type="text" name="searchquery"></input>
+	          	<button id="searchbutton">Search</button>
+	          </div>
+	          <h3>Items found:</h3>
+	          <div id="searchresults"></div>
 			</div>
 		</div>
 	</div>	
