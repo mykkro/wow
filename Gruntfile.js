@@ -243,7 +243,12 @@ module.exports = function(grunt) {
             },
             adminjs: {
                 src: [
-                    // "js/vendor/jquery.ui/jquery-ui-1.10.4.min.js"
+                    "tools/craft/js/jquery.ajaxfileupload.js",
+                    "tools/craft/js/jquery.imagedrop.js",
+                    "tools/craft/js/jquery.dropanything.js",
+                    "tools/craft/js/UuidField.js",
+                    "tools/craft/js/YouTubeField.js",
+                    "tools/craft/js/pickeyboard.js"
                 ],
                 dest: 'public/js/wow-admin.js'
             },
@@ -253,6 +258,13 @@ module.exports = function(grunt) {
                     "js/vendor/alpaca.min.css"
                 ],
                 dest: 'public/css/wow-libs.css'
+            },
+            admincss: {
+                src: [
+                    "tools/craft/css/style.css",
+                    "tools/craft/output/css/nodes.css"
+                ],
+                dest: 'public/css/wow-admin.css'
             }
         },
         less: {
@@ -267,6 +279,7 @@ module.exports = function(grunt) {
                         "less/game.less"
                     ],
                     "public/css/admin.bundle.css": [
+                        "public/css/wow-admin.css",
                         "less/admin.less"
                     ]
                 }
