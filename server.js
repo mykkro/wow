@@ -113,7 +113,6 @@ var WowServer = {
     })
 
     app.get("/", Auth.isAuthenticated, function(req, res) { 
-        console.log("Logged as: ",req.user)
         if(req.user.admin) {
           // logged in as admin...
           res.redirect('/admin');

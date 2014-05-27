@@ -112,7 +112,9 @@
           })
 
 
-
+        // TODO fill out default location and preset on the server...
+        var preset = {{{preset}}}
+        var location = {{{location}}}
 
         // create widgetizer and load widgets
         var Widgetizer = require("widgetizer")(window, $, SVG)
@@ -125,7 +127,9 @@
           i18n: i18n,
           SVG: SVG,
           moment: moment,
-          Widgetizer: Widgetizer
+          Widgetizer: Widgetizer,
+          preset: preset,
+          location: location
         }
 
         var pageClass = require("pagescript")(Wow)

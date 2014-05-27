@@ -7,13 +7,14 @@ module.exports = function(Wow) {
     var Base = require("basejs")
     var SelectChain = require("../../js/selectchain")($, Base)
 
+    var preset = Wow.preset
+    var location = Wow.location
+
     // CalendarTextDaytime
     // CalendarTextYearNo
     // CalendarTextMonthName
     // CalendarTextDayNo
     // CalendarTextDayName
-
-    var weatherUri = "https://api.forecast.io/forecast/936df2f9a7b50fa0bd9006b85fdb9ece/48.14,16.20"
 
     var gui = window.gui
 
@@ -78,22 +79,6 @@ module.exports = function(Wow) {
 
     var baseUrl;
 
-    function myBooksActivated() {
-        window.location = "/pages/bookcategories"
-    }
-
-    function myRadiosActivated() {
-        window.location = "/pages/netradio"
-    }
-
-    function gamesActivated() {
-        window.location = "/pages/userapps"
-    }
-
-    function entertainmentActivated() {
-        window.location = "/pages/searchvideos"
-    }
-
     var dialogs = require("../../js/dialogs")($, i18n)
 
     function showQuitDialog() {
@@ -115,10 +100,9 @@ module.exports = function(Wow) {
 
             var updateWeatherInfo = function() {
                 // get weather info...
-                server("weatherInfo", {}, function(err, resp) {
+                server("weatherInfo", location, function(err, resp) {
                     var data = resp.result
-                        /**/
-                    console.log(data)
+                    console.log("Weather info received: ",data)
                     var temp = Math.round(fah2cel(data.currently.temperature))
                     var icon = data.currently.icon
                     $("#MeteoIcon").text(icon2char(icon))
@@ -138,9 +122,9 @@ module.exports = function(Wow) {
             window.setInterval(updateClock, 1000)
             window.setInterval(updateWeatherInfo, 10 * 60 * 1000)
 
-            this.getWidget("navButton01").setCaption(i18n.__("Radio").toUpperCase()).click(myRadiosActivated)
-            this.getWidget("navButton02").setCaption(i18n.__("Entertainment").toUpperCase()).click(gamesActivated)
-            this.getWidget("navButton03").setCaption(i18n.__("Videos").toUpperCase()).click(entertainmentActivated)
+            this.getWidget("navButton01").setCaption(i18n.__(preset.button1Link.title).toUpperCase()).click(function() { window.location = preset.button1Link.uri })
+            this.getWidget("navButton02").setCaption(i18n.__(preset.button2Link.title).toUpperCase()).click(function() { window.location = preset.button2Link.uri })
+            this.getWidget("navButton03").setCaption(i18n.__(preset.button3Link.title).toUpperCase()).click(function() { window.location = preset.button3Link.uri })
 
             $(".hiddenQuitButton").click(function() {
                 showQuitDialog()
