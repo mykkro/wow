@@ -54,6 +54,7 @@
 
 </head>
 <body>
+<div class="userlogin-background"></div>
 
 <div class="userlogin-users">
 	{{#users}}
@@ -74,11 +75,11 @@
 </div>
 <div id="pickeyboard"></div>
 
-<div>
+<div id="adminlogin-wrapper">
   <form id="adminlogin-form" action="/login" method="post">
     <div class="adminlogin-title">
       <h2>Admin Login</h2>
-      <div><img src="/assets/thumbs/admin.png"></img></div>
+      <div class="adminlogin-avatar"><img src="/assets/thumbs/admin.png"></img></div>
     </div>
     <div class="adminlogin-controls" style="display:none;">
       <div><label><span>Username: </span><input type="text" name="username" id="adminlogin-username"></input></label></div>
