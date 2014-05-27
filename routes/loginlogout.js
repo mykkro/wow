@@ -1,5 +1,6 @@
 module.exports = function(app, api, passport) {
-	var UsersAPI = api.user
+	var UserAPI = api.user
+	var AdminAPI = api.admin
 	var _ = require("lodash")
 
     //
@@ -11,13 +12,13 @@ module.exports = function(app, api, passport) {
     }
 
     app.get("/userlogin", function(req, res) {
-      UsersAPI.find({}, function(err, users) {
+      UserAPI.find({}, function(err, users) {
         if(err) {
            res.status(500);
            res.send(err.message);
         } else {
           _.each(users, function(u) {
-            u.avatarUri = UsersAPI.getThumbnailUri(u) || UsersAPI.getTypeThumbnailUri()
+            u.avatarUri = UserAPI.getThumbnailUri(u) || UserAPI.getTypeThumbnailUri()
           })
           console.log(users)      
           res.render('userlogin', {users: users})

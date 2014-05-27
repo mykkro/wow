@@ -3,7 +3,7 @@ module.exports = function(app, Auth) {
 	var mustache = require('mustache')
 	var fs = require("fs-extra")
 
-    app.get('/pages/:name', Auth.isAuthenticated, function(req, res) {
+    app.get('/pages/:name', Auth.isAuthenticatedAsUser, function(req, res) {
       console.log("Current user:", req.user)
       var name = req.params.name
       var page = fs.readFileSync("templates/master.html", "utf8")

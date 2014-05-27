@@ -54,6 +54,11 @@
 							"type":"string",
 							"required":false
 						},
+						"username": {
+							"title": "Username",
+							"type":"string",
+							"required":false
+						},
 						"password": {
 							"title": "Password",
 							"type":"string",
@@ -118,6 +123,11 @@
 							},
 							"avatar": {
 								"title": "Avatar",
+								"type":"string",
+								"required":false
+							},
+							"username": {
+								"title": "Username",
 								"type":"string",
 								"required":false
 							},

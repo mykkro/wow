@@ -27,18 +27,13 @@ var passport = require("passport");
 
 var Auth = require("./lib/middleware/auth")
 
-var UsersAPI = API.user
-    
-// use this: https://npmjs.org/package/express-restify-mongoose
-
-var adminId = "123"
 
 var WowServer = {
 	port: 9999,
   chrome: null,
 	start: function(afterInit) {
 		var self = this
-    Auth.setup(passport, UsersAPI)
+    Auth.setup(passport, API.user, API.admin)
 
     var allowedFiletypes = {
       "jpg":1, 
@@ -118,7 +113,14 @@ var WowServer = {
     })
 
     app.get("/", Auth.isAuthenticated, function(req, res) { 
-        res.redirect('/pages/home');
+        console.log("Logged as: ",req.user)
+        if(req.user.admin) {
+          // logged in as admin...
+          res.redirect('/admin');
+        } else {
+          // logged in as user
+          res.redirect('/pages/home');
+        }
     });
 
     app.get("/profile", Auth.isAuthenticated , function(req, res){ 
@@ -127,7 +129,7 @@ var WowServer = {
 
     require("./routes/rpc")(app)
     require("./routes/pages")(app, Auth)
-    require("./routes/admin")(app)
+    require("./routes/admin")(app, Auth)
     require("./routes/loginlogout")(app, API, passport)
     require("./routes/upload")(app, {allowedExtensions:allowedFiletypes, maxFilesize:allowedFilesize})
 
