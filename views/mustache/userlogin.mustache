@@ -41,6 +41,14 @@
   	$(".userlogin-user").each(function() {
   		$(this).click(userSelected)
   	})
+
+    $("#adminlogin-submit").click(function() {
+      $("#adminlogin-form").submit()
+    })
+
+    $("#adminlogin-form .adminlogin-title").click(function() {
+      $("#adminlogin-form .adminlogin-controls").toggle()
+    })
   })
   </script>
 
@@ -62,16 +70,21 @@
 	<form id="userlogin-form" style="display:none;" action="/login" method="post">
 		<input type="text" name="username" id="userlogin-username"></input>
 		<input type="password" name="password" id="userlogin-password"></input>
-		<input type="submit"></input>		
 	</form>
 </div>
 <div id="pickeyboard"></div>
 
 <div>
   <form id="adminlogin-form" action="/login" method="post">
-    <input type="text" name="username" id="adminlogin-username"></input>
-    <input type="password" name="password" id="adminlogin-password"></input>
-    <input type="submit"></input>   
+    <div class="adminlogin-title">
+      <h2>Admin Login</h2>
+      <div><img src="/assets/thumbs/admin.png"></img></div>
+    </div>
+    <div class="adminlogin-controls" style="display:none;">
+      <div><label><span>Username: </span><input type="text" name="username" id="adminlogin-username"></input></label></div>
+      <div><label><span>Password: </span><input type="password" name="password" id="adminlogin-password"></input></label></div>
+      <div><button id="adminlogin-submit">Log In</button></div>
+    </div>
   </form>
 </div>
 
