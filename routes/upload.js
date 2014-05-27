@@ -1,6 +1,7 @@
-module.exports = function(app, cfg) {
+module.exports = function(app, Storage, cfg) {
 	var path = require("path")
 	var fs = require("fs-extra")
+	var merge = require("merge")
 	var Downloader = require("../lib/Downloader")
     var downloader = new Downloader(cfg)
 	var Importer = require("../lib/Importer")
@@ -96,7 +97,7 @@ module.exports = function(app, cfg) {
           sendError(res, "File too big: "+size+", allowed: "+cfg.allowedFilesize)
           return
         }
-        if(!(ext in cfg.allowedFiletypes)) {
+        if(!(ext in cfg.allowedExtensions)) {
           sendError(res, "Unsupported file type: "+ext)
           return
         }

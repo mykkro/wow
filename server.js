@@ -130,7 +130,7 @@ var WowServer = {
     require("./routes/pages")(app, Auth)
     require("./routes/admin")(app, Auth)
     require("./routes/loginlogout")(app, API, passport)
-    require("./routes/upload")(app, {allowedExtensions:allowedFiletypes, maxFilesize:allowedFilesize})
+    require("./routes/upload")(app, Storage, {allowedExtensions:allowedFiletypes, maxFilesize:allowedFilesize})
 
 
 

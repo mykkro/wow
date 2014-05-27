@@ -6,159 +6,30 @@
 
 	<h1>Admin Page</h1>
 	<div class="admin-nav">
-		<a href="index.html">Back to login page</a>
+		<a href="/logout">Log Out</a>
 	</div>
 	<div class="admin-body">
 
 
 		<div id="tabs-container-1" class="ui-tabs">
 			<ul id="tabs-container-1-nav" class="ui-tabs-nav">
-				<li><a href="#tabs-1">Imports</a></li>
-				<li><a href="#tabs-2">Videos</a></li>
-				<li><a href="#tabs-3">Radios</a></li>
-				<li><a href="#tabs-4">Users</a></li>
-				<li><a href="#tabs-5">Images</a></li>
+				<li><a href="#tabs-1">Quick Start</a></li>
 			</ul>
 			<div id="tabs-1" class="ui-tabs-panel">
-				<h2>Imports</h2>
-				<div class="importapp panel">
-					<h2>Import App</h2>
-					<div class="panel-body">
-						<div>
-							<form method='post' action='/fileupload' enctype='multipart/form-data'>
-								<label>Import app packaged in .zip archive:</label>
-								<input type='file' name='archive'/>
-								<input type='submit' />
-							</form>
-						</div>
-					</div>
-				</div>
-				<div class="importedapps panel">
-					<h2>Imported Apps</h2>
-					<ul class="panel-body" id="import-list">
-					</ul>
-				</div>
-			</div>
-			<div id="tabs-2" class="ui-tabs-panel">
-				<h2>Videos</h2>
-				<div class="addvideo panel">
-					<h2>Add YouTube Video</h2>
-					<div class="panel-body">
-						<div>
-					        <div id="video-dropzone" class="dropzone">
-					            Drop YouTube video here
-					        </div>
-
-						</div>
-						<div>
-							<label><span>YouTube VideoID: </span><input type="text" id="videoid-textfield"/></label>
-						</div>
-						<div>
-							<label><span>UserID: </span><input type="text" disabled id="videouser-textfield" value="555"/></label>
-						</div>
-						<div class="buttons">
-							<button id="add-video-btn">Add to list</button>
-						</div>
-					</div>
-				</div>
-				<div class="uservideos panel">
-					<h2>User Videos</h2>
-					<ul class="panel-body" id="video-list">
-					</ul>
-				</div>
-			</div>
-			<div id="tabs-3" class="ui-tabs-panel">
-				<h2>Radios</h2>
-				<div class="addradio panel">
-					<h2>Add Internet Radio</h2>
-					<div class="panel-body">
-						<div>
-					        <div id="radio-dropzone" class="dropzone">
-					            Drop Internet Radio URL here (raw streams like .mp3 or .ogg are accepted)
-					        </div>
-
-						</div>
-						<div>
-							<label><span>Internet Radio Name: </span><input type="text" id="radiotitle-textfield"/></label>
-						</div>
-						<div>
-							<label><span>Internet Radio URL: </span><input type="text" id="radiourl-textfield"/></label>
-						</div>
-						<div>
-							<label><span>UserID: </span><input type="text" disabled id="radiouser-textfield" value="555"/></label>
-						</div>
-						<div class="buttons">
-							<button id="add-radio-btn">Add to list</button>
-						</div>
-					</div>
-				</div>
-				<div class="radios panel">
-					<h2>Internet Radios</h2>
-					<ul class="panel-body" id="radio-list">
-					</ul>
-				</div>
-			</div>
-			<div id="tabs-4" class="ui-tabs-panel">
-				<h2>Users</h2>
-				<div class="adduser panel">
-					<h2>Add User</h2>
-					<div class="panel-body">
-						<div>
-							<div>
-								<label><span>Full name: </span><input type="text" id="userfullname-tf"/></label>
-							</div>
-							<div>
-								<label><span>Description: </span><textarea id="userdescr-ta"></textarea></label>
-							</div>
-							<div class="buttons">
-								<button id="adduser-btn">Add new user</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="listusers panel">
-					<h2>User List</h2>
-					<ul class="panel-body" id="user-list">
-					</ul>
-				</div>
-			</div>
-			<div id="tabs-5" class="ui-tabs-panel">
-				<h2>Images</h2>
-				<div class="addimage panel">
-					<h2>Add Image</h2>
-					<div class="panel-body">
-						<div>
-					        <div id="image-dropzone" class="dropzone">
-					            Drop image here
-					        </div>
-
-						</div>
-						<div>
-							<label><span>Image URL: </span><input type="text" id="imageurl-textfield"/></label>
-						</div>
-						<div>
-							<label><span>UserID: </span><input type="text" disabled id="imageuser-textfield" value="555"/></label>
-						</div>
-						<div>
-							<label><span>Title: </span><input type="text" id="imagetitle-textfield" value=""/></label>
-						</div>
-						<div>
-							<label><span>Description: </span><input type="text" id="imagedescr-textarea" value=""/></label>
-						</div>
-						<div class="buttons">
-							<button id="add-image-btn">Add to list</button>
-						</div>
-					</div>
-				</div>
-				<div class="userimages panel">
-					<h2>User Images</h2>
-					<ul class="panel-body" id="image-list">
-					</ul>
-				</div>
+	          <h2>Quick Start</h2>
+	          <div id="testarea">
+	          </div>
+	          <div>
+	            <div id="allpurpose-dropzone" class="dropzone">
+	              Drop anything here
+	            </div>
+	            <div id="node-dropbox">
+	            </div>
+	          </div>
+	          <h3>Most recent items:</h3>
+	          <div id="recentitems"></div>
 			</div>
 		</div>
-
-
 	</div>	
 </div>	
 </div>
