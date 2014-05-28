@@ -1,0 +1,123 @@
+.node-preview {
+    position:  relative;
+    width:  98px;
+    height:  98px;
+    border: 1px solid #ddd;
+    pointer-events:none;
+
+    .thumbnail {
+      width: 100%;
+      height: 100%;
+    }    
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+    }
+    .type-thumbnail {
+      position: absolute;
+      left:  0px;
+      top:  0px;
+      width: 24px;
+      height: 24px;
+      padding: 2px;
+      background: rgba(255,255,0,.7);
+      border-radius: 8px;
+      opacity: 0.3;
+    }
+    .type-thumbnail img {
+        width:  100%;
+        height:  100%;    
+    }
+
+    .title {
+        position:  absolute;
+        display:  block;
+        top:  80px;
+        left:  0px;
+        font-size: 12px;
+        width:  100%;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        opacity: 0.7;
+    }
+
+    .title span {
+      display:inline-block;
+      max-width: 88px;
+      padding: 0px 5px;
+      margin: 0 auto;
+      background: rgba(255,255,255,.85);
+      border-radius: 5px;
+    }
+
+    &:hover .title {
+      opacity: 1;
+    }
+    &:hover .type-thumbnail {
+      opacity: 1;
+    }
+}
+
+.node-preview-short {
+    .thumbnail {
+      width:  100px;
+      height:  100px;
+      margin:  0px 10px 0px 0px;
+      display:  inline-block;
+    }
+    .thumbnail img {
+      width:  100%;
+      height:  100%;
+    }
+    .rest {
+      display:  inline-block;
+      vertical-align:  top;
+      .type-thumbnail {
+        width:  20px;
+        height: 20px;
+        display:  inline-block;
+        vertical-align: middle;
+        img {
+          width:  100%;
+          height:  100%;
+        }
+      }
+      .type-title {
+        display:  inline-block;
+      }
+      .title {
+        font-size: 20px;
+        font-weight:  bold;
+        margin:  5px 0px;
+      }
+      .description {
+        color: #333;
+        font-style: italic;
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+      .created {
+        font-size: 12px;
+      }
+      .tags {
+        font-size: 14px;
+      }
+    }
+    margin-bottom: 10px;
+}
+
+.node-preview-wrapper.view-default {
+  margin: 4px;
+  display: inline-block;
+}
+
+.node-preview-wrapper.view-short {
+  padding: 4px;
+  display: block;
+  background: #fff5ea;
+  &:nth-child(odd) {
+    background-color: #dfdfdf;
+  }
+}

@@ -1,0 +1,17 @@
+<div class="node-preview-short">
+	<div class="thumbnail">
+		<img src="{{{thumbnailUrl}}}">
+	</div>
+	<div class="rest">
+		<div>
+			<div class="type-thumbnail">
+				<img src="{{{typeThumbnailUrl}}}">
+			</div>
+			<div class="type-title"><span>{{typeTitle}}</span></div>
+		</div>
+		<div class="title"><span>{{title}}</span></div>
+		<div class="description"><span>{{description}}</span></div>
+		<div class="created">Created: <span>{{created}}</span></div>
+		{{#tags}}<div class="tags">Tags: {{#tags}}<span>{{.}} </span>{{/tags}}</div>{{/tags}}
+	</div>
+</div>

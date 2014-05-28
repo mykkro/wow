@@ -162,7 +162,7 @@
 	  var limit = 10
 	  var uri = "/api/search?&skip="+skip+"&limit="+limit+"&sort=created:desc&query=ownerAdminId:-1"
       var out = $("#recentitems").css("position","relative")
-      updateItemsPreview(uri, out)
+      updateItemsPreview(uri, out, "default")
 	}
 
 	function updateSearchItemsPreview() {
@@ -184,17 +184,18 @@
 	  	uri += '&query=type:'+t
 	  })
       var out = $("#searchresults").css("position","relative")
-      updateItemsPreview(uri, out)
+      updateItemsPreview(uri, out, "short")
 	}
 
-	function updateItemsPreview(uri, out) {
+	function updateItemsPreview(uri, out, previewType) {
 	  $.getJSON(uri).done(function(data) {
 	    console.log("Received items:", data)
 	    var previewUris = _.map(data, function(d) { return d.node.previewUri })
 	    out.empty()
 	    for(var i=0; i<previewUris.length; i++) {
 	      var id = "node-"+ data[i].node.type + "-" + data[i]._id
-	      var el = $("<div>").attr("draggable","true").attr("id", id).addClass("node-preview-wrapper").load(previewUris[i]).appendTo(out)
+	      var uri = previewUris[i] + "?view="+previewType
+	      var el = $("<div>").attr("draggable","true").attr("id", id).addClass("node-preview-wrapper").addClass("view-"+previewType).load(uri).appendTo(out)
 	      el.get(0).addEventListener('dragstart', dragStart, false);
 	      el.get(0).addEventListener('dragend', dragEnd, false);
 	    }

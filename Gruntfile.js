@@ -261,8 +261,6 @@ module.exports = function(grunt) {
             },
             admincss: {
                 src: [
-                    "tools/craft/css/style.css",
-                    "tools/craft/output/css/nodes.css"
                 ],
                 dest: 'public/css/wow-admin.css'
             }
