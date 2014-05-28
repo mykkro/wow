@@ -63,6 +63,7 @@ var WowServer = {
       app.engine('mustache', require('hogan-express'))
       app.set('view engine', 'mustache');
       app.set('views', __dirname + '/views/mustache');
+      app.set('layout', 'layout') 
 
       app.use(express.favicon());
       app.use(express.json());

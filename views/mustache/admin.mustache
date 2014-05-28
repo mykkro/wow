@@ -1,0 +1,70 @@
+{{#yield-title}}
+Admin Page
+{{/yield-title}}
+<link rel="stylesheet" href="/css/admin.bundle.css" type="text/css" /> 
+<script type="text/javascript" src="/js/wow-admin.js"></script>
+<script type="text/javascript" src="/js/pages/admin.js"></script>
+
+<div class="admin">
+
+	<h1>Admin Page</h1>
+	<div class="admin-nav">
+		<a href="/logout">Log Out</a>
+	</div>
+	<div class="admin-body">
+
+
+		<div id="tabs-container-1" class="ui-tabs">
+			<ul id="tabs-container-1-nav" class="ui-tabs-nav">
+				<li><a href="#tabs-1">Quick Start</a></li>
+				<li><a href="#tabs-2">Search</a></li>
+			</ul>
+			<div id="tabs-1" class="ui-tabs-panel">
+	          <h2>Quick Start</h2>
+	          <div id="testarea">
+	          </div>
+	          <div>
+	            <div id="allpurpose-dropzone" class="dropzone">
+	              Drop anything here
+	            </div>
+	            <div id="node-dropbox">
+	            </div>
+	          </div>
+	          <h3>Most recent items:</h3>
+	          <div id="recentitems"></div>
+			</div>
+			<div id="tabs-2" class="ui-tabs-panel">
+	          <h2>Search</h2>
+	          <div id="searchcontrol">
+	          	<input type="hidden" name="searchpage" value="1"></input>
+	          	<input type="text" name="searchquery"></input>
+	          	<button id="searchbutton">Search</button>
+	          </div>
+	          <h3>Items found:</h3>
+	          <div id="searchresults"></div>
+			</div>
+		</div>
+	</div>	
+</div>	
+</div>
+
+<!-- we need this element so widgetizer does not complain... -->
+<div style="display:none;">
+<svg 
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:wow="http://example.org/wow"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    unselectable="on" 
+    style="-webkit-user-select: none;"
+    id="svg"
+	tabindex='1'
+	viewBox="0 0 960 600"
+	width="100%"
+	height="100%"
+	preserveAspectRatio="none"
+    >
+	<g id="tempgroup" style="display:none;"></g>
+</svg>	
+</div>
+	
