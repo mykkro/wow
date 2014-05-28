@@ -147,14 +147,17 @@
 	    })
 	}
 
+	var dragging = false
 	function dragStart(ev) {
 	  console.log("Drag started")
 	   ev.dataTransfer.effectAllowed='copy';
 	   ev.dataTransfer.setData("nodeId", ev.target.getAttribute("id")); // --> nothing is passed; maybe Chrome-specific?
+	   dragging = true
 	}
 
 	function dragEnd(ev) {
 	  console.log("Drag ended")
+	  dragging = false
 	}
 
 	function updateRecentItemsPreview() {
@@ -189,15 +192,25 @@
 
 	function updateItemsPreview(uri, out, previewType) {
 	  $.getJSON(uri).done(function(data) {
-	    console.log("Received items:", data)
+	    // console.log("Received items:", data)
 	    var previewUris = _.map(data, function(d) { return d.node.previewUri })
 	    out.empty()
 	    for(var i=0; i<previewUris.length; i++) {
+	    	(function(i) {
+	      var viewUri = "/" + data[i].node.type + "/" + data[i]._id + "/view"
 	      var id = "node-"+ data[i].node.type + "-" + data[i]._id
 	      var uri = previewUris[i] + "?view="+previewType
 	      var el = $("<div>").attr("draggable","true").attr("id", id).addClass("node-preview-wrapper").addClass("view-"+previewType).load(uri).appendTo(out)
 	      el.get(0).addEventListener('dragstart', dragStart, false);
 	      el.get(0).addEventListener('dragend', dragEnd, false);
+	      el.click(function(){
+            if (dragging) {
+            	return;
+            }
+            // click action here
+            window.location.href = viewUri
+      	  });
+	  		})(i);
 	    }
 	  })
 	}

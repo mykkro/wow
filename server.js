@@ -15,8 +15,6 @@ var express = require('express')
   , server = http.createServer(app)
   , io = require('socket.io').listen(server);
 
-var mustacheExpress = require('mustache-express');
-
 var API = require("./lib/api/API")
 var REST = require("./lib/api/REST")
 var Storage = require("./lib/Storage")
@@ -61,7 +59,8 @@ var WowServer = {
     var allowedFilesize = 10000000
 
     app.configure(function(){
-      app.engine('mustache', mustacheExpress());
+      // app.engine('mustache', mustacheExpress());
+      app.engine('mustache', require('hogan-express'))
       app.set('view engine', 'mustache');
       app.set('views', __dirname + '/views/mustache');
 
