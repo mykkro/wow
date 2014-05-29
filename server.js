@@ -64,6 +64,10 @@ var WowServer = {
       app.set('view engine', 'mustache');
       app.set('views', __dirname + '/views/mustache');
       app.set('layout', 'layout') 
+      app.set('partials', {
+        "admin-nav": "admin-nav",
+        "nodepreview-head": 'nodepreview-head'
+      })
 
       app.use(express.favicon());
       app.use(express.json());
