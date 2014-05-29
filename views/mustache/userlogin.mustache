@@ -1,59 +1,14 @@
-<html>
-<head>
-  <title>{{title}}</title>
+{{#yield-title}}
+{{title}}
+{{/yield-title}}
+{{#yield-css}}
   <link href="/icons/PNG/fruitsalad/fruitsalad.css" media="all" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" href="/css/bundle.css" type="text/css" /> 
   <link rel="stylesheet" href="/css/admin.bundle.css" />
-  <script src="/js/wow-libs.js"></script>
+{{/yield-css}}
+{{#yield-script}}
   <script src="/js/wow-admin.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-  <script>
-  $(document).ready(function() {
-  	var logMeIn = function() {
-  		console.log("Logging user in...")
-  		$("#userlogin-form").submit()
-  	} 
-
-  	var showKeyboard = function() {
-  		$("#pickeyboard").show()
-  	}
-
-  	var hideKeyboard = function() {
-  		$("#pickeyboard").hide()
-  	}
-
-  	var userSelected = function() {
-  		console.log("User selected!")
-  		var el = $(this)
-  		var usesPassword = el.find("input[name=usesPassword]").val()
-  		$("#userlogin-username").val(el.find("input[name=username]").val())
-  		if(usesPassword != "true") {
-  			logMeIn()
-  		} else {
-	  		$("#userlogin-password").val("")
-	  		$(".userlogin-user").removeClass("active")
-	  		el.addClass("active")
-	  		$("#pickeyboard").picKeyboard({input:$("#userlogin-password"), onenter: logMeIn, onescape: hideKeyboard})
-	  		showKeyboard()
-  		}
-  	}
-
-  	$(".userlogin-user").each(function() {
-  		$(this).click(userSelected)
-  	})
-
-    $("#adminlogin-submit").click(function() {
-      $("#adminlogin-form").submit()
-    })
-
-    $("#adminlogin-form .adminlogin-title").click(function() {
-      $("#adminlogin-form .adminlogin-controls").toggle()
-    })
-  })
-  </script>
-
-</head>
-<body>
+{{/yield-script}}
 <div class="userlogin-background"></div>
 
 <div class="userlogin-users">
@@ -89,6 +44,47 @@
   </form>
 </div>
 
+<script>
+$(document).ready(function() {
+  var logMeIn = function() {
+    console.log("Logging user in...")
+    $("#userlogin-form").submit()
+  } 
 
-</body>
-</html>
+  var showKeyboard = function() {
+    $("#pickeyboard").show()
+  }
+
+  var hideKeyboard = function() {
+    $("#pickeyboard").hide()
+  }
+
+  var userSelected = function() {
+    console.log("User selected!")
+    var el = $(this)
+    var usesPassword = el.find("input[name=usesPassword]").val()
+    $("#userlogin-username").val(el.find("input[name=username]").val())
+    if(usesPassword != "true") {
+      logMeIn()
+    } else {
+      $("#userlogin-password").val("")
+      $(".userlogin-user").removeClass("active")
+      el.addClass("active")
+      $("#pickeyboard").picKeyboard({input:$("#userlogin-password"), onenter: logMeIn, onescape: hideKeyboard})
+      showKeyboard()
+    }
+  }
+
+  $(".userlogin-user").each(function() {
+    $(this).click(userSelected)
+  })
+
+  $("#adminlogin-submit").click(function() {
+    $("#adminlogin-form").submit()
+  })
+
+  $("#adminlogin-form .adminlogin-title").click(function() {
+    $("#adminlogin-form .adminlogin-controls").toggle()
+  })
+})
+</script>

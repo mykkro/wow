@@ -1,14 +1,30 @@
 {{#yield-title}}
 {{title}}
 {{/yield-title}}
+{{#yield-css}}
 <link rel="stylesheet" href="/css/admin.bundle.css" type="text/css" /> 
+{{/yield-css}}
+{{#yield-script}}
 <script type="text/javascript" src="/js/wow-admin.js"></script>
-
+{{/yield-script}}
 <div class="admin">
-	<h1>{{title}}</h1>
-	<h2>{{typeTitle}}</h2>
-	<img src="{{{thumbnailUrl}}}"></img>
-	<img src="{{{typeThumbnailUrl}}}"></img>
+	<div class="node-preview-head">
+		<div class="thumbnail">
+			<img src="{{{thumbnailUrl}}}">
+		</div>
+		<div class="rest">
+			<div>
+				<div class="type-thumbnail">
+					<img src="{{{typeThumbnailUrl}}}">
+				</div>
+				<div class="type-title"><span>{{typeTitle}}</span></div>
+			</div>
+			<div class="title"><span>{{title}}</span></div>
+			<div class="description"><span>{{description}}</span></div>
+			<div class="created">Created: <span>{{created}}</span></div>
+			{{#tags}}<div class="tags">Tags: {{#tags}}<span>{{.}} </span>{{/tags}}</div>{{/tags}}
+		</div>
+	</div>
 	<div class="admin-body">
 	{{{view}}}
 	</div>

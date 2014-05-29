@@ -3,7 +3,8 @@ module.exports = function(app, Auth) {
 	var mustache = require('mustache')
 
 	app.get('/admin', Auth.isAuthenticatedAsAdmin, function(req, res) {
-    res.render('admin', { layout: 'master' })
+    var admin = req.user.admin
+    res.render('admin', { layout: 'master', profileTitle: admin.title, profileUri: '/admin/'+admin._id+'/view' })
   })
 
 }
