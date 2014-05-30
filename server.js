@@ -25,7 +25,6 @@ var passport = require("passport");
 
 var Auth = require("./lib/middleware/auth")
 
-
 var WowServer = {
 	port: 9999,
   chrome: null,
@@ -129,6 +128,10 @@ var WowServer = {
     app.get("/profile", Auth.isAuthenticated , function(req, res){ 
         res.send("profile: " + JSON.stringify(req.user));
     });
+
+    // test - include plugin routes
+    var prefix = "/plugins/homepage"
+    require("./plugins/homepage/routes/routes")(prefix, app)
 
     require("./routes/rpc")(app)
     require("./routes/search")(app, API)

@@ -96,7 +96,8 @@
     "lodash": "~2.4.1",
     "sessionstore": "~0.4.5",
     "mustache-express": "~1.0.1",
-    "hogan-express": "~0.5.2"
+    "hogan-express": "~0.5.2",
+    "express-namespace": "~0.1.1"
   },
   "repository": {
     "type": "git",
