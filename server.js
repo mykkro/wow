@@ -125,13 +125,15 @@ var WowServer = {
         }
     });
 
-    app.get("/profile", Auth.isAuthenticated , function(req, res){ 
-        res.send("profile: " + JSON.stringify(req.user));
-    });
-
-    // test - include plugin routes
-    var prefix = "/plugins/homepage"
-    require("./plugins/homepage/routes/routes")(prefix, app)
+    // test - include plugin routes for enabled plugins
+    var pluginCfg = require("./plugins/plugins.json")
+    for(var key in pluginCfg.plugins) {
+      var prefix = "/plugins/"+key
+      var cfg = pluginCfg.plugins[key]
+      if(cfg.enabled) {
+        require("."+prefix+"/routes/routes")(prefix, app)
+      }
+    }
 
     require("./routes/rpc")(app)
     require("./routes/search")(app, API)
