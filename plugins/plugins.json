@@ -1,0 +1,8 @@
+{
+  "_comment": "List of installed plugins, with their configurations.",
+  "plugins": {
+    "homepage": {
+      "enabled": true
+    }
+  }
+}

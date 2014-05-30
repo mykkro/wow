@@ -187,6 +187,8 @@ module.exports = GridController
 
 },{"basejs":12}],"GridController":[function(require,module,exports){
 module.exports=require('Qz+ab4');
+},{}],"MiniLog":[function(require,module,exports){
+module.exports=require('0D1Aa+');
 },{}],"0D1Aa+":[function(require,module,exports){
 "use strict";
 
@@ -236,9 +238,7 @@ var LivesMiniLog = MiniLog.extend({
 
 module.exports = MiniLog
 
-},{"basejs":12}],"MiniLog":[function(require,module,exports){
-module.exports=require('0D1Aa+');
-},{}],7:[function(require,module,exports){
+},{"basejs":12}],7:[function(require,module,exports){
 "use strict";
 
 var Splash = function(options) {
@@ -277,6 +277,8 @@ Splash.removeAll = function() {
 
 module.exports = Splash
 
+},{}],"Util":[function(require,module,exports){
+module.exports=require('8RkSAW');
 },{}],"8RkSAW":[function(require,module,exports){
 "use strict";
 
@@ -317,8 +319,6 @@ var Util = {
 
 module.exports = Util
 
-},{}],"Util":[function(require,module,exports){
-module.exports=require('8RkSAW');
 },{}],"JnjsU8":[function(require,module,exports){
 "use strict";
 
