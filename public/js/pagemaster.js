@@ -1,18 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>{{title}}</title>
-  <meta name="google" content="notranslate" />
-  <link rel="stylesheet" href="/css/core.bundle.css" type="text/css" /> 
+// pagemaster.js
 
-  <link href="/fonts/SourceSansPro.css" media="all" rel="stylesheet" type="text/css" />
-  <link href="/fonts/meteocons.css" media="all" rel="stylesheet" type="text/css" />
-  <!-- third party libraries should be loaded here and then passed to the Widgetizer module... -->
-  <script src="/js/core.libs.js"></script>
-  <script type="text/javascript" src="/js/core.bundle.js"></script>
-  {{#name}}
-  <script type="text/javascript" src="/js/pages/{{name}}.js"></script>
-  <script>
   $(document).ready(function() {
         var pageInfo = require("pageinfo")(window)
         console.log(pageInfo)
@@ -108,11 +95,6 @@
             }
           })
 
-
-        // TODO fill out default location and preset on the server...
-        var preset = {{{preset}}}
-        var location = {{{location}}}
-
         // create widgetizer and load widgets
         var Widgetizer = require("widgetizer")(window, $, SVG)
 
@@ -168,12 +150,3 @@
         })
 
   })
-  </script>
-  {{/name}}
-</head>
-<body>
-<div id="top-wrapper">
-{{{content}}}
-</div>
-</body>
-</html>

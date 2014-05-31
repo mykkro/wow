@@ -25,7 +25,7 @@ module.exports = function(grunt) {
                     './js/eventtarget.js',
                     './js/virtualcontrol.js'
                 ],
-                dest: 'public/js/bundle.js',
+                dest: 'public/js/core.bundle.js',
                 options: {
                     alias: [
                         './js/widgetizer.js:widgetizer',
@@ -239,7 +239,7 @@ module.exports = function(grunt) {
                     "js/vendor/raphaelicious-1.0.js",
                     "js/vendor/yetii.js"
                 ],
-                dest: 'public/js/wow-libs.js'
+                dest: 'public/js/core.libs.js'
             },
             adminjs: {
                 src: [
@@ -250,19 +250,19 @@ module.exports = function(grunt) {
                     "tools/craft/js/YouTubeField.js",
                     "tools/craft/js/pickeyboard.js"
                 ],
-                dest: 'public/js/wow-admin.js'
+                dest: 'public/js/admin.libs.js'
             },
             appcss: {
                 src: [
                     "public/css/normalize.css",
                     "js/vendor/alpaca.min.css"
                 ],
-                dest: 'public/css/wow-libs.css'
+                dest: 'public/css/core.libs.css'
             },
             admincss: {
                 src: [
                 ],
-                dest: 'public/css/wow-admin.css'
+                dest: 'public/css/admin.libs.css'
             }
         },
         less: {
@@ -271,13 +271,13 @@ module.exports = function(grunt) {
                     paths: ["./css"]
                 },
                 files: {
-                    "public/css/bundle.css": [
-                        "public/css/wow-libs.css",
+                    "public/css/core.bundle.css": [
+                        "public/css/core.libs.css",
                         "less/style.less",
                         "less/game.less"
                     ],
                     "public/css/admin.bundle.css": [
-                        "public/css/wow-admin.css",
+                        "public/css/admin.libs.css",
                         "less/admin.less"
                     ]
                 }

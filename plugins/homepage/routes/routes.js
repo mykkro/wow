@@ -1,5 +1,6 @@
 module.exports = function(prefix, app) {
-  app.get(prefix+"/", function(req, res) {
+  // define additional routes here...
+  app.get(prefix+"/api", function(req, res) {
     res.send("Hello, world!")
   })
 }
