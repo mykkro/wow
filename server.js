@@ -121,7 +121,7 @@ var WowServer = {
           res.redirect('/admin');
         } else {
           // logged in as user
-          res.redirect('/pages/home');
+          res.redirect('/plugins/homepage');
         }
     });
 
@@ -139,35 +139,41 @@ var WowServer = {
       if(cfg.enabled) {
         app.use(prefix+"/assets", express.static(__dirname+prefix+"/public"))
         require("."+prefix+"/routes/routes")(prefix, app)
-        app.get(prefix, function(req, res) {
-          var name = req.params.name
-          res.redirect(prefix+"/index");
-        })
-        app.get(prefix+'/:page', Auth.isAuthenticatedAsUser, function(req, res) {
-          console.log("Current user:", req.user)
-          var preset = merge({}, defaults.preset, req.user.user.preset)
-          var presetStr = JSON.stringify(preset)
-          var location = merge({}, defaults.location, req.user.user.location)
-          var locationStr = JSON.stringify(location)
-          var name = key
-          var page = req.params.page
-          var wowPath = "."+prefix+"/pages/"+page+".wow"
-          var htmlPath = "."+prefix+"/pages/"+page+".html"
-          var view
-          if(fs.existsSync(wowPath)) {
-            // page is internal SVG content
-            view = fs.readFileSync(wowPath, "utf8")
-            view = mustache.to_html(svgPageLayout, {defs:svgDefs, content:view})
-          } else {
-            // page is already a wrapped html page
-            view = fs.readFileSync(htmlPath, "utf8")
-            view = mustache.to_html(view, {defs:svgDefs})
-          }
-          var html = mustache.to_html(pageMaster, {"name":name, "content":view, preset:presetStr, location: locationStr}); 
-          res.send(html)
-        })        
       }
     }
+    app.get('/plugins/:name', function(req, res) {
+      var name = req.params.name
+      res.redirect("/plugins/"+name+"/index");
+    })
+    app.get('/plugins/:name/:page', Auth.isAuthenticatedAsUser, function(req, res) {
+      console.log("Current user:", req.user)
+      var name = req.params.name
+      var page = req.params.page
+      var prefix = "/plugins/"+name
+      if(!(name in pluginCfg.plugins) || !pluginCfg.plugins[name].enabled) {
+        // not available
+        res.send(404, "Plugin not available: "+name)
+      } else {
+        var wowPath = "."+prefix+"/pages/"+page+".wow"
+        var htmlPath = "."+prefix+"/pages/"+page+".html"
+        var view
+        if(fs.existsSync(wowPath)) {
+          // page is internal SVG content
+          view = fs.readFileSync(wowPath, "utf8")
+          view = mustache.to_html(svgPageLayout, {defs:svgDefs, content:view})
+        } else {
+          // page is already a wrapped html page
+          view = fs.readFileSync(htmlPath, "utf8")
+          view = mustache.to_html(view, {defs:svgDefs})
+        }
+        var preset = merge({}, defaults.preset, req.user.user.preset)
+        var presetStr = JSON.stringify(preset)
+        var location = merge({}, defaults.location, req.user.user.location)
+        var locationStr = JSON.stringify(location)
+        var html = mustache.to_html(pageMaster, {"name":name, "content":view, preset:presetStr, location: locationStr}); 
+        res.send(html)
+      }
+    })        
 
     require("./routes/rpc")(app)
     require("./routes/search")(app, API)

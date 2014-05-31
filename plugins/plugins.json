@@ -3,6 +3,12 @@
   "plugins": {
     "homepage": {
       "enabled": true
+    },
+    "netradio": {
+      "enabled": true
+    },
+    "piano": {
+      "enabled": true
     }
   }
 }

@@ -1,0 +1,115 @@
+<div>
+<style>
+    svg.main, #kbd-wrapper {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+    }
+    svg.controls {
+        pointer-events: none;
+    }
+    svg.controls > g {
+        pointer-events: all;
+    }
+</style>
+<svg 
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:wow="http://example.org/wow"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    unselectable="on" 
+    style="-webkit-user-select: none;"
+    tabindex='1'
+    viewBox="0 0 960 600"
+    width="100%"
+    height="100%"
+    class="main"
+    preserveAspectRatio="none"
+    >
+    <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
+    <g id="tempgroup" style="display:none;"></g>    
+</svg>
+<div id="kbd-wrapper">
+<style>
+    .key { position: absolute; font-family: Helvetica; font-weight: 100; font-size: 12px;
+        border: 1px solid rgba(32,32,32,0.2);
+        border-radius: 0px 0px 5px 5px;
+        cursor:pointer;
+        box-shadow: 0px 5px 1px rgba(32,32,32,0.2);
+        -webkit-transition: margin 0.05s ease, background-color 0.05s ease, box-shadow 0.05s ease; }
+    .key:hover { background-color: rgb(255,192,32); }
+        
+    .key .label { position: absolute; bottom: 5px; text-align: center; left: 0px; right: 0px; }
+
+    .black { background-color: rgb(32,32,32); color: #ffffff; z-index: 1; text-shadow: 0px -1px 1px rgba(255,255,255,0.5); }
+    
+    .white { background-color: #ffffff; color: rgb(32,32,32); z-index: 0; text-shadow: 0px 1px 1px rgba(32,32,32,0.5); }
+    
+    .title { text-shadow: 0px 1px 1px rgba(32,32,32,0.2); font-size: 40px; font-weight: bold; font-family: Helvetica; padding: 10px; text-align: center; }
+    
+    .sub { color: rgb(96,96,96); font-size: 30px; padding: 10px; font-weight:100; margin:10px 0px; text-shadow: 0px 1px 1px rgba(32,32,32,0.2); text-align:center; }
+    .sub a, .sub a:link, .sub a:visited, .sub a:active { font-weight:bold; color: rgb(128,160,255); text-decoration: none; }
+    .sub a:hover { color: rgb(160,192,255); }
+    
+    .source a { color: rgb(255,96,96); }
+    .source a:link, .source a:visited, .source a:active { color: rgb(255,96,96); }
+    .source a:hover { color: rgb(255,128,128); }
+    
+    .small { font-size: 20px; }
+    
+    .keyboard-options { margin: 30px auto; width: auto; text-align: center; font-size: 12px; font-weight: 200; padding:10px; }
+    
+    .keyboard-holder { margin: 30px auto; height: 200px; position:relative; user-select:none; -webkit-user-select:none;-moz-user-select:none;-o-user-select:none; }
+</style>
+<div class="keyboard-options">
+<h3>Musical Keyboard - JS Dynamic Audio Synth</h3>
+<p><i>Created by Keith William Horwood © 2013</i></p>
+<p>Link to source: <a href="http://keithwhor.com/music/">http://keithwhor.com/music/</a><p>
+Sound
+<select ID="sound">
+    <option value="0" selected>Keyboard</option>
+    <option value="1">Organ</option>
+    <option value="2">Acoustic Guitar</option>
+    <option value="3">EDM, bro!</option>
+</select>
+<div ID="keyboard" class="keyboard-holder"></div>
+<div class="keyboard-options">
+Range [C<span ID="OCTAVE_LOWER">3</span>-B<span ID="OCTAVE_UPPER">5</span>]
+<input type="button" ID="-_OCTAVE" value="-" />
+<input type="button" ID="+_OCTAVE" value="+" /><br />
+<i>(Use left/right arrows to adjust with keyboard)</i>
+</div>
+
+</div>
+<script>
+var a = new AudioSynthView();
+a.draw();
+</script>
+<svg 
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:wow="http://example.org/wow"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    unselectable="on" 
+    style="-webkit-user-select: none;"
+    id="svg"
+    tabindex='1'
+    viewBox="0 0 960 600"
+    width="100%"
+    height="100%"
+    class="main controls"
+    preserveAspectRatio="none"
+    >
+    <defs>
+    {{{defs}}}
+    </defs>
+    <g transform="translate(840, 20)">
+        <wow:iconbutton id="quitButton" name="quitButton" src="quit"></wow:iconbutton>
+    </g>
+    <g transform="translate(20, 20)">
+        <wow:iconbutton name="homeButton" src="home"></wow:iconbutton>
+    </g>
+</svg>
+</div>

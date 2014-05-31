@@ -13,9 +13,46 @@ function printUsage() {
 
 var pluginsFile = path.join(__dirname, "/plugins/plugins.json")
 
+function readJsonFile(path) {
+	var json = fs.readFileSync(path, "utf8")
+	return JSON.parse(json)	
+}
+
+function writeJsonFile(path, data) {
+	var json = JSON.stringify(data, null, 2)
+	fs.writeFileSync(path, json, "utf8")
+}
+
+function pluginCreate(name, opts, next) {
+	// 1. determine whether the plugin doesn't already exist
+	var pluginsDir = path.join(__dirname, "/plugins")
+	var newPluginDir = path.join(pluginsDir, name)
+	if (fs.existsSync(newPluginDir)) {
+    	// Do something
+    	console.error("Plugin already exists!")
+    	next(new Error("Plugin already exists!"))
+   	} else {
+   		var pluginSkeletonDir = path.join(pluginsDir, '.plugin')
+   		fs.copy(pluginSkeletonDir, newPluginDir, function (err) {
+		  if (err) {
+		    next(err);
+		  } else {
+		  	// create proper metadata files - wowplugin.json and package.json
+		  	var wowplugin = readJsonFile(path.join(pluginSkeletonDir, "wowplugin.json"))
+		  	var pkg = readJsonFile(path.join(pluginSkeletonDir, "package.json"))
+		  	wowplugin.name = name
+		  	pkg.name = "wow-plugin-"+name
+		  	writeJsonFile(path.join(newPluginDir, "wowplugin.json"), wowplugin)
+		  	writeJsonFile(path.join(newPluginDir, "package.json"), pkg)
+		  	console.log("Plugin "+name+" created!")
+		  	next()
+		  }
+		});
+   	}
+}
+
 function pluginInstall(name, opts, next) {
-	var json = fs.readFileSync(pluginsFile, "utf8")
-	var pcfg = JSON.parse(json)
+	var pcfg = readJsonFile(pluginsFile)
 	if(name in pcfg.plugins) {
 		console.error("Plugin already installed!")
 		next()
@@ -28,8 +65,7 @@ function pluginInstall(name, opts, next) {
 			else {
 				// modify plugins file
 				pcfg.plugins[name] = { "enabled": true }
-				var json = JSON.stringify(pcfg, null, 2)
-				fs.writeFileSync(pluginsFile, json, "utf8")
+				writeJsonFile(pluginsFile, pcfg)
 				next()
 			}
 		})
@@ -37,8 +73,7 @@ function pluginInstall(name, opts, next) {
 }
 
 function pluginUninstall(name, opts, next) {
-	var json = fs.readFileSync(pluginsFile, "utf8")
-	var pcfg = JSON.parse(json)
+	var pcfg = readJsonFile(pluginsFile)
 	if(!(name in pcfg.plugins)) {
 		console.error("Plugin not installed!")
 		next()
@@ -51,8 +86,7 @@ function pluginUninstall(name, opts, next) {
 			else {
 				// modify plugins file
 				delete pcfg.plugins[name]
-				var json = JSON.stringify(pcfg, null, 2)
-				fs.writeFileSync(pluginsFile, json, "utf8")
+				writeJsonFile(pluginsFile, pcfg)
 				next()
 			}
 		})
@@ -60,16 +94,14 @@ function pluginUninstall(name, opts, next) {
 }
 
 function pluginSetEnabled(name, enabled, next) {
-	var json = fs.readFileSync(pluginsFile, "utf8")
-	var pcfg = JSON.parse(json)
+	var pcfg = readJsonFile(pluginsFile)
 	if(!(name in pcfg.plugins)) {
 		console.error("Plugin not installed!")
 		next()
 	} else {
 		// modify plugins file
 		pcfg.plugins[name].enabled = enabled
-		var json = JSON.stringify(pcfg, null, 2)
-		fs.writeFileSync(pluginsFile, json, "utf8")
+		writeJsonFile(pluginsFile, pcfg)
 		next()
 	}
 }
@@ -93,6 +125,9 @@ function pluginCommand(params, next) {
 			break;
 		case "disable":
 			pluginSetEnabled(name, false, next)
+			break;
+		case "create":
+			pluginCreate(name, opts, next)
 			break;
 		default:
 			console.error("Unknown command: "+cmd)
