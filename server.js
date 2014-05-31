@@ -131,6 +131,7 @@ var WowServer = {
       var prefix = "/plugins/"+key
       var cfg = pluginCfg.plugins[key]
       if(cfg.enabled) {
+        app.use(prefix, express.static(__dirname+prefix+"/public"))
         require("."+prefix+"/routes/routes")(prefix, app)
       }
     }
