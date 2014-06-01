@@ -19,9 +19,10 @@ module.exports = function(Wow) {
             self.selectChain.append(userVidButton.element)
             self.selectChain.append(searchVidButton.element)
         },
-        searchIt: function(page, next) {
+        searchIt: function(q, next) {
             var self = this
-            self.updateBrowserQuery(page)
+            var page = parseInt(q.page || 1)
+            self.updateBrowserQuery({page:page})
             self.wtr.rpc("favVideosList", {
                 userId: userId,
                 page: page

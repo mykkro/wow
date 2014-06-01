@@ -18,7 +18,7 @@ module.exports = function(app, express, Auth) {
       var cfg = pluginCfg.plugins[key]
       if(cfg.enabled) {
         app.use(prefix+"/assets", express.static(path.join(__dirname, ".."+prefix+"/public")))
-        require(".."+prefix+"/routes/routes")(prefix, app)
+        require(".."+prefix+"/routes/routes")(prefix, app, Auth)
       }
     }
     app.get('/plugins/:name', function(req, res) {

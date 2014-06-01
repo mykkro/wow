@@ -25,9 +25,19 @@ var BasePage = BasicLayer.extend({
         }
         this.addOverlay(sk)
     },
-    updateBrowserQuery: function(page, query) {
-        var newQuery = "?page=" + page
-        window.History.replaceState({}, "", newQuery)
+    parseUrl: function(myUrl) {
+        return url.parse(myUrl, true)
+    },
+    formatUrl: function(q) {
+        return url.format(q)
+    },
+    updateBrowserQuery: function(changes) {
+        var parsedUrl = url.parse(window.location.href, true)
+        for(key in changes) {
+            parsedUrl.query[key] = changes[key]
+        }
+        parsedUrl.search = null
+        window.History.replaceState({}, "", url.format(parsedUrl))
     },
     getQueryString: function(dpage) {
         var parsedUrl = url.parse(window.location.href, true)

@@ -21,6 +21,9 @@
     },
     "rulegame": {
       "enabled": true
+    },
+    "itemlist": {
+      "enabled": true
     }
   }
 }

@@ -55,8 +55,7 @@ module.exports = function(Wow) {
         },
         updateView: function(data) {
             var self = this
-            var page = parseInt(data.query.page || 1)
-            self.searchIt(page, function(results) {
+            self.searchIt(data.query, function(results) {
                 console.log("Displaying results: ", results)
             })
         },
@@ -79,9 +78,10 @@ module.exports = function(Wow) {
             var target = $(this.selectChain.current())
             console.log("Selected: " + target)
         },
-        searchIt: function(page) {
+        searchIt: function(query, next) {
             // to be implemented in subclass...
             // TODO callback after all items are widgetized
+            if(next) next()
         },
         showItem: function(data, index) {
             // to be implemented in subclass...

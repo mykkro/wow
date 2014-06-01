@@ -51,7 +51,7 @@ module.exports = function(Wow) {
             var page = parseInt(data.query.page || 1)
             if (query) {
                 self.textBox.val(query)
-                self.searchIt(page, function(results) {
+                self.searchIt(data.query, function(results) {
                     console.log("Displaying results: ", results)
                 })
             } else {
@@ -69,14 +69,11 @@ module.exports = function(Wow) {
             parsedUrl.search = null
             return url.format(parsedUrl)
         },
-        updateBrowserQuery: function(page, query) {
-            var newQuery = "?page=" + page + "&query=" + encodeURIComponent(query)
-            window.History.replaceState({}, "", newQuery)
-        },
-        searchIt: function(page, next) {
+        searchIt: function(q, next) {
             var self = this
+            var page = parseInt(q.page || 1)
             var query = self.textBox.val()
-            self.updateBrowserQuery(page, query)
+            self.updateBrowserQuery({page:page, query:query})
             self.searchYouTubeVideos({
                 q: query,
                 'max-results': 6,

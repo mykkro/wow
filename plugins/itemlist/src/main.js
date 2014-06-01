@@ -3,14 +3,24 @@ module.exports = function(Wow) {
     var $ = Wow.$
     var SVG = Wow.SVG
     var i18n = Wow.i18n
-    var BasePage = require("../../js/BasePage")
-    var SvgHelper = require("../../js/svghelper")(window)
+    var BasePage = require("../../../js/BasePage")
+    var SvgHelper = require("../../../js/svghelper")(window)
     var url = require("url")
     var truncate = require('html-truncate');
 
-    var ItemListPage = require("../../js/ItemListPage")(Wow)
+    var ItemListPage = require("../../../js/ItemListPage")(Wow)
+
+    var SearchQueryUtil = require("./searchqueryutil")
 
     var UserAppsPage = ItemListPage.extend({
+        init: function(data, next) {
+            var self = this
+            this.base(data, function() {
+                // base class initialized...
+                /* continue when finished */
+                if (next) next(this)
+            })
+        },
         activateSelected: function() {
             var target = $(this.selectChain.current())
             var widget = this.getWidget(target)
@@ -35,7 +45,21 @@ module.exports = function(Wow) {
         searchIt: function(q, next) {
             var self = this
             var page = parseInt(q.page || 1)
+            var query = SearchQueryUtil.getDataFromQueryObj(q)
             self.updateBrowserQuery({page:page})
+
+            var qdata = {
+                query: q,
+                pathname: "/plugins/itemlist/api/search"
+            }          
+
+            // TODO do the real search here...  
+            var searchUrl = self.formatUrl(qdata)
+            $.getJSON(searchUrl).done(function(data) {
+                alert("found results!")
+                console.log("DATA:", data)
+            })
+
             this.wtr.rpc("importsList", { /*userId:userId, */
                 page: page
             }, function(err, data) {
