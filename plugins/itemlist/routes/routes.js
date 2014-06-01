@@ -4,6 +4,7 @@ module.exports = function(prefix, app, Auth) {
 	var QueryBuilder = require("../../../lib/QueryBuilder")
 	var API = require("../../../lib/api/API")
 	var _ = require("lodash")
+	var url = require("url")
 
 	// helper function to return the results
 	var out = function(res, err, rr) {
@@ -14,6 +15,46 @@ module.exports = function(prefix, app, Auth) {
     		res.json({ error: err })
     	}
 	}
+
+	/**
+	 * Changes pathname of an url as well as adds type=TYPE to querystring
+	 * @param  {string} myUrl    
+	 * @param  {string} type   
+	 * @param  {string} pathname
+	 * @return {string} 
+	 */
+	var editUrl = function(myUrl, type, pathname) {
+		var q = url.parse(myUrl, true)
+		q.search = null
+		q.query.type = type
+		q.pathname = pathname
+		return url.format(q)
+	}
+
+	var redirectToSearch = function(req, res, type) {
+		var targetUrl = editUrl(req.url, type, prefix+'/index')
+		res.redirect(targetUrl)
+	}
+
+	app.get(prefix+"/images", function(req, res) {
+		redirectToSearch(req, res, "image")
+	})
+
+	app.get(prefix+"/apps", function(req, res) {
+		redirectToSearch(req, res, "app")
+	})
+
+	app.get(prefix+"/videos", function(req, res) {
+		redirectToSearch(req, res, "video")
+	})
+
+	app.get(prefix+"/voices", function(req, res) {
+		redirectToSearch(req, res, "voice")
+	})
+
+	app.get(prefix+"/youtubevideos", function(req, res) {
+		redirectToSearch(req, res, "youTubeVideo")
+	})
 
 	// common functionality for all API calls
 	// returned data are in JSON
@@ -31,7 +72,7 @@ module.exports = function(prefix, app, Auth) {
 		// search it!
 		console.log("Searching items based on query: ",qq)
 		var qb = new QueryBuilder()
-		var limit = qq.itemsPerPage || 10
+		var limit = qq.itemsPerPage || 6
 		var skip = ((qq.page || 1) - 1) * limit
 
 		var conds = []
@@ -64,9 +105,20 @@ module.exports = function(prefix, app, Auth) {
 		
 		var qobj = qb.limit(limit).skip(skip).sort('title', true).cond(qcond).q()
 		console.log(qobj)
-		API.findNodes(qobj).done(function(data) {
-			out(res, null, {items: data, query: qobj})
-		})
-
+		API.findNodes(qobj).then(
+			function(data) {
+				out(res, null, {
+					totalItems: skip+data.length+1, // set this so it looks like there is yet another next item in collection after these results...
+					startIndex: skip+1,
+					itemsPerPage: limit,
+					items: data, 
+					query: qobj
+				})
+			},
+			function(err) {
+				// something bad happened...
+				out(res, err)
+			}
+		)
 	})
 }
