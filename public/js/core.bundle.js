@@ -1463,9 +1463,7 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./basiclayer":3}],"pageinfo":[function(require,module,exports){
-module.exports=require('OzAdbj');
-},{}],"OzAdbj":[function(require,module,exports){
+},{"./basiclayer":3}],"OzAdbj":[function(require,module,exports){
 var url = require('url')
 var path = require('path')
 
@@ -1486,7 +1484,9 @@ module.exports = function(window) {
 
 }
 
-},{"path":45,"url":47}],19:[function(require,module,exports){
+},{"path":45,"url":47}],"pageinfo":[function(require,module,exports){
+module.exports=require('OzAdbj');
+},{}],19:[function(require,module,exports){
 module.exports = function(window) {
     var document = window.document
 
@@ -2524,6 +2524,8 @@ var SvgHelper = function(window) {
 
 module.exports = SvgHelper
 
+},{}],"virtualcontrol":[function(require,module,exports){
+module.exports=require('xmiMga');
 },{}],"xmiMga":[function(require,module,exports){
 var EventTarget = require("eventtarget")
 
@@ -2555,9 +2557,7 @@ var VirtualControl = EventTarget.extend({
 
 module.exports = VirtualControl
 
-},{"eventtarget":"KDKUXu"}],"virtualcontrol":[function(require,module,exports){
-module.exports=require('xmiMga');
-},{}],25:[function(require,module,exports){
+},{"eventtarget":"KDKUXu"}],25:[function(require,module,exports){
 var Base = require("basejs")
 
 module.exports = function($) {
@@ -2615,9 +2615,7 @@ module.exports = function($) {
     return Widget
 }
 
-},{"basejs":41}],"widgetizer":[function(require,module,exports){
-module.exports=require('BnNKMX');
-},{}],"BnNKMX":[function(require,module,exports){
+},{"basejs":41}],"BnNKMX":[function(require,module,exports){
 // create a browserified version of widgetizer:
 //  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
 module.exports = function(window, $, SVG) {
@@ -2950,7 +2948,9 @@ module.exports = function(window, $, SVG) {
     return Widgetizer
 }
 
-},{"./commons":6,"./inputwidget":13,"./svghelper":22,"./widget":25,"./widgets/bigbutton/bigbutton":28,"./widgets/box/box":29,"./widgets/button/button":30,"./widgets/flow/flow":31,"./widgets/grid/grid":32,"./widgets/iconbutton/iconbutton":33,"./widgets/image/image":34,"./widgets/piechart/piechart":35,"./widgets/plain/plain":36,"./widgets/switcher/switcher":37,"./widgets/text/text":38,"./widgets/textbox/textbox":39,"./widgets/viewport/viewport":40,"underscore":58}],28:[function(require,module,exports){
+},{"./commons":6,"./inputwidget":13,"./svghelper":22,"./widget":25,"./widgets/bigbutton/bigbutton":28,"./widgets/box/box":29,"./widgets/button/button":30,"./widgets/flow/flow":31,"./widgets/grid/grid":32,"./widgets/iconbutton/iconbutton":33,"./widgets/image/image":34,"./widgets/piechart/piechart":35,"./widgets/plain/plain":36,"./widgets/switcher/switcher":37,"./widgets/text/text":38,"./widgets/textbox/textbox":39,"./widgets/viewport/viewport":40,"underscore":58}],"widgetizer":[function(require,module,exports){
+module.exports=require('BnNKMX');
+},{}],28:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
