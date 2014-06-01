@@ -1193,8 +1193,6 @@ var Commons = {
 
 module.exports = Commons
 
-},{}],"dialogs":[function(require,module,exports){
-module.exports=require('zT2nDu');
 },{}],"zT2nDu":[function(require,module,exports){
 var Dialog = require('modal-dialog');
 
@@ -1237,7 +1235,9 @@ module.exports = function($, i18n) {
 
 }
 
-},{"modal-dialog":49}],"KDKUXu":[function(require,module,exports){
+},{"modal-dialog":49}],"dialogs":[function(require,module,exports){
+module.exports=require('zT2nDu');
+},{}],"KDKUXu":[function(require,module,exports){
 //Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
 //Modified by Myrousz 2014
 //MIT License
@@ -1300,8 +1300,6 @@ module.exports = EventTarget
 
 },{"basejs":41}],"eventtarget":[function(require,module,exports){
 module.exports=require('KDKUXu');
-},{}],"i18n":[function(require,module,exports){
-module.exports=require('rq9WIT');
 },{}],"rq9WIT":[function(require,module,exports){
 // to be used as constructor
 
@@ -1325,7 +1323,9 @@ var i18n = function(data) {
 }
 module.exports = i18n
 
-},{"fs":42,"path":45}],13:[function(require,module,exports){
+},{"fs":42,"path":45}],"i18n":[function(require,module,exports){
+module.exports=require('rq9WIT');
+},{}],13:[function(require,module,exports){
 module.exports = function($) {
     var Widget = require("./widget")($)
 
@@ -1366,9 +1366,7 @@ module.exports = function($) {
     return InputWidget
 }
 
-},{"./widget":25}],"mygamepad":[function(require,module,exports){
-module.exports=require('TM4xVw');
-},{}],"TM4xVw":[function(require,module,exports){
+},{"./widget":25}],"TM4xVw":[function(require,module,exports){
 module.exports = function(window, $, Gamepad) {
 
     var EventTarget = require("./eventtarget")
@@ -1430,7 +1428,9 @@ module.exports = function(window, $, Gamepad) {
     return MyGamepad
 }
 
-},{"./eventtarget":"KDKUXu"}],16:[function(require,module,exports){
+},{"./eventtarget":"KDKUXu"}],"mygamepad":[function(require,module,exports){
+module.exports=require('TM4xVw');
+},{}],16:[function(require,module,exports){
 var BasicLayer = require("./basiclayer")
 
 var Overlay = BasicLayer.extend({
@@ -2524,6 +2524,8 @@ var SvgHelper = function(window) {
 
 module.exports = SvgHelper
 
+},{}],"virtualcontrol":[function(require,module,exports){
+module.exports=require('xmiMga');
 },{}],"xmiMga":[function(require,module,exports){
 var EventTarget = require("eventtarget")
 
@@ -2555,9 +2557,7 @@ var VirtualControl = EventTarget.extend({
 
 module.exports = VirtualControl
 
-},{"eventtarget":"KDKUXu"}],"virtualcontrol":[function(require,module,exports){
-module.exports=require('xmiMga');
-},{}],25:[function(require,module,exports){
+},{"eventtarget":"KDKUXu"}],25:[function(require,module,exports){
 var Base = require("basejs")
 
 module.exports = function($) {

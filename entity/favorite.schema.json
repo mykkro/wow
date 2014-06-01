@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "title": "File",
+  "properties": {
+    "userId": {
+      "title": "User ID",
+      "type": "number",
+      "required": true
+    },
+    "entityId": {
+      "title": "User ID",
+      "type": "number",
+      "required": true
+    },
+    "created": {
+      "title": "Created",
+      "type": "string",
+      "required": false
+    },
+    "favorite": {
+      "title": "Favorite?",
+      "type": "boolean",
+      "required": false
+    }
+  }
+}

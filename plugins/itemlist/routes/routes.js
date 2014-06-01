@@ -63,19 +63,9 @@ module.exports = function(prefix, app, Auth) {
 		next()
 	})
 
-	// define additional routes here...
-	app.get(prefix+"/api/search", Auth.isAuthenticatedAsUser, function(req, res) {
-		// get all search data from querystring...
-		var qq = SearchQueryUtil.getDataFromQueryObj(req.query)
-		// add user ID to filter results relevant to this user...
-		qq.userId = req.user.user._id
-		// search it!
-		console.log("Searching items based on query: ",qq)
-		var qb = new QueryBuilder()
-		var limit = qq.itemsPerPage || 6
-		var skip = ((qq.page || 1) - 1) * limit
-
+	function doSearch(req, res, qq, skip, limit, entityIDs) {
 		var conds = []
+		var qb = new QueryBuilder()
 		// add type condition...
 		if(qq.type) {
 			if(qq.type.length==1) {
@@ -91,6 +81,10 @@ module.exports = function(prefix, app, Auth) {
 				qb.regex('description', qq.query)
 			]))
 		}
+		if(entityIDs) {
+			console.log("Search only in these entity IDs:", entityIDs)
+			conds.push(qb.inArray("_id", entityIDs))
+		}
 		var qcond = {}
 		if(conds.length==1) {
 			qcond = conds[0]
@@ -104,7 +98,6 @@ module.exports = function(prefix, app, Auth) {
 		// -- dates
 		
 		var qobj = qb.limit(limit).skip(skip).sort('title', true).cond(qcond).q()
-		console.log(qobj)
 		API.findNodes(qobj).then(
 			function(data) {
 				out(res, null, {
@@ -120,5 +113,43 @@ module.exports = function(prefix, app, Auth) {
 				out(res, err)
 			}
 		)
+	}
+
+	// define additional routes here...
+	app.get(prefix+"/api/search", Auth.isAuthenticatedAsUser, function(req, res) {
+		// get all search data from querystring...
+		var qq = SearchQueryUtil.getDataFromQueryObj(req.query)
+		// add user ID to filter results relevant to this user...
+		qq.userId = req.user.user._id
+		// search it!
+		var limit = qq.itemsPerPage || 6
+		var skip = ((qq.page || 1) - 1) * limit
+
+		if(qq.favorite) {
+			// get list of user's favorite IDs
+			var fapi = API.favorite
+			fapi.getUserFavoriteIDs(qq.userId, function(err, favIDs) {
+				if(err) {
+					out(res, err)
+				} else {
+					// search within favorites
+					doSearch(req, res, qq, skip, limit, favIDs)
+				}
+			})			
+		} else if(qq.personal) {
+			// get list of user's favorite IDs
+			var fapi = API.favorite
+			fapi.getUserEntityIDs(qq.userId, function(err, favIDs) {
+				if(err) {
+					out(res, err)
+				} else {
+					// search within favorites
+					doSearch(req, res, qq, skip, limit, favIDs)
+				}
+			})			
+		} else {
+			doSearch(req, res, qq, skip, limit, null)	
+		}
+		
 	})
 }

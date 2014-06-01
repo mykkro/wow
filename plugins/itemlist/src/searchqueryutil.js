@@ -57,6 +57,7 @@
         this.getBooleanField("withAllTags", q, out)
         this.getStringArrayField("type", q, out)
         this.getBooleanField("favorite", q, out)
+        this.getBooleanField("personal", q, out)
         return out
     }
  }
