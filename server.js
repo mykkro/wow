@@ -124,7 +124,7 @@ var WowServer = {
           res.redirect('/plugins/homepage');
         }
     });
-
+/*
     // templates used when rendering GUI pages...
     var svgPageLayout = fs.readFileSync("views/mustache/page.svg.mustache", "utf8")
     var svgDefs = fs.readFileSync("views/mustache/defs.svg.mustache", "utf8")
@@ -160,11 +160,11 @@ var WowServer = {
         if(fs.existsSync(wowPath)) {
           // page is internal SVG content
           view = fs.readFileSync(wowPath, "utf8")
-          view = mustache.to_html(svgPageLayout, {defs:svgDefs, content:view})
+          view = mustache.to_html(svgPageLayout, {defs:svgDefs, content:view, query:req.query})
         } else {
           // page is already a wrapped html page
           view = fs.readFileSync(htmlPath, "utf8")
-          view = mustache.to_html(view, {defs:svgDefs})
+          view = mustache.to_html(view, {defs:svgDefs, query: req.query})
         }
         var preset = merge({}, defaults.preset, req.user.user.preset)
         var presetStr = JSON.stringify(preset)
@@ -174,6 +174,8 @@ var WowServer = {
         res.send(html)
       }
     })        
+*/
+    require("./routes/plugins")(app, express, Auth)
 
     require("./routes/rpc")(app)
     require("./routes/search")(app, API)

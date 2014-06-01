@@ -1,6 +1,4 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"BasePage":[function(require,module,exports){
-module.exports=require('R8W4/H');
-},{}],"R8W4/H":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"R8W4/H":[function(require,module,exports){
 var Base = require("basejs")
 var url = require("url")
 
@@ -116,7 +114,9 @@ var BasePage = BasicLayer.extend({
 
 module.exports = BasePage
 
-},{"./basiclayer":3,"./softwarekeyboard":21,"basejs":41,"url":47}],3:[function(require,module,exports){
+},{"./basiclayer":3,"./softwarekeyboard":21,"basejs":41,"url":47}],"BasePage":[function(require,module,exports){
+module.exports=require('R8W4/H');
+},{}],3:[function(require,module,exports){
 var Base = require("basejs")
 
 var BasicLayer = Base.extend({
@@ -1183,8 +1183,6 @@ var Commons = {
 
 module.exports = Commons
 
-},{}],"dialogs":[function(require,module,exports){
-module.exports=require('zT2nDu');
 },{}],"zT2nDu":[function(require,module,exports){
 var Dialog = require('modal-dialog');
 
@@ -1227,7 +1225,11 @@ module.exports = function($, i18n) {
 
 }
 
-},{"modal-dialog":49}],"KDKUXu":[function(require,module,exports){
+},{"modal-dialog":49}],"dialogs":[function(require,module,exports){
+module.exports=require('zT2nDu');
+},{}],"eventtarget":[function(require,module,exports){
+module.exports=require('KDKUXu');
+},{}],"KDKUXu":[function(require,module,exports){
 //Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
 //Modified by Myrousz 2014
 //MIT License
@@ -1288,11 +1290,7 @@ var EventTarget = Base.extend({
 
 module.exports = EventTarget
 
-},{"basejs":41}],"eventtarget":[function(require,module,exports){
-module.exports=require('KDKUXu');
-},{}],"i18n":[function(require,module,exports){
-module.exports=require('rq9WIT');
-},{}],"rq9WIT":[function(require,module,exports){
+},{"basejs":41}],"rq9WIT":[function(require,module,exports){
 // to be used as constructor
 
 var fs = require("fs")
@@ -1315,7 +1313,9 @@ var i18n = function(data) {
 }
 module.exports = i18n
 
-},{"fs":42,"path":45}],13:[function(require,module,exports){
+},{"fs":42,"path":45}],"i18n":[function(require,module,exports){
+module.exports=require('rq9WIT');
+},{}],13:[function(require,module,exports){
 module.exports = function($) {
     var Widget = require("./widget")($)
 
@@ -1356,9 +1356,7 @@ module.exports = function($) {
     return InputWidget
 }
 
-},{"./widget":25}],"mygamepad":[function(require,module,exports){
-module.exports=require('TM4xVw');
-},{}],"TM4xVw":[function(require,module,exports){
+},{"./widget":25}],"TM4xVw":[function(require,module,exports){
 module.exports = function(window, $, Gamepad) {
 
     var EventTarget = require("./eventtarget")
@@ -1420,7 +1418,9 @@ module.exports = function(window, $, Gamepad) {
     return MyGamepad
 }
 
-},{"./eventtarget":"KDKUXu"}],16:[function(require,module,exports){
+},{"./eventtarget":"KDKUXu"}],"mygamepad":[function(require,module,exports){
+module.exports=require('TM4xVw');
+},{}],16:[function(require,module,exports){
 var BasicLayer = require("./basiclayer")
 
 var Overlay = BasicLayer.extend({
@@ -1453,9 +1453,7 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./basiclayer":3}],"pageinfo":[function(require,module,exports){
-module.exports=require('OzAdbj');
-},{}],"OzAdbj":[function(require,module,exports){
+},{"./basiclayer":3}],"OzAdbj":[function(require,module,exports){
 var url = require('url')
 var path = require('path')
 
@@ -1476,7 +1474,9 @@ module.exports = function(window) {
 
 }
 
-},{"path":45,"url":47}],19:[function(require,module,exports){
+},{"path":45,"url":47}],"pageinfo":[function(require,module,exports){
+module.exports=require('OzAdbj');
+},{}],19:[function(require,module,exports){
 module.exports = function(window) {
     var document = window.document
 
@@ -2605,7 +2605,9 @@ module.exports = function($) {
     return Widget
 }
 
-},{"basejs":41}],"BnNKMX":[function(require,module,exports){
+},{"basejs":41}],"widgetizer":[function(require,module,exports){
+module.exports=require('BnNKMX');
+},{}],"BnNKMX":[function(require,module,exports){
 // create a browserified version of widgetizer:
 //  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
 module.exports = function(window, $, SVG) {
@@ -2938,9 +2940,7 @@ module.exports = function(window, $, SVG) {
     return Widgetizer
 }
 
-},{"./commons":6,"./inputwidget":13,"./svghelper":22,"./widget":25,"./widgets/bigbutton/bigbutton":28,"./widgets/box/box":29,"./widgets/button/button":30,"./widgets/flow/flow":31,"./widgets/grid/grid":32,"./widgets/iconbutton/iconbutton":33,"./widgets/image/image":34,"./widgets/piechart/piechart":35,"./widgets/plain/plain":36,"./widgets/switcher/switcher":37,"./widgets/text/text":38,"./widgets/textbox/textbox":39,"./widgets/viewport/viewport":40,"underscore":58}],"widgetizer":[function(require,module,exports){
-module.exports=require('BnNKMX');
-},{}],28:[function(require,module,exports){
+},{"./commons":6,"./inputwidget":13,"./svghelper":22,"./widget":25,"./widgets/bigbutton/bigbutton":28,"./widgets/box/box":29,"./widgets/button/button":30,"./widgets/flow/flow":31,"./widgets/grid/grid":32,"./widgets/iconbutton/iconbutton":33,"./widgets/image/image":34,"./widgets/piechart/piechart":35,"./widgets/plain/plain":36,"./widgets/switcher/switcher":37,"./widgets/text/text":38,"./widgets/textbox/textbox":39,"./widgets/viewport/viewport":40,"underscore":58}],28:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window

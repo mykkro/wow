@@ -9,6 +9,18 @@
     },
     "piano": {
       "enabled": true
+    },
+    "youtubevideo": {
+      "enabled": true
+    },
+    "app": {
+      "enabled": true
+    },
+    "game": {
+      "enabled": true
+    },
+    "rulegame": {
+      "enabled": true
     }
   }
 }
