@@ -1,11 +1,12 @@
-//= require "thing"
+var Thing = require("./Thing")
+var Empty= require("./Empty")
 
 var PageDecorator = Thing.extend({
     init: function() {
         this.base();
         this.pageContent = $("<div>").addClass("page-content").appendTo(this.element);
         this.pageInfo = $("<div>").addClass('page-info').appendTo(this.element);
-        this.setSlot('content', Thing.empty());
+        this.setSlot('content', new Empty());
     },
     // options changed...
     refresh: function() {
@@ -51,3 +52,4 @@ var PageDecorator = Thing.extend({
     }
 });
 
+module.exports = PageDecorator

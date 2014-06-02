@@ -1,4 +1,4 @@
-//= require "thing"
+var Thing = require("./Thing")
 
 $.tubeplayer.defaults.afterReady = function($player) {
     console.log($player)
@@ -155,3 +155,5 @@ var TubeplayerThing = Thing.extend({
     }
 
 });
+
+module.exports = TubeplayerThing

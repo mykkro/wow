@@ -1,10 +1,11 @@
-//= require "decorator"
+var Decorator = require("./Decorator")
+var Things = require("./Things")
 
 var Ajax = Decorator.extend({
     init: function() {
         this.loaded($.noop);
         this.received(function(data) { return data; });
-        this.transform(function(data) { return Thing.create(data); })
+        this.transform(function(data) { return Things.create(data); })
         this.base();
         this.reload();
     },
@@ -78,4 +79,4 @@ var Ajax = Decorator.extend({
 });
 
 
-
+module.exports = Ajax

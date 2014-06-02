@@ -1,4 +1,4 @@
-//= require "decorator"
+var Decorator = require("./Decorator")
 
 var Page = Decorator.extend({
     // options changed...
@@ -34,3 +34,4 @@ var Page = Decorator.extend({
     }
 });
 
+module.exports = Page

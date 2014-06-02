@@ -6216,6 +6216,12 @@ module.exports = Thing
 },{"basejs":6}],41:[function(require,module,exports){
 var Thing = require("./Thing")
 
+var convertUri = function(uri, baseUri) {
+    // if uri starts with '/' or 'http://', leave it be
+    // else prepend baseUri
+    return baseUri + "/" + uri
+}
+
 var Things = {
     klasses: {
         "audio-decorator": require("./AudioDecorator"),
@@ -6235,6 +6241,7 @@ var Things = {
         "rounded-decorator": require("./RoundedDecorator"),
         "shadow-decorator": require("./ShadowDecorator"),
         "text-thing": require("./TextThing"),
+        "tubeplayer-thing": require("./TubeplayerThing"),
         "video-thing": require("./VideoThing"),
     },
     create: function(def, opts) {
@@ -6258,13 +6265,196 @@ var Things = {
         var thing = new klazz($.extend(def.options, opts), slots);
         thing.oid = oid
         return thing
-    }
+    },
+    convertURIs: function(def, baseUri) {
+        if(!def || !baseUri) {
+            return def
+        }
+        var out = $.extend({}, def)
+        var type = out.type
+        if(type == "imager") {
+            out.options.url = convertUri(out.options.url, baseUri)
+            // console.log("Imager: ", def)
+        } else if(type == "audio-decorator") {
+            out.options.uri = convertUri(out.options.uri, baseUri)
+            // console.log("Audio: ", def)
+        } else if(type == "video-thing") {
+            out.options.uri = convertUri(out.options.uri, baseUri)
+            // console.log("Video: ", def)
+        }
+        var slots = out.slots;
+        if($.isArray(slots)) slots = slots.toObject();
+        for(var key in slots) {
+            slots[key] = Things.convertURIs(slots[key], baseUri);
+        }
+        return out
+    }    
 }
 
 
 module.exports = Things
 
-},{"./AudioDecorator":15,"./BackgroundDecorator":16,"./Book":17,"./BorderDecorator":19,"./Clock":21,"./Empty":23,"./GridLayout":25,"./GrowableLayout":26,"./Imager":28,"./InsetDecorator":29,"./Layout":30,"./OpacityDecorator":31,"./RefDecorator":34,"./RefList":35,"./RoundedDecorator":36,"./ShadowDecorator":37,"./TextThing":39,"./Thing":40,"./VideoThing":42}],42:[function(require,module,exports){
+},{"./AudioDecorator":15,"./BackgroundDecorator":16,"./Book":17,"./BorderDecorator":19,"./Clock":21,"./Empty":23,"./GridLayout":25,"./GrowableLayout":26,"./Imager":28,"./InsetDecorator":29,"./Layout":30,"./OpacityDecorator":31,"./RefDecorator":34,"./RefList":35,"./RoundedDecorator":36,"./ShadowDecorator":37,"./TextThing":39,"./Thing":40,"./TubeplayerThing":42,"./VideoThing":43}],42:[function(require,module,exports){
+var Thing = require("./Thing")
+
+$.tubeplayer.defaults.afterReady = function($player) {
+    console.log($player)
+    // TODO resize only single player
+	$(".tubeplayer-wrapper").resize()
+}
+
+var TubeplayerThing = Thing.extend({
+    _onplay: $.noop,
+    _onpause: $.noop,
+    _onstop: $.noop,
+    _onkill: $.noop,
+    onPlay: function(kb) {
+        if(typeof kb == 'function') {
+            this._onplay = kb;
+        } else {
+            this._onplay(kb);
+        }
+    },
+    onPause: function(kb) {
+        if(typeof kb == 'function') {
+            this._onpause = kb;
+        } else {
+            this._onpause(kb);
+        }
+    },
+    onStop: function(kb) {
+        if(typeof kb == 'function') {
+            this._onstop = kb;
+        } else {
+            this._onstop(kb);
+        }
+    },
+    onKill: function(kb) {
+        if(typeof kb == 'function') {
+            this._onkill = kb;
+        } else {
+            this._onkill(kb);
+        }
+    },
+    thumbnailUrl: function() {
+        return $.jYoutube(this.options.name, 'small');
+    },
+    init: function() {
+    	this.wrapper = $("<div>").addClass("tubeplayer-wrapper")
+        this.glasspane = $("<div>").addClass("tubeplayer-glasspane")        
+        var self = this
+		self.wrapper.resize(function(e) {
+			console.log("Resizing! width="+self.wrapper.width()+", height="+self.wrapper.height())
+			self.adjustPlayerSize()
+		})        
+		console.log("Initialized!")
+    },
+    play: function() {
+        this._play();
+    },
+    _play: function() {
+        this.player.tubeplayer("play")
+        this.onPlay();
+    },
+    _pause: function() {
+        this.player.tubeplayer("pause")
+        this.onPause();
+    },
+    _stop: function() {
+        this.player.tubeplayer("stop")
+        this.onStop();
+    },
+    _kill: function() {
+        this.player.tubeplayer("destroy")
+        this.player.remove()
+        this.player = null
+        this.onKill();
+    },
+    _setVolume: function(vol) {
+        this.player.tubeplayer("volume", vol)
+    },
+    adjustPlayerSize: function() {
+    	var self = this    	
+    	console.log("Adjusting player size! width="+self.wrapper.width()+", height="+self.wrapper.height())
+        self.player.tubeplayer("size", {
+			width: self.wrapper.width(), 
+			height: self.wrapper.height()
+		})
+    },
+    refresh: function() {
+        this.base();
+        if(this.player) {
+            //this.player.tubeplayer("destroy")
+            this.player.remove()
+            this.player = null
+        }
+        this.player = $("<div>").addClass("tubeplayer-container")
+        this.element.html(this.wrapper.empty().append(
+            this.player
+            // this.glasspane
+        ))
+        var self = this;
+        var o = self.options
+		self.player.tubeplayer({
+			allowFullScreen: false,
+			autoPlay: false,
+			showControls: 0,
+            initialVideo: o.name,
+            preferredQuality: o.quality,
+            autoPlay: o.autoplay,
+            onPlayerUnstarted: function(){},
+			onPlay: function(id){}, // after the play method is called
+			onPause: function(){}, // after the pause method is called
+			onStop: function(){}, // after the player is stopped
+			onSeek: function(time){}, // after the video has been seeked to a defined point
+			onMute: function(){}, // after the player is muted
+			onUnMute: function(){} // after the player is unmuted
+		})		
+        // console.log(self.player.tubeplayer("player"))
+        self._setVolume(o.volume)
+    },
+    _klass: "tubeplayer-thing thing",
+    _type: "tubeplayer-thing",
+    _defaults: {
+        "name": "ydRAb9cwHnA",
+        'quality': "default",
+        'autoplay': false,
+        'loop': false,
+        'volume': 50
+    },
+    _schema: {
+	    "type":"object",
+	    "$schema": "http://json-schema.org/draft-03/schema",
+	    "properties":{
+		    "name": {
+			    "type":"string",
+                "format": "string",
+			    "required":true
+    	    },
+		    "quality": {
+			    "type":"string",
+                "format": "string",
+			    "required":true
+    	    },
+            "volume":{
+                "type":"integer",
+                "required":true // TODO
+            },
+            "autoplay":{
+                "type":"boolean",
+                "required":true // TODO
+            },
+            "loop":{
+                "type":"boolean",
+                "required":true // TODO
+            }
+	    }
+    }
+
+});
+
+module.exports = TubeplayerThing
+},{"./Thing":40}],43:[function(require,module,exports){
 var Thing = require("./Thing")
 var PlayerControls = require("./PlayerControls")
 var CenteringDecorator = require("./CenteringDecorator")
@@ -6477,6 +6667,7 @@ module.exports = function(Wow) {
     var i18n = Wow.i18n
     var BasePage = require("../../../js/BasePage")
     var ExportBookViewer = require("./js/things/ExportBookViewer")
+    var Things = require("./js/things/Things")
 
     var path = require("path")
 
@@ -6486,11 +6677,8 @@ module.exports = function(Wow) {
 
     var page = BasePage.extend({
         init: function(data, next) {
-            var server = this.wtr.rpc
             var url = require("url")
             var appName = data.query.importname
-            var appId = appName
-            var userId = "555"
             var self = this
 
             /* use data to modify page */
@@ -6526,24 +6714,27 @@ module.exports = function(Wow) {
                 // move back to previous page...
                 self.goBack()
             })
-            var importName = appName || "notfound"
-            var src = "/imports/" + importName + "/book.json"
-            $.getJSON(src).done(function(book) {
-                alert("Received book data!")
+
+            var baseUrl = "/imports/" + appName
+            var metadataUrl = baseUrl + "/book.json"
+
+            $.getJSON(metadataUrl).done(function(book) {
+                // convert all relative URIs
+                book = Things.convertURIs(book, baseUrl)
+                // create book view...
                 var bookView = new ExportBookViewer({data:book, fullscreen:true, logger: bookman_log, url:"https://nit.felk.cvut.cz/~myrousz/escrapbook-v3/books/view/34"});
                 bookView.init();
+                /* continue when finished */
+                if (next) next(self)
+            }).fail(function(err) {
+                console.error(err)
+                if (next) next(self)
             })
 
-            // widgetizer...
-            ////widgetize($(".widget"));
-
-
-            /* continue when finished */
-            if (next) next(this)
         }
     })
     return page
 
 }
 
-},{"../../../js/BasePage":1,"./js/things/ExportBookViewer":24,"path":8,"url":14}]},{},["HJD/OK"])
+},{"../../../js/BasePage":1,"./js/things/ExportBookViewer":24,"./js/things/Things":41,"path":8,"url":14}]},{},["HJD/OK"])
