@@ -1193,6 +1193,8 @@ var Commons = {
 
 module.exports = Commons
 
+},{}],"dialogs":[function(require,module,exports){
+module.exports=require('zT2nDu');
 },{}],"zT2nDu":[function(require,module,exports){
 var Dialog = require('modal-dialog');
 
@@ -1235,9 +1237,7 @@ module.exports = function($, i18n) {
 
 }
 
-},{"modal-dialog":49}],"dialogs":[function(require,module,exports){
-module.exports=require('zT2nDu');
-},{}],"KDKUXu":[function(require,module,exports){
+},{"modal-dialog":49}],"KDKUXu":[function(require,module,exports){
 //Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
 //Modified by Myrousz 2014
 //MIT License
@@ -1300,6 +1300,8 @@ module.exports = EventTarget
 
 },{"basejs":41}],"eventtarget":[function(require,module,exports){
 module.exports=require('KDKUXu');
+},{}],"i18n":[function(require,module,exports){
+module.exports=require('rq9WIT');
 },{}],"rq9WIT":[function(require,module,exports){
 // to be used as constructor
 
@@ -1323,9 +1325,7 @@ var i18n = function(data) {
 }
 module.exports = i18n
 
-},{"fs":42,"path":45}],"i18n":[function(require,module,exports){
-module.exports=require('rq9WIT');
-},{}],13:[function(require,module,exports){
+},{"fs":42,"path":45}],13:[function(require,module,exports){
 module.exports = function($) {
     var Widget = require("./widget")($)
 

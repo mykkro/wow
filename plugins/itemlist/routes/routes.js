@@ -128,7 +128,7 @@ module.exports = function(prefix, app, Auth) {
 		if(qq.favorite) {
 			// get list of user's favorite IDs
 			var fapi = API.favorite
-			fapi.getUserFavoriteIDs(qq.userId, function(err, favIDs) {
+			fapi.getUserFavoriteIDs(qq.userId, null, function(err, favIDs) {
 				if(err) {
 					out(res, err)
 				} else {
@@ -139,7 +139,7 @@ module.exports = function(prefix, app, Auth) {
 		} else if(qq.personal) {
 			// get list of user's favorite IDs
 			var fapi = API.favorite
-			fapi.getUserEntityIDs(qq.userId, function(err, favIDs) {
+			fapi.getUserEntityIDs(qq.userId, null, function(err, favIDs) {
 				if(err) {
 					out(res, err)
 				} else {
