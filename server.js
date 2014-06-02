@@ -55,7 +55,7 @@ var WowServer = {
       "m4v": 1
     }
 
-    var allowedFilesize = 10000000
+    var allowedFilesize = 50000000
 
     app.configure(function(){
       // app.engine('mustache', mustacheExpress());

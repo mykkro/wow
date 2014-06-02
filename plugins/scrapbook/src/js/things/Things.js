@@ -56,15 +56,20 @@ var Things = {
         }
         var out = $.extend({}, def)
         var type = out.type
-        if(type == "imager") {
+        if(type == "book") {
+            out.options.background_image_url = convertUri(out.options.background_image_url, baseUri)
+            out.options.frontpage_image_url = convertUri(out.options.frontpage_image_url, baseUri)
+            out.options.backpage_image_url = convertUri(out.options.backpage_image_url, baseUri)
+            out.options.oddpage_image_url = convertUri(out.options.oddpage_image_url, baseUri)
+            out.options.evenpage_image_url = convertUri(out.options.evenpage_image_url, baseUri)
+            out.options.turnleft_image_url = convertUri(out.options.turnleft_image_url, baseUri)
+            out.options.turnright_image_url = convertUri(out.options.turnright_image_url, baseUri)
+        } else if(type == "imager") {
             out.options.url = convertUri(out.options.url, baseUri)
-            // console.log("Imager: ", def)
         } else if(type == "audio-decorator") {
             out.options.uri = convertUri(out.options.uri, baseUri)
-            // console.log("Audio: ", def)
         } else if(type == "video-thing") {
             out.options.uri = convertUri(out.options.uri, baseUri)
-            // console.log("Video: ", def)
         }
         var slots = out.slots;
         if($.isArray(slots)) slots = slots.toObject();
