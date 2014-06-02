@@ -30,7 +30,6 @@ var ExportBookViewer = BookViewer.extend({
             var hh2 = Math.max(Math.floor(hh/2-iconSize/2), 28+2*iconSize);
             this.tools['turn-right'].css({top: hh2+'px', width: iconSize+"px", height: iconSize+"px"});
             this.tools['turn-left'].css({top: hh2+'px', width: iconSize+"px", height: iconSize+"px"});
-            this.tools['closebook'].css({top: '16px', width: iconSizeHalf+"px", height: iconSizeHalf+"px"});
         }
     },
     setFullscreen: function(full) {

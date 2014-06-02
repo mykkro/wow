@@ -15676,7 +15676,6 @@ var BookViewer = Base.extend({
         this.eventUrl = options.eventUrl;
         this.fullscreen = options.fullscreen;
         this.logger = options.logger;
-        this.showquitbutton = options.showquitbutton;
         this.defaultWidth = 920;
         this.defaultHeight = 600;
         this.tools = {};
@@ -15816,11 +15815,6 @@ var BookViewer = Base.extend({
         });
         this.makeTool('turn-right', __('Previous page'), true, '50%', function() { self.turnPrevious();});
         this.makeTool('turn-left', __('Next page'), false, '50%', function() { self.turnNext();});
-        if(this.showquitbutton!="no") {
-            this.makeTool('closebook', __('Close book'), false, '16px', function() { self.closeBook();});
-            // reduce close icon in size...
-            this.tools['closebook'].css({top: '16px', width: "24px", height: "24px"});
-        }
 
         // update icons...
         $("#book-wrapper >.icon-turn-left").css("background-image", 'url('+o.turnleft_image_url+')')
@@ -15905,8 +15899,6 @@ var BookViewer = Base.extend({
         var pages = this.bookContent.get().turn("pages");
         this.showIcon('turn-right', page>1);
         this.showIcon('turn-left', page<(pages-pages%2)); // kdyz ma kniha 3 strany, uz nejde druha otocit
-        //this.showIcon('fullscreen-on', !this.fullscreen);
-        //this.showIcon('fullscreen-off', this.fullscreen);
         
         if(gapWidth) {
             var gapSize = 60;
@@ -15919,10 +15911,6 @@ var BookViewer = Base.extend({
             var hh2 = Math.max(Math.floor(hh/2-iconSize/2), 28+3*iconSize);
             this.tools['turn-right'].css({top: hh2+'px', width: iconSize+"px", height: iconSize+"px"});
             this.tools['turn-left'].css({top: hh2+'px', width: iconSize+"px", height: iconSize+"px"});
-            //this.tools['fullscreen-on'].css({top: (20+iconSize)+'px', width: iconSize+"px", height: iconSize+"px"});
-            //this.tools['fullscreen-off'].css({top: (20+iconSize)+'px', width: iconSize+"px", height: iconSize+"px"});
-            this.tools['closebook'].css({top: '16px', width: iconSizeHalf+"px", height: iconSizeHalf+"px"});
-            //if(this.bookUrl) this.tools['home'].css({top: '16px', width: iconSize+"px", height: iconSize+"px"});
         }
     }
 });
@@ -16229,7 +16217,6 @@ var ExportBookViewer = BookViewer.extend({
             var hh2 = Math.max(Math.floor(hh/2-iconSize/2), 28+2*iconSize);
             this.tools['turn-right'].css({top: hh2+'px', width: iconSize+"px", height: iconSize+"px"});
             this.tools['turn-left'].css({top: hh2+'px', width: iconSize+"px", height: iconSize+"px"});
-            this.tools['closebook'].css({top: '16px', width: iconSizeHalf+"px", height: iconSizeHalf+"px"});
         }
     },
     setFullscreen: function(full) {
@@ -17802,9 +17789,7 @@ function draw(v,c) {
 
 module.exports = VideoThing
 
-},{"./CenteringDecorator":20,"./PlayerControls":32,"./Thing":40}],"pagescript":[function(require,module,exports){
-module.exports=require('HJD/OK');
-},{}],"HJD/OK":[function(require,module,exports){
+},{"./CenteringDecorator":20,"./PlayerControls":32,"./Thing":40}],"HJD/OK":[function(require,module,exports){
 module.exports = function(Wow) {
     var window = Wow.window
     var $ = Wow.$
@@ -17820,7 +17805,7 @@ module.exports = function(Wow) {
       console.log(data);
     }
 
-    var page = BasePage.extend({
+    var ScrapbookPage = BasePage.extend({
         init: function(data, next) {
             var url = require("url")
             var appName = data.query.importname
@@ -17869,17 +17854,18 @@ module.exports = function(Wow) {
                 // create book view...
                 var bookView = new ExportBookViewer({data:book, fullscreen:true, logger: bookman_log, url:"https://nit.felk.cvut.cz/~myrousz/escrapbook-v3/books/view/34"});
                 bookView.init();
-                /* continue when finished */
+                // continue when finished 
                 if (next) next(self)
             }).fail(function(err) {
                 console.error(err)
                 if (next) next(self)
             })
-
         }
     })
-    return page
+    return ScrapbookPage
 
 }
 
-},{"../../../js/BasePage":1,"./js/things/ExportBookViewer":24,"./js/things/Things":41,"path":8,"url":14}]},{},["HJD/OK"])
+},{"../../../js/BasePage":1,"./js/things/ExportBookViewer":24,"./js/things/Things":41,"path":8,"url":14}],"pagescript":[function(require,module,exports){
+module.exports=require('HJD/OK');
+},{}]},{},["HJD/OK"])

@@ -1366,9 +1366,7 @@ module.exports = function($) {
     return InputWidget
 }
 
-},{"./widget":25}],"mygamepad":[function(require,module,exports){
-module.exports=require('TM4xVw');
-},{}],"TM4xVw":[function(require,module,exports){
+},{"./widget":25}],"TM4xVw":[function(require,module,exports){
 module.exports = function(window, $, Gamepad) {
 
     var EventTarget = require("./eventtarget")
@@ -1430,7 +1428,9 @@ module.exports = function(window, $, Gamepad) {
     return MyGamepad
 }
 
-},{"./eventtarget":"KDKUXu"}],16:[function(require,module,exports){
+},{"./eventtarget":"KDKUXu"}],"mygamepad":[function(require,module,exports){
+module.exports=require('TM4xVw');
+},{}],16:[function(require,module,exports){
 var BasicLayer = require("./basiclayer")
 
 var Overlay = BasicLayer.extend({
@@ -1463,9 +1463,7 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./basiclayer":3}],"pageinfo":[function(require,module,exports){
-module.exports=require('OzAdbj');
-},{}],"OzAdbj":[function(require,module,exports){
+},{"./basiclayer":3}],"OzAdbj":[function(require,module,exports){
 var url = require('url')
 var path = require('path')
 
@@ -1486,7 +1484,9 @@ module.exports = function(window) {
 
 }
 
-},{"path":45,"url":47}],19:[function(require,module,exports){
+},{"path":45,"url":47}],"pageinfo":[function(require,module,exports){
+module.exports=require('OzAdbj');
+},{}],19:[function(require,module,exports){
 module.exports = function(window) {
     var document = window.document
 

@@ -98,6 +98,34 @@ module.exports = function(grunt) {
             options: {
                 separator: ';',
             },
+            appjsdev: {
+                src: [
+                    "js/vendor/underscore.js",
+                    "js/vendor/jquery-2.1.0.js",
+                    "js/vendor/jquery.history.js",
+                    "js/vendor/jquery.svg.js",
+                    "js/vendor/jquery.svgdom.js",
+                    "js/vendor/jquery.zoomooz.js",
+                    "js/vendor/jquery.ba-resize.js",
+                    "js/vendor/d3.v3.js",
+                    "js/vendor/svgjs/svg.js",
+                    "js/vendor/svgjs/svg.easing.js",
+                    "js/vendor/svgjs/svg.filter.js",
+                    "js/vendor/soundmanager2.js",
+                    "js/vendor/jquery.playable.js",
+                    "js/vendor/jquery.youtubedrop.js",
+                    "js/vendor/jquery.tmpl.js",
+                    "js/vendor/jquery.event.drag-2.2.js",
+                    "js/vendor/gamepad.js",
+                    "js/vendor/mustache.js",
+                    "js/vendor/alpaca.min.js",
+                    "js/vendor/moment-with-langs.min.js",
+                    "js/vendor/raphael-min.js",
+                    "js/vendor/raphaelicious-1.0.js",
+                    "js/vendor/yetii.js"
+                ],
+                dest: 'public/js/core.libs.js'
+            },
             appjs: {
                 src: [
                     "js/vendor/underscore-min.js",
@@ -127,7 +155,7 @@ module.exports = function(grunt) {
                     "js/vendor/raphaelicious-1.0.js",
                     "js/vendor/yetii.js"
                 ],
-                dest: 'public/js/core.libs.js'
+                dest: 'public/js/core.libs.min.js'
             },
             adminjs: {
                 src: [

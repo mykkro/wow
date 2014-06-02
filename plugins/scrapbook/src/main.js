@@ -13,7 +13,7 @@ module.exports = function(Wow) {
       console.log(data);
     }
 
-    var page = BasePage.extend({
+    var ScrapbookPage = BasePage.extend({
         init: function(data, next) {
             var url = require("url")
             var appName = data.query.importname
@@ -62,15 +62,14 @@ module.exports = function(Wow) {
                 // create book view...
                 var bookView = new ExportBookViewer({data:book, fullscreen:true, logger: bookman_log, url:"https://nit.felk.cvut.cz/~myrousz/escrapbook-v3/books/view/34"});
                 bookView.init();
-                /* continue when finished */
+                // continue when finished 
                 if (next) next(self)
             }).fail(function(err) {
                 console.error(err)
                 if (next) next(self)
             })
-
         }
     })
-    return page
+    return ScrapbookPage
 
 }
