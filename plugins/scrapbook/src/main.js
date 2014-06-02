@@ -4,8 +4,13 @@ module.exports = function(Wow) {
     var SVG = Wow.SVG
     var i18n = Wow.i18n
     var BasePage = require("../../../js/BasePage")
+    var ExportBookViewer = require("./js/things/ExportBookViewer")
 
     var path = require("path")
+
+    var bookman_log = function(data) {
+      console.log(data);
+    }
 
     var page = BasePage.extend({
         init: function(data, next) {
@@ -50,25 +55,16 @@ module.exports = function(Wow) {
                 self.goBack()
             })
             var importName = appName || "notfound"
-            var src = "/imports/" + importName + "/index.html"
-                //window.alert(src)
-                // TODO automatic iframe resizing... 
-                // ERROR: sometimes the application will not show, page refresh necessary
-                //setTimeout(function() {
-            $("#iframe-wrapper").empty().append(
-                $("<iframe nwfaketop nwdisable>").attr({
-                    width: "100%",
-                    height: "100%",
-                    src: src + "?showquitbutton=no&lang=de",
-                    frameborder: 0
-                }).load(function() {
-                    // reloading does not seem to help...
-                    //$(this).off('load')
-                    //$(this).get(0).contentWindow.location.reload();
-                })
-            )
-            //document.getElementById("iframe-wrapper").reload(true);
-            //}, 1000)
+            var src = "/imports/" + importName + "/book.json"
+            $.getJSON(src).done(function(book) {
+                alert("Received book data!")
+                var bookView = new ExportBookViewer({data:book, fullscreen:true, logger: bookman_log, url:"https://nit.felk.cvut.cz/~myrousz/escrapbook-v3/books/view/34"});
+                bookView.init();
+            })
+
+            // widgetizer...
+            ////widgetize($(".widget"));
+
 
             /* continue when finished */
             if (next) next(this)

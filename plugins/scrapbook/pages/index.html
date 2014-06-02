@@ -31,7 +31,17 @@
     <wow:image src="/assets/backgrounds/default.svg" width="960" height="600"></wow:image>
 	<g id="tempgroup" style="display:none;"></g>    
 </svg>
-<div id="iframe-wrapper">
+
+<script>
+    var LocaleStrings = {};
+    var __ = function(arg) {
+        return LocaleStrings[arg] || arg;
+    }    
+</script>
+
+<div id="scrapbook-wrapper">
+    <div id="fullscreen" style="width: 100%; height: 100%;">
+    </div>
 </div>
 <svg 
     version="1.1"
