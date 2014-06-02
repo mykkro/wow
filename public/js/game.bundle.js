@@ -187,6 +187,8 @@ module.exports = GridController
 
 },{"basejs":12}],"GridController":[function(require,module,exports){
 module.exports=require('Qz+ab4');
+},{}],"MiniLog":[function(require,module,exports){
+module.exports=require('0D1Aa+');
 },{}],"0D1Aa+":[function(require,module,exports){
 "use strict";
 
@@ -236,9 +238,7 @@ var LivesMiniLog = MiniLog.extend({
 
 module.exports = MiniLog
 
-},{"basejs":12}],"MiniLog":[function(require,module,exports){
-module.exports=require('0D1Aa+');
-},{}],7:[function(require,module,exports){
+},{"basejs":12}],7:[function(require,module,exports){
 "use strict";
 
 var Splash = function(options) {
@@ -319,8 +319,6 @@ var Util = {
 
 module.exports = Util
 
-},{}],"Watches":[function(require,module,exports){
-module.exports=require('JnjsU8');
 },{}],"JnjsU8":[function(require,module,exports){
 "use strict";
 
@@ -351,7 +349,9 @@ var Watches = Base.extend({
 
 module.exports = Watches
 
-},{"basejs":12}],12:[function(require,module,exports){
+},{"basejs":12}],"Watches":[function(require,module,exports){
+module.exports=require('JnjsU8');
+},{}],12:[function(require,module,exports){
 /*
   Based on Base.js 1.1a (c) 2006-2010, Dean Edwards
   Updated to pass JSHint and converted into a module by Kenneth Powers

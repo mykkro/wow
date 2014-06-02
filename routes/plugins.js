@@ -3,7 +3,7 @@ var path = require("path")
 var mustache = require("mustache")
 var merge = require("merge")
 
-module.exports = function(app, express, Auth) {
+module.exports = function(app, express, Auth, API) {
 	
     // templates used when rendering GUI pages...
     var svgPageLayout = fs.readFileSync(path.join(__dirname, "../views/mustache/page.svg.mustache"), "utf8")
@@ -18,13 +18,15 @@ module.exports = function(app, express, Auth) {
       var cfg = pluginCfg.plugins[key]
       if(cfg.enabled) {
         app.use(prefix+"/assets", express.static(path.join(__dirname, ".."+prefix+"/public")))
-        require(".."+prefix+"/routes/routes")(prefix, app, Auth)
+        require(".."+prefix+"/routes/routes")(prefix, app, Auth, API)
       }
     }
+
     app.get('/plugins/:name', function(req, res) {
       var name = req.params.name
       res.redirect("/plugins/"+name+"/index");
     })
+    
     app.get('/plugins/:name/:page', Auth.isAuthenticatedAsUser, function(req, res) {
       console.log("Current user:", req.user)
       var name = req.params.name

@@ -26,9 +26,19 @@ var BasePage = BasicLayer.extend({
         }
         this.addOverlay(sk)
     },
-    updateBrowserQuery: function(page, query) {
-        var newQuery = "?page=" + page
-        window.History.replaceState({}, "", newQuery)
+    parseUrl: function(myUrl) {
+        return url.parse(myUrl, true)
+    },
+    formatUrl: function(q) {
+        return url.format(q)
+    },
+    updateBrowserQuery: function(changes) {
+        var parsedUrl = url.parse(window.location.href, true)
+        for(key in changes) {
+            parsedUrl.query[key] = changes[key]
+        }
+        parsedUrl.search = null
+        window.History.replaceState({}, "", url.format(parsedUrl))
     },
     getQueryString: function(dpage) {
         var parsedUrl = url.parse(window.location.href, true)
@@ -54,13 +64,13 @@ var BasePage = BasicLayer.extend({
     // TODO take lang info from this page's query string
     // or i18n object
     goToImportPage: function(name) {
-        this.goTo("/pages/app?importname=" + name + "&lang=de")
+        this.goTo("/plugins/app?importname=" + name + "&lang=de")
     },
     goToGameAppPage: function(name) {
-        this.goTo("/pages/game?importname=" + name + "&lang=de")
+        this.goTo("/plugins/game?importname=" + name + "&lang=de")
     },
     goToRuleGamePage: function(name) {
-        this.goTo("/pages/rulegame?importname=" + name + "&lang=de")
+        this.goTo("/plugins/rulegame?importname=" + name + "&lang=de")
     },
     goToAppPage: function(name, apptype) {
         var targetName = name
@@ -76,10 +86,10 @@ var BasePage = BasicLayer.extend({
         }
     },
     goToHomePage: function() {
-        this.goTo("/pages/home")
+        this.goTo("/plugins/homepage")
     },
     goToVideoPage: function(ytId) {
-        this.goTo("/pages/video?id=" + ytId)
+        this.goTo("/plugons/youtubevideo?id=" + ytId)
     },
     handleEvent: function(evt) {
         for (var i = this.overlays.length - 1; i >= 0; i--) {

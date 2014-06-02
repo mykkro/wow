@@ -1,8 +1,7 @@
-module.exports = function(prefix, app, Auth) {
+module.exports = function(prefix, app, Auth, API) {
 
-	var SearchQueryUtil = require("../src/searchqueryutil")
+	var SearchQueryUtil = require("./searchqueryutil")
 	var QueryBuilder = require("../../../lib/QueryBuilder")
-	var API = require("../../../lib/api/API")
 	var _ = require("lodash")
 	var url = require("url")
 

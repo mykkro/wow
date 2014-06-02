@@ -2,5 +2,6 @@
   "name": "skeleton",
   "version": "0.0.0",
   "description": "",
-  "main": "/index"
+  "main": "/index",
+  "depends": {}
 }

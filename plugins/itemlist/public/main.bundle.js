@@ -64,13 +64,13 @@ var BasePage = BasicLayer.extend({
     // TODO take lang info from this page's query string
     // or i18n object
     goToImportPage: function(name) {
-        this.goTo("/pages/app?importname=" + name + "&lang=de")
+        this.goTo("/plugins/app?importname=" + name + "&lang=de")
     },
     goToGameAppPage: function(name) {
-        this.goTo("/pages/game?importname=" + name + "&lang=de")
+        this.goTo("/plugins/game?importname=" + name + "&lang=de")
     },
     goToRuleGamePage: function(name) {
-        this.goTo("/pages/rulegame?importname=" + name + "&lang=de")
+        this.goTo("/plugins/rulegame?importname=" + name + "&lang=de")
     },
     goToAppPage: function(name, apptype) {
         var targetName = name
@@ -86,10 +86,10 @@ var BasePage = BasicLayer.extend({
         }
     },
     goToHomePage: function() {
-        this.goTo("/pages/home")
+        this.goTo("/plugins/homepage")
     },
     goToVideoPage: function(ytId) {
-        this.goTo("/pages/video?id=" + ytId)
+        this.goTo("/plugons/youtubevideo?id=" + ytId)
     },
     handleEvent: function(evt) {
         for (var i = this.overlays.length - 1; i >= 0; i--) {
@@ -4316,7 +4316,74 @@ function isNullOrUndefined(arg) {
   return  arg == null;
 }
 
-},{"punycode":11,"querystring":14}],"pagescript":[function(require,module,exports){
+},{"punycode":11,"querystring":14}],16:[function(require,module,exports){
+/**
+ * Example query in querystring:
+ * http://localhost:9999/plugins/itemlist/index/?page=1&query=pinky+mouse&type=app|book&tags=nature|mouse&favorite=yes&itemsPerPage=6&notOlderThan=2012-01-01&newerThan=2010-09-09&withAllTags=false
+
+ query: Object
+    favorite: "yes"
+    itemsPerPage: "6"
+    newerThan: "2010-09-09"
+    notOlderThan: "2012-01-01"
+    page: "1"
+    query: "pinky mouse"
+    tags: "nature|mouse"
+    type: "app|book"
+ */
+ var SearchQueryUtil = {
+    getStringField: function(name, from, to) {
+        if(name in from) {
+            to[name] = from[name]
+        }
+    },
+
+    getStringArrayField: function(name, from, to) {
+        if(name in from) {
+            to[name] = from[name].split("|")
+        }
+    },
+
+    getIntField: function(name, from, to) {
+        if(name in from) {
+            to[name] = parseInt(from[name])
+        }
+    },
+
+    getDateField: function(name, from, to) {
+        if(name in from) {
+            to[name] = new Date(from[name])
+        }
+    },
+
+    getBooleanField: function(name, from, to) {
+        if(name in from) {
+            var bb = from[name]
+            to[name] = (bb == "true" || bb == "yes" || bb == "1")
+        }
+    },
+
+    getDataFromQueryObj: function(q) {
+        var out = {}
+        this.getStringField("query", q, out)
+        this.getIntField("page", q, out)
+        this.getIntField("itemsPerPage", q, out)
+        this.getDateField("newerThan", q, out)
+        this.getDateField("notNewerThan", q, out)
+        this.getDateField("olderThan", q, out)
+        this.getDateField("notOlderThan", q, out)
+        this.getStringArrayField("tags", q, out)
+        this.getBooleanField("withAllTags", q, out)
+        this.getStringArrayField("type", q, out)
+        this.getBooleanField("favorite", q, out)
+        this.getBooleanField("personal", q, out)
+        return out
+    }
+ }
+
+
+module.exports = SearchQueryUtil
+},{}],"pagescript":[function(require,module,exports){
 module.exports=require('HJD/OK');
 },{}],"HJD/OK":[function(require,module,exports){
 module.exports = function(Wow) {
@@ -4330,7 +4397,7 @@ module.exports = function(Wow) {
 
     var ItemListPage = require("../../../js/ItemListPage")(Wow)
 
-    var SearchQueryUtil = require("./searchqueryutil")
+    var SearchQueryUtil = require("../routes/searchqueryutil")
 
     var UserAppsPage = ItemListPage.extend({
         activateSelected: function() {
@@ -4534,70 +4601,4 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/ItemListPage":2,"../../../js/svghelper":7,"./searchqueryutil":18,"html-truncate":9,"url":15}],18:[function(require,module,exports){
-/**
- * Example query in querystring:
- * http://localhost:9999/plugins/itemlist/index/?page=1&query=pinky+mouse&type=app|book&tags=nature|mouse&favorite=yes&itemsPerPage=6&notOlderThan=2012-01-01&newerThan=2010-09-09&withAllTags=false
-
- query: Object
-    favorite: "yes"
-    itemsPerPage: "6"
-    newerThan: "2010-09-09"
-    notOlderThan: "2012-01-01"
-    page: "1"
-    query: "pinky mouse"
-    tags: "nature|mouse"
-    type: "app|book"
- */
- var SearchQueryUtil = {
-    getStringField: function(name, from, to) {
-        if(name in from) {
-            to[name] = from[name]
-        }
-    },
-
-    getStringArrayField: function(name, from, to) {
-        if(name in from) {
-            to[name] = from[name].split("|")
-        }
-    },
-
-    getIntField: function(name, from, to) {
-        if(name in from) {
-            to[name] = parseInt(from[name])
-        }
-    },
-
-    getDateField: function(name, from, to) {
-        if(name in from) {
-            to[name] = new Date(from[name])
-        }
-    },
-
-    getBooleanField: function(name, from, to) {
-        if(name in from) {
-            var bb = from[name]
-            to[name] = (bb == "true" || bb == "yes" || bb == "1")
-        }
-    },
-
-    getDataFromQueryObj: function(q) {
-        var out = {}
-        this.getStringField("query", q, out)
-        this.getIntField("page", q, out)
-        this.getIntField("itemsPerPage", q, out)
-        this.getDateField("newerThan", q, out)
-        this.getDateField("notNewerThan", q, out)
-        this.getDateField("olderThan", q, out)
-        this.getDateField("notOlderThan", q, out)
-        this.getStringArrayField("tags", q, out)
-        this.getBooleanField("withAllTags", q, out)
-        this.getStringArrayField("type", q, out)
-        this.getBooleanField("favorite", q, out)
-        return out
-    }
- }
-
-
-module.exports = SearchQueryUtil
-},{}]},{},["HJD/OK"])
+},{"../../../js/ItemListPage":2,"../../../js/svghelper":7,"../routes/searchqueryutil":16,"html-truncate":9,"url":15}]},{},["HJD/OK"])

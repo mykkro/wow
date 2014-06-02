@@ -9,7 +9,7 @@ module.exports = function(Wow) {
 
     var ItemListPage = require("../../../js/ItemListPage")(Wow)
 
-    var SearchQueryUtil = require("./searchqueryutil")
+    var SearchQueryUtil = require("../routes/searchqueryutil")
 
     var UserAppsPage = ItemListPage.extend({
         activateSelected: function() {

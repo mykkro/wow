@@ -2,5 +2,11 @@
   "name": "itemlist",
   "version": "0.0.0",
   "description": "",
-  "main": "/index"
+  "main": "/index",
+  "depends": {
+  	"app": "*",
+  	"game": "*",
+  	"rulegame": "*",
+  	"youtubevideo": "*"
+  }  
 }

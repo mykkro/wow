@@ -69,67 +69,11 @@ module.exports = function(grunt) {
                     transform: ['brfs']
                 }
             },
-            pg_login: {
-                src: ['./pages/login/main.js'],
-                dest: 'public/js/pages/login.js',
-                options: {
-                    alias: ['./pages/login/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_home: {
-                src: ['./pages/home/main.js'],
-                dest: 'public/js/pages/home.js',
-                options: {
-                    alias: ['./pages/home/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_books: {
-                src: ['./pages/books/main.js'],
-                dest: 'public/js/pages/books.js',
-                options: {
-                    alias: ['./pages/books/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_bookcategories: {
-                src: ['./pages/bookcategories/main.js'],
-                dest: 'public/js/pages/bookcategories.js',
-                options: {
-                    alias: ['./pages/bookcategories/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_radio: {
-                src: ['./pages/radio/main.js'],
-                dest: 'public/js/pages/radio.js',
-                options: {
-                    alias: ['./pages/radio/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_youtube: {
-                src: ['./pages/searchvideos/main.js'],
-                dest: 'public/js/pages/searchvideos.js',
-                options: {
-                    alias: ['./pages/searchvideos/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
             pg_uservideos: {
                 src: ['./pages/uservideos/main.js'],
                 dest: 'public/js/pages/uservideos.js',
                 options: {
                     alias: ['./pages/uservideos/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_userapps: {
-                src: ['./pages/userapps/main.js'],
-                dest: 'public/js/pages/userapps.js',
-                options: {
-                    alias: ['./pages/userapps/main.js:pagescript'],
                     transform: ['brfs']
                 }
             },
@@ -141,67 +85,11 @@ module.exports = function(grunt) {
                     transform: ['brfs']
                 }
             },
-            pg_video: {
-                src: ['./pages/video/main.js'],
-                dest: 'public/js/pages/video.js',
+            pg_searchvideos: {
+                src: ['./pages/searchvideos/main.js'],
+                dest: 'public/js/pages/searchvideos.js',
                 options: {
-                    alias: ['./pages/video/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_app: {
-                src: ['./pages/app/main.js'],
-                dest: 'public/js/pages/app.js',
-                options: {
-                    alias: ['./pages/app/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_game: {
-                src: ['./pages/game/main.js'],
-                dest: 'public/js/pages/game.js',
-                options: {
-                    alias: ['./pages/game/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_rulegame: {
-                src: ['./pages/rulegame/main.js'],
-                dest: 'public/js/pages/rulegame.js',
-                options: {
-                    alias: ['./pages/rulegame/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_enter: {
-                src: ['./pages/entertainment/main.js'],
-                dest: 'public/js/pages/entertainment.js',
-                options: {
-                    alias: ['./pages/entertainment/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_testing: {
-                src: ['./pages/testing/main.js'],
-                dest: 'public/js/pages/testing.js',
-                options: {
-                    alias: ['./pages/testing/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_widgets: {
-                src: ['./pages/widgets/main.js'],
-                dest: 'public/js/pages/widgets.js',
-                options: {
-                    alias: ['./pages/widgets/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_netradio: {
-                src: ['./pages/netradio/main.js'],
-                dest: 'public/js/pages/netradio.js',
-                options: {
-                    alias: ['./pages/netradio/main.js:pagescript'],
+                    alias: ['./pages/searchvideos/main.js:pagescript'],
                     transform: ['brfs']
                 }
             }
@@ -295,7 +183,7 @@ module.exports = function(grunt) {
                     archive: 'dist/wow-0.9.0.zip'
                 },
                 files: [{
-                    src: ['js/**', 'lib/**', 'locales/**', 'tools/**', '!tools/tibor/**', 'pages/**', 'public/**', 'routes/**', 'templates/**', 'views/**']
+                    src: ['js/**', 'lib/**', 'locales/**', '!tools/**', 'pages/**', 'public/**', 'plugins/**', 'entities/**', 'routes/**', 'templates/**', 'views/**']
                 }, {
                     src: ['run.bat', 'run7.bat', 'run.js', 'server.js', 'package.json', 'main.js']
                 }, {

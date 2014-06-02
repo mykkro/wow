@@ -66,13 +66,13 @@ var BasePage = BasicLayer.extend({
     // TODO take lang info from this page's query string
     // or i18n object
     goToImportPage: function(name) {
-        this.goTo("/pages/app?importname=" + name + "&lang=de")
+        this.goTo("/plugins/app?importname=" + name + "&lang=de")
     },
     goToGameAppPage: function(name) {
-        this.goTo("/pages/game?importname=" + name + "&lang=de")
+        this.goTo("/plugins/game?importname=" + name + "&lang=de")
     },
     goToRuleGamePage: function(name) {
-        this.goTo("/pages/rulegame?importname=" + name + "&lang=de")
+        this.goTo("/plugins/rulegame?importname=" + name + "&lang=de")
     },
     goToAppPage: function(name, apptype) {
         var targetName = name
@@ -88,10 +88,10 @@ var BasePage = BasicLayer.extend({
         }
     },
     goToHomePage: function() {
-        this.goTo("/pages/home")
+        this.goTo("/plugins/homepage")
     },
     goToVideoPage: function(ytId) {
-        this.goTo("/pages/video?id=" + ytId)
+        this.goTo("/plugins/youtubevideo?id=" + ytId)
     },
     handleEvent: function(evt) {
         for (var i = this.overlays.length - 1; i >= 0; i--) {
@@ -1237,7 +1237,9 @@ module.exports = function($, i18n) {
 
 }
 
-},{"modal-dialog":49}],"KDKUXu":[function(require,module,exports){
+},{"modal-dialog":49}],"eventtarget":[function(require,module,exports){
+module.exports=require('KDKUXu');
+},{}],"KDKUXu":[function(require,module,exports){
 //Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
 //Modified by Myrousz 2014
 //MIT License
@@ -1298,11 +1300,7 @@ var EventTarget = Base.extend({
 
 module.exports = EventTarget
 
-},{"basejs":41}],"eventtarget":[function(require,module,exports){
-module.exports=require('KDKUXu');
-},{}],"i18n":[function(require,module,exports){
-module.exports=require('rq9WIT');
-},{}],"rq9WIT":[function(require,module,exports){
+},{"basejs":41}],"rq9WIT":[function(require,module,exports){
 // to be used as constructor
 
 var fs = require("fs")
@@ -1325,7 +1323,9 @@ var i18n = function(data) {
 }
 module.exports = i18n
 
-},{"fs":42,"path":45}],13:[function(require,module,exports){
+},{"fs":42,"path":45}],"i18n":[function(require,module,exports){
+module.exports=require('rq9WIT');
+},{}],13:[function(require,module,exports){
 module.exports = function($) {
     var Widget = require("./widget")($)
 
@@ -1463,9 +1463,7 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./basiclayer":3}],"pageinfo":[function(require,module,exports){
-module.exports=require('OzAdbj');
-},{}],"OzAdbj":[function(require,module,exports){
+},{"./basiclayer":3}],"OzAdbj":[function(require,module,exports){
 var url = require('url')
 var path = require('path')
 
@@ -1486,7 +1484,9 @@ module.exports = function(window) {
 
 }
 
-},{"path":45,"url":47}],19:[function(require,module,exports){
+},{"path":45,"url":47}],"pageinfo":[function(require,module,exports){
+module.exports=require('OzAdbj');
+},{}],19:[function(require,module,exports){
 module.exports = function(window) {
     var document = window.document
 
@@ -2524,8 +2524,6 @@ var SvgHelper = function(window) {
 
 module.exports = SvgHelper
 
-},{}],"virtualcontrol":[function(require,module,exports){
-module.exports=require('xmiMga');
 },{}],"xmiMga":[function(require,module,exports){
 var EventTarget = require("eventtarget")
 
@@ -2557,7 +2555,9 @@ var VirtualControl = EventTarget.extend({
 
 module.exports = VirtualControl
 
-},{"eventtarget":"KDKUXu"}],25:[function(require,module,exports){
+},{"eventtarget":"KDKUXu"}],"virtualcontrol":[function(require,module,exports){
+module.exports=require('xmiMga');
+},{}],25:[function(require,module,exports){
 var Base = require("basejs")
 
 module.exports = function($) {
