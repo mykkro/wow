@@ -1463,7 +1463,9 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./basiclayer":3}],"OzAdbj":[function(require,module,exports){
+},{"./basiclayer":3}],"pageinfo":[function(require,module,exports){
+module.exports=require('OzAdbj');
+},{}],"OzAdbj":[function(require,module,exports){
 var url = require('url')
 var path = require('path')
 
@@ -1484,9 +1486,7 @@ module.exports = function(window) {
 
 }
 
-},{"path":45,"url":47}],"pageinfo":[function(require,module,exports){
-module.exports=require('OzAdbj');
-},{}],19:[function(require,module,exports){
+},{"path":45,"url":47}],19:[function(require,module,exports){
 module.exports = function(window) {
     var document = window.document
 
@@ -2524,6 +2524,8 @@ var SvgHelper = function(window) {
 
 module.exports = SvgHelper
 
+},{}],"virtualcontrol":[function(require,module,exports){
+module.exports=require('xmiMga');
 },{}],"xmiMga":[function(require,module,exports){
 var EventTarget = require("eventtarget")
 
@@ -2555,9 +2557,7 @@ var VirtualControl = EventTarget.extend({
 
 module.exports = VirtualControl
 
-},{"eventtarget":"KDKUXu"}],"virtualcontrol":[function(require,module,exports){
-module.exports=require('xmiMga');
-},{}],25:[function(require,module,exports){
+},{"eventtarget":"KDKUXu"}],25:[function(require,module,exports){
 var Base = require("basejs")
 
 module.exports = function($) {
@@ -3453,13 +3453,8 @@ module.exports = function(Widgetizer) {
                 height: attrs.height
             })
             if ($e.attr("name")) SvgHelper.attr(ww.element, "name", $e.attr("name"))
-                // TODO addClass 
             if ($e.attr("class")) SvgHelper.attr(ww.element, "class", $e.attr("class"))
-            Widgetizer.loadSvg(attrs, function($svg) {
-                console.log("SVG embedded!")
-                $(ww.element).find("image").replaceWith($svg)
-                if (done) done(ww)
-            })
+            if (done) done(ww)
             return ww
         }
         /***********************************************************************************************************/

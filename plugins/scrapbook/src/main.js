@@ -6,6 +6,8 @@ module.exports = function(Wow) {
     var BasePage = require("../../../js/BasePage")
     var ExportBookViewer = require("./js/things/ExportBookViewer")
     var Things = require("./js/things/Things")
+    var Base = require("basejs")
+    var SelectChain = require("../../../js/selectchain")($, Base)
 
     var path = require("path")
 
@@ -53,22 +55,52 @@ module.exports = function(Wow) {
                 self.goBack()
             })
 
+            this.selectChain = new SelectChain([
+                quitBtn.element
+            ])
+
             var baseUrl = "/imports/" + appName
             var metadataUrl = baseUrl + "/book.json"
 
+            var bookView
             $.getJSON(metadataUrl).done(function(book) {
                 // convert all relative URIs
                 book = Things.convertURIs(book, baseUrl)
                 // create book view...
-                var bookView = new ExportBookViewer({data:book, fullscreen:true, logger: bookman_log, url:"https://nit.felk.cvut.cz/~myrousz/escrapbook-v3/books/view/34"});
+                bookView = new ExportBookViewer({data:book, fullscreen:true, logger: bookman_log, url:"https://nit.felk.cvut.cz/~myrousz/escrapbook-v3/books/view/34"});
                 bookView.init();
+                self.bookView = bookView
                 // continue when finished 
                 if (next) next(self)
             }).fail(function(err) {
                 console.error(err)
                 if (next) next(self)
             })
+        },
+        onVirtualControl: function(evt) {
+            switch (evt.control) {
+                case "home":
+                    this.goToHomePage()
+                    break;
+                case "left":
+                    this.bookView.turnNext()
+                    break;
+                case "right":
+                    this.bookView.turnPrevious()
+                    break;
+                case "up":
+                    this.selectChain.selectPrevious()
+                    break;
+                case "down":
+                    this.selectChain.selectNext()
+                    break;
+                case "select":
+                    $(this.selectChain.current()).click()
+                    this.selectChain.update()
+                    break;
+            }
         }
+
     })
     return ScrapbookPage
 

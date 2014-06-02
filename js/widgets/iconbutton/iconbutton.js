@@ -29,13 +29,8 @@ module.exports = function(Widgetizer) {
                 height: attrs.height
             })
             if ($e.attr("name")) SvgHelper.attr(ww.element, "name", $e.attr("name"))
-                // TODO addClass 
             if ($e.attr("class")) SvgHelper.attr(ww.element, "class", $e.attr("class"))
-            Widgetizer.loadSvg(attrs, function($svg) {
-                console.log("SVG embedded!")
-                $(ww.element).find("image").replaceWith($svg)
-                if (done) done(ww)
-            })
+            if (done) done(ww)
             return ww
         }
         /***********************************************************************************************************/
