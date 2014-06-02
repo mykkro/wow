@@ -24,6 +24,9 @@
     },
     "itemlist": {
       "enabled": true
+    },
+    "scrapbook": {
+      "enabled": true
     }
   }
 }

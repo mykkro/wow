@@ -124,158 +124,7 @@ var BasePage = BasicLayer.extend({
 
 module.exports = BasePage
 
-},{"./basiclayer":3,"./softwarekeyboard":6,"basejs":8,"url":15}],2:[function(require,module,exports){
-module.exports = function(Wow) {
-    var window = Wow.window
-    var $ = Wow.$
-    var SVG = Wow.SVG
-    var i18n = Wow.i18n
-    var BasePage = require("./BasePage")
-    var SvgHelper = require("./svghelper")(window)
-    var url = require("url")
-    var Base = require("basejs")
-    var SelectChain = require("./selectchain")($, Base)
-    var truncate = require('html-truncate');
-
-    /**
-     * ## ItemListPage
-     * A page containing selectable list of items.
-     */
-    var ItemListPage = BasePage.extend({
-        colors: [
-            "#330099", "#f8c300", "#dd1379", "#dd1379", "#330099", "#f8c300"
-        ],
-        init: function(data, next) {
-            var self = this
-            self.createControls(data)
-            self.selectChain.update()
-            self.defaultChain = self.selectChain
-            self.updateView(data)
-
-            /* continue when finished */
-            if (next) next(this)
-        },
-        createControls: function(data) {
-            var document = window.document
-            var svgsvg = document.getElementById("pagecontent")
-
-            var self = this
-            self.selectChain = new SelectChain()
-            self.resultGrp = SvgHelper.group({
-                "class": "youtube-results"
-            })
-            self.leftBtn = this.getWidget("leftButton")
-            self.rightBtn = this.getWidget("rightButton")
-            self.textBox = this.getWidget("searchTextbox")
-            self.homeButton = this.getWidget("homeButton")
-
-            self.leftBtn.click(function() {
-                self.goToPreviousPage()
-            })
-            self.rightBtn.click(function() {
-                self.goToNextPage()
-            })
-            self.homeButton.click(function() {
-                self.goToHomePage()
-            })
-            svgsvg.appendChild(self.resultGrp)
-        },
-        updateView: function(data) {
-            var self = this
-            self.searchIt(data.query, function(results) {
-                console.log("Displaying results: ", results)
-            })
-        },
-        /* create a plain widget from a SVG element. Returns Promise. */
-        widgetize: function(el) {
-            var deferred = $.Deferred()
-            this.wtr.makePlainWidget(el, function(w) {
-                deferred.resolve(w)
-            })
-            return deferred.promise()
-        },
-        selectPrevious: function() {
-            this.selectChain.selectPrevious()
-        },
-        selectNext: function() {
-            this.selectChain.selectNext()
-        },
-        activateSelected: function() {
-            // to be implemented in subclass...
-            var target = $(this.selectChain.current())
-            console.log("Selected: " + target)
-        },
-        searchIt: function(query, next) {
-            // to be implemented in subclass...
-            // TODO callback after all items are widgetized
-            if(next) next()
-        },
-        showItem: function(data, index) {
-            // to be implemented in subclass...
-            return SvgHelper.group({}, [])
-        },
-        /* update GUI with search results */
-        /* also update left/right button status */
-        showSearchResults: function(page, data) {
-            var self = this
-            data = data || {
-                totalItems: 0,
-                startIndex: 1,
-                itemsPerPage: 6,
-                items: []
-            }
-            var total = data.totalItems
-            var start = data.startIndex
-            var pagesize = data.itemsPerPage
-            var items = data.items
-            console.log("Showing results " + start + "-" + (start + items.length - 1) + " from " + total + " total")
-            console.log(data)
-            /* empty group... */
-            while (self.resultGrp.hasChildNodes()) {
-                self.resultGrp.removeChild(self.resultGrp.lastChild);
-            }
-            for (var i = 0; i < 6; i++) {
-                var item = null
-                if (i < items.length) item = items[i]
-                self.resultGrp.appendChild(self.showItem(item, i))
-            }
-            var leftEnabled = (page > 1)
-            var rightEnabled = (start - 1 + items.length < total)
-            self.leftBtn.setEnabled(leftEnabled)
-            self.rightBtn.setEnabled(rightEnabled)
-        },
-        onVirtualControl: function(evt) {
-            var self = this
-            switch (evt.control) {
-                case "left":
-                    if (self.leftBtn.isEnabled())
-                        this.goToPreviousPage()
-                    break;
-                case "right":
-                    if (self.rightBtn.isEnabled())
-                        this.goToNextPage()
-                    break;
-                case "home":
-                    this.goToHomePage()
-                    break;
-                case "up":
-                    this.selectPrevious()
-                    break;
-                case "down":
-                    this.selectNext()
-                    break;
-                case "select":
-                    this.activateSelected()
-                    break;
-            }
-        }
-    })
-
-    return ItemListPage
-
-}
-
-},{"./BasePage":1,"./selectchain":5,"./svghelper":7,"basejs":8,"html-truncate":9,"url":15}],3:[function(require,module,exports){
+},{"./basiclayer":2,"./softwarekeyboard":5,"basejs":6,"url":14}],2:[function(require,module,exports){
 var Base = require("basejs")
 
 var BasicLayer = Base.extend({
@@ -345,7 +194,7 @@ var BasicLayer = Base.extend({
 
 module.exports = BasicLayer
 
-},{"basejs":8}],4:[function(require,module,exports){
+},{"basejs":6}],3:[function(require,module,exports){
 var BasicLayer = require("./basiclayer")
 
 var Overlay = BasicLayer.extend({
@@ -378,7 +227,7 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./basiclayer":3}],5:[function(require,module,exports){
+},{"./basiclayer":2}],4:[function(require,module,exports){
 module.exports = function($, Base) {
 
     var SelectChain = Base.extend({
@@ -471,7 +320,7 @@ module.exports = function($, Base) {
 
 }
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var Overlay = require("./overlay")
 var _ = require("underscore")
 var Base = require("basejs")
@@ -1196,131 +1045,7 @@ var SoftwareKeyboard = Overlay.extend({
 
 module.exports = SoftwareKeyboard
 
-},{"./overlay":4,"./selectchain":5,"basejs":8,"underscore":10}],7:[function(require,module,exports){
-var SvgHelper = function(window) {
-    var document = window.document
-    var svgNS = "http://www.w3.org/2000/svg"
-    var htmlNS = "http://www.w3.org/1999/xhtml"
-    var xlinkNS = "http://www.w3.org/1999/xlink"
-    return {
-        svg: function(dim, vbox, par) {
-            if (!dim) dim = {}
-            var bbe = document.createElementNS(svgNS, "svg");
-            bbe.setAttribute("width", dim.width || 10);
-            bbe.setAttribute("height", dim.height || 10);
-            if (vbox) {
-                bbe.setAttribute("viewBox", vbox.x + " " + vbox.y + " " + vbox.width + " " + vbox.height);
-            }
-            if (par) {
-                bbe.setAttribute("preserveAspectRatio", par)
-            }
-            return bbe;
-        },
-        box: function(bbox) {
-            if (!bbox) bbox = {}
-            var bbe = document.createElementNS(svgNS, "rect");
-            bbe.setAttribute("x", bbox.x || 0);
-            bbe.setAttribute("y", bbox.y || 0);
-            bbe.setAttribute("width", bbox.width || 10);
-            bbe.setAttribute("height", bbox.height || 10);
-            bbe.setAttribute("fill", bbox.fill || "none");
-            bbe.setAttribute("stroke", bbox.stroke || "black");
-            return bbe;
-        },
-        image: function(bbox) {
-            if (!bbox) bbox = {}
-            var bbe = document.createElementNS(svgNS, "image");
-            bbe.setAttribute("width", bbox.width || 100);
-            bbe.setAttribute("height", bbox.height || 100);
-            bbe.setAttributeNS(xlinkNS, "href", bbox.src);
-            // set additional attributes such as id, name, class...
-            for (var key in bbox) {
-                if (bbox[key] && key != "width" && key != "height" && key != "src") bbe.setAttribute(key, bbox[key])
-            }
-            return bbe;
-        },
-        rect: function(bbox) {
-            if (!bbox) bbox = {}
-            var bbe = document.createElementNS(svgNS, "rect");
-            this.attrs(bbe, bbox)
-            return bbe;
-        },
-        mtext: function(text, options) {
-            var bbe = this.foreignObject(options)
-            if (options) this.attrs(bbe, options)
-            var p = document.createElementNS(htmlNS, "p")
-            p.textContent = text
-            bbe.appendChild(p)
-            return bbe;
-        },
-        group: function(options, children) {
-            var grp = document.createElementNS(svgNS, "g");
-            if (options) this.attrs(grp, options)
-            if (children) {
-                for (var i = 0; i < children.length; i++) {
-                    grp.appendChild(children[i])
-                }
-            }
-            return grp
-        },
-        text: function(text, options) {
-            var txt = document.createElementNS(svgNS, "text")
-            txt.textContent = text
-            if (options) this.attrs(txt, options)
-            return txt
-        },
-        tspan: function(text, options) {
-            var txt = document.createElementNS(svgNS, "tspan")
-            txt.textContent = text
-            if (options) this.attrs(txt, options)
-            return txt
-        },
-        foreignObject: function(bbox) {
-            if (!bbox) bbox = {}
-            var bbe = document.createElementNS(svgNS, "foreignObject");
-            bbe.setAttribute("x", bbox.x || 0);
-            bbe.setAttribute("y", bbox.y || 0);
-            bbe.setAttribute("width", bbox.width || 10);
-            bbe.setAttribute("height", bbox.height || 10);
-            return bbe;
-        },
-        attrs: function(node, attrs) {
-            for (var key in attrs) {
-                node.setAttribute(key, attrs[key])
-            }
-            return node
-        },
-        attr: function(node, attr, value) {
-            node.setAttribute(attr, value)
-            return node
-        },
-        transform: function(node, tr) {
-            node.setAttribute("transform", tr)
-            return node
-        },
-        measure: function(node, tempGroupId) {
-            if (node.nodeName == "svg" || node.nodename == "foreignObject") {
-                /* svg and foreign object must be handled as special case */
-                return {
-                    x: parseFloat(node.getAttribute("x") || 0),
-                    y: parseFloat(node.getAttribute("y") || 0),
-                    width: parseFloat(node.getAttribute("width")),
-                    height: parseFloat(node.getAttribute("height"))
-                }
-            }
-            var tempGroup = document.getElementById(tempGroupId || "tempgroup")
-            tempGroup.appendChild(node)
-            var bbox = node.getBBox()
-            tempGroup.removeChild(node)
-            return bbox
-        }
-
-    }
-}
-
-module.exports = SvgHelper
-
-},{}],8:[function(require,module,exports){
+},{"./overlay":3,"./selectchain":4,"basejs":6,"underscore":7}],6:[function(require,module,exports){
 /*
   Based on Base.js 1.1a (c) 2006-2010, Dean Edwards
   Updated to pass JSHint and converted into a module by Kenneth Powers
@@ -1467,179 +1192,7 @@ module.exports = SvgHelper
   return Base;
 });
 
-},{}],9:[function(require,module,exports){
-/*global module:true*/
-/*jslint nomen:true*/
-/**
- * @module Utility
- */
-(function (context, undefined) {
-    'use strict';
-
-    /**
-     * Truncate HTML string and keep tag safe.
-     *
-     * @method truncate
-     * @param {String} string string needs to be truncated
-     * @param {Number} maxLength length of truncated string
-     * @param {Object} options (optional)
-     * @param {Boolean} [options.keepImageTag] flag to specify if keep image tag, false by default
-     * @param {Boolean|String} [options.ellipsis] omission symbol for truncated string, '...' by default
-     * @return {String} truncated string
-     */
-    function truncate(string, maxLength, options) {
-        var EMPTY_OBJECT = {},
-            EMPTY_STRING = '',
-            DEFAULT_TRUNCATE_SYMBOL = '...',
-            EXCLUDE_TAGS = ['img'],         // non-closed tags
-            items = [],                     // stack for saving tags
-            total = 0,                      // record how many characters we traced so far
-            content = EMPTY_STRING,         // truncated text storage
-            KEY_VALUE_REGEX = '(\\w+\\s*=\\s*"[^"]*"\\s*)*',
-            IS_CLOSE_REGEX = '\\s*\\/?\\s*',
-            CLOSE_REGEX = '\\s*\\/\\s*',
-            SELF_CLOSE_REGEX = new RegExp('<\\/?\\w+\\s*' + KEY_VALUE_REGEX + CLOSE_REGEX + '>'),
-            HTML_TAG_REGEX = new RegExp('<\\/?\\w+\\s*' + KEY_VALUE_REGEX + IS_CLOSE_REGEX + '>'),
-            IMAGE_TAG_REGEX = new RegExp('<img\\s*' + KEY_VALUE_REGEX + IS_CLOSE_REGEX + '>'),
-            matches = true,
-            result,
-            index,
-            tail,
-            tag,
-            selfClose;
-
-        /**
-         * Remove image tag
-         *
-         * @private
-         * @method _removeImageTag
-         * @param {String} string not-yet-processed string
-         * @return {String} string without image tags
-         */
-        function _removeImageTag(string) {
-            var match = IMAGE_TAG_REGEX.exec(string),
-                index,
-                len;
-
-            if (!match) {
-                return string;
-            }
-
-            index = match.index;
-            len = match[0].length;
-
-            return string.substring(0, index) + string.substring(index + len);
-        }
-
-        /**
-         * Dump all close tags and append to truncated content while reaching upperbound
-         *
-         * @private
-         * @method _dumpCloseTag
-         * @param {String[]} tags a list of tags which should be closed
-         * @return {String} well-formatted html
-         */
-        function _dumpCloseTag(tags) {
-            var html = '';
-
-            tags.reverse().forEach(function (tag, index) {
-                // dump non-excluded tags only
-                if (-1 === EXCLUDE_TAGS.indexOf(tag)) {
-                    html += '</' + tag + '>';
-                }
-            });
-
-            return html;
-        }
-
-        /**
-         * Process tag string to get pure tag name
-         *
-         * @private
-         * @method _getTag
-         * @param {String} string original html
-         * @return {String} tag name
-         */
-        function _getTag(string) {
-            var tail = string.indexOf(' ');
-
-            // TODO: 
-            // we have to figure out how to handle non-well-formatted HTML case
-            if (-1 === tail) {
-                tail = string.indexOf('>');
-                if (-1 === tail) {
-                    throw new Error('HTML tag is not well-formed : ' + string);
-                }
-            }
-
-            return string.substring(1, tail);
-        }
-
-        options = options || EMPTY_OBJECT;
-        options.ellipsis = (undefined !== options.ellipsis) ? options.ellipsis : DEFAULT_TRUNCATE_SYMBOL;
-
-        while (matches) {
-            matches = HTML_TAG_REGEX.exec(string);
-
-            if (!matches) {
-                if (total < maxLength) {
-                    content += string.substring(0, maxLength - total);
-                }
-                break;
-            }
-
-            result = matches[0];
-            index = matches.index;
-
-            if (total + index > maxLength) {
-                // exceed given `maxLength`, dump everything to clear stack
-                content += (string.substring(0, maxLength - total));
-                break;
-            } else {
-                total += index;
-                content += string.substring(0, index);
-            }
-
-            if ('/' === result[1]) {
-                // move out open tag
-                items.pop();
-            } else {
-                selfClose = SELF_CLOSE_REGEX.exec(result);
-                if (!selfClose) {
-                    tag = _getTag(result);
-
-                    items.push(tag);
-                }
-            }
-
-            if (selfClose) {
-                content += selfClose[0];
-            } else {
-                content += result;
-            }
-            string = string.substring(index + result.length);
-        }
-
-        if (string.length > maxLength && options.ellipsis) {
-            content += options.ellipsis;
-        }
-        content += _dumpCloseTag(items);
-
-        if (!options.keepImageTag) {
-            content = _removeImageTag(content);
-        }
-
-        return content;
-    }
-
-    if ('undefined' !== typeof module && module.exports) {
-        module.exports = truncate;
-    } else {
-        context.truncate = truncate;
-    }
-}(this));
-
-},{}],10:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -2917,7 +2470,300 @@ module.exports = SvgHelper
 
 }).call(this);
 
-},{}],11:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
+(function (process){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// resolves . and .. elements in a path array with directory names there
+// must be no slashes, empty elements, or device names (c:\) in the array
+// (so also no leading and trailing slashes - it does not distinguish
+// relative and absolute paths)
+function normalizeArray(parts, allowAboveRoot) {
+  // if the path tries to go above the root, `up` ends up > 0
+  var up = 0;
+  for (var i = parts.length - 1; i >= 0; i--) {
+    var last = parts[i];
+    if (last === '.') {
+      parts.splice(i, 1);
+    } else if (last === '..') {
+      parts.splice(i, 1);
+      up++;
+    } else if (up) {
+      parts.splice(i, 1);
+      up--;
+    }
+  }
+
+  // if the path is allowed to go above the root, restore leading ..s
+  if (allowAboveRoot) {
+    for (; up--; up) {
+      parts.unshift('..');
+    }
+  }
+
+  return parts;
+}
+
+// Split a filename into [root, dir, basename, ext], unix version
+// 'root' is just a slash, or nothing.
+var splitPathRe =
+    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+var splitPath = function(filename) {
+  return splitPathRe.exec(filename).slice(1);
+};
+
+// path.resolve([from ...], to)
+// posix version
+exports.resolve = function() {
+  var resolvedPath = '',
+      resolvedAbsolute = false;
+
+  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    var path = (i >= 0) ? arguments[i] : process.cwd();
+
+    // Skip empty and invalid entries
+    if (typeof path !== 'string') {
+      throw new TypeError('Arguments to path.resolve must be strings');
+    } else if (!path) {
+      continue;
+    }
+
+    resolvedPath = path + '/' + resolvedPath;
+    resolvedAbsolute = path.charAt(0) === '/';
+  }
+
+  // At this point the path should be resolved to a full absolute path, but
+  // handle relative paths to be safe (might happen when process.cwd() fails)
+
+  // Normalize the path
+  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
+    return !!p;
+  }), !resolvedAbsolute).join('/');
+
+  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
+};
+
+// path.normalize(path)
+// posix version
+exports.normalize = function(path) {
+  var isAbsolute = exports.isAbsolute(path),
+      trailingSlash = substr(path, -1) === '/';
+
+  // Normalize the path
+  path = normalizeArray(filter(path.split('/'), function(p) {
+    return !!p;
+  }), !isAbsolute).join('/');
+
+  if (!path && !isAbsolute) {
+    path = '.';
+  }
+  if (path && trailingSlash) {
+    path += '/';
+  }
+
+  return (isAbsolute ? '/' : '') + path;
+};
+
+// posix version
+exports.isAbsolute = function(path) {
+  return path.charAt(0) === '/';
+};
+
+// posix version
+exports.join = function() {
+  var paths = Array.prototype.slice.call(arguments, 0);
+  return exports.normalize(filter(paths, function(p, index) {
+    if (typeof p !== 'string') {
+      throw new TypeError('Arguments to path.join must be strings');
+    }
+    return p;
+  }).join('/'));
+};
+
+
+// path.relative(from, to)
+// posix version
+exports.relative = function(from, to) {
+  from = exports.resolve(from).substr(1);
+  to = exports.resolve(to).substr(1);
+
+  function trim(arr) {
+    var start = 0;
+    for (; start < arr.length; start++) {
+      if (arr[start] !== '') break;
+    }
+
+    var end = arr.length - 1;
+    for (; end >= 0; end--) {
+      if (arr[end] !== '') break;
+    }
+
+    if (start > end) return [];
+    return arr.slice(start, end - start + 1);
+  }
+
+  var fromParts = trim(from.split('/'));
+  var toParts = trim(to.split('/'));
+
+  var length = Math.min(fromParts.length, toParts.length);
+  var samePartsLength = length;
+  for (var i = 0; i < length; i++) {
+    if (fromParts[i] !== toParts[i]) {
+      samePartsLength = i;
+      break;
+    }
+  }
+
+  var outputParts = [];
+  for (var i = samePartsLength; i < fromParts.length; i++) {
+    outputParts.push('..');
+  }
+
+  outputParts = outputParts.concat(toParts.slice(samePartsLength));
+
+  return outputParts.join('/');
+};
+
+exports.sep = '/';
+exports.delimiter = ':';
+
+exports.dirname = function(path) {
+  var result = splitPath(path),
+      root = result[0],
+      dir = result[1];
+
+  if (!root && !dir) {
+    // No dirname whatsoever
+    return '.';
+  }
+
+  if (dir) {
+    // It has a dirname, strip trailing slash
+    dir = dir.substr(0, dir.length - 1);
+  }
+
+  return root + dir;
+};
+
+
+exports.basename = function(path, ext) {
+  var f = splitPath(path)[2];
+  // TODO: make this comparison case-insensitive on windows?
+  if (ext && f.substr(-1 * ext.length) === ext) {
+    f = f.substr(0, f.length - ext.length);
+  }
+  return f;
+};
+
+
+exports.extname = function(path) {
+  return splitPath(path)[3];
+};
+
+function filter (xs, f) {
+    if (xs.filter) return xs.filter(f);
+    var res = [];
+    for (var i = 0; i < xs.length; i++) {
+        if (f(xs[i], i, xs)) res.push(xs[i]);
+    }
+    return res;
+}
+
+// String.prototype.substr - negative index don't work in IE8
+var substr = 'ab'.substr(-1) === 'b'
+    ? function (str, start, len) { return str.substr(start, len) }
+    : function (str, start, len) {
+        if (start < 0) start = str.length + start;
+        return str.substr(start, len);
+    }
+;
+
+}).call(this,require("FWaASH"))
+},{"FWaASH":9}],9:[function(require,module,exports){
+// shim for using process in browser
+
+var process = module.exports = {};
+
+process.nextTick = (function () {
+    var canSetImmediate = typeof window !== 'undefined'
+    && window.setImmediate;
+    var canPost = typeof window !== 'undefined'
+    && window.postMessage && window.addEventListener
+    ;
+
+    if (canSetImmediate) {
+        return function (f) { return window.setImmediate(f) };
+    }
+
+    if (canPost) {
+        var queue = [];
+        window.addEventListener('message', function (ev) {
+            var source = ev.source;
+            if ((source === window || source === null) && ev.data === 'process-tick') {
+                ev.stopPropagation();
+                if (queue.length > 0) {
+                    var fn = queue.shift();
+                    fn();
+                }
+            }
+        }, true);
+
+        return function nextTick(fn) {
+            queue.push(fn);
+            window.postMessage('process-tick', '*');
+        };
+    }
+
+    return function nextTick(fn) {
+        setTimeout(fn, 0);
+    };
+})();
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+}
+
+// TODO(shtylman)
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+
+},{}],10:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -3428,7 +3274,7 @@ module.exports = SvgHelper
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -3514,7 +3360,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -3601,13 +3447,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":12,"./encode":13}],15:[function(require,module,exports){
+},{"./decode":11,"./encode":12}],14:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -4316,74 +4162,7 @@ function isNullOrUndefined(arg) {
   return  arg == null;
 }
 
-},{"punycode":11,"querystring":14}],16:[function(require,module,exports){
-/**
- * Example query in querystring:
- * http://localhost:9999/plugins/itemlist/index/?page=1&query=pinky+mouse&type=app|book&tags=nature|mouse&favorite=yes&itemsPerPage=6&notOlderThan=2012-01-01&newerThan=2010-09-09&withAllTags=false
-
- query: Object
-    favorite: "yes"
-    itemsPerPage: "6"
-    newerThan: "2010-09-09"
-    notOlderThan: "2012-01-01"
-    page: "1"
-    query: "pinky mouse"
-    tags: "nature|mouse"
-    type: "app|book"
- */
- var SearchQueryUtil = {
-    getStringField: function(name, from, to) {
-        if(name in from) {
-            to[name] = from[name]
-        }
-    },
-
-    getStringArrayField: function(name, from, to) {
-        if(name in from) {
-            to[name] = from[name].split("|")
-        }
-    },
-
-    getIntField: function(name, from, to) {
-        if(name in from) {
-            to[name] = parseInt(from[name])
-        }
-    },
-
-    getDateField: function(name, from, to) {
-        if(name in from) {
-            to[name] = new Date(from[name])
-        }
-    },
-
-    getBooleanField: function(name, from, to) {
-        if(name in from) {
-            var bb = from[name]
-            to[name] = (bb == "true" || bb == "yes" || bb == "1")
-        }
-    },
-
-    getDataFromQueryObj: function(q) {
-        var out = {}
-        this.getStringField("query", q, out)
-        this.getIntField("page", q, out)
-        this.getIntField("itemsPerPage", q, out)
-        this.getDateField("newerThan", q, out)
-        this.getDateField("notNewerThan", q, out)
-        this.getDateField("olderThan", q, out)
-        this.getDateField("notOlderThan", q, out)
-        this.getStringArrayField("tags", q, out)
-        this.getBooleanField("withAllTags", q, out)
-        this.getStringArrayField("type", q, out)
-        this.getBooleanField("favorite", q, out)
-        this.getBooleanField("personal", q, out)
-        return out
-    }
- }
-
-
-module.exports = SearchQueryUtil
-},{}],"pagescript":[function(require,module,exports){
+},{"punycode":10,"querystring":13}],"pagescript":[function(require,module,exports){
 module.exports=require('HJD/OK');
 },{}],"HJD/OK":[function(require,module,exports){
 module.exports = function(Wow) {
@@ -4391,214 +4170,79 @@ module.exports = function(Wow) {
     var $ = Wow.$
     var SVG = Wow.SVG
     var i18n = Wow.i18n
-    var SvgHelper = require("../../../js/svghelper")(window)
-    var url = require("url")
-    var truncate = require('html-truncate');
+    var BasePage = require("../../../js/BasePage")
 
-    var ItemListPage = require("../../../js/ItemListPage")(Wow)
+    var path = require("path")
 
-    var SearchQueryUtil = require("../routes/searchqueryutil")
-
-    var UserAppsPage = ItemListPage.extend({
-        activateSelected: function() {
-            var target = $(this.selectChain.current())
-            var widget = this.getWidget(target)
-            if (widget.type == "iconbutton") {
-                target.click()
-            } else {
-                this.followLink(target.find(".youtube-result"))
-            }
-        },
-        followAppLink: function(targetId, appType, uuid) {
-            switch(appType) {
-                case "wow/app": 
-                case "wow/game": // old game, just iframed content, no interop
-                    this.followGameV1Link(targetId, uuid)
-                    break
-                case "wow/app/game": // new game, integrated controls
-                    this.followGameV2Link(targetId, uuid)
-                    break
-                case "wow/app/rulegame": // rule game, integrated controls
-                    this.followRuleGameLink(targetId, uuid)
-                    break
-                case "wow/scrapbook": // escrapbook
-                    this.followEscrapbookLink(targetId, uuid)
-                    break
-                default:
-                    console.error("Unsupported application type: "+appType)
-            }
-        },
-        followGameV1Link: function(targetId, uuid) {
-            var tgt = '/plugins/app/index?importname='+uuid
-            window.location.href = tgt
-        },
-        followGameV2Link: function(targetId, uuid) {
-            var tgt = '/plugins/game/index?importname='+uuid
-            window.location.href = tgt
-        },
-        followRuleGameLink: function(targetId, uuid) {
-            var tgt = '/plugins/rulegame/index?importname='+uuid
-            window.location.href = tgt
-        },
-        followEscrapbookLink: function(targetId, uuid) {
-            var tgt = '/plugins/scrapbook/index?importname='+uuid
-            window.location.href = tgt
-        },
-        followImageLink: function(targetId, uuid) {
-            // alert("Showing image: "+uuid)
-        },
-        followVideoLink: function(targetId, uuid) {
-            // alert("Showing video: "+uuid)
-        },
-        followVoiceLink: function(targetId, uuid) {
-            // alert("Showing voice: "+uuid)
-        },
-        followYouTubeVideoLink: function(targetId, ytid) {
-            var tgt = '/plugins/youtubevideo/index?importname='+ytid
-            window.location.href = tgt
-        },
-        followLink: function(tgt) {
-            var targetId = tgt.data("id")
-            var targetType = tgt.data("type")
-            var uuid
-            switch(targetType) {
-                case 'app':
-                    var appType = tgt.data("apptype")
-                    uuid = tgt.data("uuid")
-                    this.followAppLink(targetId, appType, uuid)
-                    break;
-                case 'image':
-                    uuid = tgt.data("uuid")
-                    this.followImageLink(targetId, uuid)
-                    break;
-                case 'video':
-                    uuid = tgt.data("uuid")
-                    this.followVideoLink(targetId, uuid)
-                    break;
-                case 'voice':
-                    uuid = tgt.data("uuid")
-                    this.followVoiceLink(targetId, uuid)
-                    break;
-                case 'youTubeVideo':
-                    ytid = tgt.data("ytid")
-                    this.followYouTubeVideoLink(targetId, ytid)
-                    break;
-                default:
-                    console.error("Unsupported link type: "+targetType)
-            }
-        },
-        createControls: function(data) {
+    var page = BasePage.extend({
+        init: function(data, next) {
+            var server = this.wtr.rpc
+            var url = require("url")
+            var appName = data.query.importname
+            var appId = appName
+            var userId = "555"
             var self = this
-            this.base(data)
-            var homeButton = self.getWidget("homeButton")
-            self.selectChain.append(homeButton.element)
-        },
-        // TODO callback after all items are widgetized
-        searchIt: function(q, next) {
-            var self = this
-            var page = parseInt(q.page || 1)
-            var query = SearchQueryUtil.getDataFromQueryObj(q)
-            self.updateBrowserQuery({page:page})
 
-            var qdata = {
-                query: q,
-                pathname: "/plugins/itemlist/api/search"
-            }          
+            /* use data to modify page */
+            var quitBtn = this.getWidget("quitButton")
+            var favButton = this.getWidget("favButton")
+            var unfavButton = this.getWidget("unfavButton")
 
-            // TODO do the real search here...  
-            var searchUrl = self.formatUrl(qdata)
-            $.getJSON(searchUrl).done(function(data) {
-                console.log("DATA:", data)
-                    //self.selectChain.clear()
-                self.showSearchResults(page, data)
-                /* create plain widgets from results... */
-                var promises = $(".youtube-result").map(function() {
-                    var $this = $(this)
-                    var el = $this.get(0)
-                    return self.widgetize(el)
-                })
-                $.when.apply($, promises).then(function() {
-                    var results = Array.prototype.slice.call(arguments)
-                    _.each(results, function(w) {
-                        /* attach events... */
-                        self.selectChain.append(w.element)
-                        var tgt = $(w.element).find(".youtube-result")
-                        if (tgt.data("id")) {
-                            $(w.element).click(function() {
-                                self.followLink(tgt)
-                            })
-                        }
-                    })
-                    self.selectChain.update()
-                    if (next) next(results)
-                })
-            })
-        },
-        showItem: function(data, index) {
-            var self = this
-            var column = index % 3
-            var row = Math.floor(index / 3)
-            var tx = 160 + column * 223
-            var ty = 36 + row * 223
-            var rect = SvgHelper.rect({
-                ry: 35,
-                rx: 35,
-                height: 195,
-                width: 195,
-                fill: "#fff",
-                stroke: self.colors[index],
-                "stroke-width": 5
-            })
-            var items = [rect]
-            var obj = {
-                "class": "youtube-result",
-                transform: "translate(" + tx + ", " + ty + ")"
-            }
-            if (data) {
-                var label = data.title ? truncate(data.title, 20) : ""
-                var thumbUrl = data.node.thumbnailUri
-                var thumb = SvgHelper.image({
-                    x: 7,
-                    y: 20,
-                    width: 180,
-                    height: 120,
-                    src: thumbUrl
-                })
-                var txt = SvgHelper.text(label, {
-                    x: 97,
-                    y: 170,
-                    "text-anchor": "middle"
-                })
-                items = [rect, thumb, txt]
-                obj['data-id'] = data._id
-                obj['data-type'] = data.node.type
-                switch(data.node.type) {
-                    case 'app':
-                        // extract 'apptype' and 'importUUID'...
-                        obj['data-apptype'] = data.apptype
-                        obj['data-uuid'] = data.importUUID
-                        break;
-                    case 'youTubeVideo':
-                        obj['data-ytid'] = data.ytId
-                        break;
-                    case 'image':
-                        obj['data-uuid'] = data.imageUUID
-                        break;
-                    case 'video':
-                        obj['data-uuid'] = data.videoUUID
-                        break;
-                    case 'voice':
-                        obj['data-uuid'] = data.voiceUUID
-                        break;
+            function setFavState(flag) {
+                if (flag) {
+                    favButton.disable()
+                    unfavButton.enable()
+                } else {
+                    favButton.enable()
+                    unfavButton.disable()
                 }
-            } else {
-                obj["class"] += " disabled"
             }
-            return SvgHelper.group(obj, items)
+            /*
+			FavApps.starred(userId, appId, function(err, data) {
+				setFavState(!err && data)
+			})
+			favButton.click(function() {
+				FavApps.star(userId, appId, function(err, data) {
+					if(!err) setFavState(true)
+				})					
+			})
+			unfavButton.click(function() {
+				FavApps.unstar(userId, appId, function(err, data) {
+					if(!err) setFavState(false)
+				})					
+			})
+*/
+            quitBtn.click(function() {
+                // move back to previous page...
+                self.goBack()
+            })
+            var importName = appName || "notfound"
+            var src = "/imports/" + importName + "/index.html"
+                //window.alert(src)
+                // TODO automatic iframe resizing... 
+                // ERROR: sometimes the application will not show, page refresh necessary
+                //setTimeout(function() {
+            $("#iframe-wrapper").empty().append(
+                $("<iframe nwfaketop nwdisable>").attr({
+                    width: "100%",
+                    height: "100%",
+                    src: src + "?showquitbutton=no&lang=de",
+                    frameborder: 0
+                }).load(function() {
+                    // reloading does not seem to help...
+                    //$(this).off('load')
+                    //$(this).get(0).contentWindow.location.reload();
+                })
+            )
+            //document.getElementById("iframe-wrapper").reload(true);
+            //}, 1000)
+
+            /* continue when finished */
+            if (next) next(this)
         }
     })
-    return UserAppsPage
+    return page
 
 }
 
-},{"../../../js/ItemListPage":2,"../../../js/svghelper":7,"../routes/searchqueryutil":16,"html-truncate":9,"url":15}]},{},["HJD/OK"])
+},{"../../../js/BasePage":1,"path":8,"url":14}]},{},["HJD/OK"])

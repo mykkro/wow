@@ -53,7 +53,7 @@ module.exports = function(Wow) {
             window.location.href = tgt
         },
         followEscrapbookLink: function(targetId, uuid) {
-            var tgt = '/plugins/app/index?importname='+uuid
+            var tgt = '/plugins/scrapbook/index?importname='+uuid
             window.location.href = tgt
         },
         followImageLink: function(targetId, uuid) {
