@@ -126,7 +126,36 @@ var BasePage = BasicLayer.extend({
 
 module.exports = BasePage
 
-},{"./basiclayer":3,"./softwarekeyboard":21,"basejs":41,"url":47}],3:[function(require,module,exports){
+},{"./basiclayer":5,"./softwarekeyboard":23,"basejs":43,"url":49}],"Logger":[function(require,module,exports){
+module.exports=require('Q2sPT1');
+},{}],"Q2sPT1":[function(require,module,exports){
+var Base = require("basejs")
+
+var Logger = Base.extend({
+    constructor: function(opts) {
+        console.log("Logger created:", opts)
+    },
+    log: function(data) {
+        // TODO add some filter - which events are loggable (for this user)
+        var opts = {
+          url: "/api/log",
+          type: "POST",
+          data: JSON.stringify(data),
+          dataType: 'json',
+          contentType: "application/json; charset=utf-8"
+        }
+        $.ajax(opts).done(function(data) {
+            // log sent OK
+            console.log("Logger:", data[0])
+        }).fail(function(err) {
+            console.error(err)
+        })
+    }
+})
+
+module.exports = Logger
+
+},{"basejs":43}],5:[function(require,module,exports){
 var Base = require("basejs")
 
 var BasicLayer = Base.extend({
@@ -196,7 +225,7 @@ var BasicLayer = Base.extend({
 
 module.exports = BasicLayer
 
-},{"basejs":41}],4:[function(require,module,exports){
+},{"basejs":43}],6:[function(require,module,exports){
 /*
 Scripts to create interactive textboxes in SVG using ECMA script
 Copyright (C) <2006>  <Andreas Neumann>
@@ -1067,7 +1096,7 @@ module.exports = function(window, svgsvg) {
 
 }
 
-},{"./timer":5}],5:[function(require,module,exports){
+},{"./timer":7}],7:[function(require,module,exports){
 // source/credits: "Algorithm": http://www.codingforums.com/showthread.php?s=&threadid=10531
 // The constructor should be called with
 // the parent object (optional, defaults to window).
@@ -1153,7 +1182,7 @@ module.exports = function(window) {
     return Timer
 }
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 if (!String.prototype.startsWith) {
     Object.defineProperty(String.prototype, 'startsWith', {
         enumerable: false,
@@ -1193,8 +1222,6 @@ var Commons = {
 
 module.exports = Commons
 
-},{}],"dialogs":[function(require,module,exports){
-module.exports=require('zT2nDu');
 },{}],"zT2nDu":[function(require,module,exports){
 var Dialog = require('modal-dialog');
 
@@ -1237,7 +1264,9 @@ module.exports = function($, i18n) {
 
 }
 
-},{"modal-dialog":49}],"KDKUXu":[function(require,module,exports){
+},{"modal-dialog":51}],"dialogs":[function(require,module,exports){
+module.exports=require('zT2nDu');
+},{}],"KDKUXu":[function(require,module,exports){
 //Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
 //Modified by Myrousz 2014
 //MIT License
@@ -1298,10 +1327,8 @@ var EventTarget = Base.extend({
 
 module.exports = EventTarget
 
-},{"basejs":41}],"eventtarget":[function(require,module,exports){
+},{"basejs":43}],"eventtarget":[function(require,module,exports){
 module.exports=require('KDKUXu');
-},{}],"i18n":[function(require,module,exports){
-module.exports=require('rq9WIT');
 },{}],"rq9WIT":[function(require,module,exports){
 // to be used as constructor
 
@@ -1325,7 +1352,9 @@ var i18n = function(data) {
 }
 module.exports = i18n
 
-},{"fs":42,"path":45}],13:[function(require,module,exports){
+},{"fs":44,"path":47}],"i18n":[function(require,module,exports){
+module.exports=require('rq9WIT');
+},{}],15:[function(require,module,exports){
 module.exports = function($) {
     var Widget = require("./widget")($)
 
@@ -1366,9 +1395,7 @@ module.exports = function($) {
     return InputWidget
 }
 
-},{"./widget":25}],"mygamepad":[function(require,module,exports){
-module.exports=require('TM4xVw');
-},{}],"TM4xVw":[function(require,module,exports){
+},{"./widget":27}],"TM4xVw":[function(require,module,exports){
 module.exports = function(window, $, Gamepad) {
 
     var EventTarget = require("./eventtarget")
@@ -1430,7 +1457,9 @@ module.exports = function(window, $, Gamepad) {
     return MyGamepad
 }
 
-},{"./eventtarget":"KDKUXu"}],16:[function(require,module,exports){
+},{"./eventtarget":"KDKUXu"}],"mygamepad":[function(require,module,exports){
+module.exports=require('TM4xVw');
+},{}],18:[function(require,module,exports){
 var BasicLayer = require("./basiclayer")
 
 var Overlay = BasicLayer.extend({
@@ -1463,7 +1492,7 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./basiclayer":3}],"pageinfo":[function(require,module,exports){
+},{"./basiclayer":5}],"pageinfo":[function(require,module,exports){
 module.exports=require('OzAdbj');
 },{}],"OzAdbj":[function(require,module,exports){
 var url = require('url')
@@ -1486,7 +1515,7 @@ module.exports = function(window) {
 
 }
 
-},{"path":45,"url":47}],19:[function(require,module,exports){
+},{"path":47,"url":49}],21:[function(require,module,exports){
 module.exports = function(window) {
     var document = window.document
 
@@ -1582,7 +1611,7 @@ module.exports = function(window) {
 
 }
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 module.exports = function($, Base) {
 
     var SelectChain = Base.extend({
@@ -1675,7 +1704,7 @@ module.exports = function($, Base) {
 
 }
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var Overlay = require("./overlay")
 var _ = require("underscore")
 var Base = require("basejs")
@@ -2400,7 +2429,7 @@ var SoftwareKeyboard = Overlay.extend({
 
 module.exports = SoftwareKeyboard
 
-},{"./overlay":16,"./selectchain":20,"basejs":41,"underscore":58}],22:[function(require,module,exports){
+},{"./overlay":18,"./selectchain":22,"basejs":43,"underscore":60}],24:[function(require,module,exports){
 var SvgHelper = function(window) {
     var document = window.document
     var svgNS = "http://www.w3.org/2000/svg"
@@ -2524,6 +2553,8 @@ var SvgHelper = function(window) {
 
 module.exports = SvgHelper
 
+},{}],"virtualcontrol":[function(require,module,exports){
+module.exports=require('xmiMga');
 },{}],"xmiMga":[function(require,module,exports){
 var EventTarget = require("eventtarget")
 
@@ -2555,9 +2586,7 @@ var VirtualControl = EventTarget.extend({
 
 module.exports = VirtualControl
 
-},{"eventtarget":"KDKUXu"}],"virtualcontrol":[function(require,module,exports){
-module.exports=require('xmiMga');
-},{}],25:[function(require,module,exports){
+},{"eventtarget":"KDKUXu"}],27:[function(require,module,exports){
 var Base = require("basejs")
 
 module.exports = function($) {
@@ -2615,7 +2644,7 @@ module.exports = function($) {
     return Widget
 }
 
-},{"basejs":41}],"BnNKMX":[function(require,module,exports){
+},{"basejs":43}],"BnNKMX":[function(require,module,exports){
 // create a browserified version of widgetizer:
 //  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
 module.exports = function(window, $, SVG) {
@@ -2948,9 +2977,9 @@ module.exports = function(window, $, SVG) {
     return Widgetizer
 }
 
-},{"./commons":6,"./inputwidget":13,"./svghelper":22,"./widget":25,"./widgets/bigbutton/bigbutton":28,"./widgets/box/box":29,"./widgets/button/button":30,"./widgets/flow/flow":31,"./widgets/grid/grid":32,"./widgets/iconbutton/iconbutton":33,"./widgets/image/image":34,"./widgets/piechart/piechart":35,"./widgets/plain/plain":36,"./widgets/switcher/switcher":37,"./widgets/text/text":38,"./widgets/textbox/textbox":39,"./widgets/viewport/viewport":40,"underscore":58}],"widgetizer":[function(require,module,exports){
+},{"./commons":8,"./inputwidget":15,"./svghelper":24,"./widget":27,"./widgets/bigbutton/bigbutton":30,"./widgets/box/box":31,"./widgets/button/button":32,"./widgets/flow/flow":33,"./widgets/grid/grid":34,"./widgets/iconbutton/iconbutton":35,"./widgets/image/image":36,"./widgets/piechart/piechart":37,"./widgets/plain/plain":38,"./widgets/switcher/switcher":39,"./widgets/text/text":40,"./widgets/textbox/textbox":41,"./widgets/viewport/viewport":42,"underscore":60}],"widgetizer":[function(require,module,exports){
 module.exports=require('BnNKMX');
-},{}],28:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3013,7 +3042,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{}],29:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3051,7 +3080,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{}],30:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3176,7 +3205,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{}],31:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3298,7 +3327,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3421,7 +3450,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{}],33:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3466,7 +3495,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{}],34:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3518,7 +3547,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{}],35:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3563,7 +3592,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{"../../piechart":19}],36:[function(require,module,exports){
+},{"../../piechart":21}],38:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3594,7 +3623,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{}],37:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3695,7 +3724,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3736,7 +3765,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{}],39:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3817,7 +3846,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{"../../carto.net/textbox":4}],40:[function(require,module,exports){
+},{"../../carto.net/textbox":6}],42:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3882,7 +3911,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{}],41:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 /*
   Based on Base.js 1.1a (c) 2006-2010, Dean Edwards
   Updated to pass JSHint and converted into a module by Kenneth Powers
@@ -4029,9 +4058,9 @@ module.exports = function(Widgetizer) {
   return Base;
 });
 
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -4333,7 +4362,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],44:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -4388,7 +4417,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],45:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 var process=require("__browserify_process");// Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -4614,7 +4643,7 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-},{"__browserify_process":44}],46:[function(require,module,exports){
+},{"__browserify_process":46}],48:[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};/*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
 
@@ -5123,7 +5152,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }(this));
 
-},{}],47:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -5756,7 +5785,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":46,"querystring":57}],48:[function(require,module,exports){
+},{"punycode":48,"querystring":59}],50:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.0-beta3
  * http://jquery.com/
@@ -14879,7 +14908,7 @@ return jQuery;
 
 }));
 
-},{}],49:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 // Generated by CoffeeScript 1.6.3
 (function() {
   var $, Dialog, EventEmitter, Overlay, Q, ready,
@@ -15317,7 +15346,7 @@ return jQuery;
 
 }).call(this);
 
-},{"content-ready":50,"events":43,"jquery":48,"overlay":52,"q":54}],50:[function(require,module,exports){
+},{"content-ready":52,"events":45,"jquery":50,"overlay":54,"q":56}],52:[function(require,module,exports){
 // Generated by CoffeeScript 1.6.3
 (function() {
   var $, Q, err;
@@ -15358,7 +15387,7 @@ return jQuery;
 
 }).call(this);
 
-},{"jquery":48,"q":51}],51:[function(require,module,exports){
+},{"jquery":50,"q":53}],53:[function(require,module,exports){
 var process=require("__browserify_process");// vim:ts=4:sts=4:sw=4:
 /*!
  *
@@ -17264,7 +17293,7 @@ return Q;
 
 });
 
-},{"__browserify_process":44}],52:[function(require,module,exports){
+},{"__browserify_process":46}],54:[function(require,module,exports){
 // Generated by CoffeeScript 1.6.3
 (function() {
   var $, EventEmitter, Overlay, Q, _ref,
@@ -17404,7 +17433,7 @@ return Q;
 
 }).call(this);
 
-},{"events":43,"jquery":48,"q":53}],53:[function(require,module,exports){
+},{"events":45,"jquery":50,"q":55}],55:[function(require,module,exports){
 var process=require("__browserify_process");// vim:ts=4:sts=4:sw=4:
 /*!
  *
@@ -19157,7 +19186,7 @@ return Q;
 
 });
 
-},{"__browserify_process":44}],54:[function(require,module,exports){
+},{"__browserify_process":46}],56:[function(require,module,exports){
 var process=require("__browserify_process");// vim:ts=4:sts=4:sw=4:
 /*!
  *
@@ -21096,7 +21125,7 @@ return Q;
 
 });
 
-},{"__browserify_process":44}],55:[function(require,module,exports){
+},{"__browserify_process":46}],57:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -21182,7 +21211,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],56:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -21269,13 +21298,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],57:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":55,"./encode":56}],58:[function(require,module,exports){
+},{"./decode":57,"./encode":58}],60:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -22553,4 +22582,4 @@ exports.encode = exports.stringify = require('./encode');
 
 }).call(this);
 
-},{}]},{},["BnNKMX","rq9WIT","OzAdbj","zT2nDu","TM4xVw","R8W4/H","KDKUXu","xmiMga"])
+},{}]},{},["BnNKMX","rq9WIT","OzAdbj","zT2nDu","TM4xVw","R8W4/H","Q2sPT1","KDKUXu","xmiMga"])

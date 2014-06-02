@@ -126,7 +126,7 @@ var WowServer = {
     });
 
     require("./routes/plugins")(app, express, Auth, API)
-
+    require("./routes/logging")(app, API, Auth)
     require("./routes/rpc")(app)
     require("./routes/search")(app, API)
     require("./routes/pages")(app, Auth)

@@ -11,10 +11,6 @@ module.exports = function(Wow) {
 
     var path = require("path")
 
-    var bookman_log = function(data) {
-      console.log(data);
-    }
-
     var ScrapbookPage = BasePage.extend({
         init: function(data, next) {
             var url = require("url")
@@ -67,7 +63,7 @@ module.exports = function(Wow) {
                 // convert all relative URIs
                 book = Things.convertURIs(book, baseUrl)
                 // create book view...
-                bookView = new ExportBookViewer({data:book, fullscreen:true, logger: bookman_log, url:"https://nit.felk.cvut.cz/~myrousz/escrapbook-v3/books/view/34"});
+                bookView = new ExportBookViewer({data:book, fullscreen:true, logger: Wow.logger, uuid: appName});
                 bookView.init();
                 self.bookView = bookView
                 // continue when finished 

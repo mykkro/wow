@@ -10,7 +10,7 @@
     },
     "timestamp": {
       "title": "Timestamp",
-      "type": "string",
+      "type": "number",
       "required": true
     }
   },

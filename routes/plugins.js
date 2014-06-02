@@ -28,7 +28,6 @@ module.exports = function(app, express, Auth, API) {
     })
     
     app.get('/plugins/:name/:page', Auth.isAuthenticatedAsUser, function(req, res) {
-      console.log("Current user:", req.user)
       var name = req.params.name
       var page = req.params.page
       var prefix = "/plugins/"+name

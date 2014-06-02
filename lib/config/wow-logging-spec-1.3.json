@@ -1,0 +1,883 @@
+{
+	"$type": "wow-logging-api",
+	"version": "1.3",
+    "lastUpdate": "2014-04-15T09:01:12",
+	"classes": [
+		{
+			"name": "userinfo",
+			"className": "UserInfo",
+			"extends": null,
+			"description": "Informace o uživateli.",
+			"version": "1.0",
+            "lastUpdate": "2014-04-14T15:01:41",
+			"fields": {
+				"userid": {
+					"name": "userid",
+					"title": "User ID",
+					"type": "integer",
+					"description": "ID uživatele."
+				},
+				"gender": {
+					"type": "string",
+					"enum": ["m", "f"],
+		            "title": "Pohlaví",
+		            "description": "Pohlaví uživatele."
+				},
+				"age": {
+					"title": "Věk",
+					"description": "Věk uživatele.",
+					"type": "integer"
+				},
+				"medprofiles": {
+					"type": "array",
+		            "items": {
+		                "type": "MedInfo"
+		            },
+		            "title": "Medicínské profily",
+		            "description": "Medicínské profily uživatele."
+				}
+
+			}
+		},
+		{
+			"name": "medicalinfo",
+			"className": "MedInfo",
+			"extends": null,
+			"description": "Medicínský profil uživatele.",
+			"version": "1.0",
+			"fields": {
+				"subtype": {
+					"title": "Subtype",
+					"description": "Subtype.",
+					"type": "string"
+				},
+				"phase": {
+					"name": "phase",
+					"title": "Fáze",
+					"type": "string",
+					"description": "Fáze onemocnění."
+				},
+				"behaviour": {
+					"type": "behaviour",
+		            "title": "Behaviour",
+		            "description": "Behaviour."
+				}
+			}
+		},
+		{
+			"name": "appinfo",
+			"className": "AppInfo",
+			"extends": null,
+			"version": "1.0",
+			"description": "Obecné informace o importované aplikaci.",
+			"fields": {
+				"appid": {
+					"type": "integer",
+					"title": "App ID",
+					"description": "Unikátní ID aplikace."
+				},
+				"appname": {
+					"type": "string",
+					"title": "Jméno",
+					"description": "Jméno aplikace."
+				},
+				"appversion": {
+					"type": "string",
+					"title": "verze",
+					"description": "Verze aplikace."
+				},
+				"uri": {
+					"type": "uri",
+					"title": "URI",
+					"description": "URI přiřazené importované aplikaci."
+				},
+				"origin": {
+					"type": "uri",
+					"title": "URI zdroje",
+					"description": "URI zdroje pokud byla aplikace importována z AppStoru."
+				},
+				"keywords": {
+					"name": "keywords",
+					"title": "Klíčová slova",
+					"type": "string",
+					"description": "Klíčová slova k obsahu knihy."
+				},
+				"created": {
+					"title": "created",
+					"description": "Datum vytvoření knihy.",
+					"type": "datetime"
+				}
+			}
+		},
+		{
+			"name": "bookinfo",
+			"className": "BookInfo",
+			"extends": "AppInfo",
+			"description": "Informace o knize.",
+			"version": "1.0",
+			"fields": {
+				"pagecount": {
+					"name": "pagecount",
+					"title": "Počet stran",
+					"type": "integer",
+					"description": "Počet stran knihy."
+				}
+			}
+		},
+		{
+			"name": "gameinfo",
+			"className": "GameInfo",
+			"extends": "AppInfo",
+			"description": "Informace o hře.",
+			"version": "1.0",
+			"fields": {
+			}
+		},
+		{
+			"name": "bookpageinfo",
+			"className": "BookPageInfo",
+			"extends": null,
+			"description": "Informace o stránce knihy.",
+			"version": "1.0",
+			"fields": {
+				"pageno": {
+					"name": "pageno",
+					"title": "Číslo stránky",
+					"type": "integer",
+					"description": "Pořadí stránky v knize, číslováno od jedné."
+				},
+				"keywords": {
+					"name": "keywords",
+					"title": "Klíčová slova",
+					"type": "string",
+					"description": "Klíčová slova k obsahu na stránce."
+				},
+				"wordcount": {
+					"name": "wordcount",
+					"title": "Počet slov na stránce",
+					"type": "integer",
+					"description": "Počet slov v textu na stránce."
+				},
+				"images": {
+					"type": "array",
+		            "items": {
+		                "type": "ImageInfo"
+		            },
+		            "title": "Informace o obrázcích na stránce.",
+		            "description": "Informace o obrázcích na stránce."
+				},
+				"voices": {
+					"type": "array",
+		            "items": {
+		                "type": "VoiceInfo"
+		            },
+		            "title": "Informace o zvukových stopách na stránce.",
+		            "description": "Informace o zvukových stopách na stránce."
+				},
+				"videos": {
+					"type": "array",
+		            "items": {
+		                "type": "VideoInfo"
+		            },
+		            "title": "Informace o videích na stránce.",
+		            "description": "Informace o videích na stránce."
+				}
+			}
+		},
+		{
+			"name": "mediainfo",
+			"className": "MediaInfo",
+			"extends": null,
+			"description": "Informace o médiu (obrázek, video, audio).",
+			"version": "1.0",
+			"fields": {
+				"keywords": {
+					"name": "keywords",
+					"title": "Klíčová slova",
+					"type": "string",
+					"description": "Klíčová slova."
+				},
+				"uri": {
+					"name": "uri",
+					"title": "URI média.",
+					"type": "string",
+					"description": "URI média."
+				}
+			}
+		},
+		{
+			"name": "imageinfo",
+			"className": "ImageInfo",
+			"extends": "MediaInfo",
+			"description": "Informace o obrázku.",
+			"version": "1.0",
+			"fields": {
+				"kind": {
+					"name": "kind",
+					"title": "Typ obrázku.",
+					"type": "string",
+					"enum": ["bw", "color"],
+					"description": "Typ obrázku - bw, color."
+				}
+			}
+		},
+		{
+			"name": "avinfo",
+			"className": "AVInfo",
+			"extends": "MediaInfo",
+			"description": "Informace o audio klipu nebo videu.",
+			"version": "1.0",
+			"fields": {
+				"autoplay": {
+					"name": "autoplay",
+					"title": "Autoplay",
+					"type": "boolean",
+					"description": "Automatické přehrávání."
+				},
+				"loop": {
+					"name": "loop",
+					"title": "Loop",
+					"type": "boolean",
+					"description": "Cyklické přehrávání."
+				},
+				"duration": {
+					"name": "duration",
+					"title": "Délka záznamu",
+					"type": "integer",
+					"description": "Délka záznamu v sekundách."
+				}
+			}
+		},
+		{
+			"name": "voiceinfo",
+			"className": "VoiceInfo",
+			"extends": "AVInfo",
+			"description": "Informace o audio klipu.",
+			"version": "1.0"
+		},
+		{
+			"name": "videoinfo",
+			"className": "VideoInfo",
+			"extends": "AVInfo",
+			"description": "Informace o video klipu.",
+			"version": "1.0"
+		},
+		{
+			"name": "event",
+			"className": "AbstractEvent",
+			"extends": null,
+			"version": "1.0",
+			"description": "Deklarace pro vsechny typy udalosti.",
+			"fields": {
+				"type": {
+					"title": "type",
+					"description": "Rozlisuje typ udalosti (app, user, admin).",
+					"type": "string"
+				},
+				"timestamp": {
+					"title": "timestamp",
+					"description": "Casova znacka udalosti.",
+					"type": "datetime"
+				},
+				"id": {
+					"title": "id",
+					"description": "Identifikace udalosti v ramci aplikace.",
+					"type": "integer"
+				}
+			}
+		},
+		{
+			"name": "app.event",
+			"className": "AppEvent",
+			"extends": "AbstractEvent",
+			"version": "1.0",
+			"description": "Událost aplikace (app. prefix pro udalosti aplikace)."
+		},
+		{
+			"name": "app.startup",
+			"uses": "AppEvent",
+			"description": "Událost spusteni aplikace."
+		},
+		{
+			"name": "app.shutdown",
+			"uses": "AppEvent",
+			"description": "Událost zastaveni aplikace."
+		},
+		{
+			"name": "admin.event",
+			"className": "AdminEvent",
+			"extends": "AbstractEvent",
+			"version": "1.0",
+			"description": "Událost administrator (admin. prefix pro administrator udalosti)."
+		},
+		{
+			"name": "admin.appimport",
+			"className": "AdminImportAppEvent",
+			"extends": "AdminEvent",
+			"version": "1.0",
+			"description": "Událost importu v aplikaci prostrednictvim administratora.",
+			"fields": {
+				"appinfo": {
+					"type": "AppInfo",
+					"title": "Info",
+					"description": "Informace o importované aplikaci."
+				}
+			}
+		},
+		{
+			"name": "admin.usercreate",
+			"className": "AdminUserCreatedEvent",
+			"extends": "AdminEvent",
+			"version": "1.0",
+			"description": "Událost vytvoření uživatele aplikace administrátorem.",
+			"fields": {
+				"userinfo": {
+					"title": "User Info",
+					"type": "UserInfo",
+					"description": "Informace o uživateli."
+				}
+			}
+		},
+		{
+			"name": "admin.userchange",
+			"className": "AdminUserChangeEvent",
+			"extends": "AdminEvent",
+			"version": "1.0",
+			"description": "Událost změny uživatele aplikace administrátorem.",
+			"fields": {
+				"userinfo": {
+					"title": "User Info",
+					"type": "UserInfo",
+					"description": "Aktualizované informace o uživateli."
+				}
+			}
+		},
+		{
+			"name": "user.event",
+			"className": "UserEvent",
+			"extends": "AbstractEvent",
+			"version": "1.0",
+			"description": "Událost uzivatel (user. prefix pro uzivatel udalosti).",
+			"fields": {
+				"userid": {
+					"name": "userid",
+					"title": "User ID",
+					"type": "integer",
+					"description": "ID uživatele."
+				}
+			}
+		},
+		{
+			"name": "user.login",
+			"className": "UserLoginEvent",
+			"extends": "UserEvent",
+			"version": "1.0",
+			"description": "Událost přihlášení uživatele aplikace.",
+			"fields": {
+				"userinfo": {
+					"title": "User Info",
+					"type": "UserInfo",
+					"description": "Informace o uživateli."
+				}
+			}
+		},
+		{
+			"name": "user.logout",
+			"uses": "UserEvent",
+			"description": "Událost odhlášení uživatele aplikace."
+		},
+		{
+			"name": "user.page",
+			"className": "UserPageEvent",
+			"extends": "UserEvent",
+			"version": "1.0",
+			"description": "Zobrazení stránky WOW aplikace uživatelem.",
+			"fields": {
+				"uri": {
+					"title": "uri",
+					"description": "Identifikator zdroje stranky.",
+					"type": "uri"
+				}
+			}
+		},
+		{
+			"name": "user.questionary",
+			"className": "UserQuestionaryEvent",
+			"extends": "UserEvent",
+			"version": "1.0",
+			"description": "Odeslání vyplněného dotazníku.",
+			"fields": {
+				"uri": {
+					"title": "uri",
+					"description": "URI dotazníku.",
+					"type": "string"
+				},
+				"answers": {
+					"title": "Odpovědi",
+					"description": "Řetězec obsahující odpovědi na jednotlivé otázky.",
+					"type": "string"
+				}
+			}
+		},
+		{
+			"name": "video.event",
+			"className": "VideoEvent",
+			"extends": "AbstractEvent",
+			"version": "1.0",
+			"description": "Událost video stránky."
+		},
+		{
+			"name": "video.textsearch",
+			"className": "VideoSearchEvent",
+			"extends": "VideoEvent",
+			"version": "1.0",
+			"description": "",
+			"fields": {
+				"query": {
+					"title": "query",
+					"description": "Vyraz pouzity k vyhledani videi s odpovidajicim tematem.",
+					"type": "string"
+				},
+				"page": {
+					"title": "page",
+					"description": "Cislo stranky s videama.",
+					"type": "integer"
+				},
+				"recordsPerPage": {
+					"title": "recordsPerPage",
+					"description": "Pocet videi na strance.",
+					"type": "integer"
+				}
+			}
+		},
+		{
+			"name": "video.play",
+			"uses": "VideoEvent",
+			"description": "Událost přehrání videa."
+		},
+		{
+			"name": "video.pause",
+			"uses": "VideoEvent",
+			"description": "Událost pozastavení přehrávání videa."
+		},
+		{
+			"name": "video.stop",
+			"uses": "VideoEvent",
+			"description": "Událost zastavení přehrávání videa."
+		},
+		{
+			"name": "video.favorite",
+			"uses": "VideoEvent",
+			"description": "Událost přiřazení videa k oblíbeným."
+		},
+		{
+			"name": "video.unfavorite",
+			"uses": "VideoEvent",
+			"description": "Událost odstranění videa z oblíbených."
+		},
+		{
+			"name": "game.event",
+			"className": "GameEvent",
+			"extends": "AbstractEvent",
+			"version": "1.1",
+			"description": "Obecná událost hry.",
+			"fields": {
+				"gameid": {
+					"name": "gameid",
+					"title": "Game ID",
+					"description": "ID hry.",
+					"type": "integer"
+				},
+				"uri": {
+					"name": "uri",
+					"title": "URI",
+					"description": "URI hry.",
+					"type": "uri"
+				}
+			}
+		},
+		{
+			"name": "game.loaded",
+			"className": "GameLoadEvent",
+			"extends": "GameEvent",
+			"version": "1.1",
+			"description": "Událost načtení hry.",
+			"fields": {
+				"gameinfo": {
+					"title": "Game Info",
+					"description": "Informace o hře",
+					"type": "GameInfo"
+				}
+			}
+		},
+		{
+			"name": "game.unloaded",
+			"uses": "GameEvent",
+			"description": "Událost uvolneni (odstraneni) hry."
+		},
+		{
+			"name": "game.ui.play",
+			"uses": "GameEvent",
+			"description": "Událost spusteni hry uživatelem."
+		},
+		{
+			"name": "game.ui.pause",
+			"uses": "GameEvent",
+			"description": "Událost pozastaveni hry uživatelem."
+		},
+		{
+			"name": "game.ui.quit",
+			"uses": "GameEvent",
+			"description": "Událost ukonceni hry uzivatelem."
+		},
+		{
+			"name": "game.ui.restart",
+			"uses": "GameEvent",
+			"description": "Událost restartování hry uzivatelem."
+		},
+		{
+			"name": "game.stage",			
+			"className": "GameStageEvent",
+			"extends": "GameEvent",
+			"description": "Událost fáze hry.",
+			"version": "1.1",
+			"fields": {
+				"score": {
+					"title": "Skóre",
+					"description": "Skóre",
+					"type": "integer"
+				},
+				"lives": {
+					"title": "Životy",
+					"description": "Životy",
+					"type": "integer"
+				},
+				"level": {
+					"title": "Level",
+					"description": "Level",
+					"type": "integer"
+				}
+			}
+		},
+		{
+			"name": "game.start",			
+			"uses": "GameStageEvent",
+			"description": "Událost začátku hry."
+		},
+		{
+			"name": "game.over",
+			"uses": "GameStageEvent",
+			"description": "Událost konce hry."
+		},
+		{
+			"name": "game.log",
+			"className": "GameLogEvent",
+			"extends": "GameEvent",
+			"description": "Událost změny sledované hodnoty.",
+			"version": "1.1",
+			"fields": {
+				"name": {
+					"title": "Jméno",
+					"description": "Jméno",
+					"type": "string"
+				},
+				"value": {
+					"title": "Hodnota",
+					"description": "Hodnota",
+					"type": "string"
+				}
+			}
+		},
+		{
+			"name": "game.levelup",
+			"uses": "GameStageEvent",
+			"description": "Událost úspěšného ukončení úrovně."
+		},
+		{
+			"name": "game.log.score",
+			"uses": "GameLogEvent",
+			"description": "Událost změny skóre."
+		},
+		{
+			"name": "game.log.lives",
+			"uses": "GameLogEvent",
+			"description": "Událost změny počtu životů."
+		},
+		{
+			"name": "game.setting",
+			"className": "GameSettingsEvent",
+			"extends": "GameEvent",
+			"version": "1.1",
+			"description": "Událost nastaveni hry uzivatelem.",
+			"fields": {
+				"settings": {
+					"title": "Nastavení",
+					"description": "Uživatelské nastavení",
+					"type": "object"
+				}
+			}
+		},
+		{
+			"name": "book.event",
+			"className": "BookEvent",
+			"extends": "AbstractEvent",
+			"version": "1.0",
+			"description": "Obecná událost knihy - eScrapBooku.",
+			"fields": {
+				"bookid": {
+					"title": "bookid",
+					"description": "ID knihy.",
+					"type": "integer"
+				}
+			}
+		},
+		{
+			"name": "book.open",
+			"className": "BookOpenEvent",
+			"extends": "BookEvent",
+			"version": "1.0",
+			"description": "Otevření knihy.",
+			"fields": {
+				"bookinfo": {
+					"title": "Book Info",
+					"description": "Informace o knize.",
+					"type": "BookInfo"
+				}
+			}
+		},
+		{
+			"name": "book.close",
+			"uses": "BookEvent",
+			"description": "Zavření knihy."
+		},
+		{
+			"name": "book.turn",
+			"className": "BookTurnEvent",
+			"extends": "BookEvent",
+			"version": "1.0",
+			"description": "Otočení stránky knihy.",
+			"fields": {
+				"leftpage": {
+					"title": "leftpage",
+					"description": "Informace o levé stránce.",
+					"type": "BookPageInfo"
+				},
+				"rightpage": {
+					"title": "rightpage",
+					"description": "Informace o pravé stránce.",
+					"type": "BookPageInfo"
+				}
+			}
+		},
+		{
+			"name": "book.media",
+			"className": "BookMediaEvent",
+			"extends": "BookEvent",
+			"version": "1.0",
+			"description": "Událost spojená s audio klipem/videem v knize.",
+			"fields": {
+				"elementno": {
+					"title": "elementno",
+					"description": "Pořadí elementu na zobrazené dvojstraně.",
+					"type": "integer"
+				}
+			}
+		},
+		{
+			"name": "book.audio",
+			"className": "BookAudioEvent",
+			"extends": "BookMediaEvent",
+			"version": "1.0",
+			"description": "Událost spojená s audio klipem v knize."
+		},
+		{
+			"name": "book.video",
+			"className": "BookVideoEvent",
+			"extends": "BookMediaEvent",
+			"version": "1.0",
+			"description": "Událost spojená s video klipem v knize."
+		},
+		{
+			"name": "book.audio.start",
+			"uses": "BookAudioEvent",
+			"description": "Událost přehrávání audio stopy v knize."
+		},
+		{
+			"name": "book.audio.pause",
+			"uses": "BookAudioEvent",
+			"description": "Událost pozastavení audio stopy v knize."
+		},
+		{
+			"name": "book.audio.stop",
+			"uses": "BookAudioEvent",
+			"description": "Událost ukončení přehrávání audio stopy v knize."
+		},
+		{
+			"name": "book.video.start",
+			"uses": "BookVideoEvent",
+			"description": "Událost přehrávání videa v knize."
+		},
+		{
+			"name": "book.video.pause",
+			"uses": "BookVideoEvent",
+			"description": "Událost pozastavení videa v knize."
+		},
+		{
+			"name": "book.video.stop",
+			"uses": "BookVideoEvent",
+			"description": "Událost ukončení přehrávání videa v knize."
+		},
+		{
+			"name": "radio.event",
+			"className": "RadioEvent",
+			"extends": "AbstractEvent",
+			"version": "1.1",
+			"description": "Událost spojená s internet. rádiem.",
+			"fields": {
+				"uri": {
+					"title": "uri",
+					"description": "URL internet. rádia.",
+					"type": "uri"
+				}
+			}
+		},
+		{
+			"name": "radio.play",
+			"uses": "RadioEvent",
+			"description": "Událost přehrávání."
+		},
+		{
+			"name": "radio.stop",
+			"uses": "RadioEvent",
+			"description": "Událost vypnutí."
+		},
+		{
+			"name": "radio.ui.previous",
+			"uses": "RadioEvent",
+			"description": "Událost zvolení předchozí stopy."
+		},
+		{
+			"name": "radio.ui.next",
+			"uses": "RadioEvent",
+			"description": "Událost zvolení následující stopy."
+		},
+		{
+			"name": "gps.event",
+			"className": "GPSEvent",
+			"extends": "AbstractEvent",
+			"version": "1.0",
+			"description": "Událost spojená s GPS.",
+			"fields": {
+				"deviceid": {
+					"title": "deviceid",
+					"description": "ID GPS zařízení.",
+					"type": "string"
+				}
+			}
+		},
+		{
+			"name": "gps.location",
+			"className": "GPSLocationEvent",
+			"extends": "GPSEvent",
+			"version": "1.0",
+			"description": "Změna polohy GPS.",
+			"fields": {
+				"latitude": {
+					"title": "latitude",
+					"description": "GPS Latitude.",
+					"type": "string"
+				},
+				"longitude": {
+					"title": "longitude",
+					"description": "GPS Longitude.",
+					"type": "string"
+				}
+			}
+		},
+		{
+			"name": "physio.event",
+			"className": "PhysioEvent",
+			"extends": "AbstractEvent",
+			"version": "1.0",
+			"description": "Physio data event.",
+			"fields": {
+				"deviceid": {
+					"title": "deviceid",
+					"description": "ID zařízení.",
+					"type": "string"
+				}
+			}
+		},
+		{
+			"name": "physio.pressure",
+			"className": "PhysioPressureEvent",
+			"extends": "PhysioEvent",
+			"version": "1.0",
+			"description": "Blood pressure data.",
+			"fields": {
+				"systolic": {
+					"title": "systolic",
+					"description": "Systolic pressure.",
+					"type": "number"
+				},
+				"diastolic": {
+					"title": "diastolic",
+					"description": "Diastolic pressure.",
+					"type": "number"
+				},
+				"pulse": {
+					"title": "pulse",
+					"description": "Pulse.",
+					"type": "number"
+				}
+			}
+		},
+		{
+			"name": "physio.balance",
+			"className": "PhysioBalanceEvent",
+			"extends": "PhysioEvent",
+			"version": "1.0",
+			"description": "Balance data.",
+			"fields": {
+			}
+		},
+		{
+			"name": "physio.balance.calibration",
+			"className": "PhysioBalanceCalibrationEvent",
+			"extends": "PhysioBalanceEvent",
+			"version": "1.0",
+			"description": "Balance sensor calibration data.",
+			"fields": {
+				"centerX": {
+					"title": "Center of pressure X coordinate",
+					"description": "Center of pressure X coordinate.",
+					"type": "number"
+				},
+				"centerY": {
+					"title": "Center of pressure Y coordinate",
+					"description": "Center of pressure Y coordinate.",
+					"type": "number"
+				}
+			}
+		},
+		{
+			"name": "physio.balance.therapy",
+			"className": "PhysioBalanceTherapyEvent",
+			"extends": "PhysioBalanceEvent",
+			"version": "1.0",
+			"description": "Balance sensor therapy data.",
+			"fields": {
+				"centerX": {
+					"title": "Center of pressure X coordinate",
+					"description": "Center of pressure X coordinate.",
+					"type": "number"
+				},
+				"centerY": {
+					"title": "Center of pressure Y coordinate",
+					"description": "Center of pressure Y coordinate.",
+					"type": "number"
+				}
+			}
+		}
+	]
+}

@@ -25,6 +25,10 @@
 
         window.i18n = i18n
 
+        /* initialize logger... */
+        var Logger = require("Logger")
+        var logger = new Logger()
+
         /* detect and initialize input devices... */
 
         // virtual control device
@@ -126,7 +130,8 @@
           moment: moment,
           Widgetizer: Widgetizer,
           preset: preset,
-          location: location
+          location: location,
+          logger: logger
         }
 
         var pageClass = require("pagescript")(Wow)

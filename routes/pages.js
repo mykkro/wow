@@ -7,7 +7,6 @@ module.exports = function(app, Auth) {
   var defaults = require("../lib/defaults")
 
     app.get('/pages/:name', Auth.isAuthenticatedAsUser, function(req, res) {
-      console.log("Current user:", req.user)
       var preset = merge({}, defaults.preset, req.user.user.preset)
       var presetStr = JSON.stringify(preset)
       var location = merge({}, defaults.location, req.user.user.location)

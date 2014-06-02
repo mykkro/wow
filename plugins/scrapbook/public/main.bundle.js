@@ -15673,15 +15673,14 @@ var BookViewer = Base.extend({
     constructor: function(options) {
         this.bookData = options.data;
         this.bookUrl = options.url;
-        this.eventUrl = options.eventUrl;
+        this.uuid = options.uuid
         this.fullscreen = options.fullscreen;
         this.logger = options.logger;
         this.defaultWidth = 920;
         this.defaultHeight = 600;
         this.tools = {};
         this.bookContent = null;
-        this.eventHistory = [];
-        this.targetDiv = "#content"
+        this.targetDiv = options.targetDiv || "#content"
     },
     makeIcon: function(icon, title) {
         return $("<div>").addClass('icon icon-48 icon-'+icon).css('display','inline-block').attr("title", title);
@@ -15702,15 +15701,8 @@ var BookViewer = Base.extend({
     turnFirst: function() {
         this.bookContent.get().turn("page", 1);
     },
-    goHome: function() {
-        this.logEvent('book_close', this.bookUrl);
-        window.location.href = this.bookUrl;
-    },
-    // v Chrome to nejak nefunguje...
     close: function() {
         this.logEvent('book_close', this.bookUrl);
-        window.open('','_self','');
-        window.close();
     },
     closeBook: function() {
         // normal viewer only turns to page 1
@@ -15825,24 +15817,12 @@ var BookViewer = Base.extend({
     },
     logEvent: function(type, src, data) {
         var timestamp = Math.floor(new Date().getTime() / 1000);
-        this.logSingleEvent({"type":type,"src":src,"data":data,"timestamp":timestamp});
-        if(type == 'book_close') {  
-            // flush events...
-            this.flushEventLog();
-        }
+        this.logSingleEvent({"type":type, "bookId":this.uuid, "src":src, "data":data, "timestamp":timestamp});
     },
     logSingleEvent: function(evt) {
         if(this.logger) {
-            this.logger(evt)
+            this.logger.log(evt)
         }
-        this.eventHistory.push(evt);
-        if(this.eventUrl) {
-            Common.postJsonData(this.eventUrl+".json", evt);
-        }
-    },
-    flushEventLog: function() {
-        // TODO odesilat eventy pres AJAX
-        console.log(JSON.stringify(this.eventHistory, null, 4));
     },
     setFullscreen: function(full) {
         this.fullscreen = full;
@@ -17805,10 +17785,6 @@ module.exports = function(Wow) {
 
     var path = require("path")
 
-    var bookman_log = function(data) {
-      console.log(data);
-    }
-
     var ScrapbookPage = BasePage.extend({
         init: function(data, next) {
             var url = require("url")
@@ -17861,7 +17837,7 @@ module.exports = function(Wow) {
                 // convert all relative URIs
                 book = Things.convertURIs(book, baseUrl)
                 // create book view...
-                bookView = new ExportBookViewer({data:book, fullscreen:true, logger: bookman_log, url:"https://nit.felk.cvut.cz/~myrousz/escrapbook-v3/books/view/34"});
+                bookView = new ExportBookViewer({data:book, fullscreen:true, logger: Wow.logger, uuid: appName});
                 bookView.init();
                 self.bookView = bookView
                 // continue when finished 
