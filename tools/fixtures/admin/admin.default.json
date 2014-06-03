@@ -1,0 +1,10 @@
+{
+	"ownerAdminId":-1,
+	"title":"Administrator",
+	"description":"Default Admin",
+	"canCreateAdmins":true,
+	"canCreateUsers":true,
+	"canImportApps":true,
+	"username":"adm",
+	"password":"adm"
+}

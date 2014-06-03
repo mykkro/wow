@@ -1329,6 +1329,8 @@ module.exports = EventTarget
 
 },{"basejs":43}],"eventtarget":[function(require,module,exports){
 module.exports=require('KDKUXu');
+},{}],"i18n":[function(require,module,exports){
+module.exports=require('rq9WIT');
 },{}],"rq9WIT":[function(require,module,exports){
 // to be used as constructor
 
@@ -1352,9 +1354,7 @@ var i18n = function(data) {
 }
 module.exports = i18n
 
-},{"fs":44,"path":47}],"i18n":[function(require,module,exports){
-module.exports=require('rq9WIT');
-},{}],15:[function(require,module,exports){
+},{"fs":44,"path":47}],15:[function(require,module,exports){
 module.exports = function($) {
     var Widget = require("./widget")($)
 
@@ -2644,7 +2644,9 @@ module.exports = function($) {
     return Widget
 }
 
-},{"basejs":43}],"BnNKMX":[function(require,module,exports){
+},{"basejs":43}],"widgetizer":[function(require,module,exports){
+module.exports=require('BnNKMX');
+},{}],"BnNKMX":[function(require,module,exports){
 // create a browserified version of widgetizer:
 //  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
 module.exports = function(window, $, SVG) {
@@ -2977,9 +2979,7 @@ module.exports = function(window, $, SVG) {
     return Widgetizer
 }
 
-},{"./commons":8,"./inputwidget":15,"./svghelper":24,"./widget":27,"./widgets/bigbutton/bigbutton":30,"./widgets/box/box":31,"./widgets/button/button":32,"./widgets/flow/flow":33,"./widgets/grid/grid":34,"./widgets/iconbutton/iconbutton":35,"./widgets/image/image":36,"./widgets/piechart/piechart":37,"./widgets/plain/plain":38,"./widgets/switcher/switcher":39,"./widgets/text/text":40,"./widgets/textbox/textbox":41,"./widgets/viewport/viewport":42,"underscore":60}],"widgetizer":[function(require,module,exports){
-module.exports=require('BnNKMX');
-},{}],30:[function(require,module,exports){
+},{"./commons":8,"./inputwidget":15,"./svghelper":24,"./widget":27,"./widgets/bigbutton/bigbutton":30,"./widgets/box/box":31,"./widgets/button/button":32,"./widgets/flow/flow":33,"./widgets/grid/grid":34,"./widgets/iconbutton/iconbutton":35,"./widgets/image/image":36,"./widgets/piechart/piechart":37,"./widgets/plain/plain":38,"./widgets/switcher/switcher":39,"./widgets/text/text":40,"./widgets/textbox/textbox":41,"./widgets/viewport/viewport":42,"underscore":60}],30:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window

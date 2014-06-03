@@ -1,0 +1,9 @@
+{
+	"ownerAdminId":-1,
+	"title":"Bob",
+	"description":"Demo user without password",
+	"usesPassword":false,
+	"username":"bob",
+	"locationId": -1,
+	"presetId": -1
+}
