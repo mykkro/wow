@@ -4305,7 +4305,7 @@ var AudioDecorator = Thing.extend({
 
 
 module.exports = AudioDecorator
-},{"./CenteringDecorator":20,"./Empty":23,"./PlayerControls":32,"./Thing":40}],16:[function(require,module,exports){
+},{"./CenteringDecorator":20,"./Empty":23,"./PlayerControls":32,"./Thing":41}],16:[function(require,module,exports){
 var Decorator = require("./Decorator")
 
 var BackgroundDecorator = Decorator.extend({
@@ -4757,7 +4757,7 @@ var BookViewer = Base.extend({
 
 module.exports = BookViewer
 
-},{"./Thing":40,"./Things":41,"basejs":6}],19:[function(require,module,exports){
+},{"./Thing":41,"./Things":42,"basejs":6}],19:[function(require,module,exports){
 var Decorator = require("./Decorator")
 
 // TODO sloucit nejak s rounded decoratorem
@@ -4864,7 +4864,7 @@ var CenteringDecorator = Thing.extend({
 
 module.exports = CenteringDecorator
 
-},{"./Empty":23,"./Thing":40}],21:[function(require,module,exports){
+},{"./Empty":23,"./Thing":41}],21:[function(require,module,exports){
 var RaphaelThing = require("./RaphaelThing")
 
 // TODO kdyz zmenim parametry hodin a ulozim, nepromitne se to do inputu
@@ -5002,7 +5002,7 @@ module.exports = Decorator
 
 
 
-},{"./Empty":23,"./Thing":40}],23:[function(require,module,exports){
+},{"./Empty":23,"./Thing":41}],23:[function(require,module,exports){
 var Thing = require("./Thing")
 
 var Empty = Thing.extend({
@@ -5024,7 +5024,7 @@ var Empty = Thing.extend({
 
 module.exports = Empty
 
-},{"./Thing":40}],24:[function(require,module,exports){
+},{"./Thing":41}],24:[function(require,module,exports){
 var BookViewer = require("./BookViewer")
 
 var ExportBookViewer = BookViewer.extend({
@@ -5313,7 +5313,7 @@ var Html = Thing.extend({
 module.exports = Html
 
 
-},{"./Thing":40}],28:[function(require,module,exports){
+},{"./Thing":41}],28:[function(require,module,exports){
 var Thing = require("./Thing")
 
 var Imager = Thing.extend({
@@ -5376,7 +5376,7 @@ var Imager = Thing.extend({
 
 module.exports = Imager
 
-},{"./Thing":40}],29:[function(require,module,exports){
+},{"./Thing":41}],29:[function(require,module,exports){
 var Decorator = require("./Decorator")
 
 var InsetDecorator = Decorator.extend({
@@ -5441,7 +5441,7 @@ module.exports = Layout
 
 
 
-},{"./Thing":40}],31:[function(require,module,exports){
+},{"./Thing":41}],31:[function(require,module,exports){
 var Decorator = require("./Decorator")
 
 var OpacityDecorator = Decorator.extend({
@@ -5554,7 +5554,7 @@ var PlayerControls = Thing.extend({
 
 module.exports = PlayerControls
 
-},{"./Thing":40}],33:[function(require,module,exports){
+},{"./Thing":41}],33:[function(require,module,exports){
 var Thing = require("./Thing")
 
 var RaphaelThing = Thing.extend({
@@ -5592,7 +5592,7 @@ var RaphaelThing = Thing.extend({
 
 module.exports = RaphaelThing
 
-},{"./Thing":40}],34:[function(require,module,exports){
+},{"./Thing":41}],34:[function(require,module,exports){
 var Thing = require("./Thing")
 var Empty = require("./Empty")
 
@@ -5681,7 +5681,7 @@ var RefDecorator = Thing.extend({
 
 module.exports = RefDecorator
 
-},{"./Empty":23,"./Thing":40}],35:[function(require,module,exports){
+},{"./Empty":23,"./Thing":41}],35:[function(require,module,exports){
 var Thing = require("./Thing")
 
 var RefList = Thing.extend({
@@ -5726,7 +5726,7 @@ var RefList = Thing.extend({
 });
 
 module.exports = RefList
-},{"./Thing":40}],36:[function(require,module,exports){
+},{"./Thing":41}],36:[function(require,module,exports){
 var BorderDecorator = require("./BorderDecorator")
 
 var RoundedDecorator = BorderDecorator.extend({
@@ -5854,6 +5854,74 @@ var Slot = Base.extend({
 module.exports = Slot
 
 },{"basejs":6}],39:[function(require,module,exports){
+var Layout = require("./Layout")
+var Empty = require("./Empty")
+
+// TODO vertical split
+var SplitLayout = Layout.extend({
+    init: function() {
+        this.first = $("<div>");
+        this.second = $("<div>");
+        this.element.append(this.first).append(this.second);
+        this.setSlot('first', new Empty());
+        this.setSlot('second', new Empty());
+    },
+    // options changed...
+    refresh: function() {
+        this.base();
+        var first = this.options.ratio + "%";
+        var gap = this.options.gap + "%";
+        var xx = (this.options.ratio + this.options.gap) + "%";
+        var second = (100 - this.options.ratio - this.options.gap) + "%";
+        if(this.options.horizontal) {
+            this.first.css("left","0px").css("top","0px").css("width",first).css('height','100%');
+            this.second.css("left",xx).css("top","0px").css("width",second).css('height','100%');
+        } else {
+            this.first.css("left","0px").css("top","0px").css("height",first).css('width','100%');
+            this.second.css("left","0px").css("top",xx).css("height",second).css('width','100%');
+        }
+    },
+    setSlot: function(key, value) {
+        // TODO implement hasSlot
+        this.base(key, value);
+        if(key=='first') {
+            this.first.empty().append(value.get());
+        }
+        if(key=='second') {
+            this.second.empty().append(value.get());
+        }
+        return this;
+    },
+    _klass: "split-layout layout thing",
+    _type: "split-layout",
+    _defaults: {
+        ratio: 70, // v %
+        gap: 2, // v %
+        horizontal: false
+    },
+    _schema: {
+       "type":"object",
+       "properties":{
+          "horizontal":{
+             "type":"boolean",
+             "required":true
+          },
+          "ratio":{
+             "type":"integer",
+             "required":true
+          },
+          "gap":{
+             "type":"integer",
+             "required":true
+          }
+       },
+       "additionalProperties":true
+    }
+});
+
+module.exports = SplitLayout
+
+},{"./Empty":23,"./Layout":30}],40:[function(require,module,exports){
 var Html = require("./Html")
 
 var TextThing = Html.extend({
@@ -5925,7 +5993,7 @@ var TextThing = Html.extend({
 
 
 module.exports = TextThing
-},{"./Html":27}],40:[function(require,module,exports){
+},{"./Html":27}],41:[function(require,module,exports){
 var Base = require("basejs")
 
 Array.prototype.toObject = function() {
@@ -6180,7 +6248,7 @@ _Empty = Thing.extend({
 
 module.exports = Thing
 
-},{"basejs":6}],41:[function(require,module,exports){
+},{"basejs":6}],42:[function(require,module,exports){
 var Thing = require("./Thing")
 
 var convertUri = function(uri, baseUri) {
@@ -6207,6 +6275,7 @@ var Things = {
         "ref-list": require("./RefList"),
         "rounded-decorator": require("./RoundedDecorator"),
         "shadow-decorator": require("./ShadowDecorator"),
+        "split-layout": require("./SplitLayout"),
         "text-thing": require("./TextThing"),
         "tubeplayer-thing": require("./TubeplayerThing"),
         "video-thing": require("./VideoThing"),
@@ -6266,7 +6335,7 @@ var Things = {
 
 module.exports = Things
 
-},{"./AudioDecorator":15,"./BackgroundDecorator":16,"./Book":17,"./BorderDecorator":19,"./Clock":21,"./Empty":23,"./GridLayout":25,"./GrowableLayout":26,"./Imager":28,"./InsetDecorator":29,"./Layout":30,"./OpacityDecorator":31,"./RefDecorator":34,"./RefList":35,"./RoundedDecorator":36,"./ShadowDecorator":37,"./TextThing":39,"./Thing":40,"./TubeplayerThing":42,"./VideoThing":43}],42:[function(require,module,exports){
+},{"./AudioDecorator":15,"./BackgroundDecorator":16,"./Book":17,"./BorderDecorator":19,"./Clock":21,"./Empty":23,"./GridLayout":25,"./GrowableLayout":26,"./Imager":28,"./InsetDecorator":29,"./Layout":30,"./OpacityDecorator":31,"./RefDecorator":34,"./RefList":35,"./RoundedDecorator":36,"./ShadowDecorator":37,"./SplitLayout":39,"./TextThing":40,"./Thing":41,"./TubeplayerThing":43,"./VideoThing":44}],43:[function(require,module,exports){
 var Thing = require("./Thing")
 
 $.tubeplayer.defaults.afterReady = function($player) {
@@ -6426,7 +6495,7 @@ var TubeplayerThing = Thing.extend({
 });
 
 module.exports = TubeplayerThing
-},{"./Thing":40}],43:[function(require,module,exports){
+},{"./Thing":41}],44:[function(require,module,exports){
 var Thing = require("./Thing")
 var PlayerControls = require("./PlayerControls")
 var CenteringDecorator = require("./CenteringDecorator")
@@ -6629,7 +6698,7 @@ function draw(v,c) {
 
 module.exports = VideoThing
 
-},{"./CenteringDecorator":20,"./PlayerControls":32,"./Thing":40}],"pagescript":[function(require,module,exports){
+},{"./CenteringDecorator":20,"./PlayerControls":32,"./Thing":41}],"pagescript":[function(require,module,exports){
 module.exports=require('HJD/OK');
 },{}],"HJD/OK":[function(require,module,exports){
 module.exports = function(Wow) {
@@ -6736,4 +6805,4 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/BasePage":1,"../../../js/selectchain":4,"./js/things/ExportBookViewer":24,"./js/things/Things":41,"basejs":6,"path":8,"url":14}]},{},["HJD/OK"])
+},{"../../../js/BasePage":1,"../../../js/selectchain":4,"./js/things/ExportBookViewer":24,"./js/things/Things":42,"basejs":6,"path":8,"url":14}]},{},["HJD/OK"])

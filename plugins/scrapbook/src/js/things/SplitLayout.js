@@ -1,4 +1,5 @@
 var Layout = require("./Layout")
+var Empty = require("./Empty")
 
 // TODO vertical split
 var SplitLayout = Layout.extend({

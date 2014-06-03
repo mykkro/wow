@@ -237,6 +237,8 @@
   $('#allpurpose-dropzone').dropAnything({
       reuseUUID: false,
       accept: '*',
+      // TODO use global upload config
+      maxUploadFilesize: 50000000,
       dropped: function(data) {
         console.log("Dropped!", data)
         switch(data.type) {

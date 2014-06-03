@@ -1,7 +1,7 @@
 var Thing = require("./Thing")
 
 var convertUri = function(uri, baseUri) {
-    // if uri starts with '/' or 'http://', leave it be
+    // TODO if uri starts with '/' or 'http://', leave it be
     // else prepend baseUri
     return baseUri + "/" + uri
 }
@@ -24,6 +24,7 @@ var Things = {
         "ref-list": require("./RefList"),
         "rounded-decorator": require("./RoundedDecorator"),
         "shadow-decorator": require("./ShadowDecorator"),
+        "split-layout": require("./SplitLayout"),
         "text-thing": require("./TextThing"),
         "tubeplayer-thing": require("./TubeplayerThing"),
         "video-thing": require("./VideoThing"),
