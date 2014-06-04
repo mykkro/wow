@@ -210,16 +210,34 @@ module.exports = function(grunt) {
             main: {
                 options: {
                     // TODO how to get this filename by appending version number from package.json?
-                    archive: 'dist/wow-0.9.0.zip'
+                    archive: 'dist/wow-0.9.1.zip'
                 },
                 files: [{
-                    src: ['js/**', 'lib/**', 'locales/**', '!tools/**', 'pages/**', 'public/**', 'plugins/**', 'entities/**', 'routes/**', 'templates/**', 'views/**']
+                    src: [
+                        'addons/dist/**',
+                        'bin/win32/**',
+                        'entity/**',
+                        'js/**', 
+                        'lib/**', 
+                        'locales/**',
+                        'pages/**', 
+                        'public/**',
+                        'plugins/**',
+                        '!plugins/node_modules/**',
+                        '!tools/**',
+                        'routes/**', 
+                        'templates/**', 
+                        'views/**']
                 }, {
-                    src: ['run.bat', 'run7.bat', 'run.js', 'server.js', 'package.json', 'main.js']
-                }, {
-                    src: ['bin/win32/**']
-                }, {
-                    src: ['addons/dist/**']
+                    src: [
+                        'run.bat', 
+                        'run7.bat', 
+                        'run.js', 
+                        'server.js', 
+                        'package.json', 
+                        'main.js',
+                        'wow.js'
+                    ]
                 }, {
                     src: ['node_modules/**',
                         '!node_modules/browserify/**',
@@ -241,6 +259,8 @@ module.exports = function(grunt) {
             files: [
                 "js/**/*.js",
                 "pages/**/*.js",
+                "plugins/src/**/*.js",
+                "plugins/scripts/**/*.js",
                 "!js/vendor/**/*.js",
                 "Gruntfile.js"
             ],
