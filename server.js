@@ -11,7 +11,8 @@ var merge = require("merge")
 var _ = require("lodash")
 
 var cfg = require("./lib/config/server.json")
-var memwatchingEnabled = cfg.memwatching
+var memwatchingEnabled = cfg.devel.memwatching
+var tracingEnabled = cfg.devel.tracing
 
 var express = require('express')
   , app = express()
@@ -99,15 +100,12 @@ var WowServer = {
       dirs.forEach(function(dir) {
         app.use("/pages/"+dir, express.static(__dirname+"/pages/"+dir+"/public"))
       })
-    });
 
-    app.configure('development', function(){
-      app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
-    });
-     
-    app.configure('production', function(){
-      app.use(express.errorHandler()); 
-    });
+	  // error handler middleware...
+	  // NOTE: doesn't work well with express-trace middleware
+      if(!tracingEnabled) app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+
+  });
 
 
     //
@@ -154,6 +152,11 @@ var WowServer = {
       });
     });
 */
+
+	// apply express-trace middleware...
+	if(tracingEnabled) {
+		require('express-trace')(app);
+	}
 
     Storage.init(function() {
       var port = 9999

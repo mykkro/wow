@@ -1,0 +1,300 @@
+  middleware / router
+  1ms
+  middleware / staticMiddleware 1ms
+  middleware / staticMiddleware
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeD3.png in 86
+ms with 304 "Not Modified"
+
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/ServerC3.png in
+102ms with 200 "OK"
+
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeD1.png
+  middleware / query 1ms
+  middleware / expressInit 0ms
+  middleware / favicon 0ms
+  middleware / json 1ms
+  middleware / urlencoded 1ms
+  middleware / limit 0ms
+  middleware / multipart 0ms
+  middleware / cookieParser 1ms
+  middleware / methodOverride 0ms
+  middleware / session 12ms
+  middleware / initialize 0ms
+  middleware / authenticate 92ms
+  middleware / router
+  0ms
+  middleware / staticMiddleware 1ms
+  middleware / staticMiddleware
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeC2.png in 10
+3ms with 304 "Not Modified"
+85ms
+  middleware / router
+  0ms
+  middleware / staticMiddleware 1ms
+  middleware / staticMiddleware
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeD2.png in 95
+ms with 304 "Not Modified"
+81ms
+  middleware / router
+  1ms
+  middleware / staticMiddleware 1ms
+  middleware / staticMiddleware
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/ComputerA1.png i
+n 92ms with 304 "Not Modified"
+54ms
+  middleware / router
+  0ms
+  middleware / staticMiddleware 28ms
+  middleware / router
+  1ms
+  middleware / staticMiddleware 2ms
+  middleware / staticMiddleware 2ms
+  middleware / staticMiddleware
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeB1.png in 67
+ms with 304 "Not Modified"
+
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeD1.png in 54
+ms with 304 "Not Modified"
+
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/Empty.png
+  middleware / query 1ms
+  middleware / expressInit 1ms
+  middleware / favicon 0ms
+  middleware / json 0ms
+  middleware / urlencoded 0ms
+  middleware / limit 1ms
+  middleware / multipart 1ms
+  middleware / cookieParser 1ms
+  middleware / methodOverride 0ms
+  middleware / session 1ms
+  middleware / initialize 0ms
+  middleware / authenticate
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeC4.png
+  middleware / query 0ms
+  middleware / expressInit 0ms
+  middleware / favicon 1ms
+  middleware / json 1ms
+  middleware / urlencoded 0ms
+  middleware / limit 0ms
+  middleware / multipart 1ms
+  middleware / cookieParser 1ms
+  middleware / methodOverride 0ms
+  middleware / session 0ms
+  middleware / initialize 0ms
+  middleware / authenticate
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeD4.png
+  middleware / query 0ms
+  middleware / expressInit 0ms
+  middleware / favicon 0ms
+  middleware / json 1ms
+  middleware / urlencoded 1ms
+  middleware / limit 0ms
+  middleware / multipart 0ms
+  middleware / cookieParser 3ms
+  middleware / methodOverride 0ms
+  middleware / session 0ms
+  middleware / initialize 0ms
+  middleware / authenticate
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeB2.png
+  middleware / query 1ms
+  middleware / expressInit 1ms
+  middleware / favicon 0ms
+  middleware / json 0ms
+  middleware / urlencoded 0ms
+  middleware / limit 0ms
+  middleware / multipart 0ms
+  middleware / cookieParser 1ms
+  middleware / methodOverride 0ms
+  middleware / session 0ms
+  middleware / initialize 0ms
+  middleware / authenticate
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeC3.png
+  middleware / query 1ms
+  middleware / expressInit 1ms
+  middleware / favicon 1ms
+  middleware / json 0ms
+  middleware / urlencoded 0ms
+  middleware / limit 1ms
+  middleware / multipart 1ms
+  middleware / cookieParser 1ms
+  middleware / methodOverride 1ms
+  middleware / session 1ms
+  middleware / initialize 1ms
+  middleware / authenticate
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/ComputerA2.png
+  middleware / query 1ms
+  middleware / expressInit 1ms
+  middleware / favicon 0ms
+  middleware / json 0ms
+  middleware / urlencoded 0ms
+  middleware / limit 1ms
+  middleware / multipart 0ms
+  middleware / cookieParser 1ms
+  middleware / methodOverride 0ms
+  middleware / session 0ms
+  middleware / initialize 0ms
+  middleware / authenticate 73ms
+  middleware / router
+  0ms
+  middleware / staticMiddleware 1ms
+  middleware / staticMiddleware
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeC4.png in 86
+ms with 304 "Not Modified"
+89ms
+  middleware / router
+  0ms
+  middleware / staticMiddleware
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/ComputerA3.png
+  middleware / query 0ms
+  middleware / expressInit 0ms
+  middleware / favicon 0ms
+  middleware / json 1ms
+  middleware / urlencoded 0ms
+  middleware / limit 1ms
+  middleware / multipart 0ms
+  middleware / cookieParser 1ms
+  middleware / methodOverride 1ms
+  middleware / session 1ms
+  middleware / initialize 1ms
+  middleware / authenticate 9ms
+  middleware / staticMiddleware 75ms
+  middleware / router
+  0ms
+  middleware / staticMiddleware
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/Empty.png in 114
+ms with 304 "Not Modified"
+2ms
+  middleware / staticMiddleware 66ms
+  middleware / router
+  0ms
+  middleware / staticMiddleware
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeD4.png in 92
+ms with 304 "Not Modified"
+
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/ServerC4.png
+  middleware / query 0ms
+  middleware / expressInit 1ms
+  middleware / favicon 0ms
+  middleware / json 1ms
+  middleware / urlencoded 0ms
+  middleware / limit 1ms
+  middleware / multipart 0ms
+  middleware / cookieParser 0ms
+  middleware / methodOverride 1ms
+  middleware / session 1ms
+  middleware / initialize 0ms
+  middleware / authenticate 9ms
+  middleware / staticMiddleware
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeD3.png
+  middleware / query 1ms
+  middleware / expressInit 0ms
+  middleware / favicon 0ms
+  middleware / json 1ms
+  middleware / urlencoded 0ms
+  middleware / limit 1ms
+  middleware / multipart 0ms
+  middleware / cookieParser 1ms
+  middleware / methodOverride 0ms
+  middleware / session 1ms
+  middleware / initialize 1ms
+  middleware / authenticate 75ms
+  middleware / router
+  0ms
+  middleware / staticMiddleware
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeB2.png in 10
+0ms with 304 "Not Modified"
+2ms
+  middleware / staticMiddleware
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeC2.png
+  middleware / query 1ms
+  middleware / expressInit 1ms
+  middleware / favicon 0ms
+  middleware / json 1ms
+  middleware / urlencoded 1ms
+  middleware / limit 1ms
+  middleware / multipart 0ms
+  middleware / cookieParser 1ms
+  middleware / methodOverride 0ms
+  middleware / session 0ms
+  middleware / initialize 1ms
+  middleware / authenticate
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeC3.png in 98
+ms with 304 "Not Modified"
+79ms
+  middleware / router
+  0ms
+  middleware / staticMiddleware
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeD2.png
+  middleware / query 0ms
+  middleware / expressInit 1ms
+  middleware / favicon 0ms
+  middleware / json 1ms
+  middleware / urlencoded 0ms
+  middleware / limit 1ms
+  middleware / multipart 0ms
+  middleware / cookieParser 1ms
+  middleware / methodOverride 0ms
+  middleware / session 0ms
+  middleware / initialize 0ms
+  middleware / authenticate 9ms
+  middleware / staticMiddleware
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/ComputerA2.png i
+n 99ms with 304 "Not Modified"
+
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/ComputerA1.png
+  middleware / query 0ms
+  middleware / expressInit 1ms
+  middleware / favicon 0ms
+  middleware / json 1ms
+  middleware / urlencoded 0ms
+  middleware / limit 1ms
+  middleware / multipart 1ms
+  middleware / cookieParser 1ms
+  middleware / methodOverride 0ms
+  middleware / session 1ms
+  middleware / initialize 0ms
+  middleware / authenticate 105ms
+  middleware / router
+  0ms
+  middleware / staticMiddleware 1ms
+  middleware / staticMiddleware
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/ComputerA3.png i
+n 117ms with 304 "Not Modified"
+96ms
+  middleware / router
+  1ms
+  middleware / staticMiddleware
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeB1.png
+  middleware / query 0ms
+  middleware / expressInit 1ms
+  middleware / favicon 1ms
+  middleware / json 1ms
+  middleware / urlencoded 0ms
+  middleware / limit 0ms
+  middleware / multipart 0ms
+  middleware / cookieParser 0ms
+  middleware / methodOverride 1ms
+  middleware / session 0ms
+  middleware / initialize 0ms
+  middleware / authenticate 10ms
+  middleware / staticMiddleware 99ms
+  middleware / router
+  0ms
+  middleware / staticMiddleware 1ms
+  middleware / staticMiddleware
+  responded to GET /6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeD3.png in 10
+9ms with 304 "Not Modified"
+
+  GET /imports/6094085b-f716-4874-82fa-a5d3be339136/pieces/PipeD1.png
+  middleware / query 0ms
+  middleware / expressInit 0ms
+  middleware / favicon 1ms
+  middleware / json 0ms
+  middleware / urlencoded 0ms
+  middleware / limit 1ms
+  middleware / multipart 1ms
+  middleware / cookieParser 0ms
+  middleware / methodOverride 0ms
+  middleware / session 1ms
+  middleware / initialize 0ms
+  middleware / authenticate

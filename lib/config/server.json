@@ -1,3 +1,6 @@
 {
-	"memwatching": true
+	"devel": {
+		"memwatching": false,
+		"tracing": false
+	}
 }

@@ -92,7 +92,8 @@
     "mustache-express": "1.0.1",
     "hogan-express": "0.5.2",
     "express-namespace": "0.1.1",
-    "memwatch": "~0.2.2"
+    "memwatch": "~0.2.2",
+    "express-trace": "0.0.3"
   },
   "repository": {
     "type": "git",
