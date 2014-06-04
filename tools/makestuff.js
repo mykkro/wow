@@ -19,6 +19,7 @@ var entities = {}
 var _ = require("lodash")
 var API = require("../lib/api/API")
 var Q = require("q")
+var Storage = require("../lib/Storage")
 
 _.each(fixtures, function(f) {
 	f.data = require("./fixtures/"+f.type+"/"+f.file)
@@ -95,15 +96,15 @@ var doInstall = function(next) {
 	})
 }
 
-
-doInstall(function(err, data) {
-	if(err) {
-		console.error("Error during installation!")
-		console.error(err)
-	} else {
-		console.log("Installation successful!")
-	}
+Storage.init(function() {
+	doInstall(function(err, data) {
+		if(err) {
+			console.error("Error during installation!")
+			console.error(err)
+		} else {
+			console.log("Installation successful!")
+		}
+	})
 })
-
 
 

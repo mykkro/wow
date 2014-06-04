@@ -34,7 +34,7 @@ var BasePage = BasicLayer.extend({
     },
     updateBrowserQuery: function(changes) {
         var parsedUrl = url.parse(window.location.href, true)
-        for(key in changes) {
+        for (key in changes) {
             parsedUrl.query[key] = changes[key]
         }
         parsedUrl.search = null
@@ -89,7 +89,7 @@ var BasePage = BasicLayer.extend({
         this.goTo("/plugins/homepage")
     },
     goToVideoPage: function(ytId) {
-        this.goTo("/plugons/youtubevideo?id=" + ytId)
+        this.goTo("/plugins/youtubevideo?id=" + ytId)
     },
     handleEvent: function(evt) {
         for (var i = this.overlays.length - 1; i >= 0; i--) {
@@ -11186,6 +11186,22 @@ if (typeof ReturnValue !== "undefined") {
     };
 }
 
+// Until V8 3.19 / Chromium 29 is released, SpiderMonkey is the only
+// engine that has a deployed base of browsers that support generators.
+// However, SM's generators use the Python-inspired semantics of
+// outdated ES6 drafts.  We would like to support ES6, but we'd also
+// like to make it possible to use generators in deployed browsers, so
+// we also support Python-style generators.  At some point we can remove
+// this block.
+var hasES6Generators;
+try {
+    /* jshint evil: true, nonew: false */
+    new Function("(function* (){ yield 1; })");
+    hasES6Generators = true;
+} catch (e) {
+    hasES6Generators = false;
+}
+
 // long stack traces
 
 var STACK_JUMP_SEPARATOR = "From previous event:";
@@ -11486,7 +11502,6 @@ defer.prototype.makeNodeResolver = function () {
  * @returns a promise that may be resolved with the given resolve and reject
  * functions, or rejected by a thrown exception in resolver
  */
-Q.Promise = promise; // ES6
 Q.promise = promise;
 function promise(resolver) {
     if (typeof resolver !== "function") {
@@ -11500,11 +11515,6 @@ function promise(resolver) {
     }
     return deferred.promise;
 }
-
-promise.race = race; // ES6
-promise.all = all; // ES6
-promise.reject = reject; // ES6
-promise.resolve = Q; // ES6
 
 // XXX experimental.  This method is a way to denote that a local value is
 // serializable and should be immediately dispatched to a remote upon request,
@@ -11830,14 +11840,42 @@ Promise.prototype.isRejected = function () {
 // shimmed environments, this would naturally be a `Set`.
 var unhandledReasons = [];
 var unhandledRejections = [];
+var unhandledReasonsDisplayed = false;
 var trackUnhandledRejections = true;
+function displayUnhandledReasons() {
+    if (
+        !unhandledReasonsDisplayed &&
+        typeof window !== "undefined" &&
+        window.console
+    ) {
+        console.warn("[Q] Unhandled rejection reasons (should be empty):",
+                     unhandledReasons);
+    }
+
+    unhandledReasonsDisplayed = true;
+}
+
+function logUnhandledReasons() {
+    for (var i = 0; i < unhandledReasons.length; i++) {
+        var reason = unhandledReasons[i];
+        console.warn("Unhandled rejection reason:", reason);
+    }
+}
 
 function resetUnhandledRejections() {
     unhandledReasons.length = 0;
     unhandledRejections.length = 0;
+    unhandledReasonsDisplayed = false;
 
     if (!trackUnhandledRejections) {
         trackUnhandledRejections = true;
+
+        // Show unhandled rejection reasons if Node exits without handling an
+        // outstanding rejection.  (Note that Browserify presently produces a
+        // `process` global without the `EventEmitter` `on` method.)
+        if (typeof process !== "undefined" && process.on) {
+            process.on("exit", logUnhandledReasons);
+        }
     }
 }
 
@@ -11852,6 +11890,7 @@ function trackRejection(promise, reason) {
     } else {
         unhandledReasons.push("(no stack) " + reason);
     }
+    displayUnhandledReasons();
 }
 
 function untrackRejection(promise) {
@@ -11875,6 +11914,9 @@ Q.getUnhandledReasons = function () {
 
 Q.stopUnhandledRejectionTracking = function () {
     resetUnhandledRejections();
+    if (typeof process !== "undefined" && process.on) {
+        process.removeListener("exit", logUnhandledReasons);
+    }
     trackUnhandledRejections = false;
 };
 
@@ -12038,17 +12080,7 @@ function async(makeGenerator) {
         // when verb is "throw", arg is an exception
         function continuer(verb, arg) {
             var result;
-
-            // Until V8 3.19 / Chromium 29 is released, SpiderMonkey is the only
-            // engine that has a deployed base of browsers that support generators.
-            // However, SM's generators use the Python-inspired semantics of
-            // outdated ES6 drafts.  We would like to support ES6, but we'd also
-            // like to make it possible to use generators in deployed browsers, so
-            // we also support Python-style generators.  At some point we can remove
-            // this block.
-
-            if (typeof StopIteration === "undefined") {
-                // ES6 Generators
+            if (hasES6Generators) {
                 try {
                     result = generator[verb](arg);
                 } catch (exception) {
@@ -12060,7 +12092,6 @@ function async(makeGenerator) {
                     return when(result.value, callback, errback);
                 }
             } else {
-                // SpiderMonkey Generators
                 // FIXME: Remove this case when SM does ES6 generators.
                 try {
                     result = generator[verb](arg);
@@ -12765,8 +12796,8 @@ return Q;
 
 });
 
-}).call(this,require("FWaASH"))
-},{"FWaASH":18}],13:[function(require,module,exports){
+}).call(this,require("Zbi7gb"))
+},{"Zbi7gb":18}],13:[function(require,module,exports){
 // Generated by CoffeeScript 1.6.3
 (function() {
   var $, EventEmitter, Overlay, Q, _ref,
@@ -14660,8 +14691,8 @@ return Q;
 
 });
 
-}).call(this,require("FWaASH"))
-},{"FWaASH":18}],15:[function(require,module,exports){
+}).call(this,require("Zbi7gb"))
+},{"Zbi7gb":18}],15:[function(require,module,exports){
 (function (process){
 // vim:ts=4:sts=4:sw=4:
 /*!
@@ -16601,8 +16632,8 @@ return Q;
 
 });
 
-}).call(this,require("FWaASH"))
-},{"FWaASH":18}],16:[function(require,module,exports){
+}).call(this,require("Zbi7gb"))
+},{"Zbi7gb":18}],16:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -19650,8 +19681,8 @@ function isNullOrUndefined(arg) {
 }
 
 },{"punycode":19,"querystring":22}],"pagescript":[function(require,module,exports){
-module.exports=require('HJD/OK');
-},{}],"HJD/OK":[function(require,module,exports){
+module.exports=require('Bkkh3s');
+},{}],"Bkkh3s":[function(require,module,exports){
 module.exports = function(Wow) {
     var window = Wow.window
     var $ = Wow.$
@@ -19820,4 +19851,4 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/BasePage":1,"../../../js/dialogs":3,"../../../js/selectchain":5,"../../../js/timeinfo":7,"basejs":8}]},{},["HJD/OK"])
+},{"../../../js/BasePage":1,"../../../js/dialogs":3,"../../../js/selectchain":5,"../../../js/timeinfo":7,"basejs":8}]},{},["Bkkh3s"])

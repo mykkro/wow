@@ -1,6 +1,6 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"BasePage":[function(require,module,exports){
-module.exports=require('OdyuDH');
-},{}],"OdyuDH":[function(require,module,exports){
+module.exports=require('SkL0EX');
+},{}],"SkL0EX":[function(require,module,exports){
 var Base = require("basejs")
 var url = require("url")
 
@@ -127,8 +127,8 @@ var BasePage = BasicLayer.extend({
 module.exports = BasePage
 
 },{"./basiclayer":5,"./softwarekeyboard":23,"basejs":43,"url":54}],"Logger":[function(require,module,exports){
-module.exports=require('+1Q85x');
-},{}],"+1Q85x":[function(require,module,exports){
+module.exports=require('cPGetY');
+},{}],"cPGetY":[function(require,module,exports){
 var Base = require("basejs")
 
 var Logger = Base.extend({
@@ -1222,7 +1222,9 @@ var Commons = {
 
 module.exports = Commons
 
-},{}],"6UU4cM":[function(require,module,exports){
+},{}],"dialogs":[function(require,module,exports){
+module.exports=require('6TXIEB');
+},{}],"6TXIEB":[function(require,module,exports){
 var Dialog = require('modal-dialog');
 
 Dialog.styles = false
@@ -1264,11 +1266,7 @@ module.exports = function($, i18n) {
 
 }
 
-},{"modal-dialog":56}],"dialogs":[function(require,module,exports){
-module.exports=require('6UU4cM');
-},{}],"eventtarget":[function(require,module,exports){
-module.exports=require('5268ka');
-},{}],"5268ka":[function(require,module,exports){
+},{"modal-dialog":56}],"icOSU7":[function(require,module,exports){
 //Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
 //Modified by Myrousz 2014
 //MIT License
@@ -1329,15 +1327,19 @@ var EventTarget = Base.extend({
 
 module.exports = EventTarget
 
-},{"basejs":43}],"XDzyYX":[function(require,module,exports){
+},{"basejs":43}],"eventtarget":[function(require,module,exports){
+module.exports=require('icOSU7');
+},{}],"i18n":[function(require,module,exports){
+module.exports=require('ndk4C1');
+},{}],"ndk4C1":[function(require,module,exports){
 (function (Buffer){
 // to be used as constructor
 
 var path = require("path")
 var locdata = {
-    cz: JSON.parse(Buffer("ewoJCn0=","base64")),
-    de: JSON.parse(Buffer("ewoJIkhlbGxvISI6ICJHdXRlbiBUYWchIiwKCSJhZnRlcm5vb24iOiAibmFjaG1pdHRhZyIsCgkibWlkZGF5IjogIm1pdHRhZyIsCgkiVGhpcyB3aWxsIHF1aXQgdGhlIGFwcGxpY2F0aW9uLiBBcmUgeW91IHN1cmU/IjogIkJlZW5kZW4/IiwKCSJtb3JuaW5nIjogInZvcm1pdHRhZyIsCgkiZHluYW1pYyBzdHJpbmciOiAiZHluYW1pYyBzdHJpbmciLAoJIkV4aXQiOiAiQmVlbmRlbiIsCgkiQXJlIHlvdSBzdXJlPyI6ICJTaW5kIFNpZSBzaWNoZXI/IiwKCSJZZXMiOiAiSmEiLAoJIk5vIjogIk5laW4iLAoJIlJlbW92ZSI6ICJMw7ZzY2hlbiIsCgkiUmVtb3ZlIHRoaXMgaXRlbT8iOiAiTMO2c2NoZW4/IiwKCSJUb2RheSdzIHdlYXRoZXIiOiAiSGV1dGlnZXMgV2V0dGVyIiwKCSJUb2RheSBpcyI6IkhldXRlIGlzdCIsCgkieWVhciI6IkphaHIiLAoJIlJhZGlvIjoiUmFkaW8iLAoJIkFwcHMiOiJBcHBzIiwKCSJFbnRlcnRhaW5tZW50IjoiVW50ZXJoYWx0dW5nIiwKCSJWaWRlb3MiOiJWaWRlb3MiCQp9","base64")),
-    en: JSON.parse(Buffer("ewoJIkhlbGxvISI6ICJIZWxsbyEiLAoJImFmdGVybm9vbiI6ICJhZnRlcm5vb24iLAoJIm1pZGRheSI6ICJtaWRkYXkiLAoJIm1vcm5pbmciOiAibW9ybmluZyIsCgkiVGhpcyB3aWxsIHF1aXQgdGhlIGFwcGxpY2F0aW9uLiBBcmUgeW91IHN1cmU/IjogIlRoaXMgd2lsbCBxdWl0IHRoZSBhcHBsaWNhdGlvbi4gQXJlIHlvdSBzdXJlPyIsCgkiRXhpdCI6ICJFeGl0IiwKCSJBcmUgeW91IHN1cmU/IjogIkFyZSB5b3Ugc3VyZT8iLAoJIlllcyI6ICJZZXMiLAoJIk5vIjogIk5vIiwKCSJSZW1vdmUiOiAiUmVtb3ZlIiwKCSJSZW1vdmUgdGhpcyBpdGVtPyI6ICJSZW1vdmUgdGhpcyBpdGVtPyIsCgkiVG9kYXkncyB3ZWF0aGVyIjogIlRvZGF5J3Mgd2VhdGhlciIsCgkiVG9kYXkgaXMiOiJUb2RheSBpcyIsCgkieWVhciI6InllYXIiLAoJIlJhZGlvIjoiUmFkaW8iLAoJIkFwcHMiOiJBcHBzIiwKCSJFbnRlcnRhaW5tZW50IjoiRW50ZXJ0YWlubWVudCIsCgkiVmlkZW9zIjoiVmlkZW9zIgp9","base64"))
+    cz: JSON.parse(Buffer("ew0KCQ0KfQ==","base64")),
+    de: JSON.parse(Buffer("ew0KCSJIZWxsbyEiOiAiR3V0ZW4gVGFnISIsDQoJImFmdGVybm9vbiI6ICJuYWNobWl0dGFnIiwNCgkibWlkZGF5IjogIm1pdHRhZyIsDQoJIlRoaXMgd2lsbCBxdWl0IHRoZSBhcHBsaWNhdGlvbi4gQXJlIHlvdSBzdXJlPyI6ICJCZWVuZGVuPyIsDQoJIm1vcm5pbmciOiAidm9ybWl0dGFnIiwNCgkiZHluYW1pYyBzdHJpbmciOiAiZHluYW1pYyBzdHJpbmciLA0KCSJFeGl0IjogIkJlZW5kZW4iLA0KCSJBcmUgeW91IHN1cmU/IjogIlNpbmQgU2llIHNpY2hlcj8iLA0KCSJZZXMiOiAiSmEiLA0KCSJObyI6ICJOZWluIiwNCgkiUmVtb3ZlIjogIkzDtnNjaGVuIiwNCgkiUmVtb3ZlIHRoaXMgaXRlbT8iOiAiTMO2c2NoZW4/IiwNCgkiVG9kYXkncyB3ZWF0aGVyIjogIkhldXRpZ2VzIFdldHRlciIsDQoJIlRvZGF5IGlzIjoiSGV1dGUgaXN0IiwNCgkieWVhciI6IkphaHIiLA0KCSJSYWRpbyI6IlJhZGlvIiwNCgkiQXBwcyI6IkFwcHMiLA0KCSJFbnRlcnRhaW5tZW50IjoiVW50ZXJoYWx0dW5nIiwNCgkiVmlkZW9zIjoiVmlkZW9zIgkNCn0=","base64")),
+    en: JSON.parse(Buffer("ew0KCSJIZWxsbyEiOiAiSGVsbG8hIiwNCgkiYWZ0ZXJub29uIjogImFmdGVybm9vbiIsDQoJIm1pZGRheSI6ICJtaWRkYXkiLA0KCSJtb3JuaW5nIjogIm1vcm5pbmciLA0KCSJUaGlzIHdpbGwgcXVpdCB0aGUgYXBwbGljYXRpb24uIEFyZSB5b3Ugc3VyZT8iOiAiVGhpcyB3aWxsIHF1aXQgdGhlIGFwcGxpY2F0aW9uLiBBcmUgeW91IHN1cmU/IiwNCgkiRXhpdCI6ICJFeGl0IiwNCgkiQXJlIHlvdSBzdXJlPyI6ICJBcmUgeW91IHN1cmU/IiwNCgkiWWVzIjogIlllcyIsDQoJIk5vIjogIk5vIiwNCgkiUmVtb3ZlIjogIlJlbW92ZSIsDQoJIlJlbW92ZSB0aGlzIGl0ZW0/IjogIlJlbW92ZSB0aGlzIGl0ZW0/IiwNCgkiVG9kYXkncyB3ZWF0aGVyIjogIlRvZGF5J3Mgd2VhdGhlciIsDQoJIlRvZGF5IGlzIjoiVG9kYXkgaXMiLA0KCSJ5ZWFyIjoieWVhciIsDQoJIlJhZGlvIjoiUmFkaW8iLA0KCSJBcHBzIjoiQXBwcyIsDQoJIkVudGVydGFpbm1lbnQiOiJFbnRlcnRhaW5tZW50IiwNCgkiVmlkZW9zIjoiVmlkZW9zIg0KfQ==","base64"))
 }
 
 var i18n = function(data) {
@@ -1353,9 +1355,7 @@ var i18n = function(data) {
 module.exports = i18n
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":44,"path":48}],"i18n":[function(require,module,exports){
-module.exports=require('XDzyYX');
-},{}],15:[function(require,module,exports){
+},{"buffer":44,"path":48}],15:[function(require,module,exports){
 module.exports = function($) {
     var Widget = require("./widget")($)
 
@@ -1397,8 +1397,8 @@ module.exports = function($) {
 }
 
 },{"./widget":27}],"mygamepad":[function(require,module,exports){
-module.exports=require('zaL12s');
-},{}],"zaL12s":[function(require,module,exports){
+module.exports=require('Ta/IfP');
+},{}],"Ta/IfP":[function(require,module,exports){
 module.exports = function(window, $, Gamepad) {
 
     var EventTarget = require("./eventtarget")
@@ -1460,7 +1460,7 @@ module.exports = function(window, $, Gamepad) {
     return MyGamepad
 }
 
-},{"./eventtarget":"5268ka"}],18:[function(require,module,exports){
+},{"./eventtarget":"icOSU7"}],18:[function(require,module,exports){
 var BasicLayer = require("./basiclayer")
 
 var Overlay = BasicLayer.extend({
@@ -1493,7 +1493,7 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./basiclayer":5}],"PuqguM":[function(require,module,exports){
+},{"./basiclayer":5}],"BurxMb":[function(require,module,exports){
 var url = require('url')
 var path = require('path')
 
@@ -1515,7 +1515,7 @@ module.exports = function(window) {
 }
 
 },{"path":48,"url":54}],"pageinfo":[function(require,module,exports){
-module.exports=require('PuqguM');
+module.exports=require('BurxMb');
 },{}],21:[function(require,module,exports){
 module.exports = function(window) {
     var document = window.document
@@ -2555,8 +2555,8 @@ var SvgHelper = function(window) {
 module.exports = SvgHelper
 
 },{}],"virtualcontrol":[function(require,module,exports){
-module.exports=require('pQhYqx');
-},{}],"pQhYqx":[function(require,module,exports){
+module.exports=require('fxGQXx');
+},{}],"fxGQXx":[function(require,module,exports){
 var EventTarget = require("eventtarget")
 
 // virtual control device
@@ -2587,7 +2587,7 @@ var VirtualControl = EventTarget.extend({
 
 module.exports = VirtualControl
 
-},{"eventtarget":"5268ka"}],27:[function(require,module,exports){
+},{"eventtarget":"icOSU7"}],27:[function(require,module,exports){
 var Base = require("basejs")
 
 module.exports = function($) {
@@ -2645,9 +2645,7 @@ module.exports = function($) {
     return Widget
 }
 
-},{"basejs":43}],"widgetizer":[function(require,module,exports){
-module.exports=require('kUKyBR');
-},{}],"kUKyBR":[function(require,module,exports){
+},{"basejs":43}],"mv7hKD":[function(require,module,exports){
 // create a browserified version of widgetizer:
 //  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
 module.exports = function(window, $, SVG) {
@@ -2980,7 +2978,9 @@ module.exports = function(window, $, SVG) {
     return Widgetizer
 }
 
-},{"./commons":8,"./inputwidget":15,"./svghelper":24,"./widget":27,"./widgets/bigbutton/bigbutton":30,"./widgets/box/box":31,"./widgets/button/button":32,"./widgets/flow/flow":33,"./widgets/grid/grid":34,"./widgets/iconbutton/iconbutton":35,"./widgets/image/image":36,"./widgets/piechart/piechart":37,"./widgets/plain/plain":38,"./widgets/switcher/switcher":39,"./widgets/text/text":40,"./widgets/textbox/textbox":41,"./widgets/viewport/viewport":42,"underscore":62}],30:[function(require,module,exports){
+},{"./commons":8,"./inputwidget":15,"./svghelper":24,"./widget":27,"./widgets/bigbutton/bigbutton":30,"./widgets/box/box":31,"./widgets/button/button":32,"./widgets/flow/flow":33,"./widgets/grid/grid":34,"./widgets/iconbutton/iconbutton":35,"./widgets/image/image":36,"./widgets/piechart/piechart":37,"./widgets/plain/plain":38,"./widgets/switcher/switcher":39,"./widgets/text/text":40,"./widgets/textbox/textbox":41,"./widgets/viewport/viewport":42,"underscore":62}],"widgetizer":[function(require,module,exports){
+module.exports=require('mv7hKD');
+},{}],30:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -5951,8 +5951,8 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-}).call(this,require("FWaASH"))
-},{"FWaASH":49}],49:[function(require,module,exports){
+}).call(this,require("Zbi7gb"))
+},{"Zbi7gb":49}],49:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -16985,7 +16985,7 @@ return jQuery;
   Q = require('q');
 
   try {
-    $ = require('jquery');
+    $ = (window.$);
   } catch (_error) {
     err = _error;
     $ = window.jQuery;
@@ -17018,7 +17018,7 @@ return jQuery;
 
 }).call(this);
 
-},{"jquery":55,"q":58}],58:[function(require,module,exports){
+},{"q":58}],58:[function(require,module,exports){
 (function (process){
 // vim:ts=4:sts=4:sw=4:
 /*!
@@ -17346,6 +17346,22 @@ if (typeof ReturnValue !== "undefined") {
     };
 }
 
+// Until V8 3.19 / Chromium 29 is released, SpiderMonkey is the only
+// engine that has a deployed base of browsers that support generators.
+// However, SM's generators use the Python-inspired semantics of
+// outdated ES6 drafts.  We would like to support ES6, but we'd also
+// like to make it possible to use generators in deployed browsers, so
+// we also support Python-style generators.  At some point we can remove
+// this block.
+var hasES6Generators;
+try {
+    /* jshint evil: true, nonew: false */
+    new Function("(function* (){ yield 1; })");
+    hasES6Generators = true;
+} catch (e) {
+    hasES6Generators = false;
+}
+
 // long stack traces
 
 var STACK_JUMP_SEPARATOR = "From previous event:";
@@ -17646,7 +17662,6 @@ defer.prototype.makeNodeResolver = function () {
  * @returns a promise that may be resolved with the given resolve and reject
  * functions, or rejected by a thrown exception in resolver
  */
-Q.Promise = promise; // ES6
 Q.promise = promise;
 function promise(resolver) {
     if (typeof resolver !== "function") {
@@ -17660,11 +17675,6 @@ function promise(resolver) {
     }
     return deferred.promise;
 }
-
-promise.race = race; // ES6
-promise.all = all; // ES6
-promise.reject = reject; // ES6
-promise.resolve = Q; // ES6
 
 // XXX experimental.  This method is a way to denote that a local value is
 // serializable and should be immediately dispatched to a remote upon request,
@@ -17990,14 +18000,42 @@ Promise.prototype.isRejected = function () {
 // shimmed environments, this would naturally be a `Set`.
 var unhandledReasons = [];
 var unhandledRejections = [];
+var unhandledReasonsDisplayed = false;
 var trackUnhandledRejections = true;
+function displayUnhandledReasons() {
+    if (
+        !unhandledReasonsDisplayed &&
+        typeof window !== "undefined" &&
+        window.console
+    ) {
+        console.warn("[Q] Unhandled rejection reasons (should be empty):",
+                     unhandledReasons);
+    }
+
+    unhandledReasonsDisplayed = true;
+}
+
+function logUnhandledReasons() {
+    for (var i = 0; i < unhandledReasons.length; i++) {
+        var reason = unhandledReasons[i];
+        console.warn("Unhandled rejection reason:", reason);
+    }
+}
 
 function resetUnhandledRejections() {
     unhandledReasons.length = 0;
     unhandledRejections.length = 0;
+    unhandledReasonsDisplayed = false;
 
     if (!trackUnhandledRejections) {
         trackUnhandledRejections = true;
+
+        // Show unhandled rejection reasons if Node exits without handling an
+        // outstanding rejection.  (Note that Browserify presently produces a
+        // `process` global without the `EventEmitter` `on` method.)
+        if (typeof process !== "undefined" && process.on) {
+            process.on("exit", logUnhandledReasons);
+        }
     }
 }
 
@@ -18012,6 +18050,7 @@ function trackRejection(promise, reason) {
     } else {
         unhandledReasons.push("(no stack) " + reason);
     }
+    displayUnhandledReasons();
 }
 
 function untrackRejection(promise) {
@@ -18035,6 +18074,9 @@ Q.getUnhandledReasons = function () {
 
 Q.stopUnhandledRejectionTracking = function () {
     resetUnhandledRejections();
+    if (typeof process !== "undefined" && process.on) {
+        process.removeListener("exit", logUnhandledReasons);
+    }
     trackUnhandledRejections = false;
 };
 
@@ -18198,17 +18240,7 @@ function async(makeGenerator) {
         // when verb is "throw", arg is an exception
         function continuer(verb, arg) {
             var result;
-
-            // Until V8 3.19 / Chromium 29 is released, SpiderMonkey is the only
-            // engine that has a deployed base of browsers that support generators.
-            // However, SM's generators use the Python-inspired semantics of
-            // outdated ES6 drafts.  We would like to support ES6, but we'd also
-            // like to make it possible to use generators in deployed browsers, so
-            // we also support Python-style generators.  At some point we can remove
-            // this block.
-
-            if (typeof StopIteration === "undefined") {
-                // ES6 Generators
+            if (hasES6Generators) {
                 try {
                     result = generator[verb](arg);
                 } catch (exception) {
@@ -18220,7 +18252,6 @@ function async(makeGenerator) {
                     return when(result.value, callback, errback);
                 }
             } else {
-                // SpiderMonkey Generators
                 // FIXME: Remove this case when SM does ES6 generators.
                 try {
                     result = generator[verb](arg);
@@ -18925,15 +18956,15 @@ return Q;
 
 });
 
-}).call(this,require("FWaASH"))
-},{"FWaASH":49}],59:[function(require,module,exports){
+}).call(this,require("Zbi7gb"))
+},{"Zbi7gb":49}],59:[function(require,module,exports){
 // Generated by CoffeeScript 1.6.3
 (function() {
   var $, EventEmitter, Overlay, Q, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  $ = window.jQuery || require('jquery');
+  $ = window.jQuery || (window.$);
 
   Q = require('q');
 
@@ -19066,7 +19097,7 @@ return Q;
 
 }).call(this);
 
-},{"events":47,"jquery":55,"q":60}],60:[function(require,module,exports){
+},{"events":47,"q":60}],60:[function(require,module,exports){
 (function (process){
 // vim:ts=4:sts=4:sw=4:
 /*!
@@ -20820,8 +20851,8 @@ return Q;
 
 });
 
-}).call(this,require("FWaASH"))
-},{"FWaASH":49}],61:[function(require,module,exports){
+}).call(this,require("Zbi7gb"))
+},{"Zbi7gb":49}],61:[function(require,module,exports){
 (function (process){
 // vim:ts=4:sts=4:sw=4:
 /*!
@@ -22761,8 +22792,8 @@ return Q;
 
 });
 
-}).call(this,require("FWaASH"))
-},{"FWaASH":49}],62:[function(require,module,exports){
+}).call(this,require("Zbi7gb"))
+},{"Zbi7gb":49}],62:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -24040,4 +24071,4 @@ return Q;
 
 }).call(this);
 
-},{}]},{},["kUKyBR","XDzyYX","PuqguM","6UU4cM","zaL12s","OdyuDH","+1Q85x","5268ka","pQhYqx"])
+},{}]},{},["mv7hKD","ndk4C1","BurxMb","6TXIEB","Ta/IfP","SkL0EX","cPGetY","icOSU7","fxGQXx"])

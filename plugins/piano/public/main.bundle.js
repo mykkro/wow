@@ -34,7 +34,7 @@ var BasePage = BasicLayer.extend({
     },
     updateBrowserQuery: function(changes) {
         var parsedUrl = url.parse(window.location.href, true)
-        for(key in changes) {
+        for (key in changes) {
             parsedUrl.query[key] = changes[key]
         }
         parsedUrl.search = null
@@ -89,7 +89,7 @@ var BasePage = BasicLayer.extend({
         this.goTo("/plugins/homepage")
     },
     goToVideoPage: function(ytId) {
-        this.goTo("/plugons/youtubevideo?id=" + ytId)
+        this.goTo("/plugins/youtubevideo?id=" + ytId)
     },
     handleEvent: function(evt) {
         for (var i = this.overlays.length - 1; i >= 0; i--) {
@@ -3870,8 +3870,8 @@ function isNullOrUndefined(arg) {
 }
 
 },{"punycode":8,"querystring":11}],"pagescript":[function(require,module,exports){
-module.exports=require('HJD/OK');
-},{}],"HJD/OK":[function(require,module,exports){
+module.exports=require('Bkkh3s');
+},{}],"Bkkh3s":[function(require,module,exports){
 module.exports = function(Wow) {
     var window = Wow.window
     var $ = Wow.$
@@ -3927,7 +3927,7 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/BasePage":1,"../../../js/selectchain":4,"basejs":6}]},{},["HJD/OK"]);var Synth, AudioSynth, AudioSynthInstrument;
+},{"../../../js/BasePage":1,"../../../js/selectchain":4,"basejs":6}]},{},["Bkkh3s"]);var Synth, AudioSynth, AudioSynthInstrument;
 !function(){
 
 	var URL = window.URL || window.webkitURL;

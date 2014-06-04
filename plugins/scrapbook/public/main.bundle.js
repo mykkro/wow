@@ -11174,7 +11174,7 @@ var BasePage = BasicLayer.extend({
     },
     updateBrowserQuery: function(changes) {
         var parsedUrl = url.parse(window.location.href, true)
-        for(key in changes) {
+        for (key in changes) {
             parsedUrl.query[key] = changes[key]
         }
         parsedUrl.search = null
@@ -13837,8 +13837,8 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-}).call(this,require("FWaASH"))
-},{"FWaASH":9}],9:[function(require,module,exports){
+}).call(this,require("Zbi7gb"))
+},{"Zbi7gb":9}],9:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -17392,7 +17392,7 @@ module.exports = Thing
 var Thing = require("./Thing")
 
 var convertUri = function(uri, baseUri) {
-    // if uri starts with '/' or 'http://', leave it be
+    // TODO if uri starts with '/' or 'http://', leave it be
     // else prepend baseUri
     return baseUri + "/" + uri
 }
@@ -17839,8 +17839,8 @@ function draw(v,c) {
 module.exports = VideoThing
 
 },{"./CenteringDecorator":20,"./PlayerControls":32,"./Thing":41}],"pagescript":[function(require,module,exports){
-module.exports=require('HJD/OK');
-},{}],"HJD/OK":[function(require,module,exports){
+module.exports=require('Bkkh3s');
+},{}],"Bkkh3s":[function(require,module,exports){
 module.exports = function(Wow) {
     var window = Wow.window
     var $ = Wow.$
@@ -17945,4 +17945,4 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/BasePage":1,"../../../js/selectchain":4,"./js/things/ExportBookViewer":24,"./js/things/Things":42,"basejs":6,"path":8,"url":14}]},{},["HJD/OK"])
+},{"../../../js/BasePage":1,"../../../js/selectchain":4,"./js/things/ExportBookViewer":24,"./js/things/Things":42,"basejs":6,"path":8,"url":14}]},{},["Bkkh3s"])
