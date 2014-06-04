@@ -235,10 +235,18 @@ module.exports = function(grunt) {
                         '!node_modules/browserify/**',
                         '!node_modules/browserify-shim/**',
                         '!node_modules/grunt/**',
+                        '!node_modules/brfs/**',
                         '!node_modules/grunt-browserify/**',
                         '!node_modules/grunt-contrib-compress/**',
                         '!node_modules/grunt-contrib-less/**',
                         '!node_modules/grunt-execute/**',
+                        '!node_modules/grunt-contrib-clean/**',
+                        '!node_modules/grunt-contrib-concat/**',
+                        '!node_modules/grunt-contrib-copy/**',
+                        '!node_modules/grunt-execute/**',
+                        '!node_modules/grunt-docker/**',
+                        '!node_modules/grunt-generate/**',
+                        '!node_modules/grunt-jsbeautifier/**',
                         '!node_modules/grunt-downloadfile/**'
                     ]
                 }]

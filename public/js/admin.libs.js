@@ -301,8 +301,8 @@ $.fn.dropAnything = function (settings) {
         "mpeg": "video/mpeg",
         "mpg": "video/mpeg",
         "webm": "video/webm",
-        "zip": "application.zip",
-        "pdf": "applicartion.pdf"
+        "zip": "application/zip",
+        "pdf": "application/pdf"
     }
 
 
