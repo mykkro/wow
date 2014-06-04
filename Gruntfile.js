@@ -202,7 +202,10 @@ module.exports = function(grunt) {
                 files: [{
                     src: [
                         'addons/dist/**',
-                        'bin/win32/**',
+                        '!addons/dist/scrapbooks/**',
+                        'bin/node.exe',
+                        'bin/ffmpeg.exe',
+                        'bin/convert.exe',
                         'entity/**',
                         'js/**', 
                         'lib/**', 
@@ -210,7 +213,7 @@ module.exports = function(grunt) {
                         'pages/**', 
                         'public/**',
                         'plugins/**',
-                        '!plugins/node_modules/**',
+                        '!plugins/**/node_modules/**',
                         'tools/**',
                         '!tools/craft/**',
                         '!tools/tibor/**',
@@ -288,11 +291,19 @@ module.exports = function(grunt) {
         },
         downloadfile: {
             files: [{
-                url: 'http://nodejs.org/dist/v0.10.25/node.exe',
+                url: 'http://nodejs.org/dist/v0.10.28/node.exe',
                 dest: 'bin/win32'
             }, {
-                url: 'http://nodejs.org/dist/v0.10.25/x64/node.exe',
+                url: 'http://nodejs.org/dist/v0.10.28/x64/node.exe',
                 dest: 'bin/win64'
+            },
+            {
+                url: 'http://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-latest-win32-static.7z',
+                dest: 'bin/win32'
+            }, 
+            {
+                url: 'http://www.imagemagick.org/download/binaries/ImageMagick-6.8.9-2-Q16-x86-windows.zip',
+                dest: 'bin/win32'    
             }]
         },
     })
