@@ -111,6 +111,11 @@ $.fn.dropAnything = function (settings) {
         "video/webm": 1
     }
 
+    var archiveMimetypes = {
+		"application/zip": 1,
+		"application/x-zip-compressed": 1
+	}
+	
     // for guessing MIME type from extension...
     var fileExtensions = {
         "jpg:": "image/jpeg",
@@ -526,7 +531,7 @@ $.fn.dropAnything = function (settings) {
             if((mimetype in videoMimetypes) && isAccepted("video")) {
                 return doUpload(files[0], "video", cb)
             }        
-            if(mimetype == 'application/zip' && isAccepted("zip")) {
+            if((mimetype in archiveMimetypes) && isAccepted("zip")) {
                 return doUpload(files[0], "zip", cb)
             }        
             if(mimetype == 'application/pdf' && isAccepted("pdf")) {
