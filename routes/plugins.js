@@ -2,8 +2,16 @@ var fs = require("fs-extra")
 var path = require("path")
 var mustache = require("mustache")
 var merge = require("merge")
+var url = require("url")
 
 module.exports = function(app, express, Auth, API) {
+	
+	var redirUrl = function(myUrl, pathname) {
+		var q = url.parse(myUrl, true)
+		q.search = null
+		q.pathname = pathname
+		return url.format(q)
+	}
 	
     // templates used when rendering GUI pages...
     var svgPageLayout = fs.readFileSync(path.join(__dirname, "../views/mustache/page.svg.mustache"), "utf8")
@@ -24,7 +32,9 @@ module.exports = function(app, express, Auth, API) {
 
     app.get('/plugins/:name', function(req, res) {
       var name = req.params.name
-      res.redirect("/plugins/"+name+"/index");
+	  // create redirect URL but keep querystring...
+	  var tgt = redirUrl(req.url, "/plugins/"+name+"/index")
+      res.redirect(tgt);
     })
     
     app.get('/plugins/:name/:page', Auth.isAuthenticatedAsUser, function(req, res) {
