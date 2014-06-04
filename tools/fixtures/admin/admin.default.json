@@ -5,6 +5,6 @@
 	"canCreateAdmins":true,
 	"canCreateUsers":true,
 	"canImportApps":true,
-	"username":"adm",
-	"password":"adm"
+	"username":"a",
+	"password":"a"
 }

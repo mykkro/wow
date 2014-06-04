@@ -193,9 +193,12 @@
 	function updateItemsPreview(uri, out, previewType) {
 	  $.getJSON(uri).done(function(data) {
 	    // console.log("Received items:", data)
-	    var previewUris = _.map(data, function(d) { return d.node.previewUri })
+	    var previewUris = _.map(data, function(d) { return d ? d.node.previewUri : null })
 	    out.empty()
 	    for(var i=0; i<previewUris.length; i++) {
+	    	if(!previewUris[i]) {
+	    		continue;
+	    	}
 	    	(function(i) {
 	      var viewUri = "/" + data[i].node.type + "/" + data[i]._id + "/view"
 	      var id = "node-"+ data[i].node.type + "-" + data[i]._id

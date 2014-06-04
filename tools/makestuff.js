@@ -27,8 +27,6 @@ _.each(fixtures, function(f) {
 	}
 })
 
-console.log(fixtures)
-
 // TODO rollback fixture creation if somewhere something fails
 
 var autowireData = function(data, aw, ents) {
@@ -52,7 +50,6 @@ var create = function(fixture, entities, next) {
 			next(err)
 		} else {
 			var dt = res[0]
-			console.log("Created: ", dt)
 			entities[fixture.name] = dt
 			next(null, dt)
 		}
@@ -71,10 +68,42 @@ var processItem = function(next) {
 			}
 		})
 	} else {
-		next(null, "All fixtures created!")
+		next()
 	}
 }
 
-processItem(console.log)
+/****************************************************************************************************/
+
+// 1. check if we aren't already installed -
+// by testing whether we have the default admin in the database...
+// 
+
+var doInstall = function(next) {
+	var defaultAdminData = require("./fixtures/admin/admin.default.json")
+	var username = defaultAdminData.username
+
+	API.admin.findp({username:username}).done(function(admins) {
+		if(admins.length>0) {
+			// there is already an admin with this username!
+			console.log("It seems that the DB entities are already installed!")
+			next()
+		} else {
+			// create the default data...
+			console.log("Creating default admin, users and presets...")
+			processItem(next)
+		}
+	})
+}
+
+
+doInstall(function(err, data) {
+	if(err) {
+		console.error("Error during installation!")
+		console.error(err)
+	} else {
+		console.log("Installation successful!")
+	}
+})
+
 
 
