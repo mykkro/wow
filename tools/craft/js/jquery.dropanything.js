@@ -111,6 +111,30 @@ $.fn.dropAnything = function (settings) {
         "video/webm": 1
     }
 
+    // for guessing MIME type from extension...
+    var fileExtensions = {
+        "jpg:": "image/jpeg",
+        "jpeg:": "image/jpeg",
+        "png": "image/png",
+        "gif": "image/gif",
+        "svg": "image/svg+xml",
+        "wav": "audio/wav",
+        "ogg": "audio/ogg",
+        "mp3": "audio/mp3",
+        "weba": "audio/weba",
+        "3gp": "video/3gpp",
+        "avi": "video/x-msvideo",
+        "flv": "video/x-flv",
+        "mp4": "video/mp4",
+        "ogv": "video/ogg",
+        "mpeg": "video/mpeg",
+        "mpg": "video/mpeg",
+        "webm": "video/webm",
+        "zip": "application/zip",
+        "pdf": "application/pdf"
+    }
+
+
     var afterDrop = settings.dropped || $.noop
     var afterFile = settings.uploaded || $.noop
 
@@ -482,25 +506,30 @@ $.fn.dropAnything = function (settings) {
     function handleFile(dt, cb) {
         var files = dt.files
         if(files.length == 1) {
+            var mimetype = files[0].type
+            if(!mimetype) {
+                var ext = files[0].name.split('.').pop().toLowerCase()
+                mimetype = fileExtensions[ext]
+            }
             // single file
             // upload it!
             if(files[0].size > settings.maxUploadFilesize) {
                 return flash("File too big for upload!", cb)
             } 
-            if((files[0].type in imageMimetypes) && isAccepted("image")) {
+            if((mimetype in imageMimetypes) && isAccepted("image")) {
                 // proceed with upload
                 return doUpload(files[0], "image", cb)
             }
-            if((files[0].type in audioMimetypes) && isAccepted("audio")) {
+            if((mimetype in audioMimetypes) && isAccepted("audio")) {
                 return doUpload(files[0], "audio", cb)
             }
-            if((files[0].type in videoMimetypes) && isAccepted("video")) {
+            if((mimetype in videoMimetypes) && isAccepted("video")) {
                 return doUpload(files[0], "video", cb)
             }        
-            if(files[0].type == 'application/zip' && isAccepted("zip")) {
+            if(mimetype == 'application/zip' && isAccepted("zip")) {
                 return doUpload(files[0], "zip", cb)
             }        
-            if(files[0].type == 'application/pdf' && isAccepted("pdf")) {
+            if(mimetype == 'application/pdf' && isAccepted("pdf")) {
                 return doUpload(files[0], "pdf", cb)
             }        
             return flash("Not accepted here: "+files[0].type, cb)            

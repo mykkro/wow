@@ -165,8 +165,7 @@ module.exports = function(grunt) {
                 dest: 'public/css/core.libs.css'
             },
             admincss: {
-                src: [
-                ],
+                src: [],
                 dest: 'public/css/admin.libs.css'
             }
         },
@@ -204,34 +203,35 @@ module.exports = function(grunt) {
                         'addons/dist/**',
                         '!addons/dist/scrapbooks/**',
                         'bin/node.exe',
-                        'bin/ffmpeg.exe',
-                        'bin/convert.exe',
+                        //'bin/ffmpeg.exe',
                         'entity/**',
-                        'js/**', 
-                        'lib/**', 
+                        'js/**',
+                        'lib/**',
                         'locales/**',
-                        'pages/**', 
+                        'pages/**',
                         'public/**',
                         'plugins/**',
                         '!plugins/**/node_modules/**',
                         'tools/**',
                         '!tools/craft/**',
                         '!tools/tibor/**',
-                        'routes/**', 
-                        'templates/**', 
-                        'views/**']
+                        'routes/**',
+                        'templates/**',
+                        'views/**'
+                    ]
                 }, {
                     src: [
-                        'run.bat', 
-                        'run7.bat', 
-                        'run.js', 
-                        'server.js', 
-                        'package.json', 
+                        'run.bat',
+                        'run7.bat',
+                        'run.js',
+                        'server.js',
+                        'package.json',
                         'main.js',
                         'wow.js'
                     ]
                 }, {
-                    src: ['node_modules/**',
+                    src: [
+                        'node_modules/**',
                         '!node_modules/browserify/**',
                         '!node_modules/browserify-shim/**',
                         '!node_modules/grunt/**',
@@ -296,14 +296,12 @@ module.exports = function(grunt) {
             }, {
                 url: 'http://nodejs.org/dist/v0.10.28/x64/node.exe',
                 dest: 'bin/win64'
-            },
-            {
+            }, {
                 url: 'http://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-latest-win32-static.7z',
                 dest: 'bin/win32'
-            }, 
-            {
+            }, {
                 url: 'http://www.imagemagick.org/download/binaries/ImageMagick-6.8.9-2-Q16-x86-windows.zip',
-                dest: 'bin/win32'    
+                dest: 'bin/win32'
             }]
         },
     })

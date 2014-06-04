@@ -36,7 +36,7 @@ var BasePage = BasicLayer.extend({
     },
     updateBrowserQuery: function(changes) {
         var parsedUrl = url.parse(window.location.href, true)
-        for(key in changes) {
+        for (key in changes) {
             parsedUrl.query[key] = changes[key]
         }
         parsedUrl.search = null
@@ -126,7 +126,9 @@ var BasePage = BasicLayer.extend({
 
 module.exports = BasePage
 
-},{"./basiclayer":5,"./softwarekeyboard":23,"basejs":43,"url":54}],"+1Q85x":[function(require,module,exports){
+},{"./basiclayer":5,"./softwarekeyboard":23,"basejs":43,"url":54}],"Logger":[function(require,module,exports){
+module.exports=require('+1Q85x');
+},{}],"+1Q85x":[function(require,module,exports){
 var Base = require("basejs")
 
 var Logger = Base.extend({
@@ -136,11 +138,11 @@ var Logger = Base.extend({
     log: function(data) {
         // TODO add some filter - which events are loggable (for this user)
         var opts = {
-          url: "/api/log",
-          type: "POST",
-          data: JSON.stringify(data),
-          dataType: 'json',
-          contentType: "application/json; charset=utf-8"
+            url: "/api/log",
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8"
         }
         $.ajax(opts).done(function(data) {
             // log sent OK
@@ -153,9 +155,7 @@ var Logger = Base.extend({
 
 module.exports = Logger
 
-},{"basejs":43}],"Logger":[function(require,module,exports){
-module.exports=require('+1Q85x');
-},{}],5:[function(require,module,exports){
+},{"basejs":43}],5:[function(require,module,exports){
 var Base = require("basejs")
 
 var BasicLayer = Base.extend({

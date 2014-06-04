@@ -73,7 +73,10 @@ module.exports = function(Wow) {
             var self = this
             var page = parseInt(q.page || 1)
             var query = self.textBox.val()
-            self.updateBrowserQuery({page:page, query:query})
+            self.updateBrowserQuery({
+                page: page,
+                query: query
+            })
             self.searchYouTubeVideos({
                 q: query,
                 'max-results': 6,

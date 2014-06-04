@@ -33,7 +33,7 @@ var BasePage = BasicLayer.extend({
     },
     updateBrowserQuery: function(changes) {
         var parsedUrl = url.parse(window.location.href, true)
-        for(key in changes) {
+        for (key in changes) {
             parsedUrl.query[key] = changes[key]
         }
         parsedUrl.search = null

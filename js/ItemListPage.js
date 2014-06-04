@@ -81,7 +81,7 @@ module.exports = function(Wow) {
         searchIt: function(query, next) {
             // to be implemented in subclass...
             // TODO callback after all items are widgetized
-            if(next) next()
+            if (next) next()
         },
         showItem: function(data, index) {
             // to be implemented in subclass...

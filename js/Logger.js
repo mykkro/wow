@@ -7,11 +7,11 @@ var Logger = Base.extend({
     log: function(data) {
         // TODO add some filter - which events are loggable (for this user)
         var opts = {
-          url: "/api/log",
-          type: "POST",
-          data: JSON.stringify(data),
-          dataType: 'json',
-          contentType: "application/json; charset=utf-8"
+            url: "/api/log",
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8"
         }
         $.ajax(opts).done(function(data) {
             // log sent OK

@@ -22,7 +22,9 @@ module.exports = function(Wow) {
         searchIt: function(q, next) {
             var self = this
             var page = parseInt(q.page || 1)
-            self.updateBrowserQuery({page:page})
+            self.updateBrowserQuery({
+                page: page
+            })
             self.wtr.rpc("userVideosList", {
                 userId: userId,
                 page: page
