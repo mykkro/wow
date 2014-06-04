@@ -1,18 +1,5 @@
 module.exports = function(grunt) {
     grunt.initConfig({
-        nodewebkit: {
-            options: {
-                build_dir: '../webkitbuilds', // Where the build version of my node-webkit app is saved
-                mac: false,
-                win: true,
-                linux32: false,
-                linux64: true,
-                version: '0.8.4',
-                app_name: 'wow',
-                app_version: '0.1'
-            },
-            src: ['./**/*'] // Your node-webkit app
-        },
         browserify: {
             basic: {
                 src: [
@@ -224,7 +211,9 @@ module.exports = function(grunt) {
                         'public/**',
                         'plugins/**',
                         '!plugins/node_modules/**',
-                        '!tools/**',
+                        'tools/**',
+                        '!tools/craft/**',
+                        '!tools/tibor/**',
                         'routes/**', 
                         'templates/**', 
                         'views/**']
@@ -247,10 +236,7 @@ module.exports = function(grunt) {
                         '!node_modules/grunt-contrib-compress/**',
                         '!node_modules/grunt-contrib-less/**',
                         '!node_modules/grunt-execute/**',
-                        '!node_modules/grunt-node-webkit-builder/**',
-                        '!node_modules/grunt-downloadfile/**',
-                        '!node_modules/node-chrome/**',
-                        '!node_modules/pouchdb/**'
+                        '!node_modules/grunt-downloadfile/**'
                     ]
                 }]
             }
@@ -310,7 +296,6 @@ module.exports = function(grunt) {
             }]
         },
     })
-    grunt.loadNpmTasks('grunt-node-webkit-builder');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-execute');
