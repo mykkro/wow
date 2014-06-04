@@ -300,7 +300,7 @@ module.exports = function(grunt) {
         downloadfile: {
             files: [{
                 url: 'http://nodejs.org/dist/v0.10.28/node.exe',
-                dest: 'bin'
+                dest: 'bin/win32'
             }, {
                 url: 'http://nodejs.org/dist/v0.10.28/x64/node.exe',
                 dest: 'bin/win64'

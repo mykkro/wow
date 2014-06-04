@@ -1,3 +1,3 @@
 @echo off
 
-bin\node.exe run.js --runtime="C:/Program Files/Google/Chrome/Application/chrome.exe" %*
+bin\win64\node.exe run.js --runtime="C:/Program Files/Google/Chrome/Application/chrome.exe" %*

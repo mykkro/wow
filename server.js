@@ -10,6 +10,9 @@ var merge = require("merge")
 //var io = require('socket.io')
 var _ = require("lodash")
 
+var cfg = require("./lib/config/server.json")
+var memwatchingEnabled = cfg.memwatching
+
 var express = require('express')
   , app = express()
   , server = http.createServer(app)
@@ -27,7 +30,7 @@ var Auth = require("./lib/middleware/auth")
 
 var WowServer = {
 	port: 9999,
-  chrome: null,
+	chrome: null,
 	start: function(afterInit) {
 		var self = this
     Auth.setup(passport, API.user, API.admin)
@@ -159,8 +162,24 @@ var WowServer = {
         if(afterInit) afterInit(self)
       });
     })
+	
+	// detection of memory leaks...
+	// TODO enable/disable memwatch based on command line argument
+	if(memwatchingEnabled) {
+		var memwatch = require("memwatch")
+		
+		memwatch.on('leak', function(info) { 
+			console.log("Possible memory leak detected!")
+			console.log(info)
+		});
 
-	},
+		memwatch.on('stats', function(stats) { 
+			console.log("Heap usage:")
+			console.log(stats)
+		});
+	}
+	
+  },
   stop: function(cb) {
     server.close(cb)
   }
