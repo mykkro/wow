@@ -1,5 +1,9 @@
 /* wow server */
 
+// !!!!!! static files and assets invoke the user deserialization in auth middleware
+// // https://github.com/jaredhanson/passport/issues/14
+// it seems that order of express/static and other middlewares matters VERY much
+
 var path = require("path")
 var http = require('http');
 var mustache = require('mustache')
@@ -67,53 +71,48 @@ var WowServer = {
 
     var allowedFilesize = 50000000
 
-    app.configure(function(){
-      // app.engine('mustache', mustacheExpress());
-      app.engine('mustache', require('hogan-express'))
-      app.set('view engine', 'mustache');
-      app.set('views', __dirname + '/views/mustache');
-      app.set('layout', 'layout') 
-      app.set('partials', {
-        "admin-nav": "admin-nav",
-        "nodepreview-head": 'nodepreview-head'
-      })
+    // view engine setup
+    app.engine('mustache', require('hogan-express'))
+    app.set('view engine', 'mustache');
+    app.set('views', __dirname + '/views/mustache');
+    app.set('layout', 'layout') 
+    app.set('partials', {
+      "admin-nav": "admin-nav",
+      "nodepreview-head": 'nodepreview-head'
+    })
 
-	  app.use(favicon(__dirname + '/public/favicon.ico'));
-      app.use(bodyParser.json());
-      app.use(bodyParser.urlencoded());   
-      //app.use(express.multipart());
-	  app.use(multer())	  
-      app.use(cookieParser());
-      app.use(session({
-          secret: 'keyboard cat'
-      }))
-      app.use(passport.initialize());
-      app.use(passport.session());
-      app.use( app.router );
+    // middlewares setup
+    app.use(favicon(__dirname + '/public/favicon.ico'));
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded());   
+    app.use(multer())	  
+    app.use(cookieParser());
 
-      REST(app, API)
 
-      app.use(express.static(__dirname + '/public'));
-      app.use('/uploads',express.static(Storage.uploadDir));
-      app.use("/imports", express.static(Storage.importDir))
-      app.use("/locales", express.static(__dirname+"/locales"))
-      app.use("/userdata", express.static(__dirname+"/userdata"))
-      app.use(express.static(__dirname + '/public'));
+    app.use(session({
+        secret: 'keyboard cat'
+    }))
+    app.use(passport.initialize());
+    app.use(passport.session());
 
-      // this will make public resources of individual pages accessible
-      var dirs = fs.readdirSync(__dirname + "/pages")
-      dirs.forEach(function(dir) {
-        app.use("/pages/"+dir, express.static(__dirname+"/pages/"+dir+"/public"))
-      })
 
-	  // error handler middleware...
-	  // NOTE: express-trace collides with errorhandler...
-	  if(cfg.mode == "devel" && !tracingEnabled) {
-		app.use(errorhandler()); 
-	  }
+    app.use( app.router );
 
-  });
+    // static resources...
+    app.use(express.static(__dirname + '/public'));
+    app.use('/uploads',express.static(Storage.uploadDir));
+    app.use("/imports", express.static(Storage.importDir))
+    app.use("/locales", express.static(__dirname+"/locales"))
+    app.use("/userdata", express.static(__dirname+"/userdata"))
 
+    var dirs = fs.readdirSync(__dirname + "/pages")
+    dirs.forEach(function(dir) {
+      app.use("/pages/"+dir, express.static(__dirname+"/pages/"+dir+"/public"))
+    })
+
+
+
+    REST(app, API)
 
     //
     // configure routes...
@@ -142,14 +141,12 @@ var WowServer = {
     require("./routes/loginlogout")(app, API, passport)
     require("./routes/upload")(app, Storage, {allowedExtensions:allowedFiletypes, maxFilesize:allowedFilesize})
 
+	  // error handler middleware...
+	  // NOTE: express-trace collides with errorhandler...
+	  if(cfg.mode == "devel" && !tracingEnabled) {
+  		app.use(errorhandler()); 
+	  }
 
-
-    var sendError = function(res, msg, details) {
-        res.send({
-          error: msg,
-          details: details
-        })
-    }
 
 /*
     io.sockets.on('connection', function (socket) {
