@@ -202,8 +202,8 @@ module.exports = function(grunt) {
                     src: [
                         'addons/dist/**',
                         '!addons/dist/scrapbooks/**',
-                        'bin/node.exe',
-                        //'bin/ffmpeg.exe',
+                        'bin/win32/node.exe',
+                        'bin/win64/node.exe',
                         'entity/**',
                         'js/**',
                         'lib/**',
