@@ -1,5 +1,5 @@
 var Base = require("basejs")
-var GameWithRules = require("../../../js/rulegame/GameWithRules")
+var GameWithRules = require("../../../js/rulegame/GameWithRules.js")
 var GridController = require("../../../js/game/GridController.js")
 
 var MyGame = GameWithRules.extend({
@@ -69,6 +69,7 @@ var MyGame = GameWithRules.extend({
 
     },
     updateBoard: function(state, valid) {
+        console.log("Updating board...")
         var self = this
         var gamedata = this.gameData
         var mainsvg = d3.select("#svgmain")
@@ -110,7 +111,7 @@ var MyGame = GameWithRules.extend({
                 }
             })
         })
-        //this.updateSelection(valid)
+        if(this.gridCtl) this.updateSelection(valid)
     }
 })
 

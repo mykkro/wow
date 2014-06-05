@@ -5490,8 +5490,8 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-}).call(this,require("Zbi7gb"))
-},{"Zbi7gb":16}],16:[function(require,module,exports){
+}).call(this,require("FWaASH"))
+},{"FWaASH":16}],16:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -6956,8 +6956,8 @@ function isNullOrUndefined(arg) {
 }
 
 },{"punycode":17,"querystring":20}],"pagescript":[function(require,module,exports){
-module.exports=require('Bkkh3s');
-},{}],"Bkkh3s":[function(require,module,exports){
+module.exports=require('HJD/OK');
+},{}],"HJD/OK":[function(require,module,exports){
 module.exports = function(Wow) {
     var window = Wow.window
     var $ = Wow.$
@@ -7427,7 +7427,7 @@ module.exports = function(Wow) {
 
 },{"../../../js/BasePage":1,"../../../js/game/MiniLog":5,"../../../js/rulegame/RuleParser":9,"../../../js/selectchain":10,"../../../js/svghelper":12,"./mygame":24,"path":15}],24:[function(require,module,exports){
 var Base = require("basejs")
-var GameWithRules = require("../../../js/rulegame/GameWithRules")
+var GameWithRules = require("../../../js/rulegame/GameWithRules.js")
 var GridController = require("../../../js/game/GridController.js")
 
 var MyGame = GameWithRules.extend({
@@ -7497,6 +7497,7 @@ var MyGame = GameWithRules.extend({
 
     },
     updateBoard: function(state, valid) {
+        console.log("Updating board...")
         var self = this
         var gamedata = this.gameData
         var mainsvg = d3.select("#svgmain")
@@ -7538,10 +7539,10 @@ var MyGame = GameWithRules.extend({
                 }
             })
         })
-        //this.updateSelection(valid)
+        if(this.gridCtl) this.updateSelection(valid)
     }
 })
 
 module.exports = MyGame
 
-},{"../../../js/game/GridController.js":4,"../../../js/rulegame/GameWithRules":8,"basejs":13}]},{},["Bkkh3s"])
+},{"../../../js/game/GridController.js":4,"../../../js/rulegame/GameWithRules.js":8,"basejs":13}]},{},["HJD/OK"])

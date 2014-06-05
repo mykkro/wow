@@ -23,7 +23,6 @@ module.exports = function(app, express, Auth, API) {
       var cfg = pluginCfg.plugins[key]
       if(cfg.enabled) {
         app.use(prefix+"/assets", express.static(path.join(__dirname, ".."+prefix+"/public")))
-        require(".."+prefix+"/routes/routes")(prefix, app, Auth, API)
       }
     }
   }
@@ -34,6 +33,13 @@ module.exports = function(app, express, Auth, API) {
     var svgDefs = fs.readFileSync(path.join(__dirname, "../views/mustache/defs.svg.mustache"), "utf8")
     var pageMaster = fs.readFileSync(path.join(__dirname, "../views/mustache/page-master.mustache"), "utf8")
 
+    for(var key in pluginCfg.plugins) {
+      var prefix = "/plugins/"+key
+      var cfg = pluginCfg.plugins[key]
+      if(cfg.enabled) {
+        require(".."+prefix+"/routes/routes")(prefix, app, Auth, API)
+      }
+    }
 
     app.get('/plugins/:name', function(req, res) {
       var name = req.params.name
