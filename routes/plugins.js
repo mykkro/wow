@@ -12,15 +12,12 @@ module.exports = function(app, express, Auth, API) {
 		q.pathname = pathname
 		return url.format(q)
 	}
-	
-    // templates used when rendering GUI pages...
-    var svgPageLayout = fs.readFileSync(path.join(__dirname, "../views/mustache/page.svg.mustache"), "utf8")
-    var svgDefs = fs.readFileSync(path.join(__dirname, "../views/mustache/defs.svg.mustache"), "utf8")
-    var pageMaster = fs.readFileSync(path.join(__dirname, "../views/mustache/page-master.mustache"), "utf8")
 
-    // test - include plugin routes for enabled plugins
-    var pluginCfg = require("../plugins/plugins.json")
-    var defaults = require("../lib/defaults")
+  // test - include plugin routes for enabled plugins
+  var pluginCfg = require("../plugins/plugins.json")
+  var defaults = require("../lib/defaults")
+	
+  var static = function() {
     for(var key in pluginCfg.plugins) {
       var prefix = "/plugins/"+key
       var cfg = pluginCfg.plugins[key]
@@ -29,11 +26,19 @@ module.exports = function(app, express, Auth, API) {
         require(".."+prefix+"/routes/routes")(prefix, app, Auth, API)
       }
     }
+  }
+
+  var routes = function() {
+    // templates used when rendering GUI pages...
+    var svgPageLayout = fs.readFileSync(path.join(__dirname, "../views/mustache/page.svg.mustache"), "utf8")
+    var svgDefs = fs.readFileSync(path.join(__dirname, "../views/mustache/defs.svg.mustache"), "utf8")
+    var pageMaster = fs.readFileSync(path.join(__dirname, "../views/mustache/page-master.mustache"), "utf8")
+
 
     app.get('/plugins/:name', function(req, res) {
       var name = req.params.name
-	  // create redirect URL but keep querystring...
-	  var tgt = redirUrl(req.url, "/plugins/"+name+"/index")
+    // create redirect URL but keep querystring...
+    var tgt = redirUrl(req.url, "/plugins/"+name+"/index")
       res.redirect(tgt);
     })
     
@@ -65,5 +70,11 @@ module.exports = function(app, express, Auth, API) {
         res.send(html)
       }
     })        
+  }
+
+  return {
+    static: static,
+    routes: routes
+  }
 
 }

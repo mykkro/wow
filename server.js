@@ -70,6 +70,8 @@ var WowServer = {
     }
 
     var allowedFilesize = 50000000
+    var plugins = require("./routes/plugins")(app, express, Auth, API)
+    var pages = require("./routes/pages")(app, express, Auth)
 
     // view engine setup
     app.engine('mustache', require('hogan-express'))
@@ -88,6 +90,16 @@ var WowServer = {
     app.use(multer())	  
     app.use(cookieParser());
 
+    // static resources...
+    app.use(express.static(__dirname + '/public'));
+    app.use('/uploads',express.static(Storage.uploadDir));
+    app.use("/imports", express.static(Storage.importDir))
+    app.use("/locales", express.static(__dirname+"/locales"))
+    app.use("/userdata", express.static(__dirname+"/userdata"))
+    pages.static()
+    plugins.static()
+
+
     // session and passport setup
     app.use(session({
         secret: 'keyboard cat'
@@ -95,17 +107,6 @@ var WowServer = {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    // static resources...
-    app.use(express.static(__dirname + '/public'));
-    app.use('/uploads',express.static(Storage.uploadDir));
-    app.use("/imports", express.static(Storage.importDir))
-    app.use("/locales", express.static(__dirname+"/locales"))
-    app.use("/userdata", express.static(__dirname+"/userdata"))
-    // static resources for pages
-    var dirs = fs.readdirSync(__dirname + "/pages")
-    dirs.forEach(function(dir) {
-      app.use("/pages/"+dir, express.static(__dirname+"/pages/"+dir+"/public"))
-    })
 
     // REST APIs of data entities
     REST(app, API)
@@ -128,14 +129,15 @@ var WowServer = {
         }
     });
 
-    require("./routes/plugins")(app, express, Auth, API)
+    
     require("./routes/logging")(app, API, Auth)
     require("./routes/rpc")(app)
     require("./routes/search")(app, API)
-    require("./routes/pages")(app, Auth)
     require("./routes/admin")(app, Auth)
     require("./routes/loginlogout")(app, API, passport)
     require("./routes/upload")(app, Storage, {allowedExtensions:allowedFiletypes, maxFilesize:allowedFilesize})
+    pages.routes()
+    plugins.routes()
 
 	  // error handler middleware...
 	  // NOTE: express-trace collides with errorhandler...
