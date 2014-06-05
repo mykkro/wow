@@ -19,6 +19,9 @@ var express = require('express')
   , server = http.createServer(app)
   //, io = require('socket.io').listen(server);
 
+// express middlewares
+var bodyParser = require('body-parser')
+  
 var API = require("./lib/api/API")
 var REST = require("./lib/api/REST")
 var Storage = require("./lib/Storage")
@@ -73,8 +76,8 @@ var WowServer = {
       })
 
       app.use(express.favicon());
-      app.use(express.json());
-      app.use(express.urlencoded());   
+      app.use(bodyParser.json());
+      app.use(bodyParser.urlencoded());   
       app.use(express.limit(allowedFilesize));
       app.use(express.multipart());
       app.use(express.cookieParser());
