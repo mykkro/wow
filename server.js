@@ -21,15 +21,18 @@ var express = require('express')
 
 // express middlewares
 var bodyParser = require('body-parser')
-  
+var cookieParser = require('cookie-parser')
+var session      = require('express-session')
+var errorhandler = require('errorhandler')
+var favicon = require('serve-favicon');
+var passport = require("passport");
+var SessionStore = require("sessionstore")
+var multer  = require('multer')
+
+// wow APIs and middlewares
 var API = require("./lib/api/API")
 var REST = require("./lib/api/REST")
 var Storage = require("./lib/Storage")
-
-var SessionStore = require("sessionstore")
-
-var passport = require("passport");
-
 var Auth = require("./lib/middleware/auth")
 
 var WowServer = {
@@ -75,14 +78,13 @@ var WowServer = {
         "nodepreview-head": 'nodepreview-head'
       })
 
-      app.use(express.favicon());
+	  app.use(favicon(__dirname + '/public/favicon.ico'));
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded());   
-      app.use(express.limit(allowedFilesize));
-      app.use(express.multipart());
-      app.use(express.cookieParser());
-      app.use(express.methodOverride());
-      app.use(express.session({
+      //app.use(express.multipart());
+	  app.use(multer())	  
+      app.use(cookieParser());
+      app.use(session({
           secret: 'keyboard cat'
       }))
       app.use(passport.initialize());
@@ -105,8 +107,10 @@ var WowServer = {
       })
 
 	  // error handler middleware...
-	  // NOTE: doesn't work well with express-trace middleware
-      if(!tracingEnabled) app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+	  // NOTE: express-trace collides with errorhandler...
+	  if(cfg.mode == "devel" && !tracingEnabled) {
+		app.use(errorhandler()); 
+	  }
 
   });
 
@@ -157,7 +161,7 @@ var WowServer = {
 */
 
 	// apply express-trace middleware...
-	if(tracingEnabled) {
+	if(cfg.mode == "devel" && tracingEnabled) {
 		require('express-trace')(app);
 	}
 
@@ -171,7 +175,7 @@ var WowServer = {
 	
 	// detection of memory leaks...
 	// TODO enable/disable memwatch based on command line argument
-	if(memwatchingEnabled) {
+	if(cfg.mode == "devel" && memwatchingEnabled) {
 		var memwatch = require("memwatch")
 		
 		memwatch.on('leak', function(info) { 

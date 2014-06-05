@@ -2,5 +2,6 @@
 	"devel": {
 		"memwatching": false,
 		"tracing": false
-	}
+	},
+	"mode": "devel"
 }
