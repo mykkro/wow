@@ -75,9 +75,8 @@ var processItem = function(next) {
 
 /****************************************************************************************************/
 
-// 1. check if we aren't already installed -
+// check if we aren't already installed -
 // by testing whether we have the default admin in the database...
-// 
 
 var doInstall = function(next) {
 	var defaultAdminData = require("./fixtures/admin/admin.default.json")
@@ -96,15 +95,20 @@ var doInstall = function(next) {
 	})
 }
 
-Storage.init(function() {
-	doInstall(function(err, data) {
-		if(err) {
-			console.error("Error during installation!")
-			console.error(err)
-		} else {
-			console.log("Installation successful!")
-		}
+
+// exported function
+module.exports = function(err, next) {
+	Storage.init(function() {
+		doInstall(function(err, data) {
+			if(err) {
+				console.error("Error during installation!")
+				if(next) next(err)
+			} else {
+				console.log("Installation successful!")
+				if(next) next()
+			}
+		})
 	})
-})
+}
 
 

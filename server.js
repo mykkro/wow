@@ -32,6 +32,7 @@ var favicon = require('serve-favicon');
 var passport = require("passport");
 var SessionStore = require("sessionstore")
 var multer  = require('multer')
+var morgan  = require('morgan')
 
 // wow APIs and middlewares
 var API = require("./lib/api/API")
@@ -89,6 +90,9 @@ var WowServer = {
     app.use(bodyParser.urlencoded());   
     app.use(multer())	  
     app.use(cookieParser());
+
+    // request logging...
+    app.use(morgan('dev'))
 
     // static resources...
     app.use(express.static(__dirname + '/public'));
