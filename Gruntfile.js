@@ -196,7 +196,7 @@ module.exports = function(grunt) {
             main: {
                 options: {
                     // TODO how to get this filename by appending version number from package.json?
-                    archive: 'dist/wow-0.9.1.zip'
+                    archive: 'dist/wow-0.9.2.zip'
                 },
                 files: [{
                     src: [
