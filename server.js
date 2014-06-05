@@ -88,15 +88,12 @@ var WowServer = {
     app.use(multer())	  
     app.use(cookieParser());
 
-
+    // session and passport setup
     app.use(session({
         secret: 'keyboard cat'
     }))
     app.use(passport.initialize());
     app.use(passport.session());
-
-
-    app.use( app.router );
 
     // static resources...
     app.use(express.static(__dirname + '/public'));
@@ -104,14 +101,13 @@ var WowServer = {
     app.use("/imports", express.static(Storage.importDir))
     app.use("/locales", express.static(__dirname+"/locales"))
     app.use("/userdata", express.static(__dirname+"/userdata"))
-
+    // static resources for pages
     var dirs = fs.readdirSync(__dirname + "/pages")
     dirs.forEach(function(dir) {
       app.use("/pages/"+dir, express.static(__dirname+"/pages/"+dir+"/public"))
     })
 
-
-
+    // REST APIs of data entities
     REST(app, API)
 
     //
