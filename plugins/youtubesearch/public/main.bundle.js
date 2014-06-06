@@ -124,7 +124,7 @@ var BasePage = BasicLayer.extend({
 
 module.exports = BasePage
 
-},{"./basiclayer":4,"./softwarekeyboard":7,"basejs":9,"url":16}],2:[function(require,module,exports){
+},{"./basiclayer":3,"./softwarekeyboard":6,"basejs":8,"url":15}],2:[function(require,module,exports){
 module.exports = function(Wow) {
     var window = Wow.window
     var $ = Wow.$
@@ -275,117 +275,7 @@ module.exports = function(Wow) {
 
 }
 
-},{"./BasePage":1,"./selectchain":6,"./svghelper":8,"basejs":9,"html-truncate":10,"url":16}],3:[function(require,module,exports){
-module.exports = function(Wow) {
-    var window = Wow.window
-    var $ = Wow.$
-    var i18n = Wow.i18n
-    var SvgHelper = require("./svghelper")(window)
-    var userId = '555'
-    var truncate = require('html-truncate');
-    var ItemListPage = require("./ItemListPage")(Wow)
-
-    /**
-     * ## VideosPage
-     * List of videos
-     */
-    var VideosPage = ItemListPage.extend({
-        createControls: function(data) {
-            this.base(data)
-            var self = this
-            var homeButton = self.getWidget("homeButton")
-            self.selectChain.append(homeButton.element)
-        },
-        activateSelected: function() {
-            var target = $(this.selectChain.current())
-            var widget = this.getWidget(target)
-            if (widget.type == "iconbutton") {
-                target.click()
-            } else {
-                var targetName = target.find(".youtube-result").data("name")
-                if (targetName) this.goToVideoPage(targetName)
-            }
-        },
-        showItem: function(data, index) {
-            var self = this
-            var column = index % 3
-            var row = Math.floor(index / 3)
-            var tx = 160 + column * 223
-            var ty = 36 + row * 223
-            var rect = SvgHelper.rect({
-                ry: 35,
-                rx: 35,
-                height: 195,
-                width: 195,
-                fill: "#fff",
-                stroke: self.colors[index],
-                "stroke-width": 5
-            })
-            var items = [rect]
-            var klass = "youtube-result"
-            var obj = {
-                "class": klass,
-                transform: "translate(" + tx + ", " + ty + ")"
-            }
-            if (data) {
-                var label = truncate(data.title, 20)
-                var thumbUrl = data.thumbnail.sqDefault
-                var thumb = SvgHelper.image({
-                    x: 7,
-                    y: 20,
-                    width: 180,
-                    height: 120,
-                    src: thumbUrl
-                })
-                var txt = SvgHelper.text(label, {
-                    x: 97,
-                    y: 170,
-                    "text-anchor": "middle"
-                })
-                items = [rect, thumb, txt]
-                $(thumb).click(function() {
-                    // go to video page...
-                    self.goToVideoPage(data.id)
-                })
-                obj["data-name"] = data.id
-            } else {
-                obj["class"] += " disabled"
-            }
-            return SvgHelper.group(obj, items)
-        },
-        displayResults: function(page, data, next) {
-            var self = this
-            self.showSearchResults(page, data)
-            /* create plain widgets from results... */
-            var promises = $(".youtube-result").map(function() {
-                var $this = $(this)
-                var el = $this.get(0)
-                return self.widgetize(el)
-            })
-            $.when.apply($, promises).then(function() {
-                var results = Array.prototype.slice.call(arguments)
-                self.selectChain = self.defaultChain.copy()
-                _.each(results, function(w) {
-                    /* attach events... */
-                    self.selectChain.append(w.element)
-                    var name = $(w.element).find(".youtube-result").data("name")
-                    if (name) {
-                        $(w.element).click(function() {
-                            self.goToVideoPage(name)
-                        })
-                    }
-                })
-                self.selectChain.update()
-                if (next) next(results)
-            })
-        }
-    })
-
-    return VideosPage
-
-}
-
-},{"./ItemListPage":2,"./svghelper":8,"html-truncate":10}],4:[function(require,module,exports){
+},{"./BasePage":1,"./selectchain":5,"./svghelper":7,"basejs":8,"html-truncate":9,"url":15}],3:[function(require,module,exports){
 var Base = require("basejs")
 
 var BasicLayer = Base.extend({
@@ -455,7 +345,7 @@ var BasicLayer = Base.extend({
 
 module.exports = BasicLayer
 
-},{"basejs":9}],5:[function(require,module,exports){
+},{"basejs":8}],4:[function(require,module,exports){
 var BasicLayer = require("./basiclayer")
 
 var Overlay = BasicLayer.extend({
@@ -488,7 +378,7 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./basiclayer":4}],6:[function(require,module,exports){
+},{"./basiclayer":3}],5:[function(require,module,exports){
 module.exports = function($, Base) {
 
     var SelectChain = Base.extend({
@@ -581,7 +471,7 @@ module.exports = function($, Base) {
 
 }
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var Overlay = require("./overlay")
 var _ = require("underscore")
 var Base = require("basejs")
@@ -1306,7 +1196,7 @@ var SoftwareKeyboard = Overlay.extend({
 
 module.exports = SoftwareKeyboard
 
-},{"./overlay":5,"./selectchain":6,"basejs":9,"underscore":11}],8:[function(require,module,exports){
+},{"./overlay":4,"./selectchain":5,"basejs":8,"underscore":10}],7:[function(require,module,exports){
 var SvgHelper = function(window) {
     var document = window.document
     var svgNS = "http://www.w3.org/2000/svg"
@@ -1430,7 +1320,7 @@ var SvgHelper = function(window) {
 
 module.exports = SvgHelper
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*
   Based on Base.js 1.1a (c) 2006-2010, Dean Edwards
   Updated to pass JSHint and converted into a module by Kenneth Powers
@@ -1577,7 +1467,7 @@ module.exports = SvgHelper
   return Base;
 });
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /*global module:true*/
 /*jslint nomen:true*/
 /**
@@ -1749,7 +1639,7 @@ module.exports = SvgHelper
     }
 }(this));
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -3027,7 +2917,7 @@ module.exports = SvgHelper
 
 }).call(this);
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -3538,7 +3428,7 @@ module.exports = SvgHelper
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -3624,7 +3514,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -3711,13 +3601,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":13,"./encode":14}],16:[function(require,module,exports){
+},{"./decode":12,"./encode":13}],15:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -4426,20 +4316,124 @@ function isNullOrUndefined(arg) {
   return  arg == null;
 }
 
-},{"punycode":12,"querystring":15}],"pagescript":[function(require,module,exports){
-module.exports=require('HJD/OK');
-},{}],"HJD/OK":[function(require,module,exports){
+},{"punycode":11,"querystring":14}],"HJD/OK":[function(require,module,exports){
 module.exports = function(Wow) {
     var $ = Wow.$
     var i18n = Wow.i18n
-    var VideosPage = require("../../../js/VideosPage")(Wow)
+    var ItemListPage = require("../../../js/ItemListPage")(Wow)
     var window = Wow.window
     var url = require("url")
+    var SvgHelper = require("../../../js/svghelper")(window)
+    var truncate = require('html-truncate');
 
-    var SearchVideosPage = VideosPage.extend({
+    var SearchVideosPage = ItemListPage.extend({
+        /**
+         * Shows single item.
+         * @param  {object} data  The YouTube item data. Must contain: ytId, title, description, thumbnailUrl
+         * @param  {integer} index Index of item ion page (0-5)
+         */
+        showItem: function(data, index) {
+            console.log("Showing item:", data)
+            var self = this
+            var column = index % 3
+            var row = Math.floor(index / 3)
+            var tx = 160 + column * 223
+            var ty = 36 + row * 223
+            var rect = SvgHelper.rect({
+                ry: 35,
+                rx: 35,
+                height: 195,
+                width: 195,
+                fill: "#fff",
+                stroke: self.colors[index],
+                "stroke-width": 5
+            })
+            var items = [rect]
+            var klass = "youtube-result"
+            var obj = {
+                "class": klass,
+                transform: "translate(" + tx + ", " + ty + ")"
+            }
+            if (data) {
+                var label = truncate(data.title, 20)
+                var thumbUrl = data.thumbnailUrl
+                var thumb = SvgHelper.image({
+                    x: 7,
+                    y: 20,
+                    width: 180,
+                    height: 120,
+                    src: thumbUrl
+                })
+                var txt = SvgHelper.text(label, {
+                    x: 97,
+                    y: 170,
+                    "text-anchor": "middle"
+                })
+                items = [rect, thumb, txt]
+                $(thumb).click(function() {
+                    // go to video page...
+                    self.goToVideoPage(data.ytId)
+                })
+                obj["data-name"] = data.ytId
+            } else {
+                obj["class"] += " disabled"
+            }
+            return SvgHelper.group(obj, items)
+        },
+        displayResults: function(data, next) {
+            var self = this
+            self.showSearchResults(data)
+            /* create plain widgets from results... */
+            var promises = $(".youtube-result").map(function() {
+                var $this = $(this)
+                var el = $this.get(0)
+                return self.widgetize(el)
+            })
+            $.when.apply($, promises).then(function() {
+                var results = Array.prototype.slice.call(arguments)
+                self.selectChain = self.defaultChain.copy()
+                _.each(results, function(w) {
+                    /* attach events... */
+                    self.selectChain.append(w.element)
+                    var name = $(w.element).find(".youtube-result").data("name")
+                    if (name) {
+                        $(w.element).click(function() {
+                            self.goToVideoPage(name)
+                        })
+                    }
+                })
+                self.selectChain.update()
+                if (next) next(results)
+            })
+        },
+        /* update GUI with search results */
+        /* also update left/right button status */
+        showSearchResults: function(data) {
+            var self = this
+            data = data || {
+                items: []
+            }
+            var items = data.items
+            console.log("Showing search results: ",data)
+            /* empty group... */
+            while (self.resultGrp.hasChildNodes()) {
+                self.resultGrp.removeChild(self.resultGrp.lastChild);
+            }
+            for (var i = 0; i < 6; i++) {
+                var item = null
+                if (i < items.length) item = items[i]
+                self.resultGrp.appendChild(self.showItem(item, i))
+            }
+            self.previousSearch = data
+            var leftEnabled = (data.prevPageToken)
+            var rightEnabled = (data.nextPageToken)
+            self.leftBtn.setEnabled(leftEnabled)
+            self.rightBtn.setEnabled(rightEnabled)
+        },        
         createControls: function(data) {
             this.base(data)
             var self = this
+            var homeButton = self.getWidget("homeButton")
             var favVidButton = self.getWidget("favVidButton")
             var userVidButton = self.getWidget("userVidButton")
             self.searchButton = self.getWidget("searchButton")
@@ -4452,82 +4446,82 @@ module.exports = function(Wow) {
             })
             self.searchButton.click(function() {
                 self.showSoftwareKeybard(function(txt) {
+                    self.currentPageToken = null
                     self.textBox.val(txt)
-                    self.searchIt(self.page)
+                    self.searchIt()
                 })
             })
             self.textBox.onFocused(function() {
                 // alert("TextBox focused!")
                 self.selectChain.select(self.textBox.element)
             })
+            self.selectChain.append(homeButton.element)
             self.selectChain.append(favVidButton.element)
             self.selectChain.append(userVidButton.element)
             self.selectChain.append(self.searchButton.element)
             self.selectChain.append(self.textBox.element)
 
-            var page = parseInt(data.query.page || 1)
-            self.page = page
             self.query = data.query.query
             self.textBox.onEnterPressed = function() {
-                self.searchIt(page)
+                self.currentPageToken = null
+                self.searchIt()
             }
             self.getWidget("searchButton").click(function() {
-                self.searchIt(page)
+                self.currentPageToken = null
+                self.searchIt()
             })
         },
         updateView: function(data) {
             var self = this
             var query = data.query.query || ""
-            var page = parseInt(data.query.page || 1)
+            var pageToken = data.query.pageToken            
+            self.currentPageToken = pageToken
             if (query) {
                 self.textBox.val(query)
-                self.searchIt(data.query, function(results) {
-                    console.log("Displaying results: ", results)
-                })
+                self.searchIt()
             } else {
-                self.displayResults(page, null)
+                self.displayResults(null)
             }
         },
-        getQueryString: function(dpage) {
+        /**
+         * Takes the current query string and updates the pageToken part.
+         */
+        getQueryString: function(pageToken) {
             var self = this
             var parsedUrl = url.parse(window.location.href, true)
             parsedUrl.query.query = self.textBox.val()
-            var pg = parseInt(parsedUrl.query.page || 1)
-            if (dpage) pg += dpage
-            if (pg < 1) pg = 1
-            parsedUrl.query.page = pg
+            if(pageToken) {
+                parsedUrl.query.pageToken = pageToken
+            } else {
+                delete parsedUrl.query.pageToken
+            }
             parsedUrl.search = null
             return url.format(parsedUrl)
         },
-        searchIt: function(q, next) {
+        searchIt: function() {
             var self = this
-            var page = parseInt(q.page || 1)
             var query = self.textBox.val()
+            var pageToken = self.currentPageToken  
             self.updateBrowserQuery({
-                page: page,
                 query: query
             })
-            self.searchYouTubeVideos({
-                q: query,
-                'max-results': 6,
-                'start-index': 1 + (page - 1) * 6
-            }, function(err, data) {
-                if (!err) {
-                    self.displayResults(page, data, next)
-                }
-            })
-        },
-        searchYouTubeVideos: function(data, next) {
-            console.log("Searching for YouTube videos")
-            console.log(data)
-            if (data.q) {
-                this.wtr.rpc("youTubeSearch", data, function(err, res) {
-                    if (err) next(err);
-                    else next(null, res.result)
+            // new youtube search... paging is token-based!
+            if(query) {
+                var url = "/api/ytsearch?query="+ encodeURIComponent(query)+"&pageSize=6"
+                if(pageToken) url += "&pageToken="+pageToken
+                $.getJSON(url).done(function(data) {
+                    console.log("Displaying results: ", data)
+                    self.displayResults(data)                    
                 })
-            } else {
-                next("No search criteria given")
             }
+        },
+        goToPreviousPage: function() {
+            var pageToken = (this.previousSearch ? this.previousSearch.prevPageToken : null)
+            this.goTo(this.getQueryString(pageToken))
+        },
+        goToNextPage: function() {
+            var pageToken = (this.previousSearch ? this.previousSearch.nextPageToken : null)
+            this.goTo(this.getQueryString(pageToken))
         },
         focusTextBoxIfCurrent: function() {
             var target = $(this.selectChain.current())
@@ -4595,4 +4589,6 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/VideosPage":3,"url":16}]},{},["HJD/OK"])
+},{"../../../js/ItemListPage":2,"../../../js/svghelper":7,"html-truncate":9,"url":15}],"pagescript":[function(require,module,exports){
+module.exports=require('HJD/OK');
+},{}]},{},["HJD/OK"])

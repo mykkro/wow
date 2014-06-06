@@ -137,6 +137,7 @@ var WowServer = {
     require("./routes/logging")(app, API, Auth)
     require("./routes/rpc")(app)
     require("./routes/search")(app, API)
+    require("./routes/youtubesearch")(app, API)
     require("./routes/admin")(app, Auth)
     require("./routes/loginlogout")(app, API, passport)
     require("./routes/upload")(app, Storage, {allowedExtensions:allowedFiletypes, maxFilesize:allowedFilesize})
