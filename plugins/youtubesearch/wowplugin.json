@@ -1,10 +1,12 @@
 {
-  "name": "skeleton",
+  "name": "youtubesearch",
   "version": "0.0.0",
   "description": "",
   "main": "/index",
   "depends": {},
   "langs": [
-    "en", "de", "cz"
+    "en",
+    "de",
+    "cz"
   ]
 }

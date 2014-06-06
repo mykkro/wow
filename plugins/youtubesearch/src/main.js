@@ -1,8 +1,7 @@
 module.exports = function(Wow) {
     var $ = Wow.$
     var i18n = Wow.i18n
-    var userId = '555'
-    var VideosPage = require("../../js/VideosPage")(Wow)
+    var VideosPage = require("../../../js/VideosPage")(Wow)
     var window = Wow.window
     var url = require("url")
 

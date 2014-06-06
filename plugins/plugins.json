@@ -27,6 +27,9 @@
     },
     "scrapbook": {
       "enabled": true
+    },
+    "youtubesearch": {
+      "enabled": true
     }
   }
 }

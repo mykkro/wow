@@ -49,15 +49,6 @@ module.exports = function(grunt) {
                     ],
                 }
             },
-            // TODO do automatic scanning or regular expression...
-            pg_admin: {
-                src: ['./js/admin.js'],
-                dest: 'public/js/pages/admin.js',
-                options: {
-                    alias: [],
-                    transform: ['brfs']
-                }
-            },
             pg_uservideos: {
                 src: ['./pages/uservideos/main.js'],
                 dest: 'public/js/pages/uservideos.js',
@@ -71,14 +62,6 @@ module.exports = function(grunt) {
                 dest: 'public/js/pages/favvideos.js',
                 options: {
                     alias: ['./pages/favvideos/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_searchvideos: {
-                src: ['./pages/searchvideos/main.js'],
-                dest: 'public/js/pages/searchvideos.js',
-                options: {
-                    alias: ['./pages/searchvideos/main.js:pagescript'],
                     transform: ['brfs']
                 }
             }
