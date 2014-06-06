@@ -120,7 +120,8 @@
     "brfs": "~1.1.1",
     "browserify": "~4.1.8",
     "browserify-shim": "~3.5.0",
-    "grunt-browserify": "~2.1.0"
+    "grunt-browserify": "~2.1.0",
+    "grunt-ssh": "~0.11.2"
   },
   "webkit": {
     "plugin": true

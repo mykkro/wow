@@ -215,7 +215,8 @@ module.exports = function(grunt) {
                         '!node_modules/grunt-docker/**',
                         '!node_modules/grunt-generate/**',
                         '!node_modules/grunt-jsbeautifier/**',
-                        '!node_modules/grunt-downloadfile/**'
+                        '!node_modules/grunt-downloadfile/**',
+                        '!node_modules/grunt-ssh/**'
                     ]
                 }]
             }
@@ -261,7 +262,22 @@ module.exports = function(grunt) {
                 }
             }
         },
-
+        secret: grunt.file.readJSON('./lib/config/secret.json'),
+        sftp: {
+          test: {
+            files: {
+              "./": "dist/wow-<%= pkg.version %>.zip"
+            },
+            options: {
+              path: '<%= secret.path %>',
+              host: '<%= secret.host %>',
+              username: '<%= secret.username %>',
+              password: '<%= secret.password %>',
+              showProgress: true,
+              srcBasePath: "dist/"
+            }
+          }
+        },
         clean: {
             docs: ['docs']
         },
@@ -284,7 +300,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-jsbeautifier');
     grunt.loadNpmTasks('grunt-docker');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-ssh');
 
     grunt.registerTask('default', ['concat', 'browserify', 'less']);
     grunt.registerTask('makedoc', ['clean:docs', 'jsbeautifier', 'docker']);
+    grunt.registerTask('deploy', ['compress', 'sftp']);
 }
