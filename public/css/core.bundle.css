@@ -944,6 +944,14 @@ body,
   fill: salmon;
   fill-opacity: 0.2;
 }
+.wow-widget.iconbutton.disabled > image {
+  opacity: 0.3;
+}
+.wow-widget.iconbutton.disabled > image:hover {
+  opacity: 0.3;
+  fill-opacity: 1;
+  filter: none;
+}
 .wow-widget.iconbutton.disabled .button {
   opacity: 0.3;
 }
