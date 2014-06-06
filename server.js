@@ -36,7 +36,6 @@ var morgan  = require('morgan')
 
 // wow APIs and middlewares
 var API = require("./lib/api/API")
-var REST = require("./lib/api/REST")
 var Storage = require("./lib/Storage")
 var Auth = require("./lib/middleware/auth")
 
@@ -111,10 +110,6 @@ var WowServer = {
     app.use(passport.initialize());
     app.use(passport.session());
 
-
-    // REST APIs of data entities
-    REST(app, API)
-
     //
     // configure routes...
     // 
@@ -133,7 +128,7 @@ var WowServer = {
         }
     });
 
-    
+    require("./routes/entities")(app, API)    
     require("./routes/logging")(app, API, Auth)
     require("./routes/rpc")(app)
     require("./routes/search")(app, API)

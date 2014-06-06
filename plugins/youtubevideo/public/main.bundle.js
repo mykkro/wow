@@ -3870,8 +3870,8 @@ function isNullOrUndefined(arg) {
 }
 
 },{"punycode":8,"querystring":11}],"pagescript":[function(require,module,exports){
-module.exports=require('Bkkh3s');
-},{}],"Bkkh3s":[function(require,module,exports){
+module.exports=require('HJD/OK');
+},{}],"HJD/OK":[function(require,module,exports){
 module.exports = function(Wow) {
     var window = Wow.window
     var $ = Wow.$
@@ -3886,7 +3886,6 @@ module.exports = function(Wow) {
     var VideoPage = BasePage.extend({
         init: function(data, next) {
             var W = this.wtr
-            var server = W.rpc
             var videoId = data.query.id
             var userId = "555" //Auth.getLoggedUser().id
             var self = this
@@ -3909,26 +3908,30 @@ module.exports = function(Wow) {
                 }
                 self.selectChain.show()
             }
-            server("videoIsStarred", {
-                userId: userId,
-                videoId: videoId
-            }, function(err, data) {
-                setFavState(!err && data.result)
+
+            $.getJSON("/plugins/youTubeVideo/starred/"+videoId).done(function(st) {
+                console.log("Setting favorite state: ", st)
+                setFavState(st)
             })
+
             favButton.click(function() {
-                server("videoStar", {
-                    userId: userId,
-                    videoId: videoId
-                }, function(err, data) {
-                    if (!err) setFavState(true)
+                $.ajax({
+                    url: "/plugins/youTubeVideo/star/"+videoId,
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8"
+                }).done(function(res) {
+                    console.log("Set favorite:", res)
+                    setFavState(res)
                 })
             })
             unfavButton.click(function() {
-                server("videoUnstar", {
-                    userId: userId,
-                    videoId: videoId
-                }, function(err, data) {
-                    if (!err) setFavState(false)
+                $.ajax({
+                    url: "/plugins/youTubeVideo/unstar/"+videoId,
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8"
+                }).done(function(res) {
+                    console.log("Unset favorite:", res)
+                    setFavState(res)
                 })
             })
             quitBtn.click(function() {
@@ -4004,4 +4007,4 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/BasePage":1,"../../../js/selectchain":4,"basejs":6}]},{},["Bkkh3s"])
+},{"../../../js/BasePage":1,"../../../js/selectchain":4,"basejs":6}]},{},["HJD/OK"])
