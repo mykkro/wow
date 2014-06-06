@@ -16,7 +16,7 @@
     "title": {
       "title": "Title",
       "type": "string",
-      "required": true
+      "required": false
     },
     "description": {
       "title": "Description",

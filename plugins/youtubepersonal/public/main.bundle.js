@@ -328,7 +328,7 @@ module.exports = function(Wow) {
                 transform: "translate(" + tx + ", " + ty + ")"
             }
             if (data) {
-                var label = truncate(data.title, 20)
+                var label = data.title ? truncate(data.title, 20) : "Untitled Video"
                 var thumbUrl = data.thumbnailUrl
                 var thumb = SvgHelper.image({
                     x: 7,
@@ -4459,7 +4459,9 @@ module.exports = function(Wow) {
             var skip = ((page-1)*6)
             $.getJSON("/api/youTubeVideo/personal?skip="+skip+"&limit=6").done(function(items) {
                 console.log("Found items: ", items)
-                var obj = {totalItems: 7, startIndex: 1+skip, itemsPerPage: 6, items: items} 
+                var total = items.length
+                if(total==6) total=7
+                var obj = {totalItems: total, startIndex: 1+skip, itemsPerPage: 6, items: items} 
                 self.displayResults(page, obj, next)
             })
         }

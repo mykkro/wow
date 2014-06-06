@@ -50,7 +50,7 @@ module.exports = function(Wow) {
                 transform: "translate(" + tx + ", " + ty + ")"
             }
             if (data) {
-                var label = truncate(data.title, 20)
+                var label = data.title ? truncate(data.title, 20) : "Untitled Video"
                 var thumbUrl = data.thumbnailUrl
                 var thumb = SvgHelper.image({
                     x: 7,
