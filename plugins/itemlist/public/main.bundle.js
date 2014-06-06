@@ -4384,8 +4384,8 @@ function isNullOrUndefined(arg) {
 
 module.exports = SearchQueryUtil
 },{}],"pagescript":[function(require,module,exports){
-module.exports=require('Bkkh3s');
-},{}],"Bkkh3s":[function(require,module,exports){
+module.exports=require('HJD/OK');
+},{}],"HJD/OK":[function(require,module,exports){
 module.exports = function(Wow) {
     var window = Wow.window
     var $ = Wow.$
@@ -4482,6 +4482,10 @@ module.exports = function(Wow) {
                 case 'youTubeVideo':
                     ytid = tgt.data("ytid")
                     this.followYouTubeVideoLink(targetId, ytid)
+                    break;
+                case 'shortcut':
+                    var uri = tgt.data("uri")
+                    window.location.href = uri
                     break;
                 default:
                     console.error("Unsupported link type: "+targetType)
@@ -4590,6 +4594,9 @@ module.exports = function(Wow) {
                     case 'voice':
                         obj['data-uuid'] = data.voiceUUID
                         break;
+                    case 'shortcut':
+                        obj['data-uri'] = data.uri
+                        break
                 }
             } else {
                 obj["class"] += " disabled"
@@ -4601,4 +4608,4 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/ItemListPage":2,"../../../js/svghelper":7,"../routes/searchqueryutil":16,"html-truncate":9,"url":15}]},{},["Bkkh3s"])
+},{"../../../js/ItemListPage":2,"../../../js/svghelper":7,"../routes/searchqueryutil":16,"html-truncate":9,"url":15}]},{},["HJD/OK"])

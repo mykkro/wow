@@ -55,6 +55,10 @@ module.exports = function(prefix, app, Auth, API) {
 		redirectToSearch(req, res, "youTubeVideo")
 	})
 
+	app.get(prefix+"/shortcuts", function(req, res) {
+		redirectToSearch(req, res, "shortcut")
+	})
+
 	// common functionality for all API calls
 	// returned data are in JSON
 	app.use(prefix+"/api", function(req, res, next) {

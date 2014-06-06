@@ -95,6 +95,10 @@ module.exports = function(Wow) {
                     ytid = tgt.data("ytid")
                     this.followYouTubeVideoLink(targetId, ytid)
                     break;
+                case 'shortcut':
+                    var uri = tgt.data("uri")
+                    window.location.href = uri
+                    break;
                 default:
                     console.error("Unsupported link type: "+targetType)
             }
@@ -202,6 +206,9 @@ module.exports = function(Wow) {
                     case 'voice':
                         obj['data-uuid'] = data.voiceUUID
                         break;
+                    case 'shortcut':
+                        obj['data-uri'] = data.uri
+                        break
                 }
             } else {
                 obj["class"] += " disabled"

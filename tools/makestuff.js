@@ -7,6 +7,7 @@ var fixtures = [
 	{ "type":"shortcut", "name":"appsLink", "file":"shortcut.apps.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}}, 
 	{ "type":"shortcut", "name":"radioLink", "file":"shortcut.netradio.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}}, 
 	{ "type":"shortcut", "name":"youtubeLink", "file":"shortcut.youtubesearch.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}},
+	{ "type":"shortcut", "name":"shortcutsLink", "file":"shortcut.shortcuts.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}},
 	{ "type":"theme", "name":"defaultTheme", "file":"theme.default.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}},
 	{ "type":"preset", "name":"defaultPreset", "file":"preset.default.json", "autowire": {"ownerAdminId":"defaultAdmin._id", "themeId": "defaultTheme._id", "button1LinkId": "appsLink._id", "button2LinkId": "radioLink._id", "button3LinkId": "youtubeLink._id"}}, 
 	{ "type":"user", "name":"passwordlessUser", "file":"user.withoutpass.json", "autowire": {"ownerAdminId":"defaultAdmin._id", "locationId": "defaultLocation._id", "presetId": "defaultPreset._id"}}, 
