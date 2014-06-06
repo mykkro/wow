@@ -30,6 +30,12 @@
     },
     "youtubesearch": {
       "enabled": true
+    },
+    "youtubepersonal": {
+      "enabled": true
+    },
+    "youtubefavorite": {
+      "enabled": true
     }
   }
 }

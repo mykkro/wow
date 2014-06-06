@@ -49,22 +49,6 @@ module.exports = function(grunt) {
                         './js/game/Watches.js:Watches'
                     ],
                 }
-            },
-            pg_uservideos: {
-                src: ['./pages/uservideos/main.js'],
-                dest: 'public/js/pages/uservideos.js',
-                options: {
-                    alias: ['./pages/uservideos/main.js:pagescript'],
-                    transform: ['brfs']
-                }
-            },
-            pg_favvideos: {
-                src: ['./pages/favvideos/main.js'],
-                dest: 'public/js/pages/favvideos.js',
-                options: {
-                    alias: ['./pages/favvideos/main.js:pagescript'],
-                    transform: ['brfs']
-                }
             }
         },
         concat: {

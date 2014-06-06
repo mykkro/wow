@@ -71,7 +71,6 @@ var WowServer = {
 
     var allowedFilesize = 50000000
     var plugins = require("./routes/plugins")(app, express, Auth, API)
-    var pages = require("./routes/pages")(app, express, Auth)
 
     // view engine setup
     app.engine('mustache', require('hogan-express'))
@@ -99,7 +98,6 @@ var WowServer = {
     app.use("/imports", express.static(Storage.importDir))
     app.use("/locales", express.static(__dirname+"/locales"))
     app.use("/userdata", express.static(__dirname+"/userdata"))
-    pages.static()
     plugins.static()
 
 
@@ -128,15 +126,14 @@ var WowServer = {
         }
     });
 
-    require("./routes/entities")(app, API)    
     require("./routes/logging")(app, API, Auth)
     require("./routes/rpc")(app)
-    require("./routes/search")(app, API)
+    require("./routes/entities")(app, API, Auth)    
+    require("./routes/search")(app, API, Auth)
     require("./routes/youtubesearch")(app, API)
     require("./routes/admin")(app, Auth)
     require("./routes/loginlogout")(app, API, passport)
     require("./routes/upload")(app, Storage, {allowedExtensions:allowedFiletypes, maxFilesize:allowedFilesize})
-    pages.routes()
     plugins.routes()
 
 	  // error handler middleware...

@@ -2,7 +2,7 @@
 
 var _ = require("lodash")
 
-module.exports = function(app, api) {
+module.exports = function(app, api, Auth) {
 
 
 	// helper function to return the results
@@ -73,55 +73,100 @@ module.exports = function(app, api) {
 		next()
 	})
 
-	// generated REST wrappers for entity 'admin'
+	app.get('/api/:type/search', function(req, res) {
+		var type = req.params.type
+		var query = req.query
+		var q = {
+			limit: parseInt(query.limit || 10),
+			skip: parseInt(query.skip || 0),
+			sort: { 'title': 'asc' }
+		}
+	 	console.log("Finding items: "+type)
+	 	api[type].findWithOptions(q, function(err, rr) {
+	    	out(res, err, rr)
+	  	})		  	
+	});
 
-	// api.admin.find
-	app.get('/api/admin/search', function(req, res) {
-	 	api.admin.find(req.query, function(err, rr) {
+	app.get('/api/:type/count', function(req, res) {
+		var type = req.params.type
+	 	api[type].count(req.query, function(err, rr) {
 	    	out(res, err, rr)
 	  	})	
 	});
 
-	// api.admin.count
-	app.get('/api/admin/count', function(req, res) {
-	 	api.admin.count(req.query, function(err, rr) {
+	app.get('/api/:type/personal', Auth.isAuthenticatedAsUser, function(req, res) {
+		var type = req.params.type
+		var query = req.query
+		var userId = parseInt(req.user.user._id)
+		var q = {
+			limit: parseInt(query.limit || 10),
+			skip: parseInt(query.skip || 0),
+			sort: { 'title': 'asc' },
+			query: { type: type, userId: userId }
+		}
+	 	console.log("Finding personal items: "+type)
+	 	api.favorite.findWithOptions(q, function(err, rr) {
+	 		var ids = _.map(rr, function(r) {return r.eid})
+	 		api[type].getMultip(ids).done(function(items) {
+	 			out(res, null, items)	
+	 		})
+	  	})		  	
+	});
+
+	app.get('/api/:type/favorite', Auth.isAuthenticatedAsUser, function(req, res) {
+		var type = req.params.type
+		var query = req.query
+		var userId = parseInt(req.user.user._id)
+		var q = {
+			limit: parseInt(query.limit || 10),
+			skip: parseInt(query.skip || 0),
+			sort: { 'title': 'asc' },
+			query: { type: type, userId: userId, favorite: true }
+		}
+	 	console.log("Finding favorite items: "+type)
+	 	api.favorite.findWithOptions(q, function(err, rr) {
+	 		var ids = _.map(rr, function(r) {return r.eid})
+	 		api[type].getMultip(ids).done(function(items) {
+	 			out(res, null, items)	
+	 		})
+	 	})
+	});
+
+	app.get('/api/:type/:id', function(req, res) {
+		var type = req.params.type
+	 	api[type].get(req.params.id, function(err, rr) {
 	    	out(res, err, rr)
 	  	})	
 	});
 
-	// api.admin.get
-	app.get('/api/admin/:id', function(req, res) {
-	 	api.admin.get(req.params.id, function(err, rr) {
+	app.delete('/api/:type/:id', Auth.isAuthenticatedAsAdmin, function(req, res) {
+		var type = req.params.type
+	 	api[type].delete(req.params.id, function(err, rr) {
 	    	out(res, err, rr)
 	  	})	
 	});
 
-	// api.admin.delete
-	app.delete('/api/admin/:id', function(req, res) {
-	 	api.admin.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.admin.update
-	app.put('/api/admin/:id', function(req, res) {
-		//api.admin.update(req.params.id, req.body, function(err, rr) {
-		api.admin.set(req.params.id, req.body, function(err, rr) {
+	app.put('/api/:type/:id', Auth.isAuthenticatedAsAdmin, function(req, res) {
+		var type = req.params.type
+		api[type].set(req.params.id, req.body, function(err, rr) {
 	    	out(res, err, rr)
 	  	})
 	});	
 	 
-	// api.admin.create
-	app.post('/api/admin/new', function(req, res) {
-		api.admin.create(req.body, function(err, rr) {
+	app.post('/api/:type/new', Auth.isAuthenticatedAsAdmin, function(req, res) {
+		var type = req.params.type
+		api[type].create(req.body, function(err, rr) {
 	    	out(res, err, rr)
 	  	})
 	});	
 
-	app.get('/thumbs/admin',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/admin.png" });
+	app.get('/thumbs/:type',function(req,res) {
+		var type = req.params.type
+		res.writeHead(302, {location: "/assets/thumbs/"+type+".png" });
 		res.end();
 	});
+
+	// generated REST wrappers for entity 'admin'
 
 	app.get('/admin/:id/thumb',function(req,res) {
 		var id = req.params.id
@@ -143,54 +188,6 @@ module.exports = function(app, api) {
 
 	// generated REST wrappers for entity 'app'
 
-	// api.app.find
-	app.get('/api/app/search', function(req, res) {
-	 	api.app.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.app.count
-	app.get('/api/app/count', function(req, res) {
-	 	api.app.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.app.get
-	app.get('/api/app/:id', function(req, res) {
-	 	api.app.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.app.delete
-	app.delete('/api/app/:id', function(req, res) {
-	 	api.app.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.app.update
-	app.put('/api/app/:id', function(req, res) {
-		//api.app.update(req.params.id, req.body, function(err, rr) {
-		api.app.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.app.create
-	app.post('/api/app/new', function(req, res) {
-		api.app.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/app',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/app.png" });
-		res.end();
-	});
-
 	app.get('/app/:id/thumb',function(req,res) {
 		var id = req.params.id
 		console.log("Thumbnail: "+id)
@@ -210,54 +207,6 @@ module.exports = function(app, api) {
 	});
 
 	// generated REST wrappers for entity 'article'
-
-	// api.article.find
-	app.get('/api/article/search', function(req, res) {
-	 	api.article.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.article.count
-	app.get('/api/article/count', function(req, res) {
-	 	api.article.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.article.get
-	app.get('/api/article/:id', function(req, res) {
-	 	api.article.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.article.delete
-	app.delete('/api/article/:id', function(req, res) {
-	 	api.article.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.article.update
-	app.put('/api/article/:id', function(req, res) {
-		//api.article.update(req.params.id, req.body, function(err, rr) {
-		api.article.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.article.create
-	app.post('/api/article/new', function(req, res) {
-		api.article.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/article',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/article.png" });
-		res.end();
-	});
 
 	app.get('/article/:id/thumb',function(req,res) {
 		var id = req.params.id
@@ -279,54 +228,6 @@ module.exports = function(app, api) {
 
 	// generated REST wrappers for entity 'image'
 
-	// api.image.find
-	app.get('/api/image/search', function(req, res) {
-	 	api.image.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.image.count
-	app.get('/api/image/count', function(req, res) {
-	 	api.image.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.image.get
-	app.get('/api/image/:id', function(req, res) {
-	 	api.image.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.image.delete
-	app.delete('/api/image/:id', function(req, res) {
-	 	api.image.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.image.update
-	app.put('/api/image/:id', function(req, res) {
-		//api.image.update(req.params.id, req.body, function(err, rr) {
-		api.image.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.image.create
-	app.post('/api/image/new', function(req, res) {
-		api.image.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/image',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/image.png" });
-		res.end();
-	});
-
 	app.get('/image/:id/thumb',function(req,res) {
 		var id = req.params.id
 		console.log("Thumbnail: "+id)
@@ -346,54 +247,6 @@ module.exports = function(app, api) {
 	});
 
 	// generated REST wrappers for entity 'video'
-
-	// api.video.find
-	app.get('/api/video/search', function(req, res) {
-	 	api.video.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.video.count
-	app.get('/api/video/count', function(req, res) {
-	 	api.video.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.video.get
-	app.get('/api/video/:id', function(req, res) {
-	 	api.video.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.video.delete
-	app.delete('/api/video/:id', function(req, res) {
-	 	api.video.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.video.update
-	app.put('/api/video/:id', function(req, res) {
-		//api.video.update(req.params.id, req.body, function(err, rr) {
-		api.video.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.video.create
-	app.post('/api/video/new', function(req, res) {
-		api.video.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/video',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/video.png" });
-		res.end();
-	});
 
 	app.get('/video/:id/thumb',function(req,res) {
 		var id = req.params.id
@@ -415,54 +268,6 @@ module.exports = function(app, api) {
 
 	// generated REST wrappers for entity 'voice'
 
-	// api.voice.find
-	app.get('/api/voice/search', function(req, res) {
-	 	api.voice.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.voice.count
-	app.get('/api/voice/count', function(req, res) {
-	 	api.voice.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.voice.get
-	app.get('/api/voice/:id', function(req, res) {
-	 	api.voice.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.voice.delete
-	app.delete('/api/voice/:id', function(req, res) {
-	 	api.voice.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.voice.update
-	app.put('/api/voice/:id', function(req, res) {
-		//api.voice.update(req.params.id, req.body, function(err, rr) {
-		api.voice.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.voice.create
-	app.post('/api/voice/new', function(req, res) {
-		api.voice.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/voice',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/voice.png" });
-		res.end();
-	});
-
 	app.get('/voice/:id/thumb',function(req,res) {
 		var id = req.params.id
 		console.log("Thumbnail: "+id)
@@ -482,54 +287,6 @@ module.exports = function(app, api) {
 	});
 
 	// generated REST wrappers for entity 'json'
-
-	// api.json.find
-	app.get('/api/json/search', function(req, res) {
-	 	api.json.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.json.count
-	app.get('/api/json/count', function(req, res) {
-	 	api.json.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.json.get
-	app.get('/api/json/:id', function(req, res) {
-	 	api.json.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.json.delete
-	app.delete('/api/json/:id', function(req, res) {
-	 	api.json.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.json.update
-	app.put('/api/json/:id', function(req, res) {
-		//api.json.update(req.params.id, req.body, function(err, rr) {
-		api.json.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.json.create
-	app.post('/api/json/new', function(req, res) {
-		api.json.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/json',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/json.png" });
-		res.end();
-	});
 
 	app.get('/json/:id/thumb',function(req,res) {
 		var id = req.params.id
@@ -551,54 +308,6 @@ module.exports = function(app, api) {
 
 	// generated REST wrappers for entity 'netRadio'
 
-	// api.netRadio.find
-	app.get('/api/netRadio/search', function(req, res) {
-	 	api.netRadio.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.netRadio.count
-	app.get('/api/netRadio/count', function(req, res) {
-	 	api.netRadio.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.netRadio.get
-	app.get('/api/netRadio/:id', function(req, res) {
-	 	api.netRadio.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.netRadio.delete
-	app.delete('/api/netRadio/:id', function(req, res) {
-	 	api.netRadio.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.netRadio.update
-	app.put('/api/netRadio/:id', function(req, res) {
-		//api.netRadio.update(req.params.id, req.body, function(err, rr) {
-		api.netRadio.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.netRadio.create
-	app.post('/api/netRadio/new', function(req, res) {
-		api.netRadio.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/netRadio',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/netradio.png" });
-		res.end();
-	});
-
 	app.get('/netRadio/:id/thumb',function(req,res) {
 		var id = req.params.id
 		console.log("Thumbnail: "+id)
@@ -618,54 +327,6 @@ module.exports = function(app, api) {
 	});
 
 	// generated REST wrappers for entity 'user'
-
-	// api.user.find
-	app.get('/api/user/search', function(req, res) {
-	 	api.user.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.user.count
-	app.get('/api/user/count', function(req, res) {
-	 	api.user.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.user.get
-	app.get('/api/user/:id', function(req, res) {
-	 	api.user.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.user.delete
-	app.delete('/api/user/:id', function(req, res) {
-	 	api.user.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.user.update
-	app.put('/api/user/:id', function(req, res) {
-		//api.user.update(req.params.id, req.body, function(err, rr) {
-		api.user.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.user.create
-	app.post('/api/user/new', function(req, res) {
-		api.user.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/user',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/user.png" });
-		res.end();
-	});
 
 	app.get('/user/:id/thumb',function(req,res) {
 		var id = req.params.id
@@ -687,54 +348,6 @@ module.exports = function(app, api) {
 
 	// generated REST wrappers for entity 'usergroup'
 
-	// api.usergroup.find
-	app.get('/api/usergroup/search', function(req, res) {
-	 	api.usergroup.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.usergroup.count
-	app.get('/api/usergroup/count', function(req, res) {
-	 	api.usergroup.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.usergroup.get
-	app.get('/api/usergroup/:id', function(req, res) {
-	 	api.usergroup.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.usergroup.delete
-	app.delete('/api/usergroup/:id', function(req, res) {
-	 	api.usergroup.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.usergroup.update
-	app.put('/api/usergroup/:id', function(req, res) {
-		//api.usergroup.update(req.params.id, req.body, function(err, rr) {
-		api.usergroup.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.usergroup.create
-	app.post('/api/usergroup/new', function(req, res) {
-		api.usergroup.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/usergroup',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/usergroup.png" });
-		res.end();
-	});
-
 	app.get('/usergroup/:id/thumb',function(req,res) {
 		var id = req.params.id
 		console.log("Thumbnail: "+id)
@@ -754,54 +367,6 @@ module.exports = function(app, api) {
 	});
 
 	// generated REST wrappers for entity 'album'
-
-	// api.album.find
-	app.get('/api/album/search', function(req, res) {
-	 	api.album.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.album.count
-	app.get('/api/album/count', function(req, res) {
-	 	api.album.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.album.get
-	app.get('/api/album/:id', function(req, res) {
-	 	api.album.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.album.delete
-	app.delete('/api/album/:id', function(req, res) {
-	 	api.album.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.album.update
-	app.put('/api/album/:id', function(req, res) {
-		//api.album.update(req.params.id, req.body, function(err, rr) {
-		api.album.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.album.create
-	app.post('/api/album/new', function(req, res) {
-		api.album.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/album',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/album.png" });
-		res.end();
-	});
 
 	app.get('/album/:id/thumb',function(req,res) {
 		var id = req.params.id
@@ -823,54 +388,6 @@ module.exports = function(app, api) {
 
 	// generated REST wrappers for entity 'scrapbook'
 
-	// api.scrapbook.find
-	app.get('/api/scrapbook/search', function(req, res) {
-	 	api.scrapbook.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.scrapbook.count
-	app.get('/api/scrapbook/count', function(req, res) {
-	 	api.scrapbook.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.scrapbook.get
-	app.get('/api/scrapbook/:id', function(req, res) {
-	 	api.scrapbook.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.scrapbook.delete
-	app.delete('/api/scrapbook/:id', function(req, res) {
-	 	api.scrapbook.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.scrapbook.update
-	app.put('/api/scrapbook/:id', function(req, res) {
-		//api.scrapbook.update(req.params.id, req.body, function(err, rr) {
-		api.scrapbook.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.scrapbook.create
-	app.post('/api/scrapbook/new', function(req, res) {
-		api.scrapbook.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/scrapbook',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/scrapbook.png" });
-		res.end();
-	});
-
 	app.get('/scrapbook/:id/thumb',function(req,res) {
 		var id = req.params.id
 		console.log("Thumbnail: "+id)
@@ -890,54 +407,6 @@ module.exports = function(app, api) {
 	});
 
 	// generated REST wrappers for entity 'youTubeVideo'
-
-	// api.youTubeVideo.find
-	app.get('/api/youTubeVideo/search', function(req, res) {
-	 	api.youTubeVideo.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.youTubeVideo.count
-	app.get('/api/youTubeVideo/count', function(req, res) {
-	 	api.youTubeVideo.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.youTubeVideo.get
-	app.get('/api/youTubeVideo/:id', function(req, res) {
-	 	api.youTubeVideo.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.youTubeVideo.delete
-	app.delete('/api/youTubeVideo/:id', function(req, res) {
-	 	api.youTubeVideo.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.youTubeVideo.update
-	app.put('/api/youTubeVideo/:id', function(req, res) {
-		//api.youTubeVideo.update(req.params.id, req.body, function(err, rr) {
-		api.youTubeVideo.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.youTubeVideo.create
-	app.post('/api/youTubeVideo/new', function(req, res) {
-		api.youTubeVideo.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/youTubeVideo',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/youtubevideo.png" });
-		res.end();
-	});
 
 	app.get('/youTubeVideo/:id/thumb',function(req,res) {
 		var id = req.params.id
@@ -959,54 +428,6 @@ module.exports = function(app, api) {
 
 	// generated REST wrappers for entity 'preset'
 
-	// api.preset.find
-	app.get('/api/preset/search', function(req, res) {
-	 	api.preset.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.preset.count
-	app.get('/api/preset/count', function(req, res) {
-	 	api.preset.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.preset.get
-	app.get('/api/preset/:id', function(req, res) {
-	 	api.preset.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.preset.delete
-	app.delete('/api/preset/:id', function(req, res) {
-	 	api.preset.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.preset.update
-	app.put('/api/preset/:id', function(req, res) {
-		//api.preset.update(req.params.id, req.body, function(err, rr) {
-		api.preset.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.preset.create
-	app.post('/api/preset/new', function(req, res) {
-		api.preset.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/preset',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/preset.png" });
-		res.end();
-	});
-
 	app.get('/preset/:id/thumb',function(req,res) {
 		var id = req.params.id
 		console.log("Thumbnail: "+id)
@@ -1026,54 +447,6 @@ module.exports = function(app, api) {
 	});
 
 	// generated REST wrappers for entity 'location'
-
-	// api.location.find
-	app.get('/api/location/search', function(req, res) {
-	 	api.location.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.location.count
-	app.get('/api/location/count', function(req, res) {
-	 	api.location.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.location.get
-	app.get('/api/location/:id', function(req, res) {
-	 	api.location.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.location.delete
-	app.delete('/api/location/:id', function(req, res) {
-	 	api.location.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.location.update
-	app.put('/api/location/:id', function(req, res) {
-		//api.location.update(req.params.id, req.body, function(err, rr) {
-		api.location.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.location.create
-	app.post('/api/location/new', function(req, res) {
-		api.location.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/location',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/location.png" });
-		res.end();
-	});
 
 	app.get('/location/:id/thumb',function(req,res) {
 		var id = req.params.id
@@ -1095,54 +468,6 @@ module.exports = function(app, api) {
 
 	// generated REST wrappers for entity 'theme'
 
-	// api.theme.find
-	app.get('/api/theme/search', function(req, res) {
-	 	api.theme.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.theme.count
-	app.get('/api/theme/count', function(req, res) {
-	 	api.theme.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.theme.get
-	app.get('/api/theme/:id', function(req, res) {
-	 	api.theme.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.theme.delete
-	app.delete('/api/theme/:id', function(req, res) {
-	 	api.theme.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.theme.update
-	app.put('/api/theme/:id', function(req, res) {
-		//api.theme.update(req.params.id, req.body, function(err, rr) {
-		api.theme.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.theme.create
-	app.post('/api/theme/new', function(req, res) {
-		api.theme.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/theme',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/theme.png" });
-		res.end();
-	});
-
 	app.get('/theme/:id/thumb',function(req,res) {
 		var id = req.params.id
 		console.log("Thumbnail: "+id)
@@ -1162,54 +487,6 @@ module.exports = function(app, api) {
 	});
 
 	// generated REST wrappers for entity 'shortcut'
-
-	// api.shortcut.find
-	app.get('/api/shortcut/search', function(req, res) {
-	 	api.shortcut.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.shortcut.count
-	app.get('/api/shortcut/count', function(req, res) {
-	 	api.shortcut.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.shortcut.get
-	app.get('/api/shortcut/:id', function(req, res) {
-	 	api.shortcut.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.shortcut.delete
-	app.delete('/api/shortcut/:id', function(req, res) {
-	 	api.shortcut.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.shortcut.update
-	app.put('/api/shortcut/:id', function(req, res) {
-		//api.shortcut.update(req.params.id, req.body, function(err, rr) {
-		api.shortcut.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.shortcut.create
-	app.post('/api/shortcut/new', function(req, res) {
-		api.shortcut.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/shortcut',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/shortcut.png" });
-		res.end();
-	});
 
 	app.get('/shortcut/:id/thumb',function(req,res) {
 		var id = req.params.id
@@ -1231,54 +508,6 @@ module.exports = function(app, api) {
 
 	// generated REST wrappers for entity 'file'
 
-	// api.file.find
-	app.get('/api/file/search', function(req, res) {
-	 	api.file.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.file.count
-	app.get('/api/file/count', function(req, res) {
-	 	api.file.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.file.get
-	app.get('/api/file/:id', function(req, res) {
-	 	api.file.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.file.delete
-	app.delete('/api/file/:id', function(req, res) {
-	 	api.file.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.file.update
-	app.put('/api/file/:id', function(req, res) {
-		//api.file.update(req.params.id, req.body, function(err, rr) {
-		api.file.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.file.create
-	app.post('/api/file/new', function(req, res) {
-		api.file.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/file',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/file.png" });
-		res.end();
-	});
-
 	app.get('/file/:id/thumb',function(req,res) {
 		var id = req.params.id
 		console.log("Thumbnail: "+id)
@@ -1298,54 +527,6 @@ module.exports = function(app, api) {
 	});
 
 	// generated REST wrappers for entity 'entity'
-
-	// api.entity.find
-	app.get('/api/entity/search', function(req, res) {
-	 	api.entity.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.entity.count
-	app.get('/api/entity/count', function(req, res) {
-	 	api.entity.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.entity.get
-	app.get('/api/entity/:id', function(req, res) {
-	 	api.entity.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.entity.delete
-	app.delete('/api/entity/:id', function(req, res) {
-	 	api.entity.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.entity.update
-	app.put('/api/entity/:id', function(req, res) {
-		//api.entity.update(req.params.id, req.body, function(err, rr) {
-		api.entity.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.entity.create
-	app.post('/api/entity/new', function(req, res) {
-		api.entity.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/entity',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/entity.png" });
-		res.end();
-	});
 
 	app.get('/entity/:id/thumb',function(req,res) {
 		var id = req.params.id
@@ -1367,54 +548,6 @@ module.exports = function(app, api) {
 
 	// generated REST wrappers for entity 'albumNode'
 
-	// api.albumNode.find
-	app.get('/api/albumNode/search', function(req, res) {
-	 	api.albumNode.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.albumNode.count
-	app.get('/api/albumNode/count', function(req, res) {
-	 	api.albumNode.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.albumNode.get
-	app.get('/api/albumNode/:id', function(req, res) {
-	 	api.albumNode.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.albumNode.delete
-	app.delete('/api/albumNode/:id', function(req, res) {
-	 	api.albumNode.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.albumNode.update
-	app.put('/api/albumNode/:id', function(req, res) {
-		//api.albumNode.update(req.params.id, req.body, function(err, rr) {
-		api.albumNode.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.albumNode.create
-	app.post('/api/albumNode/new', function(req, res) {
-		api.albumNode.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/albumNode',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/entity.png" });
-		res.end();
-	});
-
 	app.get('/albumNode/:id/thumb',function(req,res) {
 		var id = req.params.id
 		console.log("Thumbnail: "+id)
@@ -1435,54 +568,6 @@ module.exports = function(app, api) {
 
 	// generated REST wrappers for entity 'userFavNode'
 
-	// api.userFavNode.find
-	app.get('/api/userFavNode/search', function(req, res) {
-	 	api.userFavNode.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.userFavNode.count
-	app.get('/api/userFavNode/count', function(req, res) {
-	 	api.userFavNode.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.userFavNode.get
-	app.get('/api/userFavNode/:id', function(req, res) {
-	 	api.userFavNode.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.userFavNode.delete
-	app.delete('/api/userFavNode/:id', function(req, res) {
-	 	api.userFavNode.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.userFavNode.update
-	app.put('/api/userFavNode/:id', function(req, res) {
-		//api.userFavNode.update(req.params.id, req.body, function(err, rr) {
-		api.userFavNode.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.userFavNode.create
-	app.post('/api/userFavNode/new', function(req, res) {
-		api.userFavNode.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/userFavNode',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/entity.png" });
-		res.end();
-	});
-
 	app.get('/userFavNode/:id/thumb',function(req,res) {
 		var id = req.params.id
 		console.log("Thumbnail: "+id)
@@ -1502,54 +587,6 @@ module.exports = function(app, api) {
 	});
 
 	// generated REST wrappers for entity 'usergroupUser'
-
-	// api.usergroupUser.find
-	app.get('/api/usergroupUser/search', function(req, res) {
-	 	api.usergroupUser.find(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.usergroupUser.count
-	app.get('/api/usergroupUser/count', function(req, res) {
-	 	api.usergroupUser.count(req.query, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.usergroupUser.get
-	app.get('/api/usergroupUser/:id', function(req, res) {
-	 	api.usergroupUser.get(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.usergroupUser.delete
-	app.delete('/api/usergroupUser/:id', function(req, res) {
-	 	api.usergroupUser.delete(req.params.id, function(err, rr) {
-	    	out(res, err, rr)
-	  	})	
-	});
-
-	// api.usergroupUser.update
-	app.put('/api/usergroupUser/:id', function(req, res) {
-		//api.usergroupUser.update(req.params.id, req.body, function(err, rr) {
-		api.usergroupUser.set(req.params.id, req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-	 
-	// api.usergroupUser.create
-	app.post('/api/usergroupUser/new', function(req, res) {
-		api.usergroupUser.create(req.body, function(err, rr) {
-	    	out(res, err, rr)
-	  	})
-	});	
-
-	app.get('/thumbs/usergroupUser',function(req,res) {
-		res.writeHead(302, {location: "/assets/thumbs/entity.png" });
-		res.end();
-	});
 
 	app.get('/usergroupUser/:id/thumb',function(req,res) {
 		var id = req.params.id

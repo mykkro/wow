@@ -1,6 +1,6 @@
 var _ = require("lodash")
 
-module.exports = function(app, api) {
+module.exports = function(app, api, Auth) {
 
 	function escapeRegExp(str) {
 	  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");

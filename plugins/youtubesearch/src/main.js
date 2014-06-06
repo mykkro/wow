@@ -120,10 +120,10 @@ module.exports = function(Wow) {
             self.searchButton = self.getWidget("searchButton")
             self.textBox = self.getWidget("searchTextbox")
             userVidButton.click(function() {
-                self.goTo("/pages/uservideos")
+                self.goTo("/plugins/youtubepersonal")
             })
             favVidButton.click(function() {
-                self.goTo("/pages/favvideos")
+                self.goTo("/plugins/youtubefavorite")
             })
             self.searchButton.click(function() {
                 self.showSoftwareKeybard(function(txt) {

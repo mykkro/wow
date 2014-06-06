@@ -51,7 +51,7 @@ module.exports = function(Wow) {
             }
             if (data) {
                 var label = truncate(data.title, 20)
-                var thumbUrl = data.thumbnail.sqDefault
+                var thumbUrl = data.thumbnailUrl
                 var thumb = SvgHelper.image({
                     x: 7,
                     y: 20,
@@ -67,9 +67,9 @@ module.exports = function(Wow) {
                 items = [rect, thumb, txt]
                 $(thumb).click(function() {
                     // go to video page...
-                    self.goToVideoPage(data.id)
+                    self.goToVideoPage(data.ytId)
                 })
-                obj["data-name"] = data.id
+                obj["data-name"] = data.ytId
             } else {
                 obj["class"] += " disabled"
             }
