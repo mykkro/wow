@@ -1,0 +1,88 @@
+{
+  "schema": {
+    "type": "object",
+    "$schema": "http://json-schema.org/draft-03/schema",
+    "title": "Admin profile",
+    "properties": {
+      "ownerAdminId": {
+        "title": "Owner ID",
+        "type": "number",
+        "required": true
+      },
+      "title": {
+        "title": "Title",
+        "type": "string",
+        "required": true
+      },
+      "description": {
+        "title": "Description",
+        "type": "string",
+        "required": false
+      },
+      "tags": {
+        "title": "Tags",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "required": false
+      },
+      "avatar": {
+        "title": "Avatar",
+        "type": "string",
+        "required": false
+      },
+      "canCreateAdmins": {
+        "title": "Can create admins?",
+        "type": "boolean",
+        "required": false
+      },
+      "canCreateUsers": {
+        "title": "Can create users?",
+        "type": "boolean",
+        "required": false
+      },
+      "canImportApps": {
+        "title": "Can import apps?",
+        "type": "boolean",
+        "required": false
+      }
+    }
+  },
+  "options": {
+    "renderForm": true,
+    "hideInitValidationError": true,
+    "form": {
+      "attributes": {
+        "action": "echo.php",
+        "method": "post"
+      },
+      "buttons": {
+        "submit": {},
+        "reset": {}
+      }
+    },
+    "fields": {
+      "ownerAdminId": {
+        "hidden": true
+      },
+      "created": {
+        "hidden": true
+      },
+      "description": {
+        "type": "textarea",
+        "placeholder": "Enter description here..."
+      },
+      "avatar": {
+        "type": "uuid",
+        "accept": [
+          "image",
+          "imagelink"
+        ]
+      },
+      "tags": {
+        "type": "tag"
+      }
+    }
+  }
+}

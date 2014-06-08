@@ -1,0 +1,38 @@
+{
+  "options": {
+    "renderForm": true,
+    "hideInitValidationError": true,
+    "form": {
+      "attributes": {
+        "action": "echo.php",
+        "method": "post"
+      },
+      "buttons": {
+        "submit": {},
+        "reset": {}
+      }
+    },
+    "fields": {
+      "ownerAdminId": {
+        "hidden": true
+      },
+      "created": {
+        "hidden": true
+      },
+      "description": {
+        "type": "textarea",
+        "placeholder": "Enter description here..."
+      },
+      "avatar": {
+        "type": "uuid",
+        "accept": [
+          "image",
+          "imagelink"
+        ]
+      },
+      "tags": {
+        "type": "tag"
+      }
+    }
+  }
+}

@@ -4383,9 +4383,7 @@ function isNullOrUndefined(arg) {
 
 
 module.exports = SearchQueryUtil
-},{}],"pagescript":[function(require,module,exports){
-module.exports=require('HJD/OK');
-},{}],"HJD/OK":[function(require,module,exports){
+},{}],"Bkkh3s":[function(require,module,exports){
 module.exports = function(Wow) {
     var window = Wow.window
     var $ = Wow.$
@@ -4608,4 +4606,6 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/ItemListPage":2,"../../../js/svghelper":7,"../routes/searchqueryutil":16,"html-truncate":9,"url":15}]},{},["HJD/OK"])
+},{"../../../js/ItemListPage":2,"../../../js/svghelper":7,"../routes/searchqueryutil":16,"html-truncate":9,"url":15}],"pagescript":[function(require,module,exports){
+module.exports=require('Bkkh3s');
+},{}]},{},["Bkkh3s"])

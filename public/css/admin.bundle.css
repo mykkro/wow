@@ -537,3 +537,20 @@ body {
 .dropzone > img {
   width: 100%;
 }
+.node-menu .node-control {
+  position: relative;
+  display: inline-block;
+  width: 100px;
+}
+.node-menu .node-control > h3 {
+  font-size: 14px;
+  text-align: center;
+  margin: 0px;
+}
+.node-menu .node-control > img {
+  width: 100px;
+  height: 100px;
+}
+.node-menu .node-control.selected {
+  background-color: #abc;
+}

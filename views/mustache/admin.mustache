@@ -7,6 +7,9 @@ Admin Page
 {{#yield-script}}
 <script type="text/javascript" src="/js/admin.libs.js"></script>
 <script type="text/javascript" src="/js/pages/admin.js"></script>
+<script>
+var editableNodes = {{{editableNodes}}};
+</script>
 {{/yield-script}}
 <div class="admin">
 
@@ -19,6 +22,7 @@ Admin Page
 			<ul id="tabs-container-1-nav" class="ui-tabs-nav">
 				<li><a href="#tabs-1">Quick Start</a></li>
 				<li><a href="#tabs-2">Search</a></li>
+				<li><a href="#tabs-3">New</a></li>
 			</ul>
 			<div id="tabs-1" class="ui-tabs-panel">
 	          <h2>Quick Start</h2>
@@ -43,6 +47,39 @@ Admin Page
 	          </div>
 	          <h3>Items found:</h3>
 	          <div id="searchresults"></div>
+			</div>
+			<div id="tabs-3" class="ui-tabs-panel">
+	          <h2>New</h2>
+	          <div id="newnode" class="node-menu"></div>
+			  <script>
+			  var makeNodeControl = function(en) {
+				var out = $("<div>").addClass("node-control")
+				out.append($("<h3>").text(en.title))
+				out.append($("<img>").attr("src", en.thumbnailUri))
+				return out
+			  }
+			  var showAddForm = function(control, en) {
+				// highlight the selected node...
+				$("#newnode .node-control").removeClass("selected")
+				control.addClass("selected")
+				// get JSON metadata for forms...
+				$.getJSON(en.matainfoUri).done(function(metainfo) {
+					console.log("Got metainfo!")
+					console.log(metainfo)
+				})
+			  }
+			  $(document).ready(function() {
+				// display controls for all editable node types				
+				$("#newnode").empty()
+				_.each(editableNodes, function(en) {
+					var control = makeNodeControl(en)
+					control.click(function() {
+						showAddForm(control, en)
+					})
+					$("#newnode").append(control)
+				})
+			  })
+			  </script>
 			</div>
 		</div>
 	</div>	
