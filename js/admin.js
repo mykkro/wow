@@ -10,12 +10,14 @@ $(document).ready(function() {
     i18n.setLocale('de')
     var dialogs = require("./dialogs")($, i18n)
 
-    var server = Widgetizer.rpc
+    var activeTab = 1
+    if(pageMode == "view") activeTab = 4;
+    if(pageMode == "edit") activeTab = 5
 
     // create tabs
     var tabber1 = new Yetii({
-        id: 'tabs-container-1',
-        active: 1,
+        id: 'admintabs',
+        active: activeTab,
         tabclass: 'ui-tabs-panel'
     });
 
@@ -192,7 +194,7 @@ $(document).ready(function() {
                     continue;
                 }
                 (function(i) {
-                    var viewUri = "/" + data[i].node.type + "/" + data[i]._id + "/view"
+                    var viewUri = "/admin/" + data[i].node.type + "/" + data[i]._id + "/view#view"
                     var id = "node-" + data[i].node.type + "-" + data[i]._id
                     var uri = previewUris[i] + "?view=" + previewType
                     var el = $("<div>").attr("draggable", "true").attr("id", id).addClass("node-preview-wrapper").addClass("view-" + previewType).load(uri).appendTo(out)

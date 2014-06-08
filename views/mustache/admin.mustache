@@ -17,14 +17,23 @@ var editableNodes = {{{editableNodes}}};
 	{{> admin-nav}}
 	<div class="admin-body">
 
+	<div>
+		<script>
+		var pageMode = "{{mode}}"
+		</script>
+	</div>
 
-		<div id="tabs-container-1" class="ui-tabs">
-			<ul id="tabs-container-1-nav" class="ui-tabs-nav">
-				<li><a href="#tabs-1">Quick Start</a></li>
-				<li><a href="#tabs-2">Search</a></li>
-				<li><a href="#tabs-3">New</a></li>
+		<div id="admintabs" class="ui-tabs">
+			<ul id="admintabs-nav" class="ui-tabs-nav">
+				<li><a href="#quickstart">Quick Start</a></li>
+				<li><a href="#search">Search</a></li>
+				<li><a href="#new">New</a></li>
+				{{#nodeView}}
+				<li><a href="#view">View</a></li>
+				<li><a href="#edit">Edit</a></li>
+				{{/nodeView}}
 			</ul>
-			<div id="tabs-1" class="ui-tabs-panel">
+			<div id="quickstart" class="ui-tabs-panel">
 	          <h2>Quick Start</h2>
 	          <div id="testarea">
 	          </div>
@@ -38,7 +47,7 @@ var editableNodes = {{{editableNodes}}};
 	          <h3>Most recent items:</h3>
 	          <div id="recentitems"></div>
 			</div>
-			<div id="tabs-2" class="ui-tabs-panel">
+			<div id="search" class="ui-tabs-panel">
 	          <h2>Search</h2>
 	          <div id="searchcontrol">
 	          	<input type="hidden" name="searchpage" value="1"></input>
@@ -48,7 +57,7 @@ var editableNodes = {{{editableNodes}}};
 	          <h3>Items found:</h3>
 	          <div id="searchresults"></div>
 			</div>
-			<div id="tabs-3" class="ui-tabs-panel">
+			<div id="new" class="ui-tabs-panel">
 	          <h2>New</h2>
 	          <div id="newnode" class="node-menu"></div>
 			  <div id="newnodeform">
@@ -164,7 +173,7 @@ var editableNodes = {{{editableNodes}}};
 								control.form.clear()
 								// show item's view
 								console.log("rr:", rr)
-								viewItem(type, rr._id)
+								window.location.href = '/admin/'+type+"/"+rr._id+"/view#view"
 							})
 							return false;
 						})
@@ -232,6 +241,23 @@ var editableNodes = {{{editableNodes}}};
 			  })
 			  </script>
 			</div>
+			{{#nodeView}}
+			<script>
+			var nodeId = {{nodeId}}
+			var nodeType = "{{nodeType}}"
+			var node = {{{node}}}
+			</script>
+			<div id="view" class="ui-tabs-panel">
+	          	<h2>View</h2>
+				{{> nodepreview-head}}
+				<div>
+				{{{nodeView}}}
+				</div>
+			</div>
+			<div id="edit" class="ui-tabs-panel">
+	          	<h2>Edit</h2>
+			</div>
+			{{/nodeView}}
 		</div>
 	</div>	
 </div>	
