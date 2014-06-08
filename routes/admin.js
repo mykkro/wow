@@ -9,7 +9,7 @@ module.exports = function(app, api, Auth) {
 			"name": name,
 			"title": api[name].metadata.title,
 			"thumbnailUri": api[name].getTypeThumbnailUri(),
-			"matainfoUri": "/api/"+name+"/metainfo"
+			"metainfoUri": "/api/"+name+"/metainfo"
 		}
 	})
 		

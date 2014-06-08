@@ -194,7 +194,7 @@ $(document).ready(function() {
                     continue;
                 }
                 (function(i) {
-                    var viewUri = "/admin/" + data[i].node.type + "/" + data[i]._id + "/view#view"
+                    var viewUri = "/admin/" + data[i].node.type + "/" + data[i]._id + "/view"
                     var id = "node-" + data[i].node.type + "-" + data[i]._id
                     var uri = previewUris[i] + "?view=" + previewType
                     var el = $("<div>").attr("draggable", "true").attr("id", id).addClass("node-preview-wrapper").addClass("view-" + previewType).load(uri).appendTo(out)
