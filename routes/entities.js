@@ -2,6 +2,7 @@
 
 var _ = require("lodash")
 var fs = require("fs-extra")
+var merge = require("merge")
 
 module.exports = function(app, api, Auth) {
 
@@ -80,13 +81,15 @@ module.exports = function(app, api, Auth) {
 	    out(res, null, metainfo)
 	})
 
-	app.get('/api/:type/search', function(req, res) {
+	app.get('/api/:type/search', Auth.isAuthenticatedAsAdmin, function(req, res) {
+		var ownerAdminId = req.user.admin._id		
 		var type = req.params.type
 		var query = req.query
 		var q = {
 			limit: parseInt(query.limit || 10),
 			skip: parseInt(query.skip || 0),
-			sort: { 'title': 'asc' }
+			sort: { 'title': 'asc' },
+			query: { ownerAdminId: ownerAdminId }
 		}
 	 	console.log("Finding items: "+type)
 	 	api[type].findWithOptions(q, function(err, rr) {
@@ -155,14 +158,20 @@ module.exports = function(app, api, Auth) {
 
 	app.put('/api/:type/:id', Auth.isAuthenticatedAsAdmin, function(req, res) {
 		var type = req.params.type
-		api[type].set(req.params.id, req.body, function(err, rr) {
+		var ownerAdminId = parseInt(req.user.admin._id)
+		// TODO check if the resource is mine...
+		// TODO make this as middleware
+		var data = req.body
+		api[type].set(req.params.id, data, function(err, rr) {
 	    	out(res, err, rr)
 	  	})
 	});	
 	 
 	app.post('/api/:type/new', Auth.isAuthenticatedAsAdmin, function(req, res) {
 		var type = req.params.type
-		api[type].create(req.body, function(err, rr) {
+		var data = merge({}, req.body)
+		data.ownerAdminId = parseInt(req.user.admin._id)
+		api[type].create(data, function(err, rr) {
 	    	out(res, err, rr)
 	  	})
 	});	

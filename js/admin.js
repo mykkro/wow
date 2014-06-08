@@ -47,7 +47,6 @@ $(document).ready(function() {
     var putImage = function(dropData, next) {
         console.log("Store image to DB", dropData)
         var data = {
-            ownerAdminId: -1,
             title: dropData.uploaded.originalFilename,
             description: "Uploaded image file",
             tags: [],
@@ -64,7 +63,6 @@ $(document).ready(function() {
     var putVideo = function(dropData, next) {
         console.log("Store video to DB", dropData)
         var data = {
-            ownerAdminId: -1,
             title: dropData.uploaded.originalFilename,
             description: "Uploaded video file",
             tags: [],
@@ -81,7 +79,6 @@ $(document).ready(function() {
     var putAudio = function(dropData, next) {
         console.log("Store audio to DB", dropData)
         var data = {
-            ownerAdminId: -1,
             title: dropData.uploaded.originalFilename,
             description: "Uploaded audio file",
             tags: [],
@@ -98,7 +95,6 @@ $(document).ready(function() {
     var putArticle = function(dropData, next) {
         console.log("Store article to DB", dropData)
         var data = {
-            ownerAdminId: -1,
             title: "Untitled Article",
             description: "An article",
             tags: [],
@@ -115,7 +111,6 @@ $(document).ready(function() {
     var putYouTube = function(dropData, next) {
         console.log("Store youtube to DB", dropData)
         var data = {
-            ownerAdminId: -1,
             tags: [],
             ytId: dropData.videoId
         }
@@ -130,7 +125,6 @@ $(document).ready(function() {
     var tryToImportApp = function(dropData, next) {
         console.log("Trying to import application", dropData)
         var data = {
-            ownerAdminId: -1,
             tags: [],
             title: dropData.uploaded.originalFilename,
             archiveUUID: dropData.uploaded.uuid
@@ -160,7 +154,7 @@ $(document).ready(function() {
     function updateRecentItemsPreview() {
         var skip = 0
         var limit = 10
-        var uri = "/api/search?&skip=" + skip + "&limit=" + limit + "&sort=created:desc&query=ownerAdminId:-1"
+        var uri = "/api/search?&skip=" + skip + "&limit=" + limit + "&sort=created:desc"
         var out = $("#recentitems").css("position", "relative")
         updateItemsPreview(uri, out, "default")
     }
@@ -172,7 +166,6 @@ $(document).ready(function() {
         var query = $("input[name=searchquery]").val()
         var skip = 10 * (page - 1)
         var limit = 10
-        var ownerAdminId = -1
             // we search only items that are one of these types...
         var types = ['image']
         var uri = "/api/search?&skip=" + skip + "&limit=" + limit + "&sort=created:desc"
@@ -180,7 +173,6 @@ $(document).ready(function() {
             uri += "&query=title:" + encodeURIComponent(query)
             //uri += "&query=description:"+encodeURIComponent(query)
         }
-        if (ownerAdminId) uri += "&query=ownerAdminId:" + ownerAdminId
         _.each(types, function(t) {
             uri += '&query=type:' + t
         })

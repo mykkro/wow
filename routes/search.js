@@ -77,13 +77,17 @@ module.exports = function(app, api, Auth) {
 	//   sort (multiple)  -> key:asc or key:desc
 	// 	 limit
 	//   skip
-	app.get('/api/search', function(req, res) {
+	app.get('/api/search', Auth.isAuthenticatedAsAdmin, function(req, res) {
 		var query = req.query
+		var ownerAdminId = req.user.admin._id
+		// TODO search also items owned by other admins or by admin...
+		var qq = constructQuery(query.query)
+		qq.ownerAdminId = ownerAdminId
 		// assemble query object...
 		var q = {
 			limit: parseInt(query.limit || 10),
 			skip: parseInt(query.skip || 0),
-			query: constructQuery(query.query),
+			query: qq,
 			sort: constructSort(query.sort)
 		}
 		console.log("Searching:", q)

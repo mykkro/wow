@@ -49,8 +49,17 @@ module.exports = function(grunt) {
                         './js/game/Watches.js:Watches'
                     ],
                 }
+            },
+			// TODO do automatic scanning or regular expression...
+            pg_admin: {
+                src: ['./js/admin.js'],
+                dest: 'public/js/pages/admin.js',
+                options: {
+                    alias: [],
+                    transform: ['brfs']
+                }
             }
-        },
+		},
         concat: {
             options: {
                 separator: ';',

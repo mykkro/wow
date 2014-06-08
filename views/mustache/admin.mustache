@@ -51,7 +51,148 @@ var editableNodes = {{{editableNodes}}};
 			<div id="tabs-3" class="ui-tabs-panel">
 	          <h2>New</h2>
 	          <div id="newnode" class="node-menu"></div>
+			  <div id="newnodeform">
+				<div class="form"></div>
+			  </div>
 			  <script>
+
+				var doAjax = function(method, uri, data, cb) {
+				  var opts = (method == "GET" || method == 'DELETE') 
+					? {
+					  url: uri,
+					  type: method,
+					  contentType: "application/json; charset=utf-8"
+					}
+					: {
+					  url: uri,
+					  type: method,
+					  data: JSON.stringify(data),
+					  dataType: 'json',
+					  contentType: "application/json; charset=utf-8"
+					}
+					$.ajax(opts).then(function(res) {
+					  if(!res.error) {
+						cb(null, res)
+					  } else {
+						cb(res.error)
+					  }
+					})
+				}
+
+				var filterData = function(value, schema) {
+				  for(var key in value) {
+					if(!(key in schema.properties)) {
+					  delete value[key]
+					}
+				  }
+				  return value
+				}
+
+				var postProcessData = function(type, action, schema, fschema, value) {
+				  console.log("postProcessData: Form "+type+"."+action+" submitted!")
+				  console.log(value)
+				  // custom post-processing...
+				  /*
+				  if(type=="admin" && action=="add") {
+					// hash password...
+					value.password = hashPassword(value.password)
+				  }
+				  */
+				  // filter out items not in schema...
+				  return filterData(value, schema)
+				}
+
+				var formSubmitted = function(type, action, schema, fschema, value, next) {
+				  value = postProcessData(type, action, schema, fschema, value)
+				  if(action == "add") {
+					var uri = "/api/"+type+"/new"
+					var data = value
+					doAjax('POST', uri, data, function(err, res) {
+					  if(!err) {
+						// console.log("Data received: ", res)
+						if(next) next(null, res[0])
+					  } else {
+						next(err)
+					  }
+					})
+				  } else if(action=="edit") {
+				  /*
+					var id = $("#tabs-"+tabindexes[type]+"-edit input[name=itemid]").val()
+					var uri = "/api/"+type+"/" + id
+					var data = value
+					doAjax('PUT', uri, data, function(err, res) {
+					  if(!err) {
+					   if(next) next(null, $.extend({_id:id},data))
+					  } else {
+						next(err)
+					  }
+					})
+					*/
+				  }
+				}			  
+			  // Alpaca-based form creation
+				var createForm = function(type, action, schema, fschema, options, data) {
+					var form = $("#newnodeform .form")
+					var opts = $.extend({}, options)
+					// do not show any buttons (we will use our own)
+					opts.form.buttons = {}
+					opts.form.attributes = {}
+					form.empty()
+					form.alpaca({
+					  schema:fschema, 
+					  options:opts,
+					  data:data,
+					  postRender: function(control) {
+						console.log("postRender: ")
+						var createBtn = $("<button>").text("Create").appendTo(control.container)
+						createBtn.click(function() {
+							console.log("Submit clicked!")
+							// clicked on submit button...
+							if(!control.isValid()) {
+								// form is not valid!
+								console.log("Form not valid!")
+								return false
+							}
+							formSubmitted(type, action, schema, fschema, control.form.getValue(), function(err, rr) {
+								if(err) {
+									console.error(err)
+									return false
+								}
+								// reset form
+								console.log("Resetting form...")
+								// TODO this does not work! how to properly reset a form?
+								control.form.clear()
+								// show item's view
+								viewItem(type, rr._id)
+							})
+							return false;
+						})
+					  }
+					})    
+				}
+
+
+				var passwordMatchValidator = function(control, callback) {
+					var controlVal = control.getValue();
+					if(!controlVal) {
+					  // no value yet...
+						callback({
+							"message": "Form is empty",
+							"status": false
+						});
+					} else if (controlVal['password'] != controlVal['repeatPassword']) {
+						callback({
+							"message": "Passwords should match!",
+							"status": false
+						});
+					} else {
+						callback({
+							"message": "Fields valid",
+							"status": true
+						});
+					}
+				}			  
+			  
 			  var makeNodeControl = function(en) {
 				var out = $("<div>").addClass("node-control")
 				out.append($("<h3>").text(en.title))
@@ -66,6 +207,15 @@ var editableNodes = {{{editableNodes}}};
 				$.getJSON(en.matainfoUri).done(function(metainfo) {
 					console.log("Got metainfo!")
 					console.log(metainfo)
+					var options = metainfo.forms.add.options
+					var schema = metainfo.schema
+					var fschema = metainfo.forms.add.schema || schema
+					var name = metainfo.name
+					var defaults = metainfo.defaults
+					if(name=="user" || name=="admin") {
+						options = $.extend({ validator: passwordMatchValidator }, options)
+					}
+					createForm(name, "add", schema, fschema, options, defaults)
 				})
 			  }
 			  $(document).ready(function() {
