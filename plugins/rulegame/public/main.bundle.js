@@ -5490,8 +5490,8 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-}).call(this,require("Zbi7gb"))
-},{"Zbi7gb":16}],16:[function(require,module,exports){
+}).call(this,require("FWaASH"))
+},{"FWaASH":16}],16:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -6956,8 +6956,8 @@ function isNullOrUndefined(arg) {
 }
 
 },{"punycode":17,"querystring":20}],"pagescript":[function(require,module,exports){
-module.exports=require('Bkkh3s');
-},{}],"Bkkh3s":[function(require,module,exports){
+module.exports=require('HJD/OK');
+},{}],"HJD/OK":[function(require,module,exports){
 module.exports = function(Wow) {
     var window = Wow.window
     var $ = Wow.$
@@ -7545,4 +7545,4 @@ var MyGame = GameWithRules.extend({
 
 module.exports = MyGame
 
-},{"../../../js/game/GridController.js":4,"../../../js/rulegame/GameWithRules.js":8,"basejs":13}]},{},["Bkkh3s"])
+},{"../../../js/game/GridController.js":4,"../../../js/rulegame/GameWithRules.js":8,"basejs":13}]},{},["HJD/OK"])
