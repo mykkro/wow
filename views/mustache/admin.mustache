@@ -52,6 +52,7 @@ var editableNodes = {{{editableNodes}}};
 	          <h2>Search</h2>
 	          <div id="searchcontrol">
 	          	<input type="hidden" name="searchpage" value="1"></input>
+	          	<input type="hidden" name="searchtypes" value=""></input>
 	          	<input type="text" name="searchquery"></input>
 	          	<button id="searchbutton">Search</button>
 	          </div>
@@ -150,6 +151,15 @@ var editableNodes = {{{editableNodes}}};
 					  options:opts,
 					  data:data,
 					  postRender: function(control) {
+
+					  	// may be useful...
+						var oldValue = control.getValue()
+						$(control.getEl()).bind("fieldupdate", function(e) {
+				            var value = control.getValue()
+				            console.log("Form updated!", oldValue, value)
+				            oldValue = value
+				        });
+
 						console.log("postRender: ")
 						var label = (action=="add") ? "Create" : "Update"
 						var createBtn = $("<button>").text(label).appendTo(control.container)
@@ -291,8 +301,18 @@ var editableNodes = {{{editableNodes}}};
 				<script>
 				$(document).ready(function() {
 					$("#removeitembtn").click(function() {
-						var nodeUri = "/"+nodeType+"/"+nodeId
+						var nodeUri = "/api/"+nodeType+"/"+nodeId
 						console.log("Deleting "+nodeUri)
+						var opts = {
+							url: nodeUri,
+							type: 'DELETE',
+							contentType: "application/json; charset=utf-8"
+						}
+						$.ajax(opts).then(function(res) {
+							console.log("Deleted!", res)
+							window.location.href = "/admin"
+						})
+
 					})
 				})
 				</script>

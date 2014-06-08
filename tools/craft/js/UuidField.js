@@ -72,6 +72,7 @@
                   exclude: self.options.exclude,
                   uploaded: function(data) {
                     // got uploaded file!
+                    console.log("Upload to UUID field:", data)
                     var uuid = data.uuid
                     self.setValue(uuid)
                     return false

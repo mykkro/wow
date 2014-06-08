@@ -169,7 +169,8 @@ $(document).ready(function() {
         var skip = 10 * (page - 1)
         var limit = 10
             // we search only items that are one of these types...
-        var types = ['image']
+        var types = $("input[name=searchtypes]").val()
+        types = _.filter(types.split(","), function(t) { return !!t})
         var uri = "/api/search?&skip=" + skip + "&limit=" + limit + "&sort=created:desc"
         if (query) {
             uri += "&query=title:" + encodeURIComponent(query)
