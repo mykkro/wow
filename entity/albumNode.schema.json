@@ -1,7 +1,7 @@
 {
   "type": "object",
   "$schema": "http://json-schema.org/draft-03/schema",
-  "title": "Entity",
+  "title": "Album Node",
   "properties": {
     "albumId": {
       "title": "Album ID",

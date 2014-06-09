@@ -142,6 +142,7 @@ module.exports = function(app, api, Auth) {
 	 	})
 	});
 
+	// TODO specific routes for image, video, voice
 	app.get('/api/:type/:id', function(req, res) {
 		var type = req.params.type
 	 	api[type].get(req.params.id, function(err, rr) {
