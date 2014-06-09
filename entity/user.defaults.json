@@ -4,5 +4,6 @@
   "description": "",
   "usesPassword": false,
   "password": "wow",
-  "tags": []
+  "tags": [],
+  "locale": "en"
 }

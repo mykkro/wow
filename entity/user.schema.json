@@ -60,6 +60,11 @@
       "title": "Preset",
       "type": "number",
       "required": false
+    },
+    "locale": {
+      "title": "Locale",
+      "type": "string",
+      "required": false
     }
   }
 }
