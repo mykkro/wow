@@ -6,5 +6,6 @@
 	"canCreateUsers":true,
 	"canImportApps":true,
 	"username":"a",
-	"password":"a"
+	"password":"a",
+	"locale": "en"
 }

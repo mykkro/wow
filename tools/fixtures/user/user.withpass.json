@@ -1,10 +1,11 @@
 {
 	"ownerAdminId":-1,
-	"title":"Frank",
-	"description":"Demo user with password",
+	"title":"Helmut",
+	"description":"Demo user with password and German locale.",
 	"usesPassword":true,
 	"password":"123",
 	"username":"frank",
 	"locationId": -1,
-	"presetId": -1
+	"presetId": -1,
+	"locale": "de"
 }

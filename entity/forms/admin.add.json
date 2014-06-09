@@ -61,7 +61,12 @@
         "title": "Can import apps?",
         "type": "boolean",
         "required": false
-      }
+      },
+      "locale": {
+        "title": "Locale",
+        "type": "string",
+        "required": false
+      }      
     }
   },
   "options": {

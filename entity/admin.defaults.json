@@ -5,5 +5,6 @@
   "canCreateAdmins": false,
   "canCreateUsers": true,
   "canImportApps": true,
-  "tags": []
+  "tags": [],
+  "locale": "en"
 }
