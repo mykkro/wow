@@ -554,3 +554,15 @@ body {
 .node-menu .node-control.selected {
   background-color: #abc;
 }
+#searchlinks {
+  padding: 5px;
+}
+#searchlinks > a {
+  margin: 0px 5px;
+  text-decoration: none;
+  font-weight: bold;
+}
+#searchlinks > a.current {
+  color: black;
+  pointer-events: none;
+}

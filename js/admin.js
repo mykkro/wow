@@ -161,16 +161,11 @@ $(document).ready(function() {
         updateItemsPreview(uri, out, "default")
     }
 
-    function updateSearchItemsPreview() {
-        var page = $("input[name=searchpage]").val()
-        if (page) page = parseInt(page);
-        else page = 1
-        var query = $("input[name=searchquery]").val()
+    function getSearchUri(page, types, query) {
+        page = page || 1
+        types = types || []
         var skip = 10 * (page - 1)
         var limit = 10
-            // we search only items that are one of these types...
-        var types = $("input[name=searchtypes]").val()
-        types = _.filter(types.split(","), function(t) { return !!t})
         var uri = "/api/search?&skip=" + skip + "&limit=" + limit + "&sort=created:desc"
         if (query) {
             uri += "&query=title:" + encodeURIComponent(query)
@@ -179,8 +174,38 @@ $(document).ready(function() {
         _.each(types, function(t) {
             uri += '&query=type:' + t
         })
+        return uri
+    }
+
+    function updateSearchItemsPreview() {
+        var page = $("input[name=searchpage]").val()
+        var query = $("input[name=searchquery]").val()
+        var types = $("input[name=searchtypes]").val()
         var out = $("#searchresults").css("position", "relative")
+        var outLinks = $("#searchlinks").css("position", "relative")
+        page = page ? parseInt(page) : 1
+        types = _.filter(types.split(","), function(t) { return !!t})
+        var uri =  getSearchUri(page, types, query)
         updateItemsPreview(uri, out, "short")
+        updatePageLinks(page, outLinks)
+    }
+
+    // TODO intelligent showing of Next link
+    function updatePageLinks(page, out) {
+        out.empty();
+        for(var i=1; i<=page+1; i++) {
+            (function(ind) {
+            var label = (ind<=page) ? ""+ind : "Next"
+            var link = $('<a href="#">').text(label).click(function() {
+                // set page and do search again...
+                $("input[name=searchpage]").val(ind)
+                updateSearchItemsPreview()
+                return false;
+            })
+            if(ind == page) link.addClass("current")
+            out.append(link)
+            })(i)
+        }
     }
 
     function updateItemsPreview(uri, out, previewType) {
@@ -305,7 +330,10 @@ $(document).ready(function() {
 
     updateRecentItemsPreview()
 
-    $("#searchbutton").click(updateSearchItemsPreview)
+    $("#searchbutton").click(function() {
+        $("input[name=searchpage]").val(1)
+        updateSearchItemsPreview()
+    })
 
     function cancel(e) {
         if (e.preventDefault) e.preventDefault(); // required by FF + Safari
