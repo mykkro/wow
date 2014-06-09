@@ -204,7 +204,9 @@ module.exports = function(grunt) {
                         'server.js',
                         'package.json',
                         'main.js',
-                        'wow.js'
+                        'wow.js',
+                        'install.js',
+                        'install.bat'
                     ]
                 }, {
                     src: [

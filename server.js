@@ -133,7 +133,7 @@ var WowServer = {
     require("./routes/youtubesearch")(app, API)
     require("./routes/admin")(app, API, Auth)
     require("./routes/loginlogout")(app, API, passport)
-    require("./routes/upload")(app, Storage, {allowedExtensions:allowedFiletypes, maxFilesize:allowedFilesize})
+    require("./routes/upload")(app, Storage, Auth, {allowedExtensions:allowedFiletypes, maxFilesize:allowedFilesize})
     plugins.routes()
 
 	  // error handler middleware...

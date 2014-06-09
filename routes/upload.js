@@ -1,4 +1,4 @@
-module.exports = function(app, Storage, cfg) {
+module.exports = function(app, Storage, Auth, cfg) {
 	var path = require("path")
 	var fs = require("fs-extra")
 	var merge = require("merge")
@@ -72,9 +72,10 @@ module.exports = function(app, Storage, cfg) {
 	  })
 	})
 
-	app.post('/api/app/import', function(req, res) {
-		console.log("Import: ",req.body)
-		var data = req.body
+	app.post('/api/app/import', Auth.isAuthenticatedAsAdmin, function(req, res) {
+		var ownerAdminId = parseInt(req.user.admin._id)
+		var data = merge({},req.body, {ownerAdminId:ownerAdminId})
+		console.log("Import: ",data)
 		var uuid = data.archiveUUID
 		data.archivePath = uploader.getPath(uuid, "zip")
 		importer.import(data, function(err, resp) {
