@@ -51,6 +51,8 @@ module.exports = function(app, express, Auth, API) {
     app.get('/plugins/:name/:page', Auth.isAuthenticatedAsUser, function(req, res) {
       var name = req.params.name
       var page = req.params.page
+      var locale = req.user.user.locale || 'en'
+      // TODO plug-in the plugin locale...
       var prefix = "/plugins/"+name
       if(!(name in pluginCfg.plugins) || !pluginCfg.plugins[name].enabled) {
         // not available
@@ -72,7 +74,7 @@ module.exports = function(app, express, Auth, API) {
         var presetStr = JSON.stringify(preset)
         var location = merge({}, defaults.location, req.user.user.location)
         var locationStr = JSON.stringify(location)
-        var html = mustache.to_html(pageMaster, {"name":name, "content":view, preset:presetStr, location: locationStr}); 
+        var html = mustache.to_html(pageMaster, {"name":name, "content":view, "locale": locale, preset:presetStr, location: locationStr}); 
         res.send(html)
       }
     })        
