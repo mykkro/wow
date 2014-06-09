@@ -195,15 +195,15 @@ $(document).ready(function() {
         out.empty();
         for(var i=1; i<=page+1; i++) {
             (function(ind) {
-            var label = (ind<=page) ? ""+ind : "Next"
-            var link = $('<a href="#">').text(label).click(function() {
-                // set page and do search again...
-                $("input[name=searchpage]").val(ind)
-                updateSearchItemsPreview()
-                return false;
-            })
-            if(ind == page) link.addClass("current")
-            out.append(link)
+                var label = (ind<=page) ? ""+ind : "Next"
+                var link = $('<a href="#">').text(label).click(function() {
+                    // set page and do search again...
+                    $("input[name=searchpage]").val(ind)
+                    updateSearchItemsPreview()
+                    return false;
+                })
+                if(ind == page) link.addClass("current")
+                out.append(link)
             })(i)
         }
     }

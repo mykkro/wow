@@ -1,0 +1,80 @@
+{
+  "schema": {
+    "type": "object",
+    "$schema": "http://json-schema.org/draft-03/schema",
+    "title": "YouTube video",
+    "properties": {
+      "ownerAdminId": {
+        "title": "Owner ID",
+        "type": "number",
+        "required": true
+      },
+      "created": {
+        "title": "Created",
+        "type": "string",
+        "required": false
+      },
+      "title": {
+        "title": "Title",
+        "type": "string",
+        "required": true
+      },
+      "description": {
+        "title": "Description",
+        "type": "string",
+        "required": false
+      },
+      "tags": {
+        "title": "Tags",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "required": false
+      },
+      "ytId": {
+        "title": "YouTube ID",
+        "type": "string",
+        "required": true
+      }
+    }
+  },
+  "options": {
+    "renderForm": true,
+    "hideInitValidationError": true,
+    "form": {
+      "attributes": {
+        "action": "echo.php",
+        "method": "post"
+      },
+      "buttons": {
+        "submit": {},
+        "reset": {}
+      }
+    },
+    "fields": {
+      "ownerAdminId": {
+        "hidden": true
+      },
+      "created": {
+        "hidden": true
+      },
+      "description": {
+        "type": "textarea",
+        "placeholder": "Enter description here..."
+      },
+      "url": {
+        "type": "url"
+      },
+      "thumbnailUrl": {
+        "type": "url"
+      },
+      "ytId": {
+        "type": "youtube"
+      },
+      "tags": {
+        "type": "tag"
+      }
+    }
+  }
+}

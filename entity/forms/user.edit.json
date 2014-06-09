@@ -1,0 +1,114 @@
+{
+  "schema": {
+    "type": "object",
+    "$schema": "http://json-schema.org/draft-03/schema",
+    "title": "User",
+    "properties": {
+      "ownerAdminId": {
+        "title": "Owner ID",
+        "type": "number",
+        "required": true
+      },
+      "created": {
+        "title": "Created",
+        "type": "string",
+        "required": false
+      },
+      "title": {
+        "title": "Title",
+        "type": "string",
+        "required": true
+      },
+      "description": {
+        "title": "Description",
+        "type": "string",
+        "required": false
+      },
+      "tags": {
+        "title": "Tags",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "required": false
+      },
+      "avatar": {
+        "title": "Avatar",
+        "type": "string",
+        "required": false
+      },
+      "password": {
+        "title": "Password",
+        "type": "string",
+        "required": false
+      },
+      "repeatPassword": {
+        "title": "Password (again)",
+        "type": "string",
+        "required": false
+      },
+      "usesPassword": {
+        "title": "Uses password?",
+        "type": "boolean",
+        "required": false
+      },
+      "locationId": {
+        "title": "Location",
+        "type": "number",
+        "required": false
+      },
+      "presetId": {
+        "title": "Preset",
+        "type": "number",
+        "required": false
+      },
+      "locale": {
+        "title": "Locale",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "options": {
+    "renderForm": true,
+    "hideInitValidationError": true,
+    "form": {
+      "attributes": {
+        "action": "echo.php",
+        "method": "post"
+      },
+      "buttons": {
+        "submit": {},
+        "reset": {}
+      }
+    },
+    "fields": {
+      "ownerAdminId": {
+        "hidden": true
+      },
+      "created": {
+        "hidden": true
+      },
+      "description": {
+        "type": "textarea",
+        "placeholder": "Enter description here..."
+      },
+      "password": {
+        "type": "password"
+      },
+      "repeatPassword": {
+        "type": "password"
+      },
+      "avatar": {
+        "type": "uuid",
+        "accept": [
+          "image",
+          "imagelink"
+        ]
+      },
+      "tags": {
+        "type": "tag"
+      }
+    }
+  }
+}

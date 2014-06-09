@@ -3,7 +3,7 @@
   "title": "User",
   "description": "",
   "usesPassword": false,
-  "password": "wow",
+  "password": "",
   "tags": [],
   "locale": "en"
 }

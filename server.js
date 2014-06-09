@@ -126,6 +126,7 @@ var WowServer = {
         }
     });
 
+    require("./routes/locales")(app, API, Auth)
     require("./routes/logging")(app, API, Auth)
     require("./routes/rpc")(app)
     require("./routes/entities")(app, API, Auth)    
