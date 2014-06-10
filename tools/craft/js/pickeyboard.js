@@ -57,7 +57,10 @@ $.fn.picKeyboard = function (settings) {
       }
 
     var picKey = function(i, ch) {
-      return $("<div>").addClass("pickey").addClass("fruit-icon-"+i).attr("data-index", i).attr("data-char", ch)
+      return $("<div>").addClass("pickey").attr("data-index", i).attr("data-char", ch).append(
+          $("<div>").addClass("pickey-img").addClass("fruit-icon-"+i),
+          $("<div>").addClass("pickey-char").text(ch)
+        )
     }
 
    var picKeyboard = function() {      
