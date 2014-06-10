@@ -24,63 +24,23 @@
 .node.article {
   background-color: #eff;
 }
-.node.image {
-  background-color: #ffd;
-}
-.node.video {
-  background-color: #fdf;
-}
-.node.voice {
-  background-color: #dff;
-}
-.node.json {
-  background-color: #fed;
-}
-.node.netRadio {
-  background-color: #def;
-}
-.node.user {
-  background-color: #cee;
-}
-.node.usergroup {
-  background-color: #cbe;
-}
-.node.album {
-  background-color: #cbe;
-}
-.node.scrapbook {
-  background-color: #abe;
-}
-.node.youTubeVideo {
-  background-color: #ece;
-}
-.node.preset {
-  background-color: #bcd;
-}
-.node.location {
-  background-color: #bcb;
-}
-.node.theme {
-  background-color: #bab;
-}
-.node.shortcut {
-  background-color: #bad;
-}
-.node.file {
-  background-color: #eec;
-}
-.node.entity {
-  background-color: #ced;
-}
-.node.albumNode {
-  background-color: #ced;
-}
-.node.userFavNode {
-  background-color: #ced;
-}
-.node.usergroupUser {
-  background-color: #ced;
-}
+/*
+@import "nodes/image.less";
+@import "nodes/video.less";
+@import "nodes/voice.less";
+@import "nodes/json.less";
+@import "nodes/netRadio.less";
+@import "nodes/user.less";
+@import "nodes/usergroup.less";
+@import "nodes/album.less";
+@import "nodes/scrapbook.less";
+@import "nodes/youTubeVideo.less";
+@import "nodes/preset.less";
+@import "nodes/location.less";
+@import "nodes/theme.less";
+@import "nodes/shortcut.less";
+@import "nodes/file.less";
+*/
 .ui-tabs {
   zoom: 1;
 }
