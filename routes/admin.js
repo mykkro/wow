@@ -3,7 +3,7 @@ module.exports = function(app, api, Auth) {
 	var mustache = require('mustache')
 	var _ = require("lodash")
 
-	var nodes = [ "image", "article", "user", "admin", "location", "netRadio", "preset", /*"scrapbook",*/ "shortcut", "theme", "video", "voice", "youTubeVideo" ]
+	var nodes = [ "image", "article", "app", "user", "admin", "location", "netRadio", "preset", "scrapbook", "shortcut", "theme", "video", "voice", "youTubeVideo" ]
 	nodes = _.map(nodes, function(name) {
 		return {
 			"name": name,
