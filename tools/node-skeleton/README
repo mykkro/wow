@@ -1,0 +1,8 @@
+Create new nodes based on this directory structure.
+
+Copy it to the main project directory.
+
+Remember also:
+
+* add API to lib/api/API.js
+* add style to less/nodes.less

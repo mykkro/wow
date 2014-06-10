@@ -125,12 +125,12 @@ module.exports = function(grunt) {
             },
             adminjs: {
                 src: [
-                    "tools/craft/js/jquery.ajaxfileupload.js",
-                    "tools/craft/js/jquery.imagedrop.js",
-                    "tools/craft/js/jquery.dropanything.js",
-                    "tools/craft/js/UuidField.js",
-                    "tools/craft/js/YouTubeField.js",
-                    "tools/craft/js/pickeyboard.js"
+                    "js/admin/jquery.ajaxfileupload.js",
+                    "js/admin/jquery.imagedrop.js",
+                    "js/admin/jquery.dropanything.js",
+                    "js/admin/UuidField.js",
+                    "js/admin/YouTubeField.js",
+                    "js/admin/pickeyboard.js"
                 ],
                 dest: 'public/js/admin.libs.js'
             },
