@@ -130,14 +130,16 @@ module.exports = function(grunt) {
                     "js/admin/jquery.dropanything.js",
                     "js/admin/UuidField.js",
                     "js/admin/YouTubeField.js",
-                    "js/admin/pickeyboard.js"
+                    "js/admin/pickeyboard.js",
+                    "js/vendor/video.js"
                 ],
                 dest: 'public/js/admin.libs.js'
             },
             appcss: {
                 src: [
                     "public/css/normalize.css",
-                    "js/vendor/alpaca.min.css"
+                    "js/vendor/alpaca.min.css",
+                    "js/vendor/video-js.css"
                 ],
                 dest: 'public/css/core.libs.css'
             },

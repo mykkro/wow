@@ -21,8 +21,12 @@
 <span class="value">{{tags}}</span>
 </div>
 <div>
-	<video src="{{{video.url}}}">
-		<p>Your browser does not support the <code>video</code> element.</p>
+	<video id="videoplayer" class="video-js vjs-default-skin"
+	  controls preload="auto" width="640" height="264"
+	  data-setup='{"example_option":true}'">
+	 <source src="{{{video.url}}}" type='{{{video.type}}}' />
+	 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
 	</video>
+
 </div>
 </div>

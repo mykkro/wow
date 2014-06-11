@@ -21,7 +21,36 @@
 <span class="value">{{tags}}</span>
 </div>
 <div>
-	<!-- image view -->
-	<img src="{{{image.url}}}"></img>
+
+	<style>
+	.imager-inner > img 
+	{
+	    max-width: 100%;
+	    max-height: 100%;
+	    display: block;
+	    margin: auto auto;
+	}
+
+	.imager-outer
+	{
+	    border: 1px solid #888;
+	    width: 600px;
+	    height: 480px;
+	}
+
+	.imager-inner
+	{
+	    display:table-cell;
+	    width: 640px;
+	    height: 480px;
+	    vertical-align: middle;
+	}
+	</style>
+	<div class="imager-outer">
+		<div class="imager-inner">
+		    <img src="{{{image.url}}}" />
+		</div>
+	</div>
+
 </div>
 </div>
