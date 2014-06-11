@@ -6,7 +6,6 @@
 
 var path = require("path")
 var http = require('http');
-var mustache = require('mustache')
 var fs = require("fs-extra")
 var mv = require('mv')
 var uuid = require('node-uuid');
