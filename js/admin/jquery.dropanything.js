@@ -294,7 +294,7 @@ $.fn.dropAnything = function (settings) {
             .css({"width":"100%", "height":"100%", "position":"absolute", "left":"0px", "top":"0px", "background": "#888"})
             .append(
                 $("<img>")
-                    .attr("src", "/assets/icons/no-entry.png")
+                    .attr("src", "/icons/no-entry.png")
                     .css({width: "80px", height: "80px", "position":"absolute", "top":"30px", "left":"50px"}),
                 $("<p>")
                     .text(msg)

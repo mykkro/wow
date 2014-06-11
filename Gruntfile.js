@@ -128,6 +128,8 @@ module.exports = function(grunt) {
                     "js/admin/jquery.ajaxfileupload.js",
                     "js/admin/jquery.imagedrop.js",
                     "js/admin/jquery.dropanything.js",
+                    "js/vendor/jquery.lazyload.min.js",
+                    "js/vendor/lite-youtube-min.js",
                     "js/admin/UuidField.js",
                     "js/admin/YouTubeField.js",
                     "js/admin/pickeyboard.js",
