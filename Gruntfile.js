@@ -55,7 +55,7 @@ module.exports = function(grunt) {
 			// TODO do automatic scanning or regular expression...
             pg_admin: {
                 src: ['./js/admin.js'],
-                dest: 'public/js/pages/admin.js',
+                dest: 'public/js/admin.bundle.js',
                 options: {
                     alias: [],
                     transform: ['brfs']
