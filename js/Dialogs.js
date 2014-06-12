@@ -28,12 +28,23 @@ module.exports = function($, i18n) {
                 d.hide();
             });
             d.show();
+            return d;
+        },
+        /* dialog without buttons... */
+        simpleDialog: function(title, content, footer, options) {
+            var d = new Dialog($);
+            d.title = '<b>' + title + '</b>';
+            d.content = content;
+            d.info = '';
+            d.footer = footer;
+            d.show(options);
+            return d;
         },
         quitDialog: function(cb) {
-            this.confirmDialog(i18n.__('Exit'), i18n.__('Are you sure?'), cb)
+            return this.confirmDialog(i18n.__('Exit'), i18n.__('Are you sure?'), cb)
         },
         removeDialog: function(cb) {
-            this.confirmDialog(i18n.__('Remove'), i18n.__('Remove this item?'), cb)
+            return this.confirmDialog(i18n.__('Remove'), i18n.__('Remove this item?'), cb)
         }
     }
 

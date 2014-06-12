@@ -158,29 +158,30 @@ $(document).ready(function() {
         return uri
     }
 
-    function updateSearchItemsPreview() {
-        var page = $("input[name=searchpage]").val()
+    function updateSearchItemsPreview(page) {
+        page = page ? parseInt(page) : 1
         var query = $("input[name=searchquery]").val()
         var types = $("input[name=searchtypes]").val()
         var out = $("#searchresults").css("position", "relative")
         var outLinks = $("#searchlinks").css("position", "relative")
-        page = page ? parseInt(page) : 1
         types = _.filter(types.split(","), function(t) { return !!t})
         var uri =  getSearchUri(page, types, query)
         updateItemsPreview(uri, out, "short")
-        updatePageLinks(page, outLinks)
+        updatePageLinks(page, outLinks, function(ind) {
+            // link changed...
+            // set page and do search again...
+            updateSearchItemsPreview(ind)
+        })
     }
 
     // TODO intelligent showing of Next link
-    function updatePageLinks(page, out) {
+    function updatePageLinks(page, out, cb) {
         out.empty();
         for(var i=1; i<=page+1; i++) {
             (function(ind) {
                 var label = (ind<=page) ? ""+ind : "Next"
                 var link = $('<a href="#">').text(label).click(function() {
-                    // set page and do search again...
-                    $("input[name=searchpage]").val(ind)
-                    updateSearchItemsPreview()
+                    if(cb) cb(ind)
                     return false;
                 })
                 if(ind == page) link.addClass("current")
@@ -189,7 +190,7 @@ $(document).ready(function() {
         }
     }
 
-    function updateItemsPreview(uri, out, previewType) {
+    function updateItemsPreview(uri, out, previewType, cb) {
         $.getJSON(uri).done(function(data) {
             // console.log("Received items:", data)
             var previewUris = _.map(data, function(d) {
@@ -201,8 +202,9 @@ $(document).ready(function() {
                     continue;
                 }
                 (function(i) {
-                    var viewUri = "/admin/" + data[i].node.type + "/" + data[i]._id + "/view"
-                    var id = "node-" + data[i].node.type + "-" + data[i]._id
+                    var obj = data[i]
+                    var viewUri = "/admin/" + obj.node.type + "/" + obj._id + "/view"
+                    var id = "node-" + obj.node.type + "-" + obj._id
                     var uri = previewUris[i] + "?view=" + previewType
                     var el = $("<div>").attr("draggable", "true").attr("id", id).addClass("node-preview-wrapper").addClass("view-" + previewType).load(uri).appendTo(out)
                     el.get(0).addEventListener('dragstart', dragStart, false);
@@ -211,8 +213,12 @@ $(document).ready(function() {
                         if (dragging) {
                             return;
                         }
-                        // click action here
-                        window.location.href = viewUri
+                        if(cb) {
+                            cb(obj)
+                        } else {
+                            // click action here
+                            window.location.href = viewUri
+                        }
                     });
                 })(i);
             }
@@ -313,7 +319,7 @@ $(document).ready(function() {
 
     $("#searchbutton").click(function() {
         $("input[name=searchpage]").val(1)
-        updateSearchItemsPreview()
+        updateSearchItemsPreview(1)
     })
 
     function cancel(e) {
@@ -333,6 +339,33 @@ $(document).ready(function() {
             return false;
         })
 
+    /* test area... */
 
+    var showItemSelector = function(types, cb) {
+        var div = $("<div>").css("width","580px")
+        var linksDiv = $("<div>")
+        var dlg = null
+        function updateSelectorItemsPreview(div, page) {
+            var query = null
+            var uri =  getSearchUri(page, types, query)
+            updateItemsPreview(uri, div, "default", function(data) {
+                dlg.hide()
+                if(cb) cb(data)
+            })
+            updatePageLinks(page, linksDiv, function(ind) {
+                // link changed...
+                // set page and do search again...
+                updateSelectorItemsPreview(div, ind)
+            })
+        }
 
+        updateSelectorItemsPreview(div, 1)
+        dlg = dialogs.simpleDialog("Select image", div, linksDiv, {width: 600})
+    }
+
+    /*
+    showItemSelector(["image"], function(data) {
+        console.log("Selected:", data)
+    })
+    */
 })
