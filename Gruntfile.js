@@ -170,11 +170,6 @@ module.exports = function(grunt) {
                 }
             }
         },
-        execute: {
-            target: {
-                src: ['runserver.js']
-            }
-        },
         compress: {
             main: {
                 options: {

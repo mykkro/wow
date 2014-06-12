@@ -98,6 +98,16 @@ module.exports = function(app, api, Auth) {
 
 	})
 
+	app.get('/api/node/:type/:id', function(req, res) {
+		var type = req.params.type
+		var id = req.params.id
+		// TODO handle fail condition
+		api.getNode(type, id).done(function(data) {
+			out(res, null, data)
+		})
+
+	})
+
 	// helper function to return the results
 	var out = function(res, err, rr) {
     	if(!err) {

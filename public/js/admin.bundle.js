@@ -1,6 +1,4 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"AdminPage":[function(require,module,exports){
-module.exports=require('7oXSFR');
-},{}],"7oXSFR":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"7oXSFR":[function(require,module,exports){
 var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
 
     $.playable('soundmanager/swf/')
@@ -187,38 +185,49 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
         }
     }
 
+    function makeItemPreview(d, previewType, cb) {
+        var previewUri = d.node.previewUri
+        var viewUri = "/admin/" + d.node.type + "/" + d._id + "/view"
+        var id = "node-" + d.node.type + "-" + d._id
+        var uri = previewUri + "?view=" + previewType
+        var el = $("<div>").attr("draggable", "true").attr("id", id).addClass("node-preview-wrapper").addClass("view-" + previewType).load(uri)
+        el.get(0).addEventListener('dragstart', dragStart, false);
+        el.get(0).addEventListener('dragend', dragEnd, false);
+        el.click(function() {
+            if (dragging) {
+                return;
+            }
+            if(cb) {
+                cb(d)
+            } else {
+                // click action here
+                window.location.href = viewUri
+            }
+        });
+        return el
+    }
+
+    // previewType: default, short
     function updateItemsPreview(uri, out, previewType, cb) {
         $.getJSON(uri).done(function(data) {
             // console.log("Received items:", data)
-            var previewUris = _.map(data, function(d) {
-                return d ? d.node.previewUri : null
-            })
             out.empty()
-            for (var i = 0; i < previewUris.length; i++) {
-                if (!previewUris[i]) {
-                    continue;
-                }
-                (function(i) {
-                    var obj = data[i]
-                    var viewUri = "/admin/" + obj.node.type + "/" + obj._id + "/view"
-                    var id = "node-" + obj.node.type + "-" + obj._id
-                    var uri = previewUris[i] + "?view=" + previewType
-                    var el = $("<div>").attr("draggable", "true").attr("id", id).addClass("node-preview-wrapper").addClass("view-" + previewType).load(uri).appendTo(out)
-                    el.get(0).addEventListener('dragstart', dragStart, false);
-                    el.get(0).addEventListener('dragend', dragEnd, false);
-                    el.click(function() {
-                        if (dragging) {
-                            return;
-                        }
-                        if(cb) {
-                            cb(obj)
-                        } else {
-                            // click action here
-                            window.location.href = viewUri
-                        }
-                    });
-                })(i);
-            }
+            _.each(data, function(d) {
+                if(d) {
+                    out.append(makeItemPreview(d, previewType, cb))
+                }                    
+            })
+        })
+    }
+
+    // previewType: default, short
+    function updateItemPreview(uri, out, previewType, cb) {
+        $.getJSON(uri).done(function(d) {
+            if(d) {
+                out.html(makeItemPreview(d, previewType, cb))
+            } else {
+                out.html("N/A")
+            }                   
         })
     }
 
@@ -555,10 +564,21 @@ _.each(editableNodes, function(en) {
         console.log("Selected:", data)
     })
     */
+   
+   // shows item preview in a div
+   /*
+   var pDiv = $("<div>").appendTo("body")
+   updateItemPreview("/api/node/app/3", pDiv, "default", function(d) {
+    // clicked on element!
+    console.log(d)
+   })
+    */
 }
 
 module.exports = AdminPage
-},{"./Commons":3,"./Dialogs":4,"./Widgetizer":9}],3:[function(require,module,exports){
+},{"./Commons":3,"./Dialogs":4,"./Widgetizer":9}],"AdminPage":[function(require,module,exports){
+module.exports=require('7oXSFR');
+},{}],3:[function(require,module,exports){
 // Commons.js
 
 // commonly used functions.
