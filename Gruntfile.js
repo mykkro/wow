@@ -5,7 +5,6 @@ module.exports = function(grunt) {
             basic: {
                 src: [
                     './js/Widgetizer.js',
-                    './js/i18n.js',
                     './js/PageInfo.js',
                     './js/Dialogs.js',
                     './js/MyGamepad.js',
@@ -19,7 +18,6 @@ module.exports = function(grunt) {
                 options: {
                     alias: [
                         './js/Widgetizer.js:Widgetizer',
-                        './js/i18n.js:i18n',
                         './js/PageInfo.js:PageInfo',
                         './js/Dialogs.js:Dialogs',
                         './js/MyGamepad.js:MyGamepad',
