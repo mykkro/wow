@@ -15,12 +15,16 @@ module.exports = function(app, api, Auth) {
 		
 	app.get('/admin', Auth.isAuthenticatedAsAdmin, function(req, res) {
 		var admin = req.user.admin
+		var locale = admin.locale || 'en'
 		res.render('admin', { 
 			layout: 'master', 
 			profileTitle: admin.title, 
 			profileUri: '/admin/admin/'+admin._id+'/view',
 			editableNodes: JSON.stringify(nodes),
-			mode: "list"
+			mode: "list",
+			node: "null",
+			nodeType: "",
+			locale: locale
 		})
 	})
 
@@ -28,6 +32,7 @@ module.exports = function(app, api, Auth) {
 		var admin = req.user.admin
 		var type = req.params.type
 		var id = parseInt(req.params.id)
+		var locale = admin.locale || 'en'
 
 		api[type].get(id, function(err, rr) {
 	    	if(!err) {
@@ -44,9 +49,9 @@ module.exports = function(app, api, Auth) {
 					editableNodes: JSON.stringify(nodes),
 					mode: mode,
 					nodeType: type,
-					nodeId: parseInt(req.params.id),
 					nodeView: tpl,
 					node: JSON.stringify(rr),
+					locale: locale,
 					title: rr.title,
 					created: rr.created,
 					tags: rr.tags,

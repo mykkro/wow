@@ -1,13 +1,8 @@
-$(document).ready(function() {
+var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
 
     $.playable('soundmanager/swf/')
 
     var Widgetizer = require("./Widgetizer")(window, $, SVG)
-    var i18n = new(require("./i18n"))({
-        locales: ['en', 'de', 'cz'],
-        defaultLocale: 'en'
-    })
-    i18n.setLocale('de')
     var dialogs = require("./Dialogs")($, i18n)
 
     var activeTab = 1
@@ -25,7 +20,6 @@ $(document).ready(function() {
     var Commons = require("./Commons")
 
     var doAjax = Commons.doAjax
-
 
     var putImage = function(dropData, next) {
         console.log("Store image to DB", dropData)
@@ -360,7 +354,197 @@ $(document).ready(function() {
         }
 
         updateSelectorItemsPreview(div, 1)
-        dlg = dialogs.simpleDialog("Select image", div, linksDiv, {width: 600})
+        dlg = dialogs.simpleDialog(i18n.__("Select image"), div, linksDiv, {width: 600})
+    }
+   
+    var filterData = function(value, schema) {
+      for(var key in value) {
+        if(!(key in schema.properties)) {
+          delete value[key]
+        }
+      }
+      return value
+    }
+
+    var postProcessData = function(type, action, schema, fschema, value) {
+      console.log("postProcessData: Form "+type+"."+action+" submitted!")
+      console.log(value)
+      // filter out items not in schema...
+      return filterData(value, schema)
+    }
+
+    var formSubmitted = function(type, action, schema, fschema, value, next) {
+      value = postProcessData(type, action, schema, fschema, value)
+      if(action == "add") {
+        var uri = "/api/"+type+"/new"
+        var data = value
+        doAjax('POST', uri, data, function(err, res) {
+          if(!err) {
+            // console.log("Data received: ", res)
+            if(next) next(null, res[0])
+          } else {
+            next(err)
+          }
+        })
+      } else if(action=="edit") {
+        var uri = "/api/"+type+"/" + nodeId
+        var data = value
+        doAjax('PUT', uri, data, function(err, res) {
+          if(!err) {
+           if(next) next(null, $.extend({_id:nodeId},data))
+          } else {
+            next(err)
+          }
+        })
+      }
+    }             
+  // Alpaca-based form creation
+    var createForm = function(type, action, schema, fschema, options, data, div) {
+        var form = div
+        var opts = $.extend({}, options)
+        // do not show any buttons (we will use our own)
+        opts.form.buttons = {}
+        opts.form.attributes = {}
+        form.empty()
+        form.alpaca({
+          schema:fschema, 
+          options:opts,
+          data:data,
+          postRender: function(control) {
+
+            // may be useful...
+            var oldValue = control.getValue()
+            $(control.getEl()).bind("fieldupdate", function(e) {
+                var value = control.getValue()
+                console.log("Form updated!", oldValue, value)
+                oldValue = value
+            });
+
+            console.log("postRender: ")
+            var label = (action=="add") ? "Create" : "Update"
+            var createBtn = $("<button>").text(label).appendTo(control.container)
+            createBtn.click(function() {
+                console.log("Submit clicked!")
+                // clicked on submit button...
+                if(!control.isValid()) {
+                    // form is not valid!
+                    console.log("Form not valid!")
+                    return false
+                }
+                formSubmitted(type, action, schema, fschema, control.form.getValue(), function(err, rr) {
+                    if(err) {
+                        console.error(err)
+                        return false
+                    }
+                    // show item's view
+                    console.log("rr:", rr)
+                    var oldhref = window.location.href
+                    window.location.href = '/admin/'+type+"/"+rr._id+"/view"
+                    if(window.location.href == oldhref) window.location.reload()
+                })
+                return false;
+            })
+          }
+        })    
+    }
+
+
+    var passwordMatchValidator = function(control, callback) {
+        var controlVal = control.getValue();
+        if(!controlVal) {
+          // no value yet...
+            callback({
+                "message": "Form is empty",
+                "status": false
+            });
+        } else if (controlVal['password'] != controlVal['repeatPassword']) {
+            callback({
+                "message": "Passwords should match!",
+                "status": false
+            });
+        } else {
+            callback({
+                "message": "Fields valid",
+                "status": true
+            });
+        }
+    }             
+      
+  var makeNodeControl = function(en) {
+    var out = $("<div>").addClass("node-control")
+    out.append($("<h3>").text(en.title))
+    out.append($("<img>").attr("src", en.thumbnailUri))
+    return out
+  }
+  var showAddForm = function(control, en) {
+    // highlight the selected node...
+    $("#newnode .node-control").removeClass("selected")
+    control.addClass("selected")
+    // get JSON metadata for forms...
+    $.getJSON(en.metainfoUri).done(function(metainfo) {
+        console.log("Got metainfo!")
+        console.log(metainfo)
+        var options = metainfo.forms.add.options
+        var schema = metainfo.schema
+        var fschema = metainfo.forms.add.schema || schema
+        var name = metainfo.name
+        var defaults = metainfo.defaults
+        if(name=="user" || name=="admin") {
+            options = $.extend({ validator: passwordMatchValidator }, options)
+        }
+        createForm(name, "add", schema, fschema, options, defaults, $("#newnodeform .form"))
+    })
+  }
+
+// display controls for all editable node types             
+$("#newnode").empty()
+_.each(editableNodes, function(en) {
+    var control = makeNodeControl(en)
+    control.click(function() {
+        showAddForm(control, en)
+    })
+    $("#newnode").append(control)
+})
+
+  if(node) {
+        console.log(node);
+        var nodeId = node._id
+
+        console.log('Generating edit form...', node, editableNodes, nodeType)
+        var en = null
+        _.each(editableNodes, function(e) {
+            if(e.name==nodeType) {
+                en=e;
+                return;
+            }
+        })
+        $.getJSON(en.metainfoUri).done(function(metainfo) {
+            console.log("Got metainfo!")
+            console.log(metainfo)
+            var form = metainfo.forms.edit || metainfo.forms.add
+            var options = form.options
+            var schema = metainfo.schema
+            var fschema = form.schema || schema
+            var name = metainfo.name
+            if(name=="user" || name=="admin") {
+                options = $.extend({ validator: passwordMatchValidator }, options)
+            }
+            createForm(name, "edit", schema, fschema, options, node, $("#editnodeform .form"))
+        })
+        $("#removeitembtn").click(function() {
+            var nodeUri = "/api/"+nodeType+"/"+nodeId
+            console.log("Deleting "+nodeUri)
+            var opts = {
+                url: nodeUri,
+                type: 'DELETE',
+                contentType: "application/json; charset=utf-8"
+            }
+            $.ajax(opts).then(function(res) {
+                console.log("Deleted!", res)
+                window.location.href = "/admin"
+            })
+
+        })
     }
 
     /*
@@ -368,4 +552,6 @@ $(document).ready(function() {
         console.log("Selected:", data)
     })
     */
-})
+}
+
+module.exports = AdminPage

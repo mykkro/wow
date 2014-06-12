@@ -9,6 +9,28 @@ Admin Page
 <script type="text/javascript" src="/js/admin.bundle.js"></script>
 <script>
 var editableNodes = {{{editableNodes}}};
+var pageMode = "{{mode}}"
+var node = {{{node}}};
+var nodeType = "{{nodeType}}"
+$(function() {
+
+    // new i18n... 
+    i18n.init({ 
+      resGetPath: '/locales/__lng__/__ns__.json', 
+      lng: 'de',// '{{locale}}',
+      ns: { 
+          namespaces: ['core'], 
+          defaultNs: 'core'
+        } 
+    }, function(__) {
+      	var x = __("Hello!")
+      	console.log("Translation obtained: ", x)
+      	// compatibility with Dialogs...
+      	var i18next = { __: __ }
+		var AdminPage = require("AdminPage")($, i18next, pageMode, editableNodes, node, nodeType)
+    });
+
+})
 </script>
 {{/yield-script}}
 <div class="admin">
@@ -16,12 +38,6 @@ var editableNodes = {{{editableNodes}}};
 	<h1>Admin Page</h1>
 	{{> admin-nav}}
 	<div class="admin-body">
-
-	<div>
-		<script>
-		var pageMode = "{{mode}}"
-		</script>
-	</div>
 
 		<div id="admintabs" class="ui-tabs">
 			<ul id="admintabs-nav" class="ui-tabs-nav">
@@ -66,174 +82,8 @@ var editableNodes = {{{editableNodes}}};
 			  <div id="newnodeform">
 				<div class="form"></div>
 			  </div>
-			  <script>
-
-				var doAjax = require("Commons").doAjax
-
-				var filterData = function(value, schema) {
-				  for(var key in value) {
-					if(!(key in schema.properties)) {
-					  delete value[key]
-					}
-				  }
-				  return value
-				}
-
-				var postProcessData = function(type, action, schema, fschema, value) {
-				  console.log("postProcessData: Form "+type+"."+action+" submitted!")
-				  console.log(value)
-				  // custom post-processing...
-				  /*
-				  if(type=="admin" && action=="add") {
-					// hash password...
-					value.password = hashPassword(value.password)
-				  }
-				  */
-				  // filter out items not in schema...
-				  return filterData(value, schema)
-				}
-
-				var formSubmitted = function(type, action, schema, fschema, value, next) {
-				  value = postProcessData(type, action, schema, fschema, value)
-				  if(action == "add") {
-					var uri = "/api/"+type+"/new"
-					var data = value
-					doAjax('POST', uri, data, function(err, res) {
-					  if(!err) {
-						// console.log("Data received: ", res)
-						if(next) next(null, res[0])
-					  } else {
-						next(err)
-					  }
-					})
-				  } else if(action=="edit") {
-					var uri = "/api/"+type+"/" + nodeId
-					var data = value
-					doAjax('PUT', uri, data, function(err, res) {
-					  if(!err) {
-					   if(next) next(null, $.extend({_id:nodeId},data))
-					  } else {
-						next(err)
-					  }
-					})
-				  }
-				}			  
-			  // Alpaca-based form creation
-				var createForm = function(type, action, schema, fschema, options, data, div) {
-					var form = div
-					var opts = $.extend({}, options)
-					// do not show any buttons (we will use our own)
-					opts.form.buttons = {}
-					opts.form.attributes = {}
-					form.empty()
-					form.alpaca({
-					  schema:fschema, 
-					  options:opts,
-					  data:data,
-					  postRender: function(control) {
-
-					  	// may be useful...
-						var oldValue = control.getValue()
-						$(control.getEl()).bind("fieldupdate", function(e) {
-				            var value = control.getValue()
-				            console.log("Form updated!", oldValue, value)
-				            oldValue = value
-				        });
-
-						console.log("postRender: ")
-						var label = (action=="add") ? "Create" : "Update"
-						var createBtn = $("<button>").text(label).appendTo(control.container)
-						createBtn.click(function() {
-							console.log("Submit clicked!")
-							// clicked on submit button...
-							if(!control.isValid()) {
-								// form is not valid!
-								console.log("Form not valid!")
-								return false
-							}
-							formSubmitted(type, action, schema, fschema, control.form.getValue(), function(err, rr) {
-								if(err) {
-									console.error(err)
-									return false
-								}
-								// show item's view
-								console.log("rr:", rr)
-								var oldhref = window.location.href
-								window.location.href = '/admin/'+type+"/"+rr._id+"/view"
-								if(window.location.href == oldhref) window.location.reload()
-							})
-							return false;
-						})
-					  }
-					})    
-				}
-
-
-				var passwordMatchValidator = function(control, callback) {
-					var controlVal = control.getValue();
-					if(!controlVal) {
-					  // no value yet...
-						callback({
-							"message": "Form is empty",
-							"status": false
-						});
-					} else if (controlVal['password'] != controlVal['repeatPassword']) {
-						callback({
-							"message": "Passwords should match!",
-							"status": false
-						});
-					} else {
-						callback({
-							"message": "Fields valid",
-							"status": true
-						});
-					}
-				}			  
-			  
-			  var makeNodeControl = function(en) {
-				var out = $("<div>").addClass("node-control")
-				out.append($("<h3>").text(en.title))
-				out.append($("<img>").attr("src", en.thumbnailUri))
-				return out
-			  }
-			  var showAddForm = function(control, en) {
-				// highlight the selected node...
-				$("#newnode .node-control").removeClass("selected")
-				control.addClass("selected")
-				// get JSON metadata for forms...
-				$.getJSON(en.metainfoUri).done(function(metainfo) {
-					console.log("Got metainfo!")
-					console.log(metainfo)
-					var options = metainfo.forms.add.options
-					var schema = metainfo.schema
-					var fschema = metainfo.forms.add.schema || schema
-					var name = metainfo.name
-					var defaults = metainfo.defaults
-					if(name=="user" || name=="admin") {
-						options = $.extend({ validator: passwordMatchValidator }, options)
-					}
-					createForm(name, "add", schema, fschema, options, defaults, $("#newnodeform .form"))
-				})
-			  }
-			  $(document).ready(function() {
-				// display controls for all editable node types				
-				$("#newnode").empty()
-				_.each(editableNodes, function(en) {
-					var control = makeNodeControl(en)
-					control.click(function() {
-						showAddForm(control, en)
-					})
-					$("#newnode").append(control)
-				})
-			  })
-			  </script>
 			</div>
 			{{#nodeView}}
-			<script>
-			var nodeId = {{nodeId}}
-			var nodeType = "{{nodeType}}"
-			var node = {{{node}}}
-			</script>
 			<div id="view" class="ui-tabs-panel">
 	          	<h2>View</h2>
 				{{> nodepreview-head}}
@@ -248,54 +98,11 @@ var editableNodes = {{{editableNodes}}};
 					<div class="form"></div>
 			  		</div>
 				</div>
-				<script>
-				$(document).ready(function() {
-					console.log('Generating edit form...', node, editableNodes, nodeType)
-					var en = null
-					_.each(editableNodes, function(e) {
-						if(e.name==nodeType) {
-							en=e;
-							return;
-						}
-					})
-					$.getJSON(en.metainfoUri).done(function(metainfo) {
-						console.log("Got metainfo!")
-						console.log(metainfo)
-						var form = metainfo.forms.edit || metainfo.forms.add
-						var options = form.options
-						var schema = metainfo.schema
-						var fschema = form.schema || schema
-						var name = metainfo.name
-						if(name=="user" || name=="admin") {
-							options = $.extend({ validator: passwordMatchValidator }, options)
-						}
-						createForm(name, "edit", schema, fschema, options, node, $("#editnodeform .form"))
-					})
-				})
-				</script>
 			<div id="remove" class="ui-tabs-panel">
 	          	<h2>Remove</h2>
 				{{> nodepreview-head}}
 				<div>
 				<button id="removeitembtn">Remove item</button>
-				<script>
-				$(document).ready(function() {
-					$("#removeitembtn").click(function() {
-						var nodeUri = "/api/"+nodeType+"/"+nodeId
-						console.log("Deleting "+nodeUri)
-						var opts = {
-							url: nodeUri,
-							type: 'DELETE',
-							contentType: "application/json; charset=utf-8"
-						}
-						$.ajax(opts).then(function(res) {
-							console.log("Deleted!", res)
-							window.location.href = "/admin"
-						})
-
-					})
-				})
-				</script>
 			</div>
 			{{/nodeView}}
 		</div>

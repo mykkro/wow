@@ -54,10 +54,10 @@ module.exports = function(grunt) {
             },
 			// TODO do automatic scanning or regular expression...
             pg_admin: {
-                src: ['./js/admin.js'],
+                src: ['./js/AdminPage.js'],
                 dest: 'public/js/admin.bundle.js',
                 options: {
-                    alias: [],
+                    alias: ['./js/AdminPage.js:AdminPage'],
                     transform: ['brfs']
                 }
             }
@@ -90,7 +90,8 @@ module.exports = function(grunt) {
                     "js/vendor/moment-with-langs.min.js",
                     "js/vendor/raphael-min.js",
                     "js/vendor/raphaelicious-1.0.js",
-                    "js/vendor/yetii.js"
+                    "js/vendor/yetii.js",
+                    "js/vendor/i18next.js"
                 ],
                 dest: 'public/js/core.libs.js'
             },
@@ -121,7 +122,8 @@ module.exports = function(grunt) {
                     "js/vendor/moment-with-langs.min.js",
                     "js/vendor/raphael-min.js",
                     "js/vendor/raphaelicious-1.0.js",
-                    "js/vendor/yetii.js"
+                    "js/vendor/yetii.js",
+                    "js/vendor/i18next.js"
                 ],
                 dest: 'public/js/core.libs.min.js'
             },
