@@ -2,8 +2,8 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 var Base = require("basejs")
 var url = require("url")
 
-var BasicLayer = require("./basiclayer")
-var SoftwareKeyboard = require("./softwarekeyboard")
+var BasicLayer = require("./BasicLayer")
+var SoftwareKeyboard = require("./SoftwareKeyboard")
 
 /**
  * ## Generic class for all pages.
@@ -124,7 +124,7 @@ var BasePage = BasicLayer.extend({
 
 module.exports = BasePage
 
-},{"./basiclayer":2,"./softwarekeyboard":5,"basejs":6,"url":12}],2:[function(require,module,exports){
+},{"./BasicLayer":2,"./SoftwareKeyboard":5,"basejs":6,"url":12}],2:[function(require,module,exports){
 var Base = require("basejs")
 
 var BasicLayer = Base.extend({
@@ -195,7 +195,7 @@ var BasicLayer = Base.extend({
 module.exports = BasicLayer
 
 },{"basejs":6}],3:[function(require,module,exports){
-var BasicLayer = require("./basiclayer")
+var BasicLayer = require("./BasicLayer")
 
 var Overlay = BasicLayer.extend({
     constructor: function(Wow, options) {
@@ -227,104 +227,102 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./basiclayer":2}],4:[function(require,module,exports){
-module.exports = function($, Base) {
+},{"./BasicLayer":2}],4:[function(require,module,exports){
 
-    var SelectChain = Base.extend({
-        /* widgets: an array of DOM/jQuery elements representing widgets */
-        constructor: function(widgets, currentIndex) {
-            this.widgets = [];
-            if (widgets) {
-                for (var i = 0; i < widgets.length; i++) this.append(widgets[i])
+var Base = require("basejs")
+
+var SelectChain = Base.extend({
+    /* widgets: an array of DOM/jQuery elements representing widgets */
+    constructor: function(widgets, currentIndex) {
+        this.widgets = [];
+        if (widgets) {
+            for (var i = 0; i < widgets.length; i++) this.append(widgets[i])
+        }
+        this.currentIndex = currentIndex || 0
+        this.update()
+    },
+    copy: function() {
+        return new SelectChain(this.widgets, this.currentIndex)
+    },
+    append: function(el) {
+        this.widgets.push(el)
+        return this
+    },
+    clear: function() {
+        this.unselect()
+        this.currentIndex = 0
+        this.widgets = []
+    },
+    /* select either by index or by element */
+    select: function(index) {
+        if (typeof index == "number") {
+            this.currentIndex = index
+        } else {
+            var i = this.widgets.length - 1
+            while (i >= 0) {
+                if (this.widgets[i] == index) break
+                i--
             }
-            this.currentIndex = currentIndex || 0
+            this.currentIndex = i
+        }
+        this.update()
+        return this
+    },
+    selectPrevious: function() {
+        if (this.currentIndex >= 0) {
+            this.currentIndex =
+                this.widgets.length ? ((this.currentIndex + this.widgets.length - 1) % this.widgets.length) : 0
             this.update()
-        },
-        copy: function() {
-            return new SelectChain(this.widgets, this.currentIndex)
-        },
-        append: function(el) {
-            this.widgets.push(el)
-            return this
-        },
-        clear: function() {
-            this.unselect()
-            this.currentIndex = 0
-            this.widgets = []
-        },
-        /* select either by index or by element */
-        select: function(index) {
-            if (typeof index == "number") {
-                this.currentIndex = index
+        }
+        return this
+    },
+    selectNext: function() {
+        if (this.currentIndex >= 0) {
+            this.currentIndex =
+                this.widgets.length > 0 ? ((this.currentIndex + 1) % this.widgets.length) : 0
+            this.update()
+        }
+        return this
+    },
+    unselect: function() {
+        this.currentIndex = -1
+        this.update()
+        return this
+    },
+    show: function() {
+        this.update()
+        this.hidden = false
+    },
+    hide: function() {
+        for (var i = 0; i < this.widgets.length; i++) {
+            var el = this.widgets[i]
+            $(el).removeClass("glow2")
+        }
+        this.hidden = true
+        return this
+    },
+    update: function() {
+        for (var i = 0; i < this.widgets.length; i++) {
+            var el = this.widgets[i]
+            if (i == this.currentIndex) {
+                $(el).addClass("glow2")
             } else {
-                var i = this.widgets.length - 1
-                while (i >= 0) {
-                    if (this.widgets[i] == index) break
-                    i--
-                }
-                this.currentIndex = i
-            }
-            this.update()
-            return this
-        },
-        selectPrevious: function() {
-            if (this.currentIndex >= 0) {
-                this.currentIndex =
-                    this.widgets.length ? ((this.currentIndex + this.widgets.length - 1) % this.widgets.length) : 0
-                this.update()
-            }
-            return this
-        },
-        selectNext: function() {
-            if (this.currentIndex >= 0) {
-                this.currentIndex =
-                    this.widgets.length > 0 ? ((this.currentIndex + 1) % this.widgets.length) : 0
-                this.update()
-            }
-            return this
-        },
-        unselect: function() {
-            this.currentIndex = -1
-            this.update()
-            return this
-        },
-        show: function() {
-            this.update()
-            this.hidden = false
-        },
-        hide: function() {
-            for (var i = 0; i < this.widgets.length; i++) {
-                var el = this.widgets[i]
                 $(el).removeClass("glow2")
             }
-            this.hidden = true
-            return this
-        },
-        update: function() {
-            for (var i = 0; i < this.widgets.length; i++) {
-                var el = this.widgets[i]
-                if (i == this.currentIndex) {
-                    $(el).addClass("glow2")
-                } else {
-                    $(el).removeClass("glow2")
-                }
-            }
-            return this
-        },
-        current: function() {
-            return (this.widgets.length && !this.hidden) ? this.widgets[this.currentIndex] : null
         }
-    })
+        return this
+    },
+    current: function() {
+        return (this.widgets.length && !this.hidden) ? this.widgets[this.currentIndex] : null
+    }
+})
 
-    return SelectChain
+module.exports = SelectChain
 
-}
-
-},{}],5:[function(require,module,exports){
-var Overlay = require("./overlay")
+},{"basejs":6}],5:[function(require,module,exports){
+var Overlay = require("./Overlay")
 var _ = require("underscore")
-var Base = require("basejs")
-var SelectChain = require("./selectchain")($, Base)
+var SelectChain = require("./SelectChain")
 
 
 var SoftwareKeyboard = Overlay.extend({
@@ -1045,7 +1043,7 @@ var SoftwareKeyboard = Overlay.extend({
 
 module.exports = SoftwareKeyboard
 
-},{"./overlay":3,"./selectchain":4,"basejs":6,"underscore":7}],6:[function(require,module,exports){
+},{"./Overlay":3,"./SelectChain":4,"underscore":7}],6:[function(require,module,exports){
 /*
   Based on Base.js 1.1a (c) 2006-2010, Dean Edwards
   Updated to pass JSHint and converted into a module by Kenneth Powers
@@ -3879,7 +3877,7 @@ module.exports = function(Wow) {
     var i18n = Wow.i18n
     var BasePage = require("../../../js/BasePage")
     var Base = require("basejs")
-    var SelectChain = require("../../../js/selectchain")($, Base)
+    var SelectChain = require("../../../js/SelectChain")
 
 
     return BasePage.extend({
@@ -3927,7 +3925,7 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/BasePage":1,"../../../js/selectchain":4,"basejs":6}]},{},["HJD/OK"]);var Synth, AudioSynth, AudioSynthInstrument;
+},{"../../../js/BasePage":1,"../../../js/SelectChain":4,"basejs":6}]},{},["HJD/OK"]);var Synth, AudioSynth, AudioSynthInstrument;
 !function(){
 
 	var URL = window.URL || window.webkitURL;

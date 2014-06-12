@@ -1,6 +1,6 @@
 module.exports = function(window, $, Gamepad) {
 
-    var EventTarget = require("./eventtarget")
+    var EventTarget = require("./EventTarget")
 
     /* custom class wrapper for gamepads */
     var MyGamepad = EventTarget.extend({

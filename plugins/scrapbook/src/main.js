@@ -6,8 +6,7 @@ module.exports = function(Wow) {
     var BasePage = require("../../../js/BasePage")
     var ExportBookViewer = require("./js/things/ExportBookViewer")
     var Things = require("./js/things/Things")
-    var Base = require("basejs")
-    var SelectChain = require("../../../js/selectchain")($, Base)
+    var SelectChain = require("../../../js/SelectChain")
 
     var path = require("path")
 

@@ -15,8 +15,7 @@ module.exports = function(Wow) {
         link.href = url;
         document.getElementsByTagName("head")[0].appendChild(link);
     }
-    var Base = require("basejs")
-    var SelectChain = require("../../../js/selectchain")($, Base)
+    var SelectChain = require("../../../js/SelectChain")
 
 
     var GamePage = BasePage.extend({

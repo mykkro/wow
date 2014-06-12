@@ -1,8 +1,8 @@
 var Base = require("basejs")
 var url = require("url")
 
-var BasicLayer = require("./basiclayer")
-var SoftwareKeyboard = require("./softwarekeyboard")
+var BasicLayer = require("./BasicLayer")
+var SoftwareKeyboard = require("./SoftwareKeyboard")
 
 /**
  * ## Generic class for all pages.

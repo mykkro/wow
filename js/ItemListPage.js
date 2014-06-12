@@ -6,8 +6,7 @@ module.exports = function(Wow) {
     var BasePage = require("./BasePage")
     var SvgHelper = require("./svghelper")(window)
     var url = require("url")
-    var Base = require("basejs")
-    var SelectChain = require("./selectchain")($, Base)
+    var SelectChain = require("./SelectChain")
     var truncate = require('html-truncate');
 
     /**

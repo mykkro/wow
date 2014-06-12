@@ -1,11 +1,9 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"BasePage":[function(require,module,exports){
-module.exports=require('OdyuDH');
-},{}],"OdyuDH":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"OdyuDH":[function(require,module,exports){
 var Base = require("basejs")
 var url = require("url")
 
-var BasicLayer = require("./basiclayer")
-var SoftwareKeyboard = require("./softwarekeyboard")
+var BasicLayer = require("./BasicLayer")
+var SoftwareKeyboard = require("./SoftwareKeyboard")
 
 /**
  * ## Generic class for all pages.
@@ -126,195 +124,9 @@ var BasePage = BasicLayer.extend({
 
 module.exports = BasePage
 
-},{"./basiclayer":9,"./softwarekeyboard":25,"basejs":44,"url":55}],"JY97rG":[function(require,module,exports){
-// Commons.js
-
-// commonly used functions.
-if (!String.prototype.startsWith) {
-    Object.defineProperty(String.prototype, 'startsWith', {
-        enumerable: false,
-        configurable: false,
-        writable: false,
-        value: function(searchString, position) {
-            position = position || 0;
-            return this.indexOf(searchString, position) === position;
-        }
-    });
-}
-
-var Commons = {
-    doAjax: function(method, uri, data, cb) {
-        var opts = (method == "GET" || method == 'DELETE') ? {
-            url: uri,
-            type: method,
-            contentType: "application/json; charset=utf-8"
-        } : {
-            url: uri,
-            type: method,
-            data: JSON.stringify(data),
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8"
-        }
-        $.ajax(opts).then(function(res) {
-            if (!res.error) {
-                cb(null, res)
-            } else {
-                cb(res.error)
-            }
-        })
-    },
-    /* find topmost nodes satisfying a condition */
-    findTopmostNodes: function(node, inNodes, childrenOnly, condition) {
-        if (!inNodes) inNodes = []
-        if (!childrenOnly && node.nodeType == 1) {
-            if (condition(node)) {
-                inNodes.push(node)
-                // do not search deeper in this subtree...
-                return inNodes
-            }
-        }
-        var children = node.children
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].nodeType == 1) {
-                // element --> recurse
-                inNodes = this.findTopmostNodes(children[i], inNodes, false, condition)
-            }
-        }
-        return inNodes
-    }
-
-}
-
-module.exports = Commons
-},{}],"Commons":[function(require,module,exports){
-module.exports=require('JY97rG');
-},{}],5:[function(require,module,exports){
-
-var Widget = require("./Widget")
-
-var InputWidget = Widget.extend({
-    constructor: function(data) {
-        this.base(data)
-        this.val(data.value)
-    },
-    val: function(value) {
-        if (arguments.length == 0) {
-            // getter
-            return this.value
-        } else {
-            // setter
-            this._setValue(value)
-            // update widget
-            this.setValue(value)
-        }
-    },
-    // call this if the view is changed 
-    // so the event wil not propagate back
-    _setValue: function(value) {
-        this.value = value
-        $(this.element).attr("value", value)
-    },
-    // to be overridden in subclasses... 
-    setValue: function(value) {
-        console.log("Updating value: " + value)
-    },
-    focus: function() {
-        console.log("Focused!")
-    },
-    blur: function() {
-        console.log("Unfocused!")
-    }
-})
-
-module.exports = InputWidget
-
-
-},{"./Widget":8}],"Logger":[function(require,module,exports){
-module.exports=require('+1Q85x');
-},{}],"+1Q85x":[function(require,module,exports){
-var Base = require("basejs")
-
-var Logger = Base.extend({
-    constructor: function(opts) {
-        console.log("Logger created:", opts)
-    },
-    log: function(data) {
-        // TODO add some filter - which events are loggable (for this user)
-        var opts = {
-            url: "/api/log",
-            type: "POST",
-            data: JSON.stringify(data),
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8"
-        }
-        $.ajax(opts).done(function(data) {
-            // log sent OK
-            console.log("Logger:", data[0])
-        }).fail(function(err) {
-            console.error(err)
-        })
-    }
-})
-
-module.exports = Logger
-
-},{"basejs":44}],8:[function(require,module,exports){
-var Base = require("basejs")
-
-
-var Widget = Base.extend({
-    constructor: function(data) {
-        this.element = data.element
-        this.type = data.type
-        this.id = data.id
-        this.name = data.name
-        this.bounds = data.bounds
-        this.dim = data.dim
-        //this.setClass("glow2", true)
-    },
-    click: function(cb) {
-        var self = this
-        $(this.element).click(function() {
-            if (self.isEnabled()) cb()
-        })
-    },
-    disable: function() {
-        $(this.element).addClass("disabled")
-    },
-    enable: function() {
-        $(this.element).removeClass("disabled")
-    },
-    setEnabled: function(flag) {
-        if (flag) {
-            this.enable()
-        } else {
-            this.disable()
-        }
-    },
-    isEnabled: function() {
-        return !this.hasClass("disabled")
-    },
-    setHighlighted: function(flag) {
-        this.setClass("glow2", flag)
-    },
-    isHighlighted: function() {
-        return this.hasClass("glow2")
-    },
-    setClass: function(klass, flag) {
-        if (flag) {
-            $(this.element).addClass(klass)
-        } else {
-            $(this.element).removeClass(klass)
-        }
-    },
-    hasClass: function(klass) {
-        return $(this.element).hasClass(klass)
-    }
-})
-
-module.exports = Widget
-
-},{"basejs":44}],9:[function(require,module,exports){
+},{"./BasicLayer":3,"./SoftwareKeyboard":13,"basejs":44,"url":55}],"BasePage":[function(require,module,exports){
+module.exports=require('OdyuDH');
+},{}],3:[function(require,module,exports){
 var Base = require("basejs")
 
 var BasicLayer = Base.extend({
@@ -384,7 +196,1475 @@ var BasicLayer = Base.extend({
 
 module.exports = BasicLayer
 
-},{"basejs":44}],10:[function(require,module,exports){
+},{"basejs":44}],"JY97rG":[function(require,module,exports){
+// Commons.js
+
+// commonly used functions.
+if (!String.prototype.startsWith) {
+    Object.defineProperty(String.prototype, 'startsWith', {
+        enumerable: false,
+        configurable: false,
+        writable: false,
+        value: function(searchString, position) {
+            position = position || 0;
+            return this.indexOf(searchString, position) === position;
+        }
+    });
+}
+
+var Commons = {
+    doAjax: function(method, uri, data, cb) {
+        var opts = (method == "GET" || method == 'DELETE') ? {
+            url: uri,
+            type: method,
+            contentType: "application/json; charset=utf-8"
+        } : {
+            url: uri,
+            type: method,
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8"
+        }
+        $.ajax(opts).then(function(res) {
+            if (!res.error) {
+                cb(null, res)
+            } else {
+                cb(res.error)
+            }
+        })
+    },
+    /* find topmost nodes satisfying a condition */
+    findTopmostNodes: function(node, inNodes, childrenOnly, condition) {
+        if (!inNodes) inNodes = []
+        if (!childrenOnly && node.nodeType == 1) {
+            if (condition(node)) {
+                inNodes.push(node)
+                // do not search deeper in this subtree...
+                return inNodes
+            }
+        }
+        var children = node.children
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].nodeType == 1) {
+                // element --> recurse
+                inNodes = this.findTopmostNodes(children[i], inNodes, false, condition)
+            }
+        }
+        return inNodes
+    }
+
+}
+
+module.exports = Commons
+},{}],"Commons":[function(require,module,exports){
+module.exports=require('JY97rG');
+},{}],"C6/c90":[function(require,module,exports){
+//Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
+//Modified by Myrousz 2014
+//MIT License
+
+var Base = require("basejs")
+
+var EventTarget = Base.extend({
+    constructor: function() {
+        this._listeners = {};
+    },
+    addListener: function(type, listener) {
+        var types = type.split(" ")
+        for (var i = 0; i < types.length; i++) {
+            type = types[i]
+            if (typeof this._listeners[type] == "undefined") {
+                this._listeners[type] = [];
+            }
+            this._listeners[type].push(listener);
+        }
+    },
+    fire: function(event) {
+        if (typeof event == "string") {
+            event = {
+                type: event
+            };
+        }
+        if (!event.target) {
+            event.target = this;
+        }
+
+        if (!event.type) { //falsy
+            throw new Error("Event object missing 'type' property.");
+        }
+
+        if (this._listeners[event.type] instanceof Array) {
+            var listeners = this._listeners[event.type];
+            for (var i = 0, len = listeners.length; i < len; i++) {
+                listeners[i].call(this, event);
+            }
+        }
+    },
+    removeListener: function(type, listener) {
+        var types = type.split(" ")
+        for (var i = 0; i < types.length; i++) {
+            type = types[i]
+            if (this._listeners[type] instanceof Array) {
+                var listeners = this._listeners[type];
+                for (var i = 0, len = listeners.length; i < len; i++) {
+                    if (listeners[i] === listener) {
+                        listeners.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+})
+
+module.exports = EventTarget
+
+},{"basejs":44}],"EventTarget":[function(require,module,exports){
+module.exports=require('C6/c90');
+},{}],8:[function(require,module,exports){
+
+var Widget = require("./Widget")
+
+var InputWidget = Widget.extend({
+    constructor: function(data) {
+        this.base(data)
+        this.val(data.value)
+    },
+    val: function(value) {
+        if (arguments.length == 0) {
+            // getter
+            return this.value
+        } else {
+            // setter
+            this._setValue(value)
+            // update widget
+            this.setValue(value)
+        }
+    },
+    // call this if the view is changed 
+    // so the event wil not propagate back
+    _setValue: function(value) {
+        this.value = value
+        $(this.element).attr("value", value)
+    },
+    // to be overridden in subclasses... 
+    setValue: function(value) {
+        console.log("Updating value: " + value)
+    },
+    focus: function() {
+        console.log("Focused!")
+    },
+    blur: function() {
+        console.log("Unfocused!")
+    }
+})
+
+module.exports = InputWidget
+
+
+},{"./Widget":16}],"Logger":[function(require,module,exports){
+module.exports=require('+1Q85x');
+},{}],"+1Q85x":[function(require,module,exports){
+var Base = require("basejs")
+
+var Logger = Base.extend({
+    constructor: function(opts) {
+        console.log("Logger created:", opts)
+    },
+    log: function(data) {
+        // TODO add some filter - which events are loggable (for this user)
+        var opts = {
+            url: "/api/log",
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8"
+        }
+        $.ajax(opts).done(function(data) {
+            // log sent OK
+            console.log("Logger:", data[0])
+        }).fail(function(err) {
+            console.error(err)
+        })
+    }
+})
+
+module.exports = Logger
+
+},{"basejs":44}],11:[function(require,module,exports){
+var BasicLayer = require("./BasicLayer")
+
+var Overlay = BasicLayer.extend({
+    constructor: function(Wow, options) {
+        this.base(Wow, options)
+        // set this to true if you wish to pass events through
+        this.transparent = this.options.transparent
+        if (!this.transparent) {
+            this.paper.rect(960, 600).attr("class", "wow-overlay-background")
+        } else {
+            this.paper.attr("class", this.paper.attr("class") + " transparent")
+        }
+        this.hide()
+    },
+    init: function(data, next) {
+        this.base(data, next)
+    },
+    show: function() {
+        this.setVisible(true)
+    },
+    hide: function() {
+        this.setVisible(false)
+    },
+    setVisible: function(flag) {
+        this.visible = flag
+        if (flag) this.paper.show();
+        else this.paper.hide()
+    }
+})
+
+module.exports = Overlay
+
+},{"./BasicLayer":3}],12:[function(require,module,exports){
+
+var Base = require("basejs")
+
+var SelectChain = Base.extend({
+    /* widgets: an array of DOM/jQuery elements representing widgets */
+    constructor: function(widgets, currentIndex) {
+        this.widgets = [];
+        if (widgets) {
+            for (var i = 0; i < widgets.length; i++) this.append(widgets[i])
+        }
+        this.currentIndex = currentIndex || 0
+        this.update()
+    },
+    copy: function() {
+        return new SelectChain(this.widgets, this.currentIndex)
+    },
+    append: function(el) {
+        this.widgets.push(el)
+        return this
+    },
+    clear: function() {
+        this.unselect()
+        this.currentIndex = 0
+        this.widgets = []
+    },
+    /* select either by index or by element */
+    select: function(index) {
+        if (typeof index == "number") {
+            this.currentIndex = index
+        } else {
+            var i = this.widgets.length - 1
+            while (i >= 0) {
+                if (this.widgets[i] == index) break
+                i--
+            }
+            this.currentIndex = i
+        }
+        this.update()
+        return this
+    },
+    selectPrevious: function() {
+        if (this.currentIndex >= 0) {
+            this.currentIndex =
+                this.widgets.length ? ((this.currentIndex + this.widgets.length - 1) % this.widgets.length) : 0
+            this.update()
+        }
+        return this
+    },
+    selectNext: function() {
+        if (this.currentIndex >= 0) {
+            this.currentIndex =
+                this.widgets.length > 0 ? ((this.currentIndex + 1) % this.widgets.length) : 0
+            this.update()
+        }
+        return this
+    },
+    unselect: function() {
+        this.currentIndex = -1
+        this.update()
+        return this
+    },
+    show: function() {
+        this.update()
+        this.hidden = false
+    },
+    hide: function() {
+        for (var i = 0; i < this.widgets.length; i++) {
+            var el = this.widgets[i]
+            $(el).removeClass("glow2")
+        }
+        this.hidden = true
+        return this
+    },
+    update: function() {
+        for (var i = 0; i < this.widgets.length; i++) {
+            var el = this.widgets[i]
+            if (i == this.currentIndex) {
+                $(el).addClass("glow2")
+            } else {
+                $(el).removeClass("glow2")
+            }
+        }
+        return this
+    },
+    current: function() {
+        return (this.widgets.length && !this.hidden) ? this.widgets[this.currentIndex] : null
+    }
+})
+
+module.exports = SelectChain
+
+},{"basejs":44}],13:[function(require,module,exports){
+var Overlay = require("./Overlay")
+var _ = require("underscore")
+var SelectChain = require("./SelectChain")
+
+
+var SoftwareKeyboard = Overlay.extend({
+    constructor: function(Wow, options) {
+        options = options || {}
+        options.cssClass = "softwarekeyboard"
+        options.transparent = false
+        this.base(Wow, options)
+
+        this.size = 60
+        this.gap = 5
+        this.selectChain = new SelectChain()
+        this.useLayout("DeutschColor")
+    },
+    useLayout: function(layoutName) {
+        this.layout = SoftwareKeyboard.layouts[layoutName]
+        this.mapping = SoftwareKeyboard.mappings[layoutName]
+        this.keyboard = this.drawKeyboard(this.layout)
+        this.textfieldBack = this.paper.rect(500, 50).attr({
+            rx: this.gap,
+            ry: this.gap
+        }).move(230, 105).attr("fill", "#eee")
+        this.textfield = this.paper.text("").attr({
+            "class": "softkey-textfield",
+            "text-anchor": "middle",
+            "font-weight": "bold",
+            "font-size": 40
+        }).move(480, 100)
+        this.setText("")
+    },
+    setText: function(text) {
+        this.text = text
+        $(this.textfield.node).find("tspan").text(text)
+    },
+    drawKeyboard: function(layout) {
+        var self = this
+        var grp = this.paper.group()
+        var rect = grp.rect().attr("rx", this.gap).attr("ry", this.gap)
+        var keys = []
+            // layout is array of rows (lines)
+        var x = 0
+        var y = 0
+        var w = 1
+        var h = 1
+        var a = 6
+        var f = 6
+        var t = "#333"
+        var c = "#fff"
+        var x2 = 0
+        var y2 = 0
+        var w2 = 0
+        var h2 = 0
+        var ndx = 0
+        var backcolor = "#eeeeee"
+        var maxw = 0
+        var maxh = 0
+        var rr = 0
+        self.keys = {}
+        self.keysArray = []
+        _.each(layout, function(row, i) {
+            x = 0
+            if (!(row instanceof Array)) {
+                backcolor = row.backcolor
+            } else {
+                _.each(row, function(key, j) {
+                    if (typeof(key) == "string") {
+                        // create a key...
+                        var keyid = "key" + (ndx++)
+                        self.keys[keyid] = self.drawKey(grp, keyid, key, {
+                            x: x,
+                            y: y,
+                            w: w,
+                            h: h,
+                            c: c,
+                            t: t,
+                            a: a,
+                            f: f,
+                            x2: x2,
+                            y2: y2,
+                            w2: w2,
+                            h2: h2,
+                            index: ndx,
+                            row: rr
+                        })
+                        self.keysArray.push(self.keys[keyid])
+                        self.selectChain.append(self.keys[keyid].element)
+                        x += w
+                        w = 1
+                        h = 1
+                        w2 = 0
+                        h2 = 0
+                        x2 = 0
+                        y2 = 0
+                    } else {
+                        // object data - set for next key...
+                        if (key.w) w = key.w
+                        if (key.h) h = key.h
+                        if (key.x) x += key.x
+                        if (key.y) y += key.y
+                        if (key.f) f = key.f
+                        if (key.a) a = key.a
+                        if (key.c) c = key.c
+                        if (key.t) t = key.t
+                        if (key.x2) x2 = key.x2
+                        if (key.y2) y2 = key.y2
+                        if (key.h2) h2 = key.h2
+                        if (key.w2) w2 = key.w2
+                    }
+                    maxw = Math.max(maxw, x)
+                })
+            }
+            y++
+            rr++
+            maxh = y
+        })
+        this.rows = maxh
+        this.columns = maxw
+        rect.attr("fill", backcolor)
+        var wwww = maxw * (this.size + this.gap) + this.gap
+        var hhhh = maxh * (this.size + this.gap) + this.gap
+        rect.attr("width", wwww)
+        rect.attr("height", hhhh)
+        rect.move(-this.gap, -this.gap)
+        grp.move((960 - wwww) / 2, 170)
+        var self = this
+        $(grp.node).find(".keywrapper").each(function() {
+            var el = $(this)
+            el.click(function() {
+                self.selectChain.select(el.get(0))
+                self.pressKey()
+            })
+        })
+        this.selectChain.update()
+        return grp
+    },
+    drawKey: function(root, keyid, label, opts) {
+        var size = this.size
+        var gap = this.gap
+        var grp = root.group().attr("class", "keywrapper")
+        var ww = opts.w * size + (opts.w - 1) * gap
+        var hh = opts.h * size + (opts.h - 1) * gap
+        grp.rect(ww, hh).attr({
+            "class": "key",
+            "rx": 10,
+            "ry": 10,
+            "fill": opts.c
+        })
+        if (opts.h2 && opts.w2) {
+            var ww2 = opts.w2 * size + (opts.w2 - 1) * gap
+            var hh2 = opts.h2 * size + (opts.h2 - 1) * gap
+            var xx2 = opts.x2 * size + (opts.x2) * gap
+            var yy2 = opts.y2 * size + (opts.y2) * gap
+            grp.rect(ww2, hh2).attr({
+                "class": "key",
+                "rx": 10,
+                "ry": 10,
+                "fill": opts.c
+            }).move(xx2, yy2)
+        }
+        var lines = label.split("\n")
+        var label1 = ""
+        var label2 = ""
+        lines = _.filter(lines, function(e) {
+            return e.trim() != "";
+        })
+        if (lines.length > 0) {
+            label1 = lines[0].trim()
+            grp.text(lines[0]).attr({
+                "class": "label",
+                "fill": opts.t,
+                "font-size": Math.round(opts.f * 2.5),
+                "text-anchor": "middle"
+            }).x((ww - gap) / 2).y((hh - gap) * 0.2)
+            if (lines.length >= 2) {
+                label2 = lines[1].trim()
+                grp.text(lines[1]).attr({
+                    "class": "label",
+                    "fill": opts.t,
+                    "font-size": Math.round(opts.a * 2.5),
+                    "text-anchor": "middle"
+                }).x((ww - gap) / 2).y((hh - gap) * 0.7)
+            }
+        }
+        grp.attr("data-keyid", keyid)
+        grp.move((size + gap) * opts.x, (size + gap) * opts.y)
+        return $.extend(opts, {
+            svg: grp,
+            element: grp.node,
+            label: label,
+            label1: label1,
+            label2: label2
+        })
+    },
+    init: function(data, next) {
+        this.base(data, next)
+    },
+    getSelectedKey: function() {
+        var keyElement = this.selectChain.current()
+        return this.keys[$(keyElement).data("keyid")]
+    },
+    onClosed: function(text) {
+        // this is called after the keyboard is closed
+    },
+    onTextEntered: function(text) {
+        alert(text)
+    },
+    findBelowKey: function(key) {
+        var ndx = key.index
+        var row = key.row
+        var x = key.x
+        var w = key.w
+        do {
+            ndx++
+            if (ndx >= this.keysArray.length) ndx = 0
+            var key2 = this.keysArray[ndx]
+            if (key2.row != row && !(key.x + key.w <= key2.x || key2.x + key2.w <= key.x)) break
+        } while (ndx != key.index)
+        return this.keysArray[ndx]
+    },
+    findAboveKey: function(key) {
+        var ndx = key.index
+        var row = key.row
+        var x = key.x
+        var w = key.w
+        do {
+            ndx--
+            if (ndx < 0) ndx = this.keysArray.length - 1
+            var key2 = this.keysArray[ndx]
+            if (key2.row != row && !(key.x + key.w <= key2.x || key2.x + key2.w <= key.x)) break
+        } while (ndx != key.index)
+        return this.keysArray[ndx]
+    },
+    pressKey: function() {
+        var key = this.getSelectedKey()
+        var txt = this.text
+        var instr = this.mapping[key.label]
+        switch (instr) {
+            case "backspace":
+                txt = txt.slice(0, -1)
+                break
+            case "enter":
+                this.onClosed()
+                this.onTextEntered(this.text)
+                break;
+            case "space":
+                txt += " "
+                break
+            case "escape":
+                this.onClosed()
+                return
+            default:
+                txt += key.label1
+        }
+        // is it number or letter?
+        this.setText(txt)
+    },
+    onVirtualControl: function(evt) {
+        var self = this
+        switch (evt.control) {
+            case "up":
+                var key = this.getSelectedKey()
+                var key2 = this.findAboveKey(key)
+                this.selectChain.select(key2.element)
+                break;
+            case "down":
+                var key = this.getSelectedKey()
+                var key2 = this.findBelowKey(key)
+                this.selectChain.select(key2.element)
+                break;
+            case "home":
+                // works like escape key
+                this.onClosed()
+                break;
+            case "left":
+                this.selectChain.selectPrevious()
+                break;
+            case "right":
+                this.selectChain.selectNext()
+                break;
+            case "select":
+                this.pressKey()
+                break;
+        }
+    }
+
+}, {
+    layouts: {
+        // let's use layouts from http://www.keyboard-layout-editor.com/
+        "Numeric": [
+            ["Num Lock", "/", "*", "-"],
+            ["7\nHome", "8\n↑", "9\nPgUp", {
+                h: 2
+            }, "+"],
+            ["4\n←", "5", "6\n→"],
+            ["1\nEnd", "2\n↓", "3\nPgDn", {
+                h: 2
+            }, "Enter"],
+            [{
+                w: 2
+            }, "0\nIns", ".\nDel"]
+        ],
+        "ANSI 104": [
+            ["Esc", {
+                "x": 1
+            }, "F1", "F2", "F3", "F4", {
+                "x": 0.5
+            }, "F5", "F6", "F7", "F8", {
+                "x": 0.5
+            }, "F9", "F10", "F11", "F12", {
+                "x": 0.5
+            }, "PrtSc", "Scroll Lock", "Pause\nBreak"],
+            [{
+                "y": 0.5
+            }, "~\n`", "!\n1", "@\n2", "#\n3", "$\n4", "%\n5", "^\n6", "&\n7", "*\n8", "(\n9", ")\n0", "_\n-", "+\n=", {
+                "w": 2
+            }, "Backspace", {
+                "x": 0.5
+            }, "Insert", "Home", "PgUp", {
+                "x": 0.5
+            }, "Num Lock", "/", "*", "-"],
+            [{
+                "w": 1.5
+            }, "Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{\n[", "}\n]", {
+                "w": 1.5
+            }, "|\n\\", {
+                "x": 0.5
+            }, "Delete", "End", "PgDn", {
+                "x": 0.5
+            }, "7\nHome", "8\n↑", "9\nPgUp", {
+                "h": 2
+            }, "+"],
+            [{
+                "w": 1.75
+            }, "Caps Lock", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":\n;", "\"\n'", {
+                "w": 2.25
+            }, "Enter", {
+                "x": 4
+            }, "4\n←", "5", "6\n→"],
+            [{
+                "w": 2.25
+            }, "Shift", "Z", "X", "C", "V", "B", "N", "M", "<\n,", ">\n.", "?\n/", {
+                "w": 2.75
+            }, "Shift", {
+                "x": 1.5
+            }, "↑", {
+                "x": 1.5
+            }, "1\nEnd", "2\n↓", "3\nPgDn", {
+                "h": 2
+            }, "Enter"],
+            [{
+                "w": 1.25
+            }, "Ctrl", {
+                "w": 1.25
+            }, "Win", {
+                "w": 1.25
+            }, "Alt", {
+                "w": 6.25
+            }, "", {
+                "w": 1.25
+            }, "Alt", {
+                "w": 1.25
+            }, "Win", {
+                "w": 1.25
+            }, "Menu", {
+                "w": 1.25
+            }, "Ctrl", {
+                "x": 0.5
+            }, "←", "↓", "→", {
+                "x": 0.5,
+                "w": 2
+            }, "0\nIns", ".\nDel"]
+        ],
+        "ANSI 104 (big-ass enter)": [
+            ["Esc", {
+                "x": 1
+            }, "F1", "F2", "F3", "F4", {
+                "x": 0.5
+            }, "F5", "F6", "F7", "F8", {
+                "x": 0.5
+            }, "F9", "F10", "F11", "F12", {
+                "x": 0.5
+            }, "PrtSc", "Scroll Lock", "Pause\nBreak"],
+            [{
+                "y": 0.5
+            }, "~\n`", "!\n1", "@\n2", "#\n3", "$\n4", "%\n5", "^\n6", "&\n7", "*\n8", "(\n9", ")\n0", "_\n-", "+\n=", "|\n\\", "Back Space", {
+                "x": 0.5
+            }, "Insert", "Home", "PgUp", {
+                "x": 0.5
+            }, "Num Lock", "/", "*", "-"],
+            [{
+                "w": 1.5
+            }, "Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{\n[", "}\n]", {
+                "w": 1.5,
+                "h": 2,
+                "w2": 2.25,
+                "h2": 1,
+                "x2": -0.75,
+                "y2": 1
+            }, "Enter", {
+                "x": 0.5
+            }, "Delete", "End", "PgDn", {
+                "x": 0.5
+            }, "7\nHome", "8\n↑", "9\nPgUp", {
+                "h": 2
+            }, "+"],
+            [{
+                "w": 1.75
+            }, "Caps Lock", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":\n;", "\"\n'", {
+                "x": 6.25
+            }, "4\n←", "5", "6\n→"],
+            [{
+                "w": 2.25
+            }, "Shift", "Z", "X", "C", "V", "B", "N", "M", "<\n,", ">\n.", "?\n/", {
+                "w": 2.75
+            }, "Shift", {
+                "x": 1.5
+            }, "↑", {
+                "x": 1.5
+            }, "1\nEnd", "2\n↓", "3\nPgDn", {
+                "h": 2
+            }, "Enter"],
+            [{
+                "w": 1.25
+            }, "Ctrl", {
+                "w": 1.25
+            }, "Win", {
+                "w": 1.25
+            }, "Alt", {
+                "w": 6.25
+            }, "", {
+                "w": 1.25
+            }, "Alt", {
+                "w": 1.25
+            }, "Win", {
+                "w": 1.25
+            }, "Menu", {
+                "w": 1.25
+            }, "Ctrl", {
+                "x": 0.5
+            }, "←", "↓", "→", {
+                "x": 0.5,
+                "w": 2
+            }, "0\nIns", ".\nDel"]
+        ],
+        "Dark": [{
+                backcolor: "#222222"
+            },
+            [{
+                c: "#7b9b48",
+                t: "#e4dedd",
+                p: "DSA",
+                a: 7,
+                f: 4
+            }, "ESC", {
+                x: 1,
+                c: "#483527",
+                f: 3
+            }, "F1", "F2", "F3", "F4", {
+                x: 0.5,
+                c: "#733636"
+            }, "F5", "F6", "F7", "F8", {
+                x: 0.5,
+                c: "#483527"
+            }, "F9", "F10", "F11", "F12", {
+                x: 0.5,
+                c: "#733636"
+            }, "PRINT", {
+                f: 2
+            }, "SCROLL LOCK", {
+                f: 3
+            }, "PAUSE\nBreak"],
+            [{
+                y: 0.5,
+                c: "#483527",
+                a: 5,
+                f: 5
+            }, "~\n`", "!\n1", "@\n2", "#\n3", "$\n4", "%\n5", "^\n6", "&\n7", "*\n8", "(\n9", ")\n0", "_\n-", "+\n=", {
+                c: "#733636",
+                a: 7,
+                f: 3,
+                w: 2
+            }, "BACK SPACE", {
+                x: 0.5
+            }, "INS", "HOME", "PAGE UP", {
+                x: 0.5
+            }, "NUM LOCK", {
+                f: 6
+            }, "/", "*", "&ndash;"],
+            [{
+                f: 3,
+                w: 1.5
+            }, "TAB", {
+                c: "#483527",
+                f: 8
+            }, "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", {
+                a: 5,
+                f: 5
+            }, "{\n[", "}\n]", {
+                w: 1.5
+            }, "|\n\\", {
+                x: 0.5,
+                c: "#733636",
+                a: 7,
+                f: 3
+            }, "DEL", "END", "PAGE DOWN", {
+                x: 0.5,
+                c: "#483527",
+                f: 8
+            }, "7\nHome", "8\nâ†‘", "9\nPgUp", {
+                c: "#733636",
+                f: 6,
+                h: 2
+            }, "+"],
+            [{
+                f: 3,
+                w: 1.75
+            }, "CAPS LOCK", {
+                c: "#483527",
+                f: 8
+            }, "A", "S", "D", "F", "G", "H", "J", "K", "L", {
+                a: 5,
+                f: 5
+            }, ":\n;", "\"\n'", {
+                c: "#7b9b48",
+                a: 7,
+                f: 3,
+                w: 2.25
+            }, "RETURN", {
+                x: 4,
+                c: "#483527",
+                f: 8
+            }, "4\nâ† ", "5", "6\nâ†’"],
+            [{
+                c: "#733636",
+                f: 3,
+                w: 2.25
+            }, "SHIFT", {
+                c: "#483527",
+                f: 8
+            }, "Z", "X", "C", "V", "B", "N", "M", {
+                a: 5,
+                f: 5
+            }, "<\n,", ">\n.", "?\n/", {
+                c: "#733636",
+                a: 7,
+                f: 3,
+                w: 2.75
+            }, "SHIFT", {
+                x: 1.5,
+                f: 6
+            }, "&#9652;", {
+                x: 1.5,
+                c: "#483527",
+                f: 8
+            }, "1\nEnd", "2\nâ†“", "3\nPgDn", {
+                c: "#733636",
+                f: 3,
+                h: 2
+            }, "ENTER"],
+            [{
+                w: 1.25
+            }, "CTRL", {
+                w: 1.25
+            }, "WIN", {
+                w: 1.25
+            }, "ALT", {
+                c: "#483527",
+                p: "DSA SPACE",
+                w: 6.25
+            }, "", {
+                c: "#733636",
+                p: "DSA",
+                w: 1.25
+            }, "ALT", {
+                w: 1.25
+            }, "WIN", {
+                w: 1.25
+            }, "MENU", {
+                w: 1.25
+            }, "CTRL", {
+                x: 0.5,
+                f: 6
+            }, "&#9666;", "&#9662;", "&#9656;", {
+                x: 0.5,
+                c: "#483527",
+                f: 8,
+                w: 2
+            }, "0\nIns", ".\nDel"]
+        ],
+        "Deutsch": [
+            [{
+                a: 5,
+                f: 8
+            }, "\n\n\n\n\n\n1", "\n\n\n\n\n\n2", "\n\n\n\n\n\n3", "\n\n\n\n\n\n4", "\n\n\n\n\n\n5", "\n\n\n\n\n\n6", "\n\n\n\n\n\n7", "\n\n\n\n\n\n8", "\n\n\n\n\n\n9", "\n\n\n\n\n\n0", "\n\n\n\n\n\nß", {
+                f: 9,
+                w: 2
+            }, "←\n←\n\n\n\n\n←"],
+            [{
+                x: 0.5,
+                f: 8
+            }, "\n\n\n\n\n\nQ", "\n\n\n\n\n\nW", "\n\n\n\n\n\nE", "\n\n\n\n\n\nR", "\n\n\n\n\n\nT", "\n\n\n\n\n\nZ", "\n\n\n\n\n\nU", "\n\n\n\n\n\nI", "\n\n\n\n\n\nO", "\n\n\n\n\n\nP", "\n\n\n\n\n\nÜ", {
+                x: 0.25,
+                f: 9,
+                w: 1.25,
+                h: 2,
+                w2: 1.5,
+                h2: 1,
+                x2: -0.25
+            }, "\n\n\n\n\n\n↵"],
+            [{
+                x: 0.75,
+                f: 8
+            }, "\n\n\n\n\n\nA", "\n\n\n\n\n\nS", "\n\n\n\n\n\nD", "\n\n\n\n\n\nF", "\n\n\n\n\n\nG", "\n\n\n\n\n\nH", "\n\n\n\n\n\nJ", "\n\n\n\n\n\nK", "\n\n\n\n\n\nL", "\n\n\n\n\n\nÖ", "\n\n\n\n\n\nÄ"],
+            [{
+                x: 1.25
+            }, "\n\n\n\n\n\nY", "\n\n\n\n\n\nX", "\n\n\n\n\n\nC", "\n\n\n\n\n\nV", "\n\n\n\n\n\nB", "\n\n\n\n\n\nN", "\n\n\n\n\n\nM", {
+                x: 0.25,
+                a: 4,
+                f: 9,
+                w: 0.75
+            }, "\n,", {
+                w: 0.75
+            }, "\n.", {
+                a: 5,
+                f: 8
+            }, "←", "→", {
+                f: 6
+            }, "\n\n\n\n\n\nEntf"],
+            [{
+                x: 3.75,
+                a: 4,
+                f: 3,
+                w: 6.25
+            }, ""]
+        ],
+        "DeutschColor": [
+            [{
+                c: "#CD96CD",
+                a: 5,
+                f: 8
+            }, "\n\n\n\n\n\n1", "\n\n\n\n\n\n2", "\n\n\n\n\n\n3", "\n\n\n\n\n\n4", "\n\n\n\n\n\n5", "\n\n\n\n\n\n6", "\n\n\n\n\n\n7", "\n\n\n\n\n\n9", "\n\n\n\n\n\n0", {
+                c: "#FFD39B"
+            }, "\n\n\n\n\n\nß", {
+                c: "#FF6A6A",
+                f: 9,
+                w: 3
+            }, "←\n←\n\n\n\n\n←"],
+            [{
+                x: 0.5,
+                c: "#FFD39B",
+                f: 8
+            }, "\n\n\n\n\n\nQ", "\n\n\n\n\n\nW", "\n\n\n\n\n\nE", "\n\n\n\n\n\nR", "\n\n\n\n\n\nT", "\n\n\n\n\n\nZ", "\n\n\n\n\n\nU", "\n\n\n\n\n\nI", "\n\n\n\n\n\nO", "\n\n\n\n\n\nP", "\n\n\n\n\n\nÜ", {
+                x: 0.25,
+                c: "#32CD32",
+                f: 9,
+                w: 1.25,
+                h: 2,
+                w2: 1.5,
+                h2: 1,
+                x2: -0.25
+            }, "\n\n\n\n\n\n↵"],
+            [{
+                x: 0.75,
+                c: "#FFD39B",
+                f: 8
+            }, "\n\n\n\n\n\nA", "\n\n\n\n\n\nS", "\n\n\n\n\n\nD", "\n\n\n\n\n\nF", "\n\n\n\n\n\nG", "\n\n\n\n\n\nH", "\n\n\n\n\n\nJ", "\n\n\n\n\n\nK", "\n\n\n\n\n\nL", "\n\n\n\n\n\nÖ", "\n\n\n\n\n\nÄ"],
+            [{
+                x: 1.25
+            }, "\n\n\n\n\n\nY", "\n\n\n\n\n\nX", "\n\n\n\n\n\nC", "\n\n\n\n\n\nV", "\n\n\n\n\n\nB", "\n\n\n\n\n\nN", "\n\n\n\n\n\nM", {
+                x: 0.25,
+                a: 4,
+                f: 9,
+                w: 0.75
+            }, "\n,", {
+                w: 0.75
+            }, "\n.", {
+                c: "#79CDCD",
+                a: 5,
+                f: 8
+            }, "←", "→", {
+                c: "#FF6A6A",
+                f: 6
+            }, "\n\n\n\n\n\nEntf"],
+            [{
+                x: 3.75,
+                c: "#FFD39B",
+                a: 4,
+                f: 3,
+                w: 6.25
+            }, ""]
+        ]
+    },
+    mappings: {
+        "Deutsch": {
+            "\n\n\n\n\n\nEntf": "escape",
+            "←\n←\n\n\n\n\n←": "backspace",
+            "\n\n\n\n\n\n↵": "enter",
+            "": "space"
+        },
+        "DeutschColor": {
+            "\n\n\n\n\n\nEntf": "escape",
+            "←\n←\n\n\n\n\n←": "backspace",
+            "\n\n\n\n\n\n↵": "enter",
+            "": "space"
+        },
+        "Dark": {
+            "ESC": "escape",
+            "BACK SPACE": "backspace",
+            "RETURN": "enter",
+            "": "space"
+        },
+        "Numeric": {
+            "Num Lock": "numlock",
+            "Enter": "enter"
+        }
+    }
+})
+
+module.exports = SoftwareKeyboard
+
+},{"./Overlay":11,"./SelectChain":12,"underscore":63}],"VirtualControl":[function(require,module,exports){
+module.exports=require('eOgcpX');
+},{}],"eOgcpX":[function(require,module,exports){
+var EventTarget = require("./EventTarget")
+
+// virtual control device
+// 4 direction buttons
+// select (activate/forward/ok) button
+// back (cancel, home) button
+// play, pause, stop buttons
+// only press event
+var VirtualControl = EventTarget.extend({
+    keys: {
+        LEFT: "left",
+        RIGHT: "right",
+        UP: "up",
+        DOWN: "down",
+        SELECT: "select",
+        HOME: "home",
+        PLAY: "play",
+        PAUSE: "pause",
+        STOP: "stop"
+    },
+    press: function(control) {
+        this.fire({
+            type: "press",
+            control: control
+        })
+    }
+})
+
+module.exports = VirtualControl
+
+},{"./EventTarget":"C6/c90"}],16:[function(require,module,exports){
+var Base = require("basejs")
+
+
+var Widget = Base.extend({
+    constructor: function(data) {
+        this.element = data.element
+        this.type = data.type
+        this.id = data.id
+        this.name = data.name
+        this.bounds = data.bounds
+        this.dim = data.dim
+        //this.setClass("glow2", true)
+    },
+    click: function(cb) {
+        var self = this
+        $(this.element).click(function() {
+            if (self.isEnabled()) cb()
+        })
+    },
+    disable: function() {
+        $(this.element).addClass("disabled")
+    },
+    enable: function() {
+        $(this.element).removeClass("disabled")
+    },
+    setEnabled: function(flag) {
+        if (flag) {
+            this.enable()
+        } else {
+            this.disable()
+        }
+    },
+    isEnabled: function() {
+        return !this.hasClass("disabled")
+    },
+    setHighlighted: function(flag) {
+        this.setClass("glow2", flag)
+    },
+    isHighlighted: function() {
+        return this.hasClass("glow2")
+    },
+    setClass: function(klass, flag) {
+        if (flag) {
+            $(this.element).addClass(klass)
+        } else {
+            $(this.element).removeClass(klass)
+        }
+    },
+    hasClass: function(klass) {
+        return $(this.element).hasClass(klass)
+    }
+})
+
+module.exports = Widget
+
+},{"basejs":44}],"Widgetizer":[function(require,module,exports){
+module.exports=require('z4/vQj');
+},{}],"z4/vQj":[function(require,module,exports){
+// create a browserified version of widgetizer:
+//  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
+module.exports = function(window, $, SVG) {
+    console.log("Widgetizer script loading...")
+    var document = window.document
+    var Commons = require("./Commons")
+    var SvgHelper = require("./svghelper")(window)
+    var Widget = require("./Widget")
+    var InputWidget = require("./InputWidget")
+    var _ = require("underscore")
+
+    /* Finds all nodes with nodeName == name */
+    $.fn.filterNode = function(name) {
+        return this.find('*').filter(function() {
+            return this.nodeName === name;
+        });
+    };
+
+    /* Finds all nodes with name NAME:sometag */
+    $.fn.filterByPrefix = function(name) {
+        return this.find('*').filter(function() {
+            return this.nodeName.split(':')[0] === name;
+        });
+    };
+
+
+    /* copy contents from old element to new one */
+    /* uses jQuery */
+    $.fn.moveChildren = function(to) {
+        this.children().each(function() {
+            $(to).append($(this))
+        })
+    }
+
+
+    var Widgetizer = {
+        wowNS: "http://example.org/wow",
+        svgNS: "http://www.w3.org/2000/svg",
+        window: window,
+        SvgHelper: SvgHelper,
+        SVG: SVG,
+        SVGDoc: SVG('svg'),
+        $: $,
+        _: _,
+        widgets: {},
+        widgetizers: {},
+        widgetId: 1,
+        debug: false,
+        Widget: Widget,
+        newWidgetId: function(prefix) {
+            return (prefix || "wow-widget-") + (this.widgetId++)
+        },
+        prepareWidgetData: function(type, name, element, dim) {
+            var id = this.newWidgetId()
+            var groupAttrs = {
+                "data-wow": type,
+                "id": id,
+                "class": "wow-widget " + type
+            }
+            if (name) groupAttrs.name = name
+            var group = SvgHelper.attrs(SvgHelper.group(), groupAttrs)
+            if (element) {
+                if (element.length) {
+                    // it is an array of elements!
+                    _.each(element, function(e) {
+                        group.appendChild(e)
+                    })
+                } else {
+                    // it is only one element
+                    group.appendChild(element)
+                }
+            }
+
+            // in order to get bounding box, the node must be inserted in the DOM
+            var bbox = SvgHelper.measure(group)
+            if (!dim) dim = {
+                width: bbox.x + bbox.width,
+                height: bbox.y + bbox.height
+            }
+
+            if (this.debug) {
+                // add text with size info and ID
+                var txt = SvgHelper.text(id + " (" + (dim.width).toFixed(1) + ", " + (dim.height).toFixed(1) + ")", {
+                    "x": dim.width,
+                    "y": 10,
+                    "fill": "#333",
+                    "font-size": 10,
+                    "font-family": "Verdana",
+                    "text-anchor": "end"
+                })
+                group.appendChild(txt)
+
+                // add widget bounding box...
+                var bbe = SvgHelper.box(bbox)
+                SvgHelper.attr(bbe, "stroke", "blue");
+                group.appendChild(bbe);
+
+                // add size box...
+                var bbe = SvgHelper.box(dim)
+                SvgHelper.attr(bbe, "stroke", "gray");
+                group.appendChild(bbe);
+            }
+
+            return {
+                element: group,
+                type: type,
+                id: id,
+                name: name,
+                bounds: {
+                    x: bbox.x,
+                    y: bbox.y,
+                    width: bbox.width,
+                    height: bbox.height
+                },
+                dim: dim
+            }
+        },
+        // TODO ability to create widgets of other classes than Widget
+        widget: function(type, name, element, dim) {
+            return this.widgetByClass(type, name, Widget, element, dim)
+        },
+        widgetByClass: function(type, name, klass, element, dim) {
+            var data = this.prepareWidgetData(type, name, element, dim)
+            var w = new klass(data)
+            this.widgets[data.id] = w
+            return w
+        },
+        inputWidget: function(type, name, element, value, dim) {
+            var data = this.prepareWidgetData(type, name, element, dim)
+            data.value = value
+            var w = new InputWidget(data)
+            this.widgets[data.id] = w
+            return w
+        },
+        /* make widgets from node's descendants... */
+        widgetize: function(node, done) {
+            var self = this
+            var node = node || document
+            var nodes = this.findWowNodes(node, [], true)
+            var fun = function(ndx, next) {
+                if (ndx >= nodes.length) {
+                    if (done) done()
+                } else {
+                    self.makeWidget(nodes[ndx], function() {
+                        fun(ndx + 1, next)
+                    })
+                }
+            }
+            fun(0, done)
+        },
+        findWidgetizedNodes: function(node, inNodes, childrenOnly) {
+            return Commons.findTopmostNodes(node, inNodes, childrenOnly, function(node) {
+                return !!$(node).attr("data-wow")
+            })
+        },
+        findWowNodes: function(node, inNodes, childrenOnly) {
+            return Commons.findTopmostNodes(node, inNodes, childrenOnly, function(node) {
+                return node.nodeName.startsWith("wow:")
+            })
+        },
+        findWidgetByName: function(node, name) {
+            var id = $(node).find("g[name=" + name + "]").attr("id")
+            return this.widgets[id]
+        },
+        findWidgetById: function(node, id) {
+            return this.widgets[id]
+        },
+        get: function(node, name) {
+            if (!name) {
+                name = node
+                node = document
+            }
+            if (name.startsWith("#")) {
+                return this.findWidgetById(node, name.substr(1))
+            } else {
+                return this.findWidgetByName(node, name)
+            }
+        },
+        /* 
+         * Creates widget from wow: markup.
+         * element: DOM element to be transformed to Widget
+         * done: function(aWidget)  - callback to be called after widgetization
+         */
+        makeWidget: function(element, done) {
+            /* if the widget has subwidgets, create them... */
+            this.widgetize(element)
+            /* create the widget */
+            /* nodename has always prefix wow: */
+            var type = element.nodeName.split(":")[1]
+                /* locate a widgetizer... */
+            var widgetizer = this.widgetizers[type]
+            if (widgetizer) {
+                /* we can run widgetizer on an element... */
+                return widgetizer(element, function(w) {
+                    // replace element with output
+                    $(element).replaceWith(w.element)
+                    // console.log(output) -> this causes error under node=webkit on Windows
+                    if (done) done(w);
+                })
+            } else {
+                console.warn("Unknown widget type: " + type)
+                /* wrap the element to basic 'plain' Widget */
+                if (done) done(null)
+                return null
+            }
+        },
+        /* 
+         * Creates a plain widget from an element
+         * element: DOM element to be transformed to Widget
+         * done: function(aWidget)  - callback to be called after widgetization
+         */
+        makePlainWidget: function(element, done) {
+            /* create the wrapping group... */
+            var grp = SvgHelper.group()
+            $(element).replaceWith(grp)
+            grp.appendChild(element)
+            element = grp
+            this.widgetize(element)
+            /* create the widget */
+            /* nodename has always prefix wow: */
+            var type = "plain"
+                /* locate a widgetizer... */
+            var widgetizer = this.widgetizers[type]
+                /* we can run widgetizer on an element... */
+            return widgetizer(element, function(w) {
+                // replace element with output
+                $(element).replaceWith(w.element)
+                // console.log(output) -> this causes error under node=webkit on Windows
+                if (done) done(w);
+            })
+        },
+        uses: function(widgets) {
+            var self = this
+            _.each(widgets, function(w) {
+                /* load widgets... */
+                var widgetPath = "../js/widgets/" + w + "/" + w
+                require(widgetPath)(self)
+            })
+        },
+        useCommonWidgets: function() {
+            /*
+	  	this.uses([
+	  		"piechart", 
+	  		"box", 
+	  		"grid", 
+	  		"flow", 
+	  		"textbox", 
+	  		"viewport", 
+	  		"image", 
+	  		"text", 
+	  		"iconbutton"
+	  	])
+	  	*/
+            // browserify does not like dynamic requires...
+            var self = this
+            require("./widgets/piechart/piechart")(self)
+            require("./widgets/box/box")(self)
+            require("./widgets/grid/grid")(self)
+            require("./widgets/flow/flow")(self)
+            require("./widgets/textbox/textbox")(self)
+            require("./widgets/viewport/viewport")(self)
+            require("./widgets/image/image")(self)
+            require("./widgets/text/text")(self)
+            require("./widgets/iconbutton/iconbutton")(self)
+            require("./widgets/bigbutton/bigbutton")(self)
+            require("./widgets/plain/plain")(self)
+            require("./widgets/button/button")(self)
+            require("./widgets/switcher/switcher")(self)
+        },
+        /* some utility methods */
+        /* copy non null attributes to an object... */
+        getAttrs: function(e, obj, attrmap) {
+            for (var key in attrmap) {
+                var type = attrmap[key] || "string"
+                var val = e.attr(key)
+                if (val) {
+                    /* type check... */
+                    if (type == "number") {
+                        val = parseFloat(val)
+                    }
+                    obj[key] = val
+                }
+            }
+            return obj
+        },
+        isTrueAttr: function(e, attrName) {
+            var attr = e.attr(attrName)
+            if (attr == "true" || attr == "yes") return true;
+            return false;
+        },
+        // attrs = {width: height: src: }
+        loadSvg: function(attrs, done) {
+            $.get(attrs.src, function(data) {
+                // TODO this does not work here!
+                console.log("Loading image for embedding...")
+                // Get the SVG tag, ignore the rest
+                var $svg = $(data).find('svg');
+                // Remove any invalid XML tags as per http://validator.w3.org
+                $svg.removeAttr('xmlns:a');
+                $svg.removeAttr('xml:space');
+                $svg.removeAttr('enable-background');
+
+                $svg.attr("width", attrs.width);
+                $svg.attr("height", attrs.height);
+                done($svg)
+
+            }, 'xml');
+        },
+        rpc: function(method, params, cb) {
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:9999/rpc",
+                data: {
+                    "jsonrpc": "2.0",
+                    "method": method,
+                    "params": params
+                },
+                success: function(response) {
+                    cb(null, response)
+
+                },
+                fail: function(err) {
+                    cb(err)
+                }
+            });
+        }
+
+    }
+
+    return Widgetizer
+}
+
+},{"./Commons":"JY97rG","./InputWidget":8,"./Widget":16,"./svghelper":30,"./widgets/bigbutton/bigbutton":31,"./widgets/box/box":32,"./widgets/button/button":33,"./widgets/flow/flow":34,"./widgets/grid/grid":35,"./widgets/iconbutton/iconbutton":36,"./widgets/image/image":37,"./widgets/piechart/piechart":38,"./widgets/plain/plain":39,"./widgets/switcher/switcher":40,"./widgets/text/text":41,"./widgets/textbox/textbox":42,"./widgets/viewport/viewport":43,"underscore":63}],19:[function(require,module,exports){
 /*
 Scripts to create interactive textboxes in SVG using ECMA script
 Copyright (C) <2006>  <Andreas Neumann>
@@ -1255,7 +2535,7 @@ module.exports = function(window, svgsvg) {
 
 }
 
-},{"./timer":11}],11:[function(require,module,exports){
+},{"./timer":20}],20:[function(require,module,exports){
 // source/credits: "Algorithm": http://www.codingforums.com/showthread.php?s=&threadid=10531
 // The constructor should be called with
 // the parent object (optional, defaults to window).
@@ -1385,70 +2665,7 @@ module.exports = function($, i18n) {
 
 },{"modal-dialog":57}],"dialogs":[function(require,module,exports){
 module.exports=require('6UU4cM');
-},{}],"eventtarget":[function(require,module,exports){
-module.exports=require('5268ka');
-},{}],"5268ka":[function(require,module,exports){
-//Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
-//Modified by Myrousz 2014
-//MIT License
-
-var Base = require("basejs")
-
-var EventTarget = Base.extend({
-    constructor: function() {
-        this._listeners = {};
-    },
-    addListener: function(type, listener) {
-        var types = type.split(" ")
-        for (var i = 0; i < types.length; i++) {
-            type = types[i]
-            if (typeof this._listeners[type] == "undefined") {
-                this._listeners[type] = [];
-            }
-            this._listeners[type].push(listener);
-        }
-    },
-    fire: function(event) {
-        if (typeof event == "string") {
-            event = {
-                type: event
-            };
-        }
-        if (!event.target) {
-            event.target = this;
-        }
-
-        if (!event.type) { //falsy
-            throw new Error("Event object missing 'type' property.");
-        }
-
-        if (this._listeners[event.type] instanceof Array) {
-            var listeners = this._listeners[event.type];
-            for (var i = 0, len = listeners.length; i < len; i++) {
-                listeners[i].call(this, event);
-            }
-        }
-    },
-    removeListener: function(type, listener) {
-        var types = type.split(" ")
-        for (var i = 0; i < types.length; i++) {
-            type = types[i]
-            if (this._listeners[type] instanceof Array) {
-                var listeners = this._listeners[type];
-                for (var i = 0, len = listeners.length; i < len; i++) {
-                    if (listeners[i] === listener) {
-                        listeners.splice(i, 1);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-})
-
-module.exports = EventTarget
-
-},{"basejs":44}],"XDzyYX":[function(require,module,exports){
+},{}],"XDzyYX":[function(require,module,exports){
 (function (Buffer){
 // to be used as constructor
 
@@ -1479,7 +2696,7 @@ module.exports=require('zaL12s');
 },{}],"zaL12s":[function(require,module,exports){
 module.exports = function(window, $, Gamepad) {
 
-    var EventTarget = require("./eventtarget")
+    var EventTarget = require("./EventTarget")
 
     /* custom class wrapper for gamepads */
     var MyGamepad = EventTarget.extend({
@@ -1538,40 +2755,7 @@ module.exports = function(window, $, Gamepad) {
     return MyGamepad
 }
 
-},{"./eventtarget":"5268ka"}],20:[function(require,module,exports){
-var BasicLayer = require("./basiclayer")
-
-var Overlay = BasicLayer.extend({
-    constructor: function(Wow, options) {
-        this.base(Wow, options)
-        // set this to true if you wish to pass events through
-        this.transparent = this.options.transparent
-        if (!this.transparent) {
-            this.paper.rect(960, 600).attr("class", "wow-overlay-background")
-        } else {
-            this.paper.attr("class", this.paper.attr("class") + " transparent")
-        }
-        this.hide()
-    },
-    init: function(data, next) {
-        this.base(data, next)
-    },
-    show: function() {
-        this.setVisible(true)
-    },
-    hide: function() {
-        this.setVisible(false)
-    },
-    setVisible: function(flag) {
-        this.visible = flag
-        if (flag) this.paper.show();
-        else this.paper.hide()
-    }
-})
-
-module.exports = Overlay
-
-},{"./basiclayer":9}],"PuqguM":[function(require,module,exports){
+},{"./EventTarget":"C6/c90"}],"PuqguM":[function(require,module,exports){
 var url = require('url')
 var path = require('path')
 
@@ -1594,7 +2778,7 @@ module.exports = function(window) {
 
 },{"path":49,"url":55}],"pageinfo":[function(require,module,exports){
 module.exports=require('PuqguM');
-},{}],23:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = function(window) {
     var document = window.document
 
@@ -1690,825 +2874,7 @@ module.exports = function(window) {
 
 }
 
-},{}],24:[function(require,module,exports){
-module.exports = function($, Base) {
-
-    var SelectChain = Base.extend({
-        /* widgets: an array of DOM/jQuery elements representing widgets */
-        constructor: function(widgets, currentIndex) {
-            this.widgets = [];
-            if (widgets) {
-                for (var i = 0; i < widgets.length; i++) this.append(widgets[i])
-            }
-            this.currentIndex = currentIndex || 0
-            this.update()
-        },
-        copy: function() {
-            return new SelectChain(this.widgets, this.currentIndex)
-        },
-        append: function(el) {
-            this.widgets.push(el)
-            return this
-        },
-        clear: function() {
-            this.unselect()
-            this.currentIndex = 0
-            this.widgets = []
-        },
-        /* select either by index or by element */
-        select: function(index) {
-            if (typeof index == "number") {
-                this.currentIndex = index
-            } else {
-                var i = this.widgets.length - 1
-                while (i >= 0) {
-                    if (this.widgets[i] == index) break
-                    i--
-                }
-                this.currentIndex = i
-            }
-            this.update()
-            return this
-        },
-        selectPrevious: function() {
-            if (this.currentIndex >= 0) {
-                this.currentIndex =
-                    this.widgets.length ? ((this.currentIndex + this.widgets.length - 1) % this.widgets.length) : 0
-                this.update()
-            }
-            return this
-        },
-        selectNext: function() {
-            if (this.currentIndex >= 0) {
-                this.currentIndex =
-                    this.widgets.length > 0 ? ((this.currentIndex + 1) % this.widgets.length) : 0
-                this.update()
-            }
-            return this
-        },
-        unselect: function() {
-            this.currentIndex = -1
-            this.update()
-            return this
-        },
-        show: function() {
-            this.update()
-            this.hidden = false
-        },
-        hide: function() {
-            for (var i = 0; i < this.widgets.length; i++) {
-                var el = this.widgets[i]
-                $(el).removeClass("glow2")
-            }
-            this.hidden = true
-            return this
-        },
-        update: function() {
-            for (var i = 0; i < this.widgets.length; i++) {
-                var el = this.widgets[i]
-                if (i == this.currentIndex) {
-                    $(el).addClass("glow2")
-                } else {
-                    $(el).removeClass("glow2")
-                }
-            }
-            return this
-        },
-        current: function() {
-            return (this.widgets.length && !this.hidden) ? this.widgets[this.currentIndex] : null
-        }
-    })
-
-    return SelectChain
-
-}
-
-},{}],25:[function(require,module,exports){
-var Overlay = require("./overlay")
-var _ = require("underscore")
-var Base = require("basejs")
-var SelectChain = require("./selectchain")($, Base)
-
-
-var SoftwareKeyboard = Overlay.extend({
-    constructor: function(Wow, options) {
-        options = options || {}
-        options.cssClass = "softwarekeyboard"
-        options.transparent = false
-        this.base(Wow, options)
-
-        this.size = 60
-        this.gap = 5
-        this.selectChain = new SelectChain()
-        this.useLayout("DeutschColor")
-    },
-    useLayout: function(layoutName) {
-        this.layout = SoftwareKeyboard.layouts[layoutName]
-        this.mapping = SoftwareKeyboard.mappings[layoutName]
-        this.keyboard = this.drawKeyboard(this.layout)
-        this.textfieldBack = this.paper.rect(500, 50).attr({
-            rx: this.gap,
-            ry: this.gap
-        }).move(230, 105).attr("fill", "#eee")
-        this.textfield = this.paper.text("").attr({
-            "class": "softkey-textfield",
-            "text-anchor": "middle",
-            "font-weight": "bold",
-            "font-size": 40
-        }).move(480, 100)
-        this.setText("")
-    },
-    setText: function(text) {
-        this.text = text
-        $(this.textfield.node).find("tspan").text(text)
-    },
-    drawKeyboard: function(layout) {
-        var self = this
-        var grp = this.paper.group()
-        var rect = grp.rect().attr("rx", this.gap).attr("ry", this.gap)
-        var keys = []
-            // layout is array of rows (lines)
-        var x = 0
-        var y = 0
-        var w = 1
-        var h = 1
-        var a = 6
-        var f = 6
-        var t = "#333"
-        var c = "#fff"
-        var x2 = 0
-        var y2 = 0
-        var w2 = 0
-        var h2 = 0
-        var ndx = 0
-        var backcolor = "#eeeeee"
-        var maxw = 0
-        var maxh = 0
-        var rr = 0
-        self.keys = {}
-        self.keysArray = []
-        _.each(layout, function(row, i) {
-            x = 0
-            if (!(row instanceof Array)) {
-                backcolor = row.backcolor
-            } else {
-                _.each(row, function(key, j) {
-                    if (typeof(key) == "string") {
-                        // create a key...
-                        var keyid = "key" + (ndx++)
-                        self.keys[keyid] = self.drawKey(grp, keyid, key, {
-                            x: x,
-                            y: y,
-                            w: w,
-                            h: h,
-                            c: c,
-                            t: t,
-                            a: a,
-                            f: f,
-                            x2: x2,
-                            y2: y2,
-                            w2: w2,
-                            h2: h2,
-                            index: ndx,
-                            row: rr
-                        })
-                        self.keysArray.push(self.keys[keyid])
-                        self.selectChain.append(self.keys[keyid].element)
-                        x += w
-                        w = 1
-                        h = 1
-                        w2 = 0
-                        h2 = 0
-                        x2 = 0
-                        y2 = 0
-                    } else {
-                        // object data - set for next key...
-                        if (key.w) w = key.w
-                        if (key.h) h = key.h
-                        if (key.x) x += key.x
-                        if (key.y) y += key.y
-                        if (key.f) f = key.f
-                        if (key.a) a = key.a
-                        if (key.c) c = key.c
-                        if (key.t) t = key.t
-                        if (key.x2) x2 = key.x2
-                        if (key.y2) y2 = key.y2
-                        if (key.h2) h2 = key.h2
-                        if (key.w2) w2 = key.w2
-                    }
-                    maxw = Math.max(maxw, x)
-                })
-            }
-            y++
-            rr++
-            maxh = y
-        })
-        this.rows = maxh
-        this.columns = maxw
-        rect.attr("fill", backcolor)
-        var wwww = maxw * (this.size + this.gap) + this.gap
-        var hhhh = maxh * (this.size + this.gap) + this.gap
-        rect.attr("width", wwww)
-        rect.attr("height", hhhh)
-        rect.move(-this.gap, -this.gap)
-        grp.move((960 - wwww) / 2, 170)
-        var self = this
-        $(grp.node).find(".keywrapper").each(function() {
-            var el = $(this)
-            el.click(function() {
-                self.selectChain.select(el.get(0))
-                self.pressKey()
-            })
-        })
-        this.selectChain.update()
-        return grp
-    },
-    drawKey: function(root, keyid, label, opts) {
-        var size = this.size
-        var gap = this.gap
-        var grp = root.group().attr("class", "keywrapper")
-        var ww = opts.w * size + (opts.w - 1) * gap
-        var hh = opts.h * size + (opts.h - 1) * gap
-        grp.rect(ww, hh).attr({
-            "class": "key",
-            "rx": 10,
-            "ry": 10,
-            "fill": opts.c
-        })
-        if (opts.h2 && opts.w2) {
-            var ww2 = opts.w2 * size + (opts.w2 - 1) * gap
-            var hh2 = opts.h2 * size + (opts.h2 - 1) * gap
-            var xx2 = opts.x2 * size + (opts.x2) * gap
-            var yy2 = opts.y2 * size + (opts.y2) * gap
-            grp.rect(ww2, hh2).attr({
-                "class": "key",
-                "rx": 10,
-                "ry": 10,
-                "fill": opts.c
-            }).move(xx2, yy2)
-        }
-        var lines = label.split("\n")
-        var label1 = ""
-        var label2 = ""
-        lines = _.filter(lines, function(e) {
-            return e.trim() != "";
-        })
-        if (lines.length > 0) {
-            label1 = lines[0].trim()
-            grp.text(lines[0]).attr({
-                "class": "label",
-                "fill": opts.t,
-                "font-size": Math.round(opts.f * 2.5),
-                "text-anchor": "middle"
-            }).x((ww - gap) / 2).y((hh - gap) * 0.2)
-            if (lines.length >= 2) {
-                label2 = lines[1].trim()
-                grp.text(lines[1]).attr({
-                    "class": "label",
-                    "fill": opts.t,
-                    "font-size": Math.round(opts.a * 2.5),
-                    "text-anchor": "middle"
-                }).x((ww - gap) / 2).y((hh - gap) * 0.7)
-            }
-        }
-        grp.attr("data-keyid", keyid)
-        grp.move((size + gap) * opts.x, (size + gap) * opts.y)
-        return $.extend(opts, {
-            svg: grp,
-            element: grp.node,
-            label: label,
-            label1: label1,
-            label2: label2
-        })
-    },
-    init: function(data, next) {
-        this.base(data, next)
-    },
-    getSelectedKey: function() {
-        var keyElement = this.selectChain.current()
-        return this.keys[$(keyElement).data("keyid")]
-    },
-    onClosed: function(text) {
-        // this is called after the keyboard is closed
-    },
-    onTextEntered: function(text) {
-        alert(text)
-    },
-    findBelowKey: function(key) {
-        var ndx = key.index
-        var row = key.row
-        var x = key.x
-        var w = key.w
-        do {
-            ndx++
-            if (ndx >= this.keysArray.length) ndx = 0
-            var key2 = this.keysArray[ndx]
-            if (key2.row != row && !(key.x + key.w <= key2.x || key2.x + key2.w <= key.x)) break
-        } while (ndx != key.index)
-        return this.keysArray[ndx]
-    },
-    findAboveKey: function(key) {
-        var ndx = key.index
-        var row = key.row
-        var x = key.x
-        var w = key.w
-        do {
-            ndx--
-            if (ndx < 0) ndx = this.keysArray.length - 1
-            var key2 = this.keysArray[ndx]
-            if (key2.row != row && !(key.x + key.w <= key2.x || key2.x + key2.w <= key.x)) break
-        } while (ndx != key.index)
-        return this.keysArray[ndx]
-    },
-    pressKey: function() {
-        var key = this.getSelectedKey()
-        var txt = this.text
-        var instr = this.mapping[key.label]
-        switch (instr) {
-            case "backspace":
-                txt = txt.slice(0, -1)
-                break
-            case "enter":
-                this.onClosed()
-                this.onTextEntered(this.text)
-                break;
-            case "space":
-                txt += " "
-                break
-            case "escape":
-                this.onClosed()
-                return
-            default:
-                txt += key.label1
-        }
-        // is it number or letter?
-        this.setText(txt)
-    },
-    onVirtualControl: function(evt) {
-        var self = this
-        switch (evt.control) {
-            case "up":
-                var key = this.getSelectedKey()
-                var key2 = this.findAboveKey(key)
-                this.selectChain.select(key2.element)
-                break;
-            case "down":
-                var key = this.getSelectedKey()
-                var key2 = this.findBelowKey(key)
-                this.selectChain.select(key2.element)
-                break;
-            case "home":
-                // works like escape key
-                this.onClosed()
-                break;
-            case "left":
-                this.selectChain.selectPrevious()
-                break;
-            case "right":
-                this.selectChain.selectNext()
-                break;
-            case "select":
-                this.pressKey()
-                break;
-        }
-    }
-
-}, {
-    layouts: {
-        // let's use layouts from http://www.keyboard-layout-editor.com/
-        "Numeric": [
-            ["Num Lock", "/", "*", "-"],
-            ["7\nHome", "8\n↑", "9\nPgUp", {
-                h: 2
-            }, "+"],
-            ["4\n←", "5", "6\n→"],
-            ["1\nEnd", "2\n↓", "3\nPgDn", {
-                h: 2
-            }, "Enter"],
-            [{
-                w: 2
-            }, "0\nIns", ".\nDel"]
-        ],
-        "ANSI 104": [
-            ["Esc", {
-                "x": 1
-            }, "F1", "F2", "F3", "F4", {
-                "x": 0.5
-            }, "F5", "F6", "F7", "F8", {
-                "x": 0.5
-            }, "F9", "F10", "F11", "F12", {
-                "x": 0.5
-            }, "PrtSc", "Scroll Lock", "Pause\nBreak"],
-            [{
-                "y": 0.5
-            }, "~\n`", "!\n1", "@\n2", "#\n3", "$\n4", "%\n5", "^\n6", "&\n7", "*\n8", "(\n9", ")\n0", "_\n-", "+\n=", {
-                "w": 2
-            }, "Backspace", {
-                "x": 0.5
-            }, "Insert", "Home", "PgUp", {
-                "x": 0.5
-            }, "Num Lock", "/", "*", "-"],
-            [{
-                "w": 1.5
-            }, "Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{\n[", "}\n]", {
-                "w": 1.5
-            }, "|\n\\", {
-                "x": 0.5
-            }, "Delete", "End", "PgDn", {
-                "x": 0.5
-            }, "7\nHome", "8\n↑", "9\nPgUp", {
-                "h": 2
-            }, "+"],
-            [{
-                "w": 1.75
-            }, "Caps Lock", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":\n;", "\"\n'", {
-                "w": 2.25
-            }, "Enter", {
-                "x": 4
-            }, "4\n←", "5", "6\n→"],
-            [{
-                "w": 2.25
-            }, "Shift", "Z", "X", "C", "V", "B", "N", "M", "<\n,", ">\n.", "?\n/", {
-                "w": 2.75
-            }, "Shift", {
-                "x": 1.5
-            }, "↑", {
-                "x": 1.5
-            }, "1\nEnd", "2\n↓", "3\nPgDn", {
-                "h": 2
-            }, "Enter"],
-            [{
-                "w": 1.25
-            }, "Ctrl", {
-                "w": 1.25
-            }, "Win", {
-                "w": 1.25
-            }, "Alt", {
-                "w": 6.25
-            }, "", {
-                "w": 1.25
-            }, "Alt", {
-                "w": 1.25
-            }, "Win", {
-                "w": 1.25
-            }, "Menu", {
-                "w": 1.25
-            }, "Ctrl", {
-                "x": 0.5
-            }, "←", "↓", "→", {
-                "x": 0.5,
-                "w": 2
-            }, "0\nIns", ".\nDel"]
-        ],
-        "ANSI 104 (big-ass enter)": [
-            ["Esc", {
-                "x": 1
-            }, "F1", "F2", "F3", "F4", {
-                "x": 0.5
-            }, "F5", "F6", "F7", "F8", {
-                "x": 0.5
-            }, "F9", "F10", "F11", "F12", {
-                "x": 0.5
-            }, "PrtSc", "Scroll Lock", "Pause\nBreak"],
-            [{
-                "y": 0.5
-            }, "~\n`", "!\n1", "@\n2", "#\n3", "$\n4", "%\n5", "^\n6", "&\n7", "*\n8", "(\n9", ")\n0", "_\n-", "+\n=", "|\n\\", "Back Space", {
-                "x": 0.5
-            }, "Insert", "Home", "PgUp", {
-                "x": 0.5
-            }, "Num Lock", "/", "*", "-"],
-            [{
-                "w": 1.5
-            }, "Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{\n[", "}\n]", {
-                "w": 1.5,
-                "h": 2,
-                "w2": 2.25,
-                "h2": 1,
-                "x2": -0.75,
-                "y2": 1
-            }, "Enter", {
-                "x": 0.5
-            }, "Delete", "End", "PgDn", {
-                "x": 0.5
-            }, "7\nHome", "8\n↑", "9\nPgUp", {
-                "h": 2
-            }, "+"],
-            [{
-                "w": 1.75
-            }, "Caps Lock", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":\n;", "\"\n'", {
-                "x": 6.25
-            }, "4\n←", "5", "6\n→"],
-            [{
-                "w": 2.25
-            }, "Shift", "Z", "X", "C", "V", "B", "N", "M", "<\n,", ">\n.", "?\n/", {
-                "w": 2.75
-            }, "Shift", {
-                "x": 1.5
-            }, "↑", {
-                "x": 1.5
-            }, "1\nEnd", "2\n↓", "3\nPgDn", {
-                "h": 2
-            }, "Enter"],
-            [{
-                "w": 1.25
-            }, "Ctrl", {
-                "w": 1.25
-            }, "Win", {
-                "w": 1.25
-            }, "Alt", {
-                "w": 6.25
-            }, "", {
-                "w": 1.25
-            }, "Alt", {
-                "w": 1.25
-            }, "Win", {
-                "w": 1.25
-            }, "Menu", {
-                "w": 1.25
-            }, "Ctrl", {
-                "x": 0.5
-            }, "←", "↓", "→", {
-                "x": 0.5,
-                "w": 2
-            }, "0\nIns", ".\nDel"]
-        ],
-        "Dark": [{
-                backcolor: "#222222"
-            },
-            [{
-                c: "#7b9b48",
-                t: "#e4dedd",
-                p: "DSA",
-                a: 7,
-                f: 4
-            }, "ESC", {
-                x: 1,
-                c: "#483527",
-                f: 3
-            }, "F1", "F2", "F3", "F4", {
-                x: 0.5,
-                c: "#733636"
-            }, "F5", "F6", "F7", "F8", {
-                x: 0.5,
-                c: "#483527"
-            }, "F9", "F10", "F11", "F12", {
-                x: 0.5,
-                c: "#733636"
-            }, "PRINT", {
-                f: 2
-            }, "SCROLL LOCK", {
-                f: 3
-            }, "PAUSE\nBreak"],
-            [{
-                y: 0.5,
-                c: "#483527",
-                a: 5,
-                f: 5
-            }, "~\n`", "!\n1", "@\n2", "#\n3", "$\n4", "%\n5", "^\n6", "&\n7", "*\n8", "(\n9", ")\n0", "_\n-", "+\n=", {
-                c: "#733636",
-                a: 7,
-                f: 3,
-                w: 2
-            }, "BACK SPACE", {
-                x: 0.5
-            }, "INS", "HOME", "PAGE UP", {
-                x: 0.5
-            }, "NUM LOCK", {
-                f: 6
-            }, "/", "*", "&ndash;"],
-            [{
-                f: 3,
-                w: 1.5
-            }, "TAB", {
-                c: "#483527",
-                f: 8
-            }, "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", {
-                a: 5,
-                f: 5
-            }, "{\n[", "}\n]", {
-                w: 1.5
-            }, "|\n\\", {
-                x: 0.5,
-                c: "#733636",
-                a: 7,
-                f: 3
-            }, "DEL", "END", "PAGE DOWN", {
-                x: 0.5,
-                c: "#483527",
-                f: 8
-            }, "7\nHome", "8\nâ†‘", "9\nPgUp", {
-                c: "#733636",
-                f: 6,
-                h: 2
-            }, "+"],
-            [{
-                f: 3,
-                w: 1.75
-            }, "CAPS LOCK", {
-                c: "#483527",
-                f: 8
-            }, "A", "S", "D", "F", "G", "H", "J", "K", "L", {
-                a: 5,
-                f: 5
-            }, ":\n;", "\"\n'", {
-                c: "#7b9b48",
-                a: 7,
-                f: 3,
-                w: 2.25
-            }, "RETURN", {
-                x: 4,
-                c: "#483527",
-                f: 8
-            }, "4\nâ† ", "5", "6\nâ†’"],
-            [{
-                c: "#733636",
-                f: 3,
-                w: 2.25
-            }, "SHIFT", {
-                c: "#483527",
-                f: 8
-            }, "Z", "X", "C", "V", "B", "N", "M", {
-                a: 5,
-                f: 5
-            }, "<\n,", ">\n.", "?\n/", {
-                c: "#733636",
-                a: 7,
-                f: 3,
-                w: 2.75
-            }, "SHIFT", {
-                x: 1.5,
-                f: 6
-            }, "&#9652;", {
-                x: 1.5,
-                c: "#483527",
-                f: 8
-            }, "1\nEnd", "2\nâ†“", "3\nPgDn", {
-                c: "#733636",
-                f: 3,
-                h: 2
-            }, "ENTER"],
-            [{
-                w: 1.25
-            }, "CTRL", {
-                w: 1.25
-            }, "WIN", {
-                w: 1.25
-            }, "ALT", {
-                c: "#483527",
-                p: "DSA SPACE",
-                w: 6.25
-            }, "", {
-                c: "#733636",
-                p: "DSA",
-                w: 1.25
-            }, "ALT", {
-                w: 1.25
-            }, "WIN", {
-                w: 1.25
-            }, "MENU", {
-                w: 1.25
-            }, "CTRL", {
-                x: 0.5,
-                f: 6
-            }, "&#9666;", "&#9662;", "&#9656;", {
-                x: 0.5,
-                c: "#483527",
-                f: 8,
-                w: 2
-            }, "0\nIns", ".\nDel"]
-        ],
-        "Deutsch": [
-            [{
-                a: 5,
-                f: 8
-            }, "\n\n\n\n\n\n1", "\n\n\n\n\n\n2", "\n\n\n\n\n\n3", "\n\n\n\n\n\n4", "\n\n\n\n\n\n5", "\n\n\n\n\n\n6", "\n\n\n\n\n\n7", "\n\n\n\n\n\n8", "\n\n\n\n\n\n9", "\n\n\n\n\n\n0", "\n\n\n\n\n\nß", {
-                f: 9,
-                w: 2
-            }, "←\n←\n\n\n\n\n←"],
-            [{
-                x: 0.5,
-                f: 8
-            }, "\n\n\n\n\n\nQ", "\n\n\n\n\n\nW", "\n\n\n\n\n\nE", "\n\n\n\n\n\nR", "\n\n\n\n\n\nT", "\n\n\n\n\n\nZ", "\n\n\n\n\n\nU", "\n\n\n\n\n\nI", "\n\n\n\n\n\nO", "\n\n\n\n\n\nP", "\n\n\n\n\n\nÜ", {
-                x: 0.25,
-                f: 9,
-                w: 1.25,
-                h: 2,
-                w2: 1.5,
-                h2: 1,
-                x2: -0.25
-            }, "\n\n\n\n\n\n↵"],
-            [{
-                x: 0.75,
-                f: 8
-            }, "\n\n\n\n\n\nA", "\n\n\n\n\n\nS", "\n\n\n\n\n\nD", "\n\n\n\n\n\nF", "\n\n\n\n\n\nG", "\n\n\n\n\n\nH", "\n\n\n\n\n\nJ", "\n\n\n\n\n\nK", "\n\n\n\n\n\nL", "\n\n\n\n\n\nÖ", "\n\n\n\n\n\nÄ"],
-            [{
-                x: 1.25
-            }, "\n\n\n\n\n\nY", "\n\n\n\n\n\nX", "\n\n\n\n\n\nC", "\n\n\n\n\n\nV", "\n\n\n\n\n\nB", "\n\n\n\n\n\nN", "\n\n\n\n\n\nM", {
-                x: 0.25,
-                a: 4,
-                f: 9,
-                w: 0.75
-            }, "\n,", {
-                w: 0.75
-            }, "\n.", {
-                a: 5,
-                f: 8
-            }, "←", "→", {
-                f: 6
-            }, "\n\n\n\n\n\nEntf"],
-            [{
-                x: 3.75,
-                a: 4,
-                f: 3,
-                w: 6.25
-            }, ""]
-        ],
-        "DeutschColor": [
-            [{
-                c: "#CD96CD",
-                a: 5,
-                f: 8
-            }, "\n\n\n\n\n\n1", "\n\n\n\n\n\n2", "\n\n\n\n\n\n3", "\n\n\n\n\n\n4", "\n\n\n\n\n\n5", "\n\n\n\n\n\n6", "\n\n\n\n\n\n7", "\n\n\n\n\n\n9", "\n\n\n\n\n\n0", {
-                c: "#FFD39B"
-            }, "\n\n\n\n\n\nß", {
-                c: "#FF6A6A",
-                f: 9,
-                w: 3
-            }, "←\n←\n\n\n\n\n←"],
-            [{
-                x: 0.5,
-                c: "#FFD39B",
-                f: 8
-            }, "\n\n\n\n\n\nQ", "\n\n\n\n\n\nW", "\n\n\n\n\n\nE", "\n\n\n\n\n\nR", "\n\n\n\n\n\nT", "\n\n\n\n\n\nZ", "\n\n\n\n\n\nU", "\n\n\n\n\n\nI", "\n\n\n\n\n\nO", "\n\n\n\n\n\nP", "\n\n\n\n\n\nÜ", {
-                x: 0.25,
-                c: "#32CD32",
-                f: 9,
-                w: 1.25,
-                h: 2,
-                w2: 1.5,
-                h2: 1,
-                x2: -0.25
-            }, "\n\n\n\n\n\n↵"],
-            [{
-                x: 0.75,
-                c: "#FFD39B",
-                f: 8
-            }, "\n\n\n\n\n\nA", "\n\n\n\n\n\nS", "\n\n\n\n\n\nD", "\n\n\n\n\n\nF", "\n\n\n\n\n\nG", "\n\n\n\n\n\nH", "\n\n\n\n\n\nJ", "\n\n\n\n\n\nK", "\n\n\n\n\n\nL", "\n\n\n\n\n\nÖ", "\n\n\n\n\n\nÄ"],
-            [{
-                x: 1.25
-            }, "\n\n\n\n\n\nY", "\n\n\n\n\n\nX", "\n\n\n\n\n\nC", "\n\n\n\n\n\nV", "\n\n\n\n\n\nB", "\n\n\n\n\n\nN", "\n\n\n\n\n\nM", {
-                x: 0.25,
-                a: 4,
-                f: 9,
-                w: 0.75
-            }, "\n,", {
-                w: 0.75
-            }, "\n.", {
-                c: "#79CDCD",
-                a: 5,
-                f: 8
-            }, "←", "→", {
-                c: "#FF6A6A",
-                f: 6
-            }, "\n\n\n\n\n\nEntf"],
-            [{
-                x: 3.75,
-                c: "#FFD39B",
-                a: 4,
-                f: 3,
-                w: 6.25
-            }, ""]
-        ]
-    },
-    mappings: {
-        "Deutsch": {
-            "\n\n\n\n\n\nEntf": "escape",
-            "←\n←\n\n\n\n\n←": "backspace",
-            "\n\n\n\n\n\n↵": "enter",
-            "": "space"
-        },
-        "DeutschColor": {
-            "\n\n\n\n\n\nEntf": "escape",
-            "←\n←\n\n\n\n\n←": "backspace",
-            "\n\n\n\n\n\n↵": "enter",
-            "": "space"
-        },
-        "Dark": {
-            "ESC": "escape",
-            "BACK SPACE": "backspace",
-            "RETURN": "enter",
-            "": "space"
-        },
-        "Numeric": {
-            "Num Lock": "numlock",
-            "Enter": "enter"
-        }
-    }
-})
-
-module.exports = SoftwareKeyboard
-
-},{"./overlay":20,"./selectchain":24,"basejs":44,"underscore":63}],26:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var SvgHelper = function(window) {
     var document = window.document
     var svgNS = "http://www.w3.org/2000/svg"
@@ -2632,375 +2998,7 @@ var SvgHelper = function(window) {
 
 module.exports = SvgHelper
 
-},{}],"virtualcontrol":[function(require,module,exports){
-module.exports=require('pQhYqx');
-},{}],"pQhYqx":[function(require,module,exports){
-var EventTarget = require("eventtarget")
-
-// virtual control device
-// 4 direction buttons
-// select (activate/forward/ok) button
-// back (cancel, home) button
-// play, pause, stop buttons
-// only press event
-var VirtualControl = EventTarget.extend({
-    keys: {
-        LEFT: "left",
-        RIGHT: "right",
-        UP: "up",
-        DOWN: "down",
-        SELECT: "select",
-        HOME: "home",
-        PLAY: "play",
-        PAUSE: "pause",
-        STOP: "stop"
-    },
-    press: function(control) {
-        this.fire({
-            type: "press",
-            control: control
-        })
-    }
-})
-
-module.exports = VirtualControl
-
-},{"eventtarget":"5268ka"}],"widgetizer":[function(require,module,exports){
-module.exports=require('kUKyBR');
-},{}],"kUKyBR":[function(require,module,exports){
-// create a browserified version of widgetizer:
-//  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
-module.exports = function(window, $, SVG) {
-    console.log("Widgetizer script loading...")
-    var document = window.document
-    var Commons = require("./Commons")
-    var SvgHelper = require("./svghelper")(window)
-    var Widget = require("./Widget")
-    var InputWidget = require("./InputWidget")
-    var _ = require("underscore")
-
-    /* Finds all nodes with nodeName == name */
-    $.fn.filterNode = function(name) {
-        return this.find('*').filter(function() {
-            return this.nodeName === name;
-        });
-    };
-
-    /* Finds all nodes with name NAME:sometag */
-    $.fn.filterByPrefix = function(name) {
-        return this.find('*').filter(function() {
-            return this.nodeName.split(':')[0] === name;
-        });
-    };
-
-
-    /* copy contents from old element to new one */
-    /* uses jQuery */
-    $.fn.moveChildren = function(to) {
-        this.children().each(function() {
-            $(to).append($(this))
-        })
-    }
-
-
-    var Widgetizer = {
-        wowNS: "http://example.org/wow",
-        svgNS: "http://www.w3.org/2000/svg",
-        window: window,
-        SvgHelper: SvgHelper,
-        SVG: SVG,
-        SVGDoc: SVG('svg'),
-        $: $,
-        _: _,
-        widgets: {},
-        widgetizers: {},
-        widgetId: 1,
-        debug: false,
-        Widget: Widget,
-        newWidgetId: function(prefix) {
-            return (prefix || "wow-widget-") + (this.widgetId++)
-        },
-        prepareWidgetData: function(type, name, element, dim) {
-            var id = this.newWidgetId()
-            var groupAttrs = {
-                "data-wow": type,
-                "id": id,
-                "class": "wow-widget " + type
-            }
-            if (name) groupAttrs.name = name
-            var group = SvgHelper.attrs(SvgHelper.group(), groupAttrs)
-            if (element) {
-                if (element.length) {
-                    // it is an array of elements!
-                    _.each(element, function(e) {
-                        group.appendChild(e)
-                    })
-                } else {
-                    // it is only one element
-                    group.appendChild(element)
-                }
-            }
-
-            // in order to get bounding box, the node must be inserted in the DOM
-            var bbox = SvgHelper.measure(group)
-            if (!dim) dim = {
-                width: bbox.x + bbox.width,
-                height: bbox.y + bbox.height
-            }
-
-            if (this.debug) {
-                // add text with size info and ID
-                var txt = SvgHelper.text(id + " (" + (dim.width).toFixed(1) + ", " + (dim.height).toFixed(1) + ")", {
-                    "x": dim.width,
-                    "y": 10,
-                    "fill": "#333",
-                    "font-size": 10,
-                    "font-family": "Verdana",
-                    "text-anchor": "end"
-                })
-                group.appendChild(txt)
-
-                // add widget bounding box...
-                var bbe = SvgHelper.box(bbox)
-                SvgHelper.attr(bbe, "stroke", "blue");
-                group.appendChild(bbe);
-
-                // add size box...
-                var bbe = SvgHelper.box(dim)
-                SvgHelper.attr(bbe, "stroke", "gray");
-                group.appendChild(bbe);
-            }
-
-            return {
-                element: group,
-                type: type,
-                id: id,
-                name: name,
-                bounds: {
-                    x: bbox.x,
-                    y: bbox.y,
-                    width: bbox.width,
-                    height: bbox.height
-                },
-                dim: dim
-            }
-        },
-        // TODO ability to create widgets of other classes than Widget
-        widget: function(type, name, element, dim) {
-            return this.widgetByClass(type, name, Widget, element, dim)
-        },
-        widgetByClass: function(type, name, klass, element, dim) {
-            var data = this.prepareWidgetData(type, name, element, dim)
-            var w = new klass(data)
-            this.widgets[data.id] = w
-            return w
-        },
-        inputWidget: function(type, name, element, value, dim) {
-            var data = this.prepareWidgetData(type, name, element, dim)
-            data.value = value
-            var w = new InputWidget(data)
-            this.widgets[data.id] = w
-            return w
-        },
-        /* make widgets from node's descendants... */
-        widgetize: function(node, done) {
-            var self = this
-            var node = node || document
-            var nodes = this.findWowNodes(node, [], true)
-            var fun = function(ndx, next) {
-                if (ndx >= nodes.length) {
-                    if (done) done()
-                } else {
-                    self.makeWidget(nodes[ndx], function() {
-                        fun(ndx + 1, next)
-                    })
-                }
-            }
-            fun(0, done)
-        },
-        findWidgetizedNodes: function(node, inNodes, childrenOnly) {
-            return Commons.findTopmostNodes(node, inNodes, childrenOnly, function(node) {
-                return !!$(node).attr("data-wow")
-            })
-        },
-        findWowNodes: function(node, inNodes, childrenOnly) {
-            return Commons.findTopmostNodes(node, inNodes, childrenOnly, function(node) {
-                return node.nodeName.startsWith("wow:")
-            })
-        },
-        findWidgetByName: function(node, name) {
-            var id = $(node).find("g[name=" + name + "]").attr("id")
-            return this.widgets[id]
-        },
-        findWidgetById: function(node, id) {
-            return this.widgets[id]
-        },
-        get: function(node, name) {
-            if (!name) {
-                name = node
-                node = document
-            }
-            if (name.startsWith("#")) {
-                return this.findWidgetById(node, name.substr(1))
-            } else {
-                return this.findWidgetByName(node, name)
-            }
-        },
-        /* 
-         * Creates widget from wow: markup.
-         * element: DOM element to be transformed to Widget
-         * done: function(aWidget)  - callback to be called after widgetization
-         */
-        makeWidget: function(element, done) {
-            /* if the widget has subwidgets, create them... */
-            this.widgetize(element)
-            /* create the widget */
-            /* nodename has always prefix wow: */
-            var type = element.nodeName.split(":")[1]
-                /* locate a widgetizer... */
-            var widgetizer = this.widgetizers[type]
-            if (widgetizer) {
-                /* we can run widgetizer on an element... */
-                return widgetizer(element, function(w) {
-                    // replace element with output
-                    $(element).replaceWith(w.element)
-                    // console.log(output) -> this causes error under node=webkit on Windows
-                    if (done) done(w);
-                })
-            } else {
-                console.warn("Unknown widget type: " + type)
-                /* wrap the element to basic 'plain' Widget */
-                if (done) done(null)
-                return null
-            }
-        },
-        /* 
-         * Creates a plain widget from an element
-         * element: DOM element to be transformed to Widget
-         * done: function(aWidget)  - callback to be called after widgetization
-         */
-        makePlainWidget: function(element, done) {
-            /* create the wrapping group... */
-            var grp = SvgHelper.group()
-            $(element).replaceWith(grp)
-            grp.appendChild(element)
-            element = grp
-            this.widgetize(element)
-            /* create the widget */
-            /* nodename has always prefix wow: */
-            var type = "plain"
-                /* locate a widgetizer... */
-            var widgetizer = this.widgetizers[type]
-                /* we can run widgetizer on an element... */
-            return widgetizer(element, function(w) {
-                // replace element with output
-                $(element).replaceWith(w.element)
-                // console.log(output) -> this causes error under node=webkit on Windows
-                if (done) done(w);
-            })
-        },
-        uses: function(widgets) {
-            var self = this
-            _.each(widgets, function(w) {
-                /* load widgets... */
-                var widgetPath = "../js/widgets/" + w + "/" + w
-                require(widgetPath)(self)
-            })
-        },
-        useCommonWidgets: function() {
-            /*
-	  	this.uses([
-	  		"piechart", 
-	  		"box", 
-	  		"grid", 
-	  		"flow", 
-	  		"textbox", 
-	  		"viewport", 
-	  		"image", 
-	  		"text", 
-	  		"iconbutton"
-	  	])
-	  	*/
-            // browserify does not like dynamic requires...
-            var self = this
-            require("./widgets/piechart/piechart")(self)
-            require("./widgets/box/box")(self)
-            require("./widgets/grid/grid")(self)
-            require("./widgets/flow/flow")(self)
-            require("./widgets/textbox/textbox")(self)
-            require("./widgets/viewport/viewport")(self)
-            require("./widgets/image/image")(self)
-            require("./widgets/text/text")(self)
-            require("./widgets/iconbutton/iconbutton")(self)
-            require("./widgets/bigbutton/bigbutton")(self)
-            require("./widgets/plain/plain")(self)
-            require("./widgets/button/button")(self)
-            require("./widgets/switcher/switcher")(self)
-        },
-        /* some utility methods */
-        /* copy non null attributes to an object... */
-        getAttrs: function(e, obj, attrmap) {
-            for (var key in attrmap) {
-                var type = attrmap[key] || "string"
-                var val = e.attr(key)
-                if (val) {
-                    /* type check... */
-                    if (type == "number") {
-                        val = parseFloat(val)
-                    }
-                    obj[key] = val
-                }
-            }
-            return obj
-        },
-        isTrueAttr: function(e, attrName) {
-            var attr = e.attr(attrName)
-            if (attr == "true" || attr == "yes") return true;
-            return false;
-        },
-        // attrs = {width: height: src: }
-        loadSvg: function(attrs, done) {
-            $.get(attrs.src, function(data) {
-                // TODO this does not work here!
-                console.log("Loading image for embedding...")
-                // Get the SVG tag, ignore the rest
-                var $svg = $(data).find('svg');
-                // Remove any invalid XML tags as per http://validator.w3.org
-                $svg.removeAttr('xmlns:a');
-                $svg.removeAttr('xml:space');
-                $svg.removeAttr('enable-background');
-
-                $svg.attr("width", attrs.width);
-                $svg.attr("height", attrs.height);
-                done($svg)
-
-            }, 'xml');
-        },
-        rpc: function(method, params, cb) {
-            $.ajax({
-                type: "POST",
-                url: "http://localhost:9999/rpc",
-                data: {
-                    "jsonrpc": "2.0",
-                    "method": method,
-                    "params": params
-                },
-                success: function(response) {
-                    cb(null, response)
-
-                },
-                fail: function(err) {
-                    cb(err)
-                }
-            });
-        }
-
-    }
-
-    return Widgetizer
-}
-
-},{"./Commons":"JY97rG","./InputWidget":5,"./Widget":8,"./svghelper":26,"./widgets/bigbutton/bigbutton":31,"./widgets/box/box":32,"./widgets/button/button":33,"./widgets/flow/flow":34,"./widgets/grid/grid":35,"./widgets/iconbutton/iconbutton":36,"./widgets/image/image":37,"./widgets/piechart/piechart":38,"./widgets/plain/plain":39,"./widgets/switcher/switcher":40,"./widgets/text/text":41,"./widgets/textbox/textbox":42,"./widgets/viewport/viewport":43,"underscore":63}],31:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3613,7 +3611,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{"../../piechart":23}],39:[function(require,module,exports){
+},{"../../piechart":29}],39:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3867,7 +3865,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{"../../carto.net/textbox":10}],43:[function(require,module,exports){
+},{"../../carto.net/textbox":19}],43:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -24060,4 +24058,4 @@ return Q;
 
 }).call(this);
 
-},{}]},{},["kUKyBR","XDzyYX","PuqguM","6UU4cM","zaL12s","OdyuDH","+1Q85x","5268ka","pQhYqx","JY97rG"])
+},{}]},{},["z4/vQj","XDzyYX","PuqguM","6UU4cM","zaL12s","OdyuDH","+1Q85x","C6/c90","eOgcpX","JY97rG"])

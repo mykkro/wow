@@ -5,7 +5,7 @@ module.exports = function(Wow) {
     var i18n = Wow.i18n
     var BasePage = require("../../../js/BasePage")
     var Base = require("basejs")
-    var SelectChain = require("../../../js/selectchain")($, Base)
+    var SelectChain = require("../../../js/SelectChain")
 
     var preset = Wow.preset
     var location = Wow.location

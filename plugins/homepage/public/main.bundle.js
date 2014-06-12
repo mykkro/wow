@@ -2,8 +2,8 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 var Base = require("basejs")
 var url = require("url")
 
-var BasicLayer = require("./basiclayer")
-var SoftwareKeyboard = require("./softwarekeyboard")
+var BasicLayer = require("./BasicLayer")
+var SoftwareKeyboard = require("./SoftwareKeyboard")
 
 /**
  * ## Generic class for all pages.
@@ -124,7 +124,7 @@ var BasePage = BasicLayer.extend({
 
 module.exports = BasePage
 
-},{"./basiclayer":2,"./softwarekeyboard":6,"basejs":8,"url":23}],2:[function(require,module,exports){
+},{"./BasicLayer":2,"./SoftwareKeyboard":5,"basejs":8,"url":23}],2:[function(require,module,exports){
 var Base = require("basejs")
 
 var BasicLayer = Base.extend({
@@ -195,49 +195,7 @@ var BasicLayer = Base.extend({
 module.exports = BasicLayer
 
 },{"basejs":8}],3:[function(require,module,exports){
-var Dialog = require('modal-dialog');
-
-Dialog.styles = false
-Dialog.classes = {
-    container: 'modal_dialog',
-    title: 'title',
-    header: 'header',
-    content: 'content',
-    footer: 'footer',
-    info: 'info',
-    buttons: 'buttons',
-    button: 'button'
-};
-
-module.exports = function($, i18n) {
-    return {
-        confirmDialog: function(title, content, cb) {
-            var d = new Dialog($);
-            d.title = '<b>' + title + '</b>';
-            d.content = content;
-            d.info = '';
-            d.addButton(i18n.__('Yes'), function() {
-                cb(true)
-                d.hide();
-            });
-            d.addButton(i18n.__('No'), function() {
-                cb(false)
-                d.hide();
-            });
-            d.show();
-        },
-        quitDialog: function(cb) {
-            this.confirmDialog(i18n.__('Exit'), i18n.__('Are you sure?'), cb)
-        },
-        removeDialog: function(cb) {
-            this.confirmDialog(i18n.__('Remove'), i18n.__('Remove this item?'), cb)
-        }
-    }
-
-}
-
-},{"modal-dialog":10}],4:[function(require,module,exports){
-var BasicLayer = require("./basiclayer")
+var BasicLayer = require("./BasicLayer")
 
 var Overlay = BasicLayer.extend({
     constructor: function(Wow, options) {
@@ -269,104 +227,102 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./basiclayer":2}],5:[function(require,module,exports){
-module.exports = function($, Base) {
+},{"./BasicLayer":2}],4:[function(require,module,exports){
 
-    var SelectChain = Base.extend({
-        /* widgets: an array of DOM/jQuery elements representing widgets */
-        constructor: function(widgets, currentIndex) {
-            this.widgets = [];
-            if (widgets) {
-                for (var i = 0; i < widgets.length; i++) this.append(widgets[i])
+var Base = require("basejs")
+
+var SelectChain = Base.extend({
+    /* widgets: an array of DOM/jQuery elements representing widgets */
+    constructor: function(widgets, currentIndex) {
+        this.widgets = [];
+        if (widgets) {
+            for (var i = 0; i < widgets.length; i++) this.append(widgets[i])
+        }
+        this.currentIndex = currentIndex || 0
+        this.update()
+    },
+    copy: function() {
+        return new SelectChain(this.widgets, this.currentIndex)
+    },
+    append: function(el) {
+        this.widgets.push(el)
+        return this
+    },
+    clear: function() {
+        this.unselect()
+        this.currentIndex = 0
+        this.widgets = []
+    },
+    /* select either by index or by element */
+    select: function(index) {
+        if (typeof index == "number") {
+            this.currentIndex = index
+        } else {
+            var i = this.widgets.length - 1
+            while (i >= 0) {
+                if (this.widgets[i] == index) break
+                i--
             }
-            this.currentIndex = currentIndex || 0
+            this.currentIndex = i
+        }
+        this.update()
+        return this
+    },
+    selectPrevious: function() {
+        if (this.currentIndex >= 0) {
+            this.currentIndex =
+                this.widgets.length ? ((this.currentIndex + this.widgets.length - 1) % this.widgets.length) : 0
             this.update()
-        },
-        copy: function() {
-            return new SelectChain(this.widgets, this.currentIndex)
-        },
-        append: function(el) {
-            this.widgets.push(el)
-            return this
-        },
-        clear: function() {
-            this.unselect()
-            this.currentIndex = 0
-            this.widgets = []
-        },
-        /* select either by index or by element */
-        select: function(index) {
-            if (typeof index == "number") {
-                this.currentIndex = index
+        }
+        return this
+    },
+    selectNext: function() {
+        if (this.currentIndex >= 0) {
+            this.currentIndex =
+                this.widgets.length > 0 ? ((this.currentIndex + 1) % this.widgets.length) : 0
+            this.update()
+        }
+        return this
+    },
+    unselect: function() {
+        this.currentIndex = -1
+        this.update()
+        return this
+    },
+    show: function() {
+        this.update()
+        this.hidden = false
+    },
+    hide: function() {
+        for (var i = 0; i < this.widgets.length; i++) {
+            var el = this.widgets[i]
+            $(el).removeClass("glow2")
+        }
+        this.hidden = true
+        return this
+    },
+    update: function() {
+        for (var i = 0; i < this.widgets.length; i++) {
+            var el = this.widgets[i]
+            if (i == this.currentIndex) {
+                $(el).addClass("glow2")
             } else {
-                var i = this.widgets.length - 1
-                while (i >= 0) {
-                    if (this.widgets[i] == index) break
-                    i--
-                }
-                this.currentIndex = i
-            }
-            this.update()
-            return this
-        },
-        selectPrevious: function() {
-            if (this.currentIndex >= 0) {
-                this.currentIndex =
-                    this.widgets.length ? ((this.currentIndex + this.widgets.length - 1) % this.widgets.length) : 0
-                this.update()
-            }
-            return this
-        },
-        selectNext: function() {
-            if (this.currentIndex >= 0) {
-                this.currentIndex =
-                    this.widgets.length > 0 ? ((this.currentIndex + 1) % this.widgets.length) : 0
-                this.update()
-            }
-            return this
-        },
-        unselect: function() {
-            this.currentIndex = -1
-            this.update()
-            return this
-        },
-        show: function() {
-            this.update()
-            this.hidden = false
-        },
-        hide: function() {
-            for (var i = 0; i < this.widgets.length; i++) {
-                var el = this.widgets[i]
                 $(el).removeClass("glow2")
             }
-            this.hidden = true
-            return this
-        },
-        update: function() {
-            for (var i = 0; i < this.widgets.length; i++) {
-                var el = this.widgets[i]
-                if (i == this.currentIndex) {
-                    $(el).addClass("glow2")
-                } else {
-                    $(el).removeClass("glow2")
-                }
-            }
-            return this
-        },
-        current: function() {
-            return (this.widgets.length && !this.hidden) ? this.widgets[this.currentIndex] : null
         }
-    })
+        return this
+    },
+    current: function() {
+        return (this.widgets.length && !this.hidden) ? this.widgets[this.currentIndex] : null
+    }
+})
 
-    return SelectChain
+module.exports = SelectChain
 
-}
-
-},{}],6:[function(require,module,exports){
-var Overlay = require("./overlay")
+},{"basejs":8}],5:[function(require,module,exports){
+var Overlay = require("./Overlay")
 var _ = require("underscore")
-var Base = require("basejs")
-var SelectChain = require("./selectchain")($, Base)
+var SelectChain = require("./SelectChain")
 
 
 var SoftwareKeyboard = Overlay.extend({
@@ -1087,7 +1043,49 @@ var SoftwareKeyboard = Overlay.extend({
 
 module.exports = SoftwareKeyboard
 
-},{"./overlay":4,"./selectchain":5,"basejs":8,"underscore":16}],7:[function(require,module,exports){
+},{"./Overlay":3,"./SelectChain":4,"underscore":16}],6:[function(require,module,exports){
+var Dialog = require('modal-dialog');
+
+Dialog.styles = false
+Dialog.classes = {
+    container: 'modal_dialog',
+    title: 'title',
+    header: 'header',
+    content: 'content',
+    footer: 'footer',
+    info: 'info',
+    buttons: 'buttons',
+    button: 'button'
+};
+
+module.exports = function($, i18n) {
+    return {
+        confirmDialog: function(title, content, cb) {
+            var d = new Dialog($);
+            d.title = '<b>' + title + '</b>';
+            d.content = content;
+            d.info = '';
+            d.addButton(i18n.__('Yes'), function() {
+                cb(true)
+                d.hide();
+            });
+            d.addButton(i18n.__('No'), function() {
+                cb(false)
+                d.hide();
+            });
+            d.show();
+        },
+        quitDialog: function(cb) {
+            this.confirmDialog(i18n.__('Exit'), i18n.__('Are you sure?'), cb)
+        },
+        removeDialog: function(cb) {
+            this.confirmDialog(i18n.__('Remove'), i18n.__('Remove this item?'), cb)
+        }
+    }
+
+}
+
+},{"modal-dialog":10}],7:[function(require,module,exports){
 // from: http://www.ericbullington.com/articles/2012/10/27/d3-oclock
 var fields = function() {
     var currentTime, hour, minute, second;
@@ -19659,7 +19657,7 @@ module.exports = function(Wow) {
     var i18n = Wow.i18n
     var BasePage = require("../../../js/BasePage")
     var Base = require("basejs")
-    var SelectChain = require("../../../js/selectchain")($, Base)
+    var SelectChain = require("../../../js/SelectChain")
 
     var preset = Wow.preset
     var location = Wow.location
@@ -19820,4 +19818,4 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/BasePage":1,"../../../js/dialogs":3,"../../../js/selectchain":5,"../../../js/timeinfo":7,"basejs":8}]},{},["HJD/OK"])
+},{"../../../js/BasePage":1,"../../../js/SelectChain":4,"../../../js/dialogs":6,"../../../js/timeinfo":7,"basejs":8}]},{},["HJD/OK"])

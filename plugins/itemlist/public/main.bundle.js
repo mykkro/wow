@@ -2,8 +2,8 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 var Base = require("basejs")
 var url = require("url")
 
-var BasicLayer = require("./basiclayer")
-var SoftwareKeyboard = require("./softwarekeyboard")
+var BasicLayer = require("./BasicLayer")
+var SoftwareKeyboard = require("./SoftwareKeyboard")
 
 /**
  * ## Generic class for all pages.
@@ -124,7 +124,77 @@ var BasePage = BasicLayer.extend({
 
 module.exports = BasePage
 
-},{"./basiclayer":3,"./softwarekeyboard":6,"basejs":8,"url":15}],2:[function(require,module,exports){
+},{"./BasicLayer":2,"./SoftwareKeyboard":6,"basejs":8,"url":15}],2:[function(require,module,exports){
+var Base = require("basejs")
+
+var BasicLayer = Base.extend({
+    constructor: function(Wow, options) {
+        this.options = options || {}
+        this.wow = Wow
+        this.wtr = Wow.Widgetizer
+        this.SVG = this.wtr.SVGDoc
+        var klass = "wow-overlay"
+        if (this.options.cssClass) klass += " " + this.options.cssClass
+        this.paper = this.SVG.group().attr("class", klass)
+    },
+    paperElement: function() {
+        return this.paper.node;
+    },
+    getWidget: function(name) {
+        if (typeof name == "string") {
+            return this.wtr.get(name)
+        } else {
+            var el = $(name)
+            if (el.data("wow") && el.attr("id")) {
+                return this.wtr.get("#" + el.attr("id"))
+            } else {
+                return null // DOM element is not a widget
+            }
+        }
+    },
+    handleEvent: function(evt) {
+        switch (evt.device) {
+            case "virtual":
+                this.onVirtualControl(evt)
+                break
+            case "keyboard":
+                this.onKeyboard(evt)
+                break
+            case "gamepad":
+                this.onGamepad(evt)
+                break
+            case "mouse":
+                this.onMouse(evt)
+                break
+            default:
+                this.onEvent(evt)
+        }
+    },
+    onVirtualControl: function(evt) {
+        // handle virtual controller...
+        //console.log(evt)
+    },
+    onEvent: function(evt) {
+        // handler for other devices...
+        //console.log(evt)
+    },
+    onKeyboard: function(evt) {
+        // handler for keyboard
+        //console.log(evt)
+    },
+    onGamepad: function(evt) {
+        // handler for keyboard
+        //console.log(evt)
+    },
+    onMouse: function(evt) {
+        // handler for mouse
+        //console.log(evt)
+    }
+})
+
+module.exports = BasicLayer
+
+},{"basejs":8}],3:[function(require,module,exports){
 module.exports = function(Wow) {
     var window = Wow.window
     var $ = Wow.$
@@ -133,8 +203,7 @@ module.exports = function(Wow) {
     var BasePage = require("./BasePage")
     var SvgHelper = require("./svghelper")(window)
     var url = require("url")
-    var Base = require("basejs")
-    var SelectChain = require("./selectchain")($, Base)
+    var SelectChain = require("./SelectChain")
     var truncate = require('html-truncate');
 
     /**
@@ -275,78 +344,8 @@ module.exports = function(Wow) {
 
 }
 
-},{"./BasePage":1,"./selectchain":5,"./svghelper":7,"basejs":8,"html-truncate":9,"url":15}],3:[function(require,module,exports){
-var Base = require("basejs")
-
-var BasicLayer = Base.extend({
-    constructor: function(Wow, options) {
-        this.options = options || {}
-        this.wow = Wow
-        this.wtr = Wow.Widgetizer
-        this.SVG = this.wtr.SVGDoc
-        var klass = "wow-overlay"
-        if (this.options.cssClass) klass += " " + this.options.cssClass
-        this.paper = this.SVG.group().attr("class", klass)
-    },
-    paperElement: function() {
-        return this.paper.node;
-    },
-    getWidget: function(name) {
-        if (typeof name == "string") {
-            return this.wtr.get(name)
-        } else {
-            var el = $(name)
-            if (el.data("wow") && el.attr("id")) {
-                return this.wtr.get("#" + el.attr("id"))
-            } else {
-                return null // DOM element is not a widget
-            }
-        }
-    },
-    handleEvent: function(evt) {
-        switch (evt.device) {
-            case "virtual":
-                this.onVirtualControl(evt)
-                break
-            case "keyboard":
-                this.onKeyboard(evt)
-                break
-            case "gamepad":
-                this.onGamepad(evt)
-                break
-            case "mouse":
-                this.onMouse(evt)
-                break
-            default:
-                this.onEvent(evt)
-        }
-    },
-    onVirtualControl: function(evt) {
-        // handle virtual controller...
-        //console.log(evt)
-    },
-    onEvent: function(evt) {
-        // handler for other devices...
-        //console.log(evt)
-    },
-    onKeyboard: function(evt) {
-        // handler for keyboard
-        //console.log(evt)
-    },
-    onGamepad: function(evt) {
-        // handler for keyboard
-        //console.log(evt)
-    },
-    onMouse: function(evt) {
-        // handler for mouse
-        //console.log(evt)
-    }
-})
-
-module.exports = BasicLayer
-
-},{"basejs":8}],4:[function(require,module,exports){
-var BasicLayer = require("./basiclayer")
+},{"./BasePage":1,"./SelectChain":5,"./svghelper":7,"html-truncate":9,"url":15}],4:[function(require,module,exports){
+var BasicLayer = require("./BasicLayer")
 
 var Overlay = BasicLayer.extend({
     constructor: function(Wow, options) {
@@ -378,104 +377,102 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./basiclayer":3}],5:[function(require,module,exports){
-module.exports = function($, Base) {
+},{"./BasicLayer":2}],5:[function(require,module,exports){
 
-    var SelectChain = Base.extend({
-        /* widgets: an array of DOM/jQuery elements representing widgets */
-        constructor: function(widgets, currentIndex) {
-            this.widgets = [];
-            if (widgets) {
-                for (var i = 0; i < widgets.length; i++) this.append(widgets[i])
+var Base = require("basejs")
+
+var SelectChain = Base.extend({
+    /* widgets: an array of DOM/jQuery elements representing widgets */
+    constructor: function(widgets, currentIndex) {
+        this.widgets = [];
+        if (widgets) {
+            for (var i = 0; i < widgets.length; i++) this.append(widgets[i])
+        }
+        this.currentIndex = currentIndex || 0
+        this.update()
+    },
+    copy: function() {
+        return new SelectChain(this.widgets, this.currentIndex)
+    },
+    append: function(el) {
+        this.widgets.push(el)
+        return this
+    },
+    clear: function() {
+        this.unselect()
+        this.currentIndex = 0
+        this.widgets = []
+    },
+    /* select either by index or by element */
+    select: function(index) {
+        if (typeof index == "number") {
+            this.currentIndex = index
+        } else {
+            var i = this.widgets.length - 1
+            while (i >= 0) {
+                if (this.widgets[i] == index) break
+                i--
             }
-            this.currentIndex = currentIndex || 0
+            this.currentIndex = i
+        }
+        this.update()
+        return this
+    },
+    selectPrevious: function() {
+        if (this.currentIndex >= 0) {
+            this.currentIndex =
+                this.widgets.length ? ((this.currentIndex + this.widgets.length - 1) % this.widgets.length) : 0
             this.update()
-        },
-        copy: function() {
-            return new SelectChain(this.widgets, this.currentIndex)
-        },
-        append: function(el) {
-            this.widgets.push(el)
-            return this
-        },
-        clear: function() {
-            this.unselect()
-            this.currentIndex = 0
-            this.widgets = []
-        },
-        /* select either by index or by element */
-        select: function(index) {
-            if (typeof index == "number") {
-                this.currentIndex = index
+        }
+        return this
+    },
+    selectNext: function() {
+        if (this.currentIndex >= 0) {
+            this.currentIndex =
+                this.widgets.length > 0 ? ((this.currentIndex + 1) % this.widgets.length) : 0
+            this.update()
+        }
+        return this
+    },
+    unselect: function() {
+        this.currentIndex = -1
+        this.update()
+        return this
+    },
+    show: function() {
+        this.update()
+        this.hidden = false
+    },
+    hide: function() {
+        for (var i = 0; i < this.widgets.length; i++) {
+            var el = this.widgets[i]
+            $(el).removeClass("glow2")
+        }
+        this.hidden = true
+        return this
+    },
+    update: function() {
+        for (var i = 0; i < this.widgets.length; i++) {
+            var el = this.widgets[i]
+            if (i == this.currentIndex) {
+                $(el).addClass("glow2")
             } else {
-                var i = this.widgets.length - 1
-                while (i >= 0) {
-                    if (this.widgets[i] == index) break
-                    i--
-                }
-                this.currentIndex = i
-            }
-            this.update()
-            return this
-        },
-        selectPrevious: function() {
-            if (this.currentIndex >= 0) {
-                this.currentIndex =
-                    this.widgets.length ? ((this.currentIndex + this.widgets.length - 1) % this.widgets.length) : 0
-                this.update()
-            }
-            return this
-        },
-        selectNext: function() {
-            if (this.currentIndex >= 0) {
-                this.currentIndex =
-                    this.widgets.length > 0 ? ((this.currentIndex + 1) % this.widgets.length) : 0
-                this.update()
-            }
-            return this
-        },
-        unselect: function() {
-            this.currentIndex = -1
-            this.update()
-            return this
-        },
-        show: function() {
-            this.update()
-            this.hidden = false
-        },
-        hide: function() {
-            for (var i = 0; i < this.widgets.length; i++) {
-                var el = this.widgets[i]
                 $(el).removeClass("glow2")
             }
-            this.hidden = true
-            return this
-        },
-        update: function() {
-            for (var i = 0; i < this.widgets.length; i++) {
-                var el = this.widgets[i]
-                if (i == this.currentIndex) {
-                    $(el).addClass("glow2")
-                } else {
-                    $(el).removeClass("glow2")
-                }
-            }
-            return this
-        },
-        current: function() {
-            return (this.widgets.length && !this.hidden) ? this.widgets[this.currentIndex] : null
         }
-    })
+        return this
+    },
+    current: function() {
+        return (this.widgets.length && !this.hidden) ? this.widgets[this.currentIndex] : null
+    }
+})
 
-    return SelectChain
+module.exports = SelectChain
 
-}
-
-},{}],6:[function(require,module,exports){
-var Overlay = require("./overlay")
+},{"basejs":8}],6:[function(require,module,exports){
+var Overlay = require("./Overlay")
 var _ = require("underscore")
-var Base = require("basejs")
-var SelectChain = require("./selectchain")($, Base)
+var SelectChain = require("./SelectChain")
 
 
 var SoftwareKeyboard = Overlay.extend({
@@ -1196,7 +1193,7 @@ var SoftwareKeyboard = Overlay.extend({
 
 module.exports = SoftwareKeyboard
 
-},{"./overlay":4,"./selectchain":5,"basejs":8,"underscore":10}],7:[function(require,module,exports){
+},{"./Overlay":4,"./SelectChain":5,"underscore":10}],7:[function(require,module,exports){
 var SvgHelper = function(window) {
     var document = window.document
     var svgNS = "http://www.w3.org/2000/svg"
@@ -4608,4 +4605,4 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/ItemListPage":2,"../../../js/svghelper":7,"../routes/searchqueryutil":16,"html-truncate":9,"url":15}]},{},["HJD/OK"])
+},{"../../../js/ItemListPage":3,"../../../js/svghelper":7,"../routes/searchqueryutil":16,"html-truncate":9,"url":15}]},{},["HJD/OK"])

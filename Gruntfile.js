@@ -4,29 +4,29 @@ module.exports = function(grunt) {
         browserify: {
             basic: {
                 src: [
-                    './js/widgetizer.js',
+                    './js/Widgetizer.js',
                     './js/i18n.js',
                     './js/pageinfo.js',
                     './js/dialogs.js',
                     './js/mygamepad.js',
                     './js/BasePage.js',
                     './js/Logger.js',
-                    './js/eventtarget.js',
-                    './js/virtualcontrol.js',
+                    './js/EventTarget.js',
+                    './js/VirtualControl.js',
                     './js/Commons.js'
                 ],
                 dest: 'public/js/core.bundle.js',
                 options: {
                     alias: [
-                        './js/widgetizer.js:widgetizer',
+                        './js/Widgetizer.js:Widgetizer',
                         './js/i18n.js:i18n',
                         './js/pageinfo.js:pageinfo',
                         './js/dialogs.js:dialogs',
                         './js/mygamepad.js:mygamepad',
                         './js/BasePage.js:BasePage',
                         './js/Logger.js:Logger',
-                        './js/eventtarget.js:eventtarget',
-                        './js/virtualcontrol.js:virtualcontrol',
+                        './js/EventTarget.js:EventTarget',
+                        './js/VirtualControl.js:VirtualControl',
                         './js/Commons.js:Commons'
                     ],
                     transform: ['brfs']

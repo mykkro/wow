@@ -2,7 +2,7 @@ $(document).ready(function() {
 
     $.playable('soundmanager/swf/')
 
-    var Widgetizer = require("./widgetizer")(window, $, SVG)
+    var Widgetizer = require("./Widgetizer")(window, $, SVG)
     var i18n = new(require("./i18n"))({
         locales: ['en', 'de', 'cz'],
         defaultLocale: 'en'
