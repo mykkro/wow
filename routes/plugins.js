@@ -23,6 +23,7 @@ module.exports = function(app, express, Auth, API) {
       var cfg = pluginCfg.plugins[key]
       if(cfg.enabled) {
         app.use(prefix+"/assets", express.static(path.join(__dirname, ".."+prefix+"/public")))
+        app.use("/locales", express.static(path.join(__dirname, ".."+prefix+"/locales")))
       }
     }
   }

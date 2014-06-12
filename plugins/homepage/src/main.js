@@ -10,11 +10,8 @@ module.exports = function(Wow) {
     var preset = Wow.preset
     var location = Wow.location
 
-    // CalendarTextDaytime
-    // CalendarTextYearNo
-    // CalendarTextMonthName
-    // CalendarTextDayNo
-    // CalendarTextDayName
+    // this is how to use the plugin-local translations:
+    // alert(i18n("plugin:Weather"))
 
     var gui = window.gui
 
