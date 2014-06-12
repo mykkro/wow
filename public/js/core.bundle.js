@@ -258,6 +258,8 @@ var Commons = {
 module.exports = Commons
 },{}],"Commons":[function(require,module,exports){
 module.exports=require('JY97rG');
+},{}],"Dialogs":[function(require,module,exports){
+module.exports=require('yQdLKh');
 },{}],"yQdLKh":[function(require,module,exports){
 var Dialog = require('modal-dialog');
 
@@ -280,11 +282,11 @@ module.exports = function($, i18n) {
             d.title = '<b>' + title + '</b>';
             d.content = content;
             d.info = '';
-            d.addButton(i18n.__('Yes'), function() {
+            d.addButton(i18n('Yes'), function() {
                 cb(true)
                 d.hide();
             });
-            d.addButton(i18n.__('No'), function() {
+            d.addButton(i18n('No'), function() {
                 cb(false)
                 d.hide();
             });
@@ -302,18 +304,16 @@ module.exports = function($, i18n) {
             return d;
         },
         quitDialog: function(cb) {
-            return this.confirmDialog(i18n.__('Exit'), i18n.__('Are you sure?'), cb)
+            return this.confirmDialog(i18n('Exit'), i18n('Are you sure?'), cb)
         },
         removeDialog: function(cb) {
-            return this.confirmDialog(i18n.__('Remove'), i18n.__('Remove this item?'), cb)
+            return this.confirmDialog(i18n('Remove'), i18n('Remove this item?'), cb)
         }
     }
 
 }
 
-},{"modal-dialog":57}],"Dialogs":[function(require,module,exports){
-module.exports=require('yQdLKh');
-},{}],"C6/c90":[function(require,module,exports){
+},{"modal-dialog":57}],"C6/c90":[function(require,module,exports){
 //Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
 //Modified by Myrousz 2014
 //MIT License

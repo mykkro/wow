@@ -216,21 +216,32 @@ module.exports = function($, i18n) {
             d.title = '<b>' + title + '</b>';
             d.content = content;
             d.info = '';
-            d.addButton(i18n.__('Yes'), function() {
+            d.addButton(i18n('Yes'), function() {
                 cb(true)
                 d.hide();
             });
-            d.addButton(i18n.__('No'), function() {
+            d.addButton(i18n('No'), function() {
                 cb(false)
                 d.hide();
             });
             d.show();
+            return d;
+        },
+        /* dialog without buttons... */
+        simpleDialog: function(title, content, footer, options) {
+            var d = new Dialog($);
+            d.title = '<b>' + title + '</b>';
+            d.content = content;
+            d.info = '';
+            d.footer = footer;
+            d.show(options);
+            return d;
         },
         quitDialog: function(cb) {
-            this.confirmDialog(i18n.__('Exit'), i18n.__('Are you sure?'), cb)
+            return this.confirmDialog(i18n('Exit'), i18n('Are you sure?'), cb)
         },
         removeDialog: function(cb) {
-            this.confirmDialog(i18n.__('Remove'), i18n.__('Remove this item?'), cb)
+            return this.confirmDialog(i18n('Remove'), i18n('Remove this item?'), cb)
         }
     }
 
@@ -19698,8 +19709,8 @@ module.exports = function(Wow) {
         var now = moment()
         var hour = now.hour()
         var currentLangData = moment.langData()
-        var dayPartName = (now.format("A") == "AM") ? i18n.__("morning") : i18n.__("afternoon")
-        if (hour >= 11 && hour < 13) dayPartName = i18n.__("midday")
+        var dayPartName = (now.format("A") == "AM") ? i18n("morning") : i18n("afternoon")
+        if (hour >= 11 && hour < 13) dayPartName = i18n("midday")
         var calendar = {
             dayName: currentLangData.weekdays(now).toUpperCase(),
             day: now.format("D"),
@@ -19746,9 +19757,9 @@ module.exports = function(Wow) {
             var server = this.wtr.rpc
 
             // set labels...
-            $("#labelTodayWeather").text(i18n.__("Today's weather").toUpperCase())
-            $("#labelTodayIs").text(i18n.__("Today is").toUpperCase())
-            $("#labelYear").text(i18n.__("year").toUpperCase())
+            $("#labelTodayWeather").text(i18n("Today's weather").toUpperCase())
+            $("#labelTodayIs").text(i18n("Today is").toUpperCase())
+            $("#labelYear").text(i18n("year").toUpperCase())
 
             var updateWeatherInfo = function() {
                 // get weather info...
@@ -19774,9 +19785,9 @@ module.exports = function(Wow) {
             window.setInterval(updateClock, 1000)
             window.setInterval(updateWeatherInfo, 10 * 60 * 1000)
 
-            this.getWidget("navButton01").setCaption(i18n.__(preset.button1Link.title).toUpperCase()).click(function() { window.location = preset.button1Link.uri })
-            this.getWidget("navButton02").setCaption(i18n.__(preset.button2Link.title).toUpperCase()).click(function() { window.location = preset.button2Link.uri })
-            this.getWidget("navButton03").setCaption(i18n.__(preset.button3Link.title).toUpperCase()).click(function() { window.location = preset.button3Link.uri })
+            this.getWidget("navButton01").setCaption(i18n(preset.button1Link.title).toUpperCase()).click(function() { window.location = preset.button1Link.uri })
+            this.getWidget("navButton02").setCaption(i18n(preset.button2Link.title).toUpperCase()).click(function() { window.location = preset.button2Link.uri })
+            this.getWidget("navButton03").setCaption(i18n(preset.button3Link.title).toUpperCase()).click(function() { window.location = preset.button3Link.uri })
 
             $(".hiddenQuitButton").click(function() {
                 showQuitDialog()

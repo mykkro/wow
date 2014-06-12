@@ -354,7 +354,7 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
         }
 
         updateSelectorItemsPreview(div, 1)
-        dlg = dialogs.simpleDialog(i18n.__("Select image"), div, linksDiv, {width: 600})
+        dlg = dialogs.simpleDialog(i18n("Select image"), div, linksDiv, {width: 600})
     }
    
     var filterData = function(value, schema) {

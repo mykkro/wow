@@ -30,10 +30,7 @@
           defaultNs: 'core'
         } 
     }, function(__) {
-        var x = __("Hello!")
-        console.log("Translation obtained: ", x)
-        // compatibility with Dialogs...
-        var i18next = { __: __ }
+        var i18next = __
 
         /* initialize logger... */
         var Logger = require("Logger")

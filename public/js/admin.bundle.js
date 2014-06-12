@@ -357,7 +357,7 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
         }
 
         updateSelectorItemsPreview(div, 1)
-        dlg = dialogs.simpleDialog(i18n.__("Select image"), div, linksDiv, {width: 600})
+        dlg = dialogs.simpleDialog(i18n("Select image"), div, linksDiv, {width: 600})
     }
    
     var filterData = function(value, schema) {
@@ -640,11 +640,11 @@ module.exports = function($, i18n) {
             d.title = '<b>' + title + '</b>';
             d.content = content;
             d.info = '';
-            d.addButton(i18n.__('Yes'), function() {
+            d.addButton(i18n('Yes'), function() {
                 cb(true)
                 d.hide();
             });
-            d.addButton(i18n.__('No'), function() {
+            d.addButton(i18n('No'), function() {
                 cb(false)
                 d.hide();
             });
@@ -662,10 +662,10 @@ module.exports = function($, i18n) {
             return d;
         },
         quitDialog: function(cb) {
-            return this.confirmDialog(i18n.__('Exit'), i18n.__('Are you sure?'), cb)
+            return this.confirmDialog(i18n('Exit'), i18n('Are you sure?'), cb)
         },
         removeDialog: function(cb) {
-            return this.confirmDialog(i18n.__('Remove'), i18n.__('Remove this item?'), cb)
+            return this.confirmDialog(i18n('Remove'), i18n('Remove this item?'), cb)
         }
     }
 

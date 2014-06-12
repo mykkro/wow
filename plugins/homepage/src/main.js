@@ -46,8 +46,8 @@ module.exports = function(Wow) {
         var now = moment()
         var hour = now.hour()
         var currentLangData = moment.langData()
-        var dayPartName = (now.format("A") == "AM") ? i18n.__("morning") : i18n.__("afternoon")
-        if (hour >= 11 && hour < 13) dayPartName = i18n.__("midday")
+        var dayPartName = (now.format("A") == "AM") ? i18n("morning") : i18n("afternoon")
+        if (hour >= 11 && hour < 13) dayPartName = i18n("midday")
         var calendar = {
             dayName: currentLangData.weekdays(now).toUpperCase(),
             day: now.format("D"),
@@ -94,9 +94,9 @@ module.exports = function(Wow) {
             var server = this.wtr.rpc
 
             // set labels...
-            $("#labelTodayWeather").text(i18n.__("Today's weather").toUpperCase())
-            $("#labelTodayIs").text(i18n.__("Today is").toUpperCase())
-            $("#labelYear").text(i18n.__("year").toUpperCase())
+            $("#labelTodayWeather").text(i18n("Today's weather").toUpperCase())
+            $("#labelTodayIs").text(i18n("Today is").toUpperCase())
+            $("#labelYear").text(i18n("year").toUpperCase())
 
             var updateWeatherInfo = function() {
                 // get weather info...
@@ -122,9 +122,9 @@ module.exports = function(Wow) {
             window.setInterval(updateClock, 1000)
             window.setInterval(updateWeatherInfo, 10 * 60 * 1000)
 
-            this.getWidget("navButton01").setCaption(i18n.__(preset.button1Link.title).toUpperCase()).click(function() { window.location = preset.button1Link.uri })
-            this.getWidget("navButton02").setCaption(i18n.__(preset.button2Link.title).toUpperCase()).click(function() { window.location = preset.button2Link.uri })
-            this.getWidget("navButton03").setCaption(i18n.__(preset.button3Link.title).toUpperCase()).click(function() { window.location = preset.button3Link.uri })
+            this.getWidget("navButton01").setCaption(i18n(preset.button1Link.title).toUpperCase()).click(function() { window.location = preset.button1Link.uri })
+            this.getWidget("navButton02").setCaption(i18n(preset.button2Link.title).toUpperCase()).click(function() { window.location = preset.button2Link.uri })
+            this.getWidget("navButton03").setCaption(i18n(preset.button3Link.title).toUpperCase()).click(function() { window.location = preset.button3Link.uri })
 
             $(".hiddenQuitButton").click(function() {
                 showQuitDialog()
