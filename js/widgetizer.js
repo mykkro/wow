@@ -3,10 +3,10 @@
 module.exports = function(window, $, SVG) {
     console.log("Widgetizer script loading...")
     var document = window.document
-    var Commons = require("./commons")
+    var Commons = require("./Commons")
     var SvgHelper = require("./svghelper")(window)
-    var Widget = require("./widget")($)
-    var InputWidget = require("./inputwidget")($)
+    var Widget = require("./Widget")
+    var InputWidget = require("./InputWidget")
     var _ = require("underscore")
 
     /* Finds all nodes with nodeName == name */

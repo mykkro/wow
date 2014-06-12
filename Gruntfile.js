@@ -12,7 +12,8 @@ module.exports = function(grunt) {
                     './js/BasePage.js',
                     './js/Logger.js',
                     './js/eventtarget.js',
-                    './js/virtualcontrol.js'
+                    './js/virtualcontrol.js',
+                    './js/Commons.js'
                 ],
                 dest: 'public/js/core.bundle.js',
                 options: {
@@ -25,7 +26,8 @@ module.exports = function(grunt) {
                         './js/BasePage.js:BasePage',
                         './js/Logger.js:Logger',
                         './js/eventtarget.js:eventtarget',
-                        './js/virtualcontrol.js:virtualcontrol'
+                        './js/virtualcontrol.js:virtualcontrol',
+                        './js/Commons.js:Commons'
                     ],
                     transform: ['brfs']
                 }

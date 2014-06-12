@@ -1,3 +1,6 @@
+// Commons.js
+
+// commonly used functions.
 if (!String.prototype.startsWith) {
     Object.defineProperty(String.prototype, 'startsWith', {
         enumerable: false,
@@ -10,8 +13,27 @@ if (!String.prototype.startsWith) {
     });
 }
 
-
 var Commons = {
+    doAjax: function(method, uri, data, cb) {
+        var opts = (method == "GET" || method == 'DELETE') ? {
+            url: uri,
+            type: method,
+            contentType: "application/json; charset=utf-8"
+        } : {
+            url: uri,
+            type: method,
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8"
+        }
+        $.ajax(opts).then(function(res) {
+            if (!res.error) {
+                cb(null, res)
+            } else {
+                cb(res.error)
+            }
+        })
+    },
     /* find topmost nodes satisfying a condition */
     findTopmostNodes: function(node, inNodes, childrenOnly, condition) {
         if (!inNodes) inNodes = []
@@ -31,7 +53,6 @@ var Commons = {
         }
         return inNodes
     }
-
 
 }
 

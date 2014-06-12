@@ -24,26 +24,9 @@ $(document).ready(function() {
 
     console.log("Ready!")
 
-    var doAjax = function(method, uri, data, cb) {
-        var opts = (method == "GET" || method == 'DELETE') ? {
-            url: uri,
-            type: method,
-            contentType: "application/json; charset=utf-8"
-        } : {
-            url: uri,
-            type: method,
-            data: JSON.stringify(data),
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8"
-        }
-        $.ajax(opts).then(function(res) {
-            if (!res.error) {
-                cb(null, res)
-            } else {
-                cb(res.error)
-            }
-        })
-    }
+    var Commons = require("./Commons")
+
+    var doAjax = Commons.doAjax
 
 
     var putImage = function(dropData, next) {
