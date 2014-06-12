@@ -124,7 +124,7 @@ var BasePage = BasicLayer.extend({
 
 module.exports = BasePage
 
-},{"./BasicLayer":2,"./SoftwareKeyboard":5,"basejs":8,"url":23}],2:[function(require,module,exports){
+},{"./BasicLayer":2,"./SoftwareKeyboard":6,"basejs":8,"url":23}],2:[function(require,module,exports){
 var Base = require("basejs")
 
 var BasicLayer = Base.extend({
@@ -195,6 +195,48 @@ var BasicLayer = Base.extend({
 module.exports = BasicLayer
 
 },{"basejs":8}],3:[function(require,module,exports){
+var Dialog = require('modal-dialog');
+
+Dialog.styles = false
+Dialog.classes = {
+    container: 'modal_dialog',
+    title: 'title',
+    header: 'header',
+    content: 'content',
+    footer: 'footer',
+    info: 'info',
+    buttons: 'buttons',
+    button: 'button'
+};
+
+module.exports = function($, i18n) {
+    return {
+        confirmDialog: function(title, content, cb) {
+            var d = new Dialog($);
+            d.title = '<b>' + title + '</b>';
+            d.content = content;
+            d.info = '';
+            d.addButton(i18n.__('Yes'), function() {
+                cb(true)
+                d.hide();
+            });
+            d.addButton(i18n.__('No'), function() {
+                cb(false)
+                d.hide();
+            });
+            d.show();
+        },
+        quitDialog: function(cb) {
+            this.confirmDialog(i18n.__('Exit'), i18n.__('Are you sure?'), cb)
+        },
+        removeDialog: function(cb) {
+            this.confirmDialog(i18n.__('Remove'), i18n.__('Remove this item?'), cb)
+        }
+    }
+
+}
+
+},{"modal-dialog":10}],4:[function(require,module,exports){
 var BasicLayer = require("./BasicLayer")
 
 var Overlay = BasicLayer.extend({
@@ -227,7 +269,7 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./BasicLayer":2}],4:[function(require,module,exports){
+},{"./BasicLayer":2}],5:[function(require,module,exports){
 
 var Base = require("basejs")
 
@@ -319,7 +361,7 @@ var SelectChain = Base.extend({
 
 module.exports = SelectChain
 
-},{"basejs":8}],5:[function(require,module,exports){
+},{"basejs":8}],6:[function(require,module,exports){
 var Overlay = require("./Overlay")
 var _ = require("underscore")
 var SelectChain = require("./SelectChain")
@@ -1043,49 +1085,7 @@ var SoftwareKeyboard = Overlay.extend({
 
 module.exports = SoftwareKeyboard
 
-},{"./Overlay":3,"./SelectChain":4,"underscore":16}],6:[function(require,module,exports){
-var Dialog = require('modal-dialog');
-
-Dialog.styles = false
-Dialog.classes = {
-    container: 'modal_dialog',
-    title: 'title',
-    header: 'header',
-    content: 'content',
-    footer: 'footer',
-    info: 'info',
-    buttons: 'buttons',
-    button: 'button'
-};
-
-module.exports = function($, i18n) {
-    return {
-        confirmDialog: function(title, content, cb) {
-            var d = new Dialog($);
-            d.title = '<b>' + title + '</b>';
-            d.content = content;
-            d.info = '';
-            d.addButton(i18n.__('Yes'), function() {
-                cb(true)
-                d.hide();
-            });
-            d.addButton(i18n.__('No'), function() {
-                cb(false)
-                d.hide();
-            });
-            d.show();
-        },
-        quitDialog: function(cb) {
-            this.confirmDialog(i18n.__('Exit'), i18n.__('Are you sure?'), cb)
-        },
-        removeDialog: function(cb) {
-            this.confirmDialog(i18n.__('Remove'), i18n.__('Remove this item?'), cb)
-        }
-    }
-
-}
-
-},{"modal-dialog":10}],7:[function(require,module,exports){
+},{"./Overlay":4,"./SelectChain":5,"underscore":16}],7:[function(require,module,exports){
 // from: http://www.ericbullington.com/articles/2012/10/27/d3-oclock
 var fields = function() {
     var currentTime, hour, minute, second;
@@ -19690,7 +19690,7 @@ module.exports = function(Wow) {
         return map[icon] || "A"
     }
 
-    var timeinfo = require("../../../js/timeinfo")
+    var timeinfo = require("../../../js/TimeInfo")
     var moment = Wow.moment
 
     function updateCalendar() {
@@ -19731,7 +19731,7 @@ module.exports = function(Wow) {
 
     var baseUrl;
 
-    var dialogs = require("../../../js/dialogs")($, i18n)
+    var dialogs = require("../../../js/Dialogs")($, i18n)
 
     function showQuitDialog() {
         dialogs.quitDialog(function(reallyQuit) {
@@ -19818,4 +19818,4 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/BasePage":1,"../../../js/SelectChain":4,"../../../js/dialogs":6,"../../../js/timeinfo":7,"basejs":8}]},{},["HJD/OK"])
+},{"../../../js/BasePage":1,"../../../js/Dialogs":3,"../../../js/SelectChain":5,"../../../js/TimeInfo":7,"basejs":8}]},{},["HJD/OK"])

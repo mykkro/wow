@@ -8,7 +8,7 @@ $(document).ready(function() {
         defaultLocale: 'en'
     })
     i18n.setLocale('de')
-    var dialogs = require("./dialogs")($, i18n)
+    var dialogs = require("./Dialogs")($, i18n)
 
     var activeTab = 1
     if(pageMode == "view") activeTab = 4;
@@ -21,8 +21,6 @@ $(document).ready(function() {
         tabclass: 'ui-tabs-panel'
     });
 
-
-    console.log("Ready!")
 
     var Commons = require("./Commons")
 

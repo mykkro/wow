@@ -8,7 +8,7 @@ module.exports = function(Widgetizer) {
     /***********************************************************************************************************/
     /* widget name */
     var widgetname = "piechart"
-    var PieChart = require("../../piechart")(window)
+    var PieChart = require("../../PieChart")(window)
 
     /* the factory method */
     /* the actual implementation goes here... */

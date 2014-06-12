@@ -2,7 +2,7 @@ module.exports = function(Wow) {
     var window = Wow.window
     var $ = Wow.$
     var SVG = Wow.SVG
-    var SvgHelper = require("../../../js/svghelper")(window)
+    var SvgHelper = require("../../../js/SvgHelper")
     var i18n = Wow.i18n
     var BasePage = require("../../../js/BasePage")
 

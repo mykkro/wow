@@ -18,7 +18,7 @@
   <script type="text/javascript" src="/plugins/{{name}}/assets/main.bundle.js"></script>
   <script>
   $(document).ready(function() {
-        var pageInfo = require("pageinfo")(window)
+        var pageInfo = require("PageInfo")(window)
         console.log(pageInfo)
         var i18n = new(require("i18n"))({
           locales: ['en', 'de', 'cz'],
@@ -45,7 +45,7 @@
         var myControl = new VirtualControl()
 
 
-        var MyGamepad = require("mygamepad")(window, $, Gamepad)
+        var MyGamepad = require("MyGamepad")(window, $, Gamepad)
         var myGamepad = new MyGamepad()
         myGamepad.addListener("press", function(evt) {
           // delegate gamepad events to virtual control device...

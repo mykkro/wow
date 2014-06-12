@@ -3,7 +3,7 @@ module.exports = function(Wow) {
     var $ = Wow.$
     var SVG = Wow.SVG
     var i18n = Wow.i18n
-    var SvgHelper = require("../../../js/svghelper")(window)
+    var SvgHelper = require("../../../js/SvgHelper")
     var url = require("url")
     var truncate = require('html-truncate');
 

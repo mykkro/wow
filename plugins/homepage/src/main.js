@@ -38,7 +38,7 @@ module.exports = function(Wow) {
         return map[icon] || "A"
     }
 
-    var timeinfo = require("../../../js/timeinfo")
+    var timeinfo = require("../../../js/TimeInfo")
     var moment = Wow.moment
 
     function updateCalendar() {
@@ -79,7 +79,7 @@ module.exports = function(Wow) {
 
     var baseUrl;
 
-    var dialogs = require("../../../js/dialogs")($, i18n)
+    var dialogs = require("../../../js/Dialogs")($, i18n)
 
     function showQuitDialog() {
         dialogs.quitDialog(function(reallyQuit) {

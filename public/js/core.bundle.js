@@ -124,7 +124,7 @@ var BasePage = BasicLayer.extend({
 
 module.exports = BasePage
 
-},{"./BasicLayer":3,"./SoftwareKeyboard":13,"basejs":44,"url":55}],"BasePage":[function(require,module,exports){
+},{"./BasicLayer":3,"./SoftwareKeyboard":20,"basejs":44,"url":55}],"BasePage":[function(require,module,exports){
 module.exports=require('OdyuDH');
 },{}],3:[function(require,module,exports){
 var Base = require("basejs")
@@ -258,6 +258,50 @@ var Commons = {
 module.exports = Commons
 },{}],"Commons":[function(require,module,exports){
 module.exports=require('JY97rG');
+},{}],"yQdLKh":[function(require,module,exports){
+var Dialog = require('modal-dialog');
+
+Dialog.styles = false
+Dialog.classes = {
+    container: 'modal_dialog',
+    title: 'title',
+    header: 'header',
+    content: 'content',
+    footer: 'footer',
+    info: 'info',
+    buttons: 'buttons',
+    button: 'button'
+};
+
+module.exports = function($, i18n) {
+    return {
+        confirmDialog: function(title, content, cb) {
+            var d = new Dialog($);
+            d.title = '<b>' + title + '</b>';
+            d.content = content;
+            d.info = '';
+            d.addButton(i18n.__('Yes'), function() {
+                cb(true)
+                d.hide();
+            });
+            d.addButton(i18n.__('No'), function() {
+                cb(false)
+                d.hide();
+            });
+            d.show();
+        },
+        quitDialog: function(cb) {
+            this.confirmDialog(i18n.__('Exit'), i18n.__('Are you sure?'), cb)
+        },
+        removeDialog: function(cb) {
+            this.confirmDialog(i18n.__('Remove'), i18n.__('Remove this item?'), cb)
+        }
+    }
+
+}
+
+},{"modal-dialog":57}],"Dialogs":[function(require,module,exports){
+module.exports=require('yQdLKh');
 },{}],"C6/c90":[function(require,module,exports){
 //Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
 //Modified by Myrousz 2014
@@ -321,7 +365,7 @@ module.exports = EventTarget
 
 },{"basejs":44}],"EventTarget":[function(require,module,exports){
 module.exports=require('C6/c90');
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 
 var Widget = require("./Widget")
 
@@ -362,7 +406,7 @@ var InputWidget = Widget.extend({
 module.exports = InputWidget
 
 
-},{"./Widget":16}],"Logger":[function(require,module,exports){
+},{"./Widget":24}],"Logger":[function(require,module,exports){
 module.exports=require('+1Q85x');
 },{}],"+1Q85x":[function(require,module,exports){
 var Base = require("basejs")
@@ -391,7 +435,71 @@ var Logger = Base.extend({
 
 module.exports = Logger
 
-},{"basejs":44}],11:[function(require,module,exports){
+},{"basejs":44}],"MyGamepad":[function(require,module,exports){
+module.exports=require('K9mVN7');
+},{}],"K9mVN7":[function(require,module,exports){
+module.exports = function(window, $, Gamepad) {
+
+    var EventTarget = require("./EventTarget")
+
+    /* custom class wrapper for gamepads */
+    var MyGamepad = EventTarget.extend({
+        constructor: function() {
+            this.base()
+            this.gamepad = new Gamepad();
+
+            var self = this
+
+            this.gamepad.bind(Gamepad.Event.CONNECTED, function(device) {
+                // connected!
+                console.log('Connected', device);
+                self.fire($.extend({
+                    type: "connect"
+                }, device))
+            });
+
+            this.gamepad.bind(Gamepad.Event.DISCONNECTED, function(device) {
+                // disconnected!
+                console.log('Disconnected', device);
+                self.fire($.extend({
+                    type: "disconnect"
+                }, device))
+                if (this.gamepad.count() == 0) {
+                    console.log("No gamepads available.")
+                }
+            });
+
+            this.gamepad.bind(Gamepad.Event.BUTTON_DOWN, function(e) {
+                self.fire($.extend({
+                    type: "press"
+                }, e))
+            });
+
+            this.gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
+                self.fire($.extend({
+                    type: "release"
+                }, e))
+            });
+
+            this.gamepad.bind(Gamepad.Event.AXIS_CHANGED, function(e) {
+                self.fire($.extend({
+                    type: "axis"
+                }, e))
+            });
+
+            if (!this.gamepad.init()) {
+                console.log('Your browser does not support gamepads, get the latest Google Chrome or Firefox.');
+            } else {
+                console.log("Gamepad initialized!")
+            }
+        }
+    })
+
+
+    return MyGamepad
+}
+
+},{"./EventTarget":"C6/c90"}],15:[function(require,module,exports){
 var BasicLayer = require("./BasicLayer")
 
 var Overlay = BasicLayer.extend({
@@ -424,7 +532,126 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./BasicLayer":3}],12:[function(require,module,exports){
+},{"./BasicLayer":3}],"PageInfo":[function(require,module,exports){
+module.exports=require('RpOZIU');
+},{}],"RpOZIU":[function(require,module,exports){
+var url = require('url')
+var path = require('path')
+
+module.exports = function(window) {
+    var loc = window.location.href
+    var parsedUrl = url.parse(loc, true)
+    var query = parsedUrl.query
+    var hash = parsedUrl.hash
+
+    return {
+        query: query,
+        hash: hash,
+        baseUrl: url.format({
+            protocol: parsedUrl.protocol,
+            pathname: parsedUrl.pathname
+        })
+    }
+
+}
+
+},{"path":49,"url":55}],18:[function(require,module,exports){
+module.exports = function(window) {
+    var document = window.document
+
+    /**
+     * Create a <g> element and draw a pie chart into it.
+     * Arguments:
+     *   cx, cy, r: the center and radius of the pie
+     *   lx, ly: the upper-left corner of the chart legend
+     * Returns:
+     *    A <g> element that holds the pie chart.
+     *    The caller must insert the returned element into the document.
+     */
+    var pieChart = function(slices, cx, cy, r, lx, ly) {
+        var svgns = "http://www.w3.org/2000/svg";
+        var chart = document.createElementNS(svgns, "g");
+
+        // Add up the data values so we know how big the pie is
+        var total = 0;
+        for (var i = 0; i < slices.length; i++) total += slices[i].value;
+
+        // Now figure out how big each slice of pie is. Angles in radians.
+        var angles = []
+        for (var i = 0; i < slices.length; i++) angles[i] = slices[i].value / total * Math.PI * 2;
+
+        // Loop through each slice of pie.
+        startangle = 0;
+        for (var i = 0; i < slices.length; i++) {
+            // This is where the wedge ends
+            var endangle = startangle + angles[i];
+
+            // Compute the two points where our wedge intersects the circle
+            // These formulas are chosen so that an angle of 0 is at 12 o'clock
+            // and positive angles increase clockwise.
+            var x1 = cx + r * Math.sin(startangle);
+            var y1 = cy - r * Math.cos(startangle);
+            var x2 = cx + r * Math.sin(endangle);
+            var y2 = cy - r * Math.cos(endangle);
+
+            // This is a flag for angles larger than than a half circle
+            // It is required by the SVG arc drawing component
+            var big = 0;
+            if (endangle - startangle > Math.PI) big = 1;
+
+            // We describe a wedge with an <svg:path> element
+            // Notice that we create this with createElementNS()
+            var path = document.createElementNS(svgns, "path");
+
+            // This string holds the path details
+            var d = "M " + cx + "," + cy + // Start at circle center
+                " L " + x1 + "," + y1 + // Draw line to (x1,y1)
+                " A " + r + "," + r + // Draw an arc of radius r
+                " 0 " + big + " 1 " + // Arc details...
+                x2 + "," + y2 + // Arc goes to to (x2,y2)
+                " Z"; // Close path back to (cx,cy)
+
+            // Now set attributes on the <svg:path> element
+            path.setAttribute("d", d); // Set this path 
+            path.setAttribute("fill", slices[i].color); // Set wedge color
+            path.setAttribute("stroke", "black"); // Outline wedge in black
+            path.setAttribute("stroke-width", "2"); // 2 units thick
+            chart.appendChild(path); // Add wedge to chart
+
+            // The next wedge begins where this one ends
+            startangle = endangle;
+
+            // Now draw a little matching square for the key
+            var icon = document.createElementNS(svgns, "rect");
+            icon.setAttribute("x", lx); // Position the square
+            icon.setAttribute("y", ly + 30 * i);
+            icon.setAttribute("width", 20); // Size the square
+            icon.setAttribute("height", 20);
+            icon.setAttribute("fill", slices[i].color); // Same fill color as wedge
+            icon.setAttribute("stroke", "black"); // Same outline, too.
+            icon.setAttribute("stroke-width", "2");
+            chart.appendChild(icon); // Add to the chart
+
+            // And add a label to the right of the rectangle
+            var label = document.createElementNS(svgns, "text");
+            label.setAttribute("x", lx + 30); // Position the text
+            label.setAttribute("y", ly + 30 * i + 14);
+            // Text style attributes could also be set via CSS
+            label.setAttribute("font-family", "sans-serif");
+            label.setAttribute("font-size", "12");
+            // Add a DOM text node to the <svg:text> element
+            label.appendChild(document.createTextNode(slices[i].label));
+            chart.appendChild(label); // Add text to the chart
+        }
+
+        return chart;
+    }
+
+    return pieChart
+
+}
+
+},{}],19:[function(require,module,exports){
 
 var Base = require("basejs")
 
@@ -516,7 +743,7 @@ var SelectChain = Base.extend({
 
 module.exports = SelectChain
 
-},{"basejs":44}],13:[function(require,module,exports){
+},{"basejs":44}],20:[function(require,module,exports){
 var Overlay = require("./Overlay")
 var _ = require("underscore")
 var SelectChain = require("./SelectChain")
@@ -1240,7 +1467,130 @@ var SoftwareKeyboard = Overlay.extend({
 
 module.exports = SoftwareKeyboard
 
-},{"./Overlay":11,"./SelectChain":12,"underscore":63}],"VirtualControl":[function(require,module,exports){
+},{"./Overlay":15,"./SelectChain":19,"underscore":63}],21:[function(require,module,exports){
+var svgNS = "http://www.w3.org/2000/svg"
+var htmlNS = "http://www.w3.org/1999/xhtml"
+var xlinkNS = "http://www.w3.org/1999/xlink"
+
+var SvgHelper = {
+
+    svg: function(dim, vbox, par) {
+        if (!dim) dim = {}
+        var bbe = document.createElementNS(svgNS, "svg");
+        bbe.setAttribute("width", dim.width || 10);
+        bbe.setAttribute("height", dim.height || 10);
+        if (vbox) {
+            bbe.setAttribute("viewBox", vbox.x + " " + vbox.y + " " + vbox.width + " " + vbox.height);
+        }
+        if (par) {
+            bbe.setAttribute("preserveAspectRatio", par)
+        }
+        return bbe;
+    },
+    box: function(bbox) {
+        if (!bbox) bbox = {}
+        var bbe = document.createElementNS(svgNS, "rect");
+        bbe.setAttribute("x", bbox.x || 0);
+        bbe.setAttribute("y", bbox.y || 0);
+        bbe.setAttribute("width", bbox.width || 10);
+        bbe.setAttribute("height", bbox.height || 10);
+        bbe.setAttribute("fill", bbox.fill || "none");
+        bbe.setAttribute("stroke", bbox.stroke || "black");
+        return bbe;
+    },
+    image: function(bbox) {
+        if (!bbox) bbox = {}
+        var bbe = document.createElementNS(svgNS, "image");
+        bbe.setAttribute("width", bbox.width || 100);
+        bbe.setAttribute("height", bbox.height || 100);
+        bbe.setAttributeNS(xlinkNS, "href", bbox.src);
+        // set additional attributes such as id, name, class...
+        for (var key in bbox) {
+            if (bbox[key] && key != "width" && key != "height" && key != "src") bbe.setAttribute(key, bbox[key])
+        }
+        return bbe;
+    },
+    rect: function(bbox) {
+        if (!bbox) bbox = {}
+        var bbe = document.createElementNS(svgNS, "rect");
+        this.attrs(bbe, bbox)
+        return bbe;
+    },
+    mtext: function(text, options) {
+        var bbe = this.foreignObject(options)
+        if (options) this.attrs(bbe, options)
+        var p = document.createElementNS(htmlNS, "p")
+        p.textContent = text
+        bbe.appendChild(p)
+        return bbe;
+    },
+    group: function(options, children) {
+        var grp = document.createElementNS(svgNS, "g");
+        if (options) this.attrs(grp, options)
+        if (children) {
+            for (var i = 0; i < children.length; i++) {
+                grp.appendChild(children[i])
+            }
+        }
+        return grp
+    },
+    text: function(text, options) {
+        var txt = document.createElementNS(svgNS, "text")
+        txt.textContent = text
+        if (options) this.attrs(txt, options)
+        return txt
+    },
+    tspan: function(text, options) {
+        var txt = document.createElementNS(svgNS, "tspan")
+        txt.textContent = text
+        if (options) this.attrs(txt, options)
+        return txt
+    },
+    foreignObject: function(bbox) {
+        if (!bbox) bbox = {}
+        var bbe = document.createElementNS(svgNS, "foreignObject");
+        bbe.setAttribute("x", bbox.x || 0);
+        bbe.setAttribute("y", bbox.y || 0);
+        bbe.setAttribute("width", bbox.width || 10);
+        bbe.setAttribute("height", bbox.height || 10);
+        return bbe;
+    },
+    attrs: function(node, attrs) {
+        for (var key in attrs) {
+            node.setAttribute(key, attrs[key])
+        }
+        return node
+    },
+    attr: function(node, attr, value) {
+        node.setAttribute(attr, value)
+        return node
+    },
+    transform: function(node, tr) {
+        node.setAttribute("transform", tr)
+        return node
+    },
+    measure: function(node, tempGroupId) {
+        if (node.nodeName == "svg" || node.nodename == "foreignObject") {
+            /* svg and foreign object must be handled as special case */
+            return {
+                x: parseFloat(node.getAttribute("x") || 0),
+                y: parseFloat(node.getAttribute("y") || 0),
+                width: parseFloat(node.getAttribute("width")),
+                height: parseFloat(node.getAttribute("height"))
+            }
+        }
+        var tempGroup = document.getElementById(tempGroupId || "tempgroup")
+        tempGroup.appendChild(node)
+        var bbox = node.getBBox()
+        tempGroup.removeChild(node)
+        return bbox
+    }
+
+}
+
+module.exports = SvgHelper
+
+},{}],"VirtualControl":[function(require,module,exports){
 module.exports=require('eOgcpX');
 },{}],"eOgcpX":[function(require,module,exports){
 var EventTarget = require("./EventTarget")
@@ -1273,7 +1623,7 @@ var VirtualControl = EventTarget.extend({
 
 module.exports = VirtualControl
 
-},{"./EventTarget":"C6/c90"}],16:[function(require,module,exports){
+},{"./EventTarget":"C6/c90"}],24:[function(require,module,exports){
 var Base = require("basejs")
 
 
@@ -1329,16 +1679,14 @@ var Widget = Base.extend({
 
 module.exports = Widget
 
-},{"basejs":44}],"Widgetizer":[function(require,module,exports){
-module.exports=require('z4/vQj');
-},{}],"z4/vQj":[function(require,module,exports){
+},{"basejs":44}],"z4/vQj":[function(require,module,exports){
 // create a browserified version of widgetizer:
 //  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
 module.exports = function(window, $, SVG) {
     console.log("Widgetizer script loading...")
     var document = window.document
     var Commons = require("./Commons")
-    var SvgHelper = require("./svghelper")(window)
+    var SvgHelper = require("./SvgHelper")
     var Widget = require("./Widget")
     var InputWidget = require("./InputWidget")
     var _ = require("underscore")
@@ -1664,7 +2012,9 @@ module.exports = function(window, $, SVG) {
     return Widgetizer
 }
 
-},{"./Commons":"JY97rG","./InputWidget":8,"./Widget":16,"./svghelper":30,"./widgets/bigbutton/bigbutton":31,"./widgets/box/box":32,"./widgets/button/button":33,"./widgets/flow/flow":34,"./widgets/grid/grid":35,"./widgets/iconbutton/iconbutton":36,"./widgets/image/image":37,"./widgets/piechart/piechart":38,"./widgets/plain/plain":39,"./widgets/switcher/switcher":40,"./widgets/text/text":41,"./widgets/textbox/textbox":42,"./widgets/viewport/viewport":43,"underscore":63}],19:[function(require,module,exports){
+},{"./Commons":"JY97rG","./InputWidget":10,"./SvgHelper":21,"./Widget":24,"./widgets/bigbutton/bigbutton":31,"./widgets/box/box":32,"./widgets/button/button":33,"./widgets/flow/flow":34,"./widgets/grid/grid":35,"./widgets/iconbutton/iconbutton":36,"./widgets/image/image":37,"./widgets/piechart/piechart":38,"./widgets/plain/plain":39,"./widgets/switcher/switcher":40,"./widgets/text/text":41,"./widgets/textbox/textbox":42,"./widgets/viewport/viewport":43,"underscore":63}],"Widgetizer":[function(require,module,exports){
+module.exports=require('z4/vQj');
+},{}],27:[function(require,module,exports){
 /*
 Scripts to create interactive textboxes in SVG using ECMA script
 Copyright (C) <2006>  <Andreas Neumann>
@@ -2535,7 +2885,7 @@ module.exports = function(window, svgsvg) {
 
 }
 
-},{"./timer":20}],20:[function(require,module,exports){
+},{"./timer":28}],28:[function(require,module,exports){
 // source/credits: "Algorithm": http://www.codingforums.com/showthread.php?s=&threadid=10531
 // The constructor should be called with
 // the parent object (optional, defaults to window).
@@ -2621,50 +2971,6 @@ module.exports = function(window) {
     return Timer
 }
 
-},{}],"6UU4cM":[function(require,module,exports){
-var Dialog = require('modal-dialog');
-
-Dialog.styles = false
-Dialog.classes = {
-    container: 'modal_dialog',
-    title: 'title',
-    header: 'header',
-    content: 'content',
-    footer: 'footer',
-    info: 'info',
-    buttons: 'buttons',
-    button: 'button'
-};
-
-module.exports = function($, i18n) {
-    return {
-        confirmDialog: function(title, content, cb) {
-            var d = new Dialog($);
-            d.title = '<b>' + title + '</b>';
-            d.content = content;
-            d.info = '';
-            d.addButton(i18n.__('Yes'), function() {
-                cb(true)
-                d.hide();
-            });
-            d.addButton(i18n.__('No'), function() {
-                cb(false)
-                d.hide();
-            });
-            d.show();
-        },
-        quitDialog: function(cb) {
-            this.confirmDialog(i18n.__('Exit'), i18n.__('Are you sure?'), cb)
-        },
-        removeDialog: function(cb) {
-            this.confirmDialog(i18n.__('Remove'), i18n.__('Remove this item?'), cb)
-        }
-    }
-
-}
-
-},{"modal-dialog":57}],"dialogs":[function(require,module,exports){
-module.exports=require('6UU4cM');
 },{}],"XDzyYX":[function(require,module,exports){
 (function (Buffer){
 // to be used as constructor
@@ -2691,313 +2997,6 @@ module.exports = i18n
 }).call(this,require("buffer").Buffer)
 },{"buffer":45,"path":49}],"i18n":[function(require,module,exports){
 module.exports=require('XDzyYX');
-},{}],"mygamepad":[function(require,module,exports){
-module.exports=require('zaL12s');
-},{}],"zaL12s":[function(require,module,exports){
-module.exports = function(window, $, Gamepad) {
-
-    var EventTarget = require("./EventTarget")
-
-    /* custom class wrapper for gamepads */
-    var MyGamepad = EventTarget.extend({
-        constructor: function() {
-            this.base()
-            this.gamepad = new Gamepad();
-
-            var self = this
-
-            this.gamepad.bind(Gamepad.Event.CONNECTED, function(device) {
-                // connected!
-                console.log('Connected', device);
-                self.fire($.extend({
-                    type: "connect"
-                }, device))
-            });
-
-            this.gamepad.bind(Gamepad.Event.DISCONNECTED, function(device) {
-                // disconnected!
-                console.log('Disconnected', device);
-                self.fire($.extend({
-                    type: "disconnect"
-                }, device))
-                if (this.gamepad.count() == 0) {
-                    console.log("No gamepads available.")
-                }
-            });
-
-            this.gamepad.bind(Gamepad.Event.BUTTON_DOWN, function(e) {
-                self.fire($.extend({
-                    type: "press"
-                }, e))
-            });
-
-            this.gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
-                self.fire($.extend({
-                    type: "release"
-                }, e))
-            });
-
-            this.gamepad.bind(Gamepad.Event.AXIS_CHANGED, function(e) {
-                self.fire($.extend({
-                    type: "axis"
-                }, e))
-            });
-
-            if (!this.gamepad.init()) {
-                console.log('Your browser does not support gamepads, get the latest Google Chrome or Firefox.');
-            } else {
-                console.log("Gamepad initialized!")
-            }
-        }
-    })
-
-
-    return MyGamepad
-}
-
-},{"./EventTarget":"C6/c90"}],"PuqguM":[function(require,module,exports){
-var url = require('url')
-var path = require('path')
-
-module.exports = function(window) {
-    var loc = window.location.href
-    var parsedUrl = url.parse(loc, true)
-    var query = parsedUrl.query
-    var hash = parsedUrl.hash
-
-    return {
-        query: query,
-        hash: hash,
-        baseUrl: url.format({
-            protocol: parsedUrl.protocol,
-            pathname: parsedUrl.pathname
-        })
-    }
-
-}
-
-},{"path":49,"url":55}],"pageinfo":[function(require,module,exports){
-module.exports=require('PuqguM');
-},{}],29:[function(require,module,exports){
-module.exports = function(window) {
-    var document = window.document
-
-    /**
-     * Create a <g> element and draw a pie chart into it.
-     * Arguments:
-     *   cx, cy, r: the center and radius of the pie
-     *   lx, ly: the upper-left corner of the chart legend
-     * Returns:
-     *    A <g> element that holds the pie chart.
-     *    The caller must insert the returned element into the document.
-     */
-    var pieChart = function(slices, cx, cy, r, lx, ly) {
-        var svgns = "http://www.w3.org/2000/svg";
-        var chart = document.createElementNS(svgns, "g");
-
-        // Add up the data values so we know how big the pie is
-        var total = 0;
-        for (var i = 0; i < slices.length; i++) total += slices[i].value;
-
-        // Now figure out how big each slice of pie is. Angles in radians.
-        var angles = []
-        for (var i = 0; i < slices.length; i++) angles[i] = slices[i].value / total * Math.PI * 2;
-
-        // Loop through each slice of pie.
-        startangle = 0;
-        for (var i = 0; i < slices.length; i++) {
-            // This is where the wedge ends
-            var endangle = startangle + angles[i];
-
-            // Compute the two points where our wedge intersects the circle
-            // These formulas are chosen so that an angle of 0 is at 12 o'clock
-            // and positive angles increase clockwise.
-            var x1 = cx + r * Math.sin(startangle);
-            var y1 = cy - r * Math.cos(startangle);
-            var x2 = cx + r * Math.sin(endangle);
-            var y2 = cy - r * Math.cos(endangle);
-
-            // This is a flag for angles larger than than a half circle
-            // It is required by the SVG arc drawing component
-            var big = 0;
-            if (endangle - startangle > Math.PI) big = 1;
-
-            // We describe a wedge with an <svg:path> element
-            // Notice that we create this with createElementNS()
-            var path = document.createElementNS(svgns, "path");
-
-            // This string holds the path details
-            var d = "M " + cx + "," + cy + // Start at circle center
-                " L " + x1 + "," + y1 + // Draw line to (x1,y1)
-                " A " + r + "," + r + // Draw an arc of radius r
-                " 0 " + big + " 1 " + // Arc details...
-                x2 + "," + y2 + // Arc goes to to (x2,y2)
-                " Z"; // Close path back to (cx,cy)
-
-            // Now set attributes on the <svg:path> element
-            path.setAttribute("d", d); // Set this path 
-            path.setAttribute("fill", slices[i].color); // Set wedge color
-            path.setAttribute("stroke", "black"); // Outline wedge in black
-            path.setAttribute("stroke-width", "2"); // 2 units thick
-            chart.appendChild(path); // Add wedge to chart
-
-            // The next wedge begins where this one ends
-            startangle = endangle;
-
-            // Now draw a little matching square for the key
-            var icon = document.createElementNS(svgns, "rect");
-            icon.setAttribute("x", lx); // Position the square
-            icon.setAttribute("y", ly + 30 * i);
-            icon.setAttribute("width", 20); // Size the square
-            icon.setAttribute("height", 20);
-            icon.setAttribute("fill", slices[i].color); // Same fill color as wedge
-            icon.setAttribute("stroke", "black"); // Same outline, too.
-            icon.setAttribute("stroke-width", "2");
-            chart.appendChild(icon); // Add to the chart
-
-            // And add a label to the right of the rectangle
-            var label = document.createElementNS(svgns, "text");
-            label.setAttribute("x", lx + 30); // Position the text
-            label.setAttribute("y", ly + 30 * i + 14);
-            // Text style attributes could also be set via CSS
-            label.setAttribute("font-family", "sans-serif");
-            label.setAttribute("font-size", "12");
-            // Add a DOM text node to the <svg:text> element
-            label.appendChild(document.createTextNode(slices[i].label));
-            chart.appendChild(label); // Add text to the chart
-        }
-
-        return chart;
-    }
-
-    return pieChart
-
-}
-
-},{}],30:[function(require,module,exports){
-var SvgHelper = function(window) {
-    var document = window.document
-    var svgNS = "http://www.w3.org/2000/svg"
-    var htmlNS = "http://www.w3.org/1999/xhtml"
-    var xlinkNS = "http://www.w3.org/1999/xlink"
-    return {
-        svg: function(dim, vbox, par) {
-            if (!dim) dim = {}
-            var bbe = document.createElementNS(svgNS, "svg");
-            bbe.setAttribute("width", dim.width || 10);
-            bbe.setAttribute("height", dim.height || 10);
-            if (vbox) {
-                bbe.setAttribute("viewBox", vbox.x + " " + vbox.y + " " + vbox.width + " " + vbox.height);
-            }
-            if (par) {
-                bbe.setAttribute("preserveAspectRatio", par)
-            }
-            return bbe;
-        },
-        box: function(bbox) {
-            if (!bbox) bbox = {}
-            var bbe = document.createElementNS(svgNS, "rect");
-            bbe.setAttribute("x", bbox.x || 0);
-            bbe.setAttribute("y", bbox.y || 0);
-            bbe.setAttribute("width", bbox.width || 10);
-            bbe.setAttribute("height", bbox.height || 10);
-            bbe.setAttribute("fill", bbox.fill || "none");
-            bbe.setAttribute("stroke", bbox.stroke || "black");
-            return bbe;
-        },
-        image: function(bbox) {
-            if (!bbox) bbox = {}
-            var bbe = document.createElementNS(svgNS, "image");
-            bbe.setAttribute("width", bbox.width || 100);
-            bbe.setAttribute("height", bbox.height || 100);
-            bbe.setAttributeNS(xlinkNS, "href", bbox.src);
-            // set additional attributes such as id, name, class...
-            for (var key in bbox) {
-                if (bbox[key] && key != "width" && key != "height" && key != "src") bbe.setAttribute(key, bbox[key])
-            }
-            return bbe;
-        },
-        rect: function(bbox) {
-            if (!bbox) bbox = {}
-            var bbe = document.createElementNS(svgNS, "rect");
-            this.attrs(bbe, bbox)
-            return bbe;
-        },
-        mtext: function(text, options) {
-            var bbe = this.foreignObject(options)
-            if (options) this.attrs(bbe, options)
-            var p = document.createElementNS(htmlNS, "p")
-            p.textContent = text
-            bbe.appendChild(p)
-            return bbe;
-        },
-        group: function(options, children) {
-            var grp = document.createElementNS(svgNS, "g");
-            if (options) this.attrs(grp, options)
-            if (children) {
-                for (var i = 0; i < children.length; i++) {
-                    grp.appendChild(children[i])
-                }
-            }
-            return grp
-        },
-        text: function(text, options) {
-            var txt = document.createElementNS(svgNS, "text")
-            txt.textContent = text
-            if (options) this.attrs(txt, options)
-            return txt
-        },
-        tspan: function(text, options) {
-            var txt = document.createElementNS(svgNS, "tspan")
-            txt.textContent = text
-            if (options) this.attrs(txt, options)
-            return txt
-        },
-        foreignObject: function(bbox) {
-            if (!bbox) bbox = {}
-            var bbe = document.createElementNS(svgNS, "foreignObject");
-            bbe.setAttribute("x", bbox.x || 0);
-            bbe.setAttribute("y", bbox.y || 0);
-            bbe.setAttribute("width", bbox.width || 10);
-            bbe.setAttribute("height", bbox.height || 10);
-            return bbe;
-        },
-        attrs: function(node, attrs) {
-            for (var key in attrs) {
-                node.setAttribute(key, attrs[key])
-            }
-            return node
-        },
-        attr: function(node, attr, value) {
-            node.setAttribute(attr, value)
-            return node
-        },
-        transform: function(node, tr) {
-            node.setAttribute("transform", tr)
-            return node
-        },
-        measure: function(node, tempGroupId) {
-            if (node.nodeName == "svg" || node.nodename == "foreignObject") {
-                /* svg and foreign object must be handled as special case */
-                return {
-                    x: parseFloat(node.getAttribute("x") || 0),
-                    y: parseFloat(node.getAttribute("y") || 0),
-                    width: parseFloat(node.getAttribute("width")),
-                    height: parseFloat(node.getAttribute("height"))
-                }
-            }
-            var tempGroup = document.getElementById(tempGroupId || "tempgroup")
-            tempGroup.appendChild(node)
-            var bbox = node.getBBox()
-            tempGroup.removeChild(node)
-            return bbox
-        }
-
-    }
-}
-
-module.exports = SvgHelper
-
 },{}],31:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
@@ -3577,7 +3576,7 @@ module.exports = function(Widgetizer) {
     /***********************************************************************************************************/
     /* widget name */
     var widgetname = "piechart"
-    var PieChart = require("../../piechart")(window)
+    var PieChart = require("../../PieChart")(window)
 
     /* the factory method */
     /* the actual implementation goes here... */
@@ -3611,7 +3610,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{"../../piechart":29}],39:[function(require,module,exports){
+},{"../../PieChart":18}],39:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -3865,7 +3864,7 @@ module.exports = function(Widgetizer) {
 
 }
 
-},{"../../carto.net/textbox":19}],43:[function(require,module,exports){
+},{"../../carto.net/textbox":27}],43:[function(require,module,exports){
 module.exports = function(Widgetizer) {
     /* common fields... */
     var window = Widgetizer.window
@@ -24058,4 +24057,4 @@ return Q;
 
 }).call(this);
 
-},{}]},{},["z4/vQj","XDzyYX","PuqguM","6UU4cM","zaL12s","OdyuDH","+1Q85x","C6/c90","eOgcpX","JY97rG"])
+},{}]},{},["z4/vQj","XDzyYX","RpOZIU","yQdLKh","K9mVN7","OdyuDH","+1Q85x","C6/c90","eOgcpX","JY97rG"])

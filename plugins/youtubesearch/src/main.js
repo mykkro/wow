@@ -4,7 +4,7 @@ module.exports = function(Wow) {
     var ItemListPage = require("../../../js/ItemListPage")(Wow)
     var window = Wow.window
     var url = require("url")
-    var SvgHelper = require("../../../js/svghelper")(window)
+    var SvgHelper = require("../../../js/SvgHelper")
     var truncate = require('html-truncate');
 
     var SearchVideosPage = ItemListPage.extend({
