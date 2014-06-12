@@ -21,15 +21,19 @@
         var pageInfo = require("PageInfo")(window)
         console.log(pageInfo)
 
-        /* old i18n... */
-        var i18n = new(require("i18n"))({
-          locales: ['en', 'de', 'cz'],
-          defaultLocale: 'en'
-        })
-        i18n.setLocale('{{locale}}')
-        moment.lang('{{locale}}')
-
-        window.i18n = i18n
+    // new i18n... 
+    i18n.init({ 
+      resGetPath: '/locales/__lng__/__ns__.json', 
+      lng: '{{locale}}',
+      ns: { 
+          namespaces: ['core'], 
+          defaultNs: 'core'
+        } 
+    }, function(__) {
+        var x = __("Hello!")
+        console.log("Translation obtained: ", x)
+        // compatibility with Dialogs...
+        var i18next = { __: __ }
 
         /* initialize logger... */
         var Logger = require("Logger")
@@ -131,7 +135,7 @@
           window: window,
           $: $,
           _: _,
-          i18n: i18n,
+          i18n: i18next,
           SVG: SVG,
           moment: moment,
           Widgetizer: Widgetizer,
@@ -177,6 +181,11 @@
 
             })
         })
+
+
+    });
+
+
 
   })
   </script>
