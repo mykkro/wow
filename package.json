@@ -99,7 +99,8 @@
     "morgan": "~1.1.1",
     "express": "4.4.2",
     "passport": "0.2.0",
-    "passport-local": "1.0.0"
+    "passport-local": "1.0.0",
+    "i18next": "~1.7.4"
   },
   "repository": {
     "type": "git",
