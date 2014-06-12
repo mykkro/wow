@@ -558,20 +558,20 @@ _.each(editableNodes, function(en) {
         })
     }
 
-    /*
-    showItemSelector(["image"], function(data) {
-        console.log("Selected:", data)
-    })
-    */
-   
    // shows item preview in a div
    /*
    var pDiv = $("<div>").appendTo("body")
-   updateItemPreview("/api/node/app/3", pDiv, "default", function(d) {
-    // clicked on element!
-    console.log(d)
-   })
+
+   var fun = function() {
+        showItemSelector(["image"], function(data) {
+            console.log("Selected:", data)
+            var url = "/api/node/image/"+data._id
+            updateItemPreview(url, pDiv, "default", fun)
+        })
+   }
+   updateItemPreview("/api/node/app/3", pDiv, "default", fun)
     */
+
 }
 
 module.exports = AdminPage
