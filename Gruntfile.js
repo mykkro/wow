@@ -233,7 +233,8 @@ module.exports = function(grunt) {
                         '!node_modules/grunt-generate/**',
                         '!node_modules/grunt-jsbeautifier/**',
                         '!node_modules/grunt-downloadfile/**',
-                        '!node_modules/grunt-ssh/**'
+                        '!node_modules/grunt-ssh/**',
+                        '!node_modules/grunt-hub/**'
                     ]
                 }]
             }
@@ -307,6 +308,12 @@ module.exports = function(grunt) {
                 dest: 'bin/win64'
             }]
         },
+        hub: {
+            all: {
+              src: ['plugins/*/Gruntfile.js'],
+              tasks: ['default']
+            }
+        }
     })
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-less');
@@ -318,6 +325,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-docker');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-ssh');
+    grunt.loadNpmTasks('grunt-hub');
 
     grunt.registerTask('default', ['concat', 'browserify', 'less']);
     grunt.registerTask('makedoc', ['clean:docs', 'jsbeautifier', 'docker']);
