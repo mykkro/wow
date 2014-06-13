@@ -579,6 +579,40 @@ _.each(editableNodes, function(en) {
     $("#newnode").append(control)
 })
 
+var typesInput = $("#searchcontrol input[name=searchtypes]")
+var typeSelector = $("<div>").addClass("type-selector").insertAfter(typesInput)
+_.each(editableNodes, function(en) {
+    var selector = $("<img>").attr("src", en.thumbnailUri)
+    selector.click(function() {
+        toggleTypeSelector(selector, en.name)
+        return false
+    })
+    typeSelector.append(selector)
+})
+
+var toggleTypeSelector = function(selector, type) {
+    var typeStr = typesInput.val()
+    var types = typeStr.split(",")
+    var tm = {}
+    _.each(types, function(t) {
+        if(t) tm[t] = t
+    })
+    if(type in tm) {
+        delete tm[type]
+        selector.removeClass("selected")
+    } else {
+        tm[type] = type
+        selector.addClass("selected")
+    }
+    var newTypes = []
+    for(var key in tm) {
+        newTypes.push(key)
+    }
+    typeStr = newTypes.join(",")
+    typesInput.val(typeStr)
+    return type in tm
+}
+
   if(node) {
         console.log(node);
         var nodeId = node._id

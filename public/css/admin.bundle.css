@@ -543,3 +543,11 @@ body {
   color: black;
   pointer-events: none;
 }
+.type-selector img {
+  width: 32px;
+  height: 32px;
+  opacity: 0.2;
+}
+.type-selector img.selected {
+  opacity: 1;
+}
