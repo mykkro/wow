@@ -115,7 +115,10 @@ var WowServer = {
       app.use('/uploads',express.static(Storage.uploadDir));
       app.use("/imports", express.static(Storage.importDir))
       app.use("/locales", express.static(__dirname+"/locales"))
-      app.use("/userdata", express.static(__dirname+"/userdata"))
+
+      // for addons testing, like:
+      // http://localhost:9999/plugins/game/index?importname=pexeso2&devel=yes
+      app.use("/addons", express.static(__dirname + '/addons'))
       plugins.static()
 
 
