@@ -4,9 +4,13 @@
 var fixtures = [
 	{ "type":"admin", "name":"defaultAdmin", "file":"admin.default.json" },
 	{ "type":"location", "name":"defaultLocation", "file":"location.vienna.json", "autowire": {"ownerAdminId":"defaultAdmin._id"} }, 
+	{ "type":"shortcut", "name":"homepageLink", "file":"shortcut.homepage.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}},
 	{ "type":"shortcut", "name":"appsLink", "file":"shortcut.apps.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}}, 
 	{ "type":"shortcut", "name":"radioLink", "file":"shortcut.netradio.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}}, 
+	{ "type":"shortcut", "name":"pianoLink", "file":"shortcut.piano.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}},
 	{ "type":"shortcut", "name":"youtubeLink", "file":"shortcut.youtubesearch.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}},
+	{ "type":"shortcut", "name":"youtubePersLink", "file":"shortcut.youtubepersonal.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}},
+	{ "type":"shortcut", "name":"youtubeFavLink", "file":"shortcut.youtubefavorite.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}},
 	{ "type":"shortcut", "name":"shortcutsLink", "file":"shortcut.shortcuts.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}},
 	{ "type":"theme", "name":"defaultTheme", "file":"theme.default.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}},
 	{ "type":"preset", "name":"defaultPreset", "file":"preset.default.json", "autowire": {"ownerAdminId":"defaultAdmin._id", "themeId": "defaultTheme._id", "button1LinkId": "appsLink._id", "button2LinkId": "radioLink._id", "button3LinkId": "youtubeLink._id"}}, 
