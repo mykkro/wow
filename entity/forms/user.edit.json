@@ -37,16 +37,6 @@
         "type": "string",
         "required": false
       },
-      "password": {
-        "title": "Password",
-        "type": "string",
-        "required": false
-      },
-      "repeatPassword": {
-        "title": "Password (again)",
-        "type": "string",
-        "required": false
-      },
       "usesPassword": {
         "title": "Uses password?",
         "type": "boolean",

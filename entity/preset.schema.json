@@ -32,22 +32,22 @@
       "required": false
     },
     "button1LinkId": {
-      "title": "Button 1 Link ID",
+      "title": "Button 1 Link",
       "type": "number",
       "required": true
     },
     "button2LinkId": {
-      "title": "Button 2 Link ID",
+      "title": "Button 2 Link",
       "type": "number",
       "required": true
     },
     "button3LinkId": {
-      "title": "Button 3 Link ID",
+      "title": "Button 3 Link",
       "type": "number",
       "required": true
     },
     "themeId": {
-      "title": "Theme ID",
+      "title": "Theme",
       "type": "number",
       "required": true
     },
