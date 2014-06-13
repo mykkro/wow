@@ -24,6 +24,14 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
 
     var doAjax = Commons.doAjax
 
+    var doAjaxPOST = function(uri, data, next) {
+        doAjax('POST', uri, data, function(err, res) {
+            if (!err) {
+                if (next) next(null, res[0])
+            } else next(err)
+        })
+    }
+
     var putImage = function(dropData, next) {
         console.log("Store image to DB", dropData)
         var data = {
@@ -33,11 +41,7 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
             imageUUID: dropData.uploaded.uuid
         }
         var uri = '/api/image/new'
-        doAjax('POST', uri, data, function(err, res) {
-            if (!err) {
-                if (next) next(null, res[0])
-            } else next(err)
-        })
+        doAjaxPOST(uri, data, next)
     }
 
     var putVideo = function(dropData, next) {
@@ -49,11 +53,7 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
             videoUUID: dropData.uploaded.uuid
         }
         var uri = '/api/video/new'
-        doAjax('POST', uri, data, function(err, res) {
-            if (!err) {
-                if (next) next(null, res[0])
-            } else next(err)
-        })
+        doAjaxPOST(uri, data, next)
     }
 
     var putAudio = function(dropData, next) {
@@ -65,11 +65,7 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
             voiceUUID: dropData.uploaded.uuid
         }
         var uri = '/api/voice/new'
-        doAjax('POST', uri, data, function(err, res) {
-            if (!err) {
-                if (next) next(null, res[0])
-            } else next(err)
-        })
+        doAjaxPOST(uri, data, next)
     }
 
     var putArticle = function(dropData, next) {
@@ -81,11 +77,7 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
             content: dropData.html || dropData.text
         }
         var uri = '/api/article/new'
-        doAjax('POST', uri, data, function(err, res) {
-            if (!err) {
-                if (next) next(null, res[0])
-            } else next(err)
-        })
+        doAjaxPOST(uri, data, next)
     }
 
     var putYouTube = function(dropData, next) {
@@ -95,11 +87,7 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
             ytId: dropData.videoId
         }
         var uri = '/api/youTubeVideo/new'
-        doAjax('POST', uri, data, function(err, res) {
-            if (!err) {
-                if (next) next(null, res[0])
-            } else next(err)
-        })
+        doAjaxPOST(uri, data, next)
     }
 
     var tryToImportApp = function(dropData, next) {
@@ -110,11 +98,7 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
             archiveUUID: dropData.uploaded.uuid
         }
         var uri = '/api/app/import'
-        doAjax('POST', uri, data, function(err, res) {
-            if (!err) {
-                if (next) next(null, res[0])
-            } else next(err)
-        })
+        doAjaxPOST(uri, data, next)
     }
 
     var dragging = false
@@ -368,8 +352,80 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
         }
 
         updateSelectorItemsPreview(div, 1)
-        dlg = dialogs.simpleDialog(i18n("Select image"), div, linksDiv, {width: 600})
+        dlg = dialogs.simpleDialog(i18n("Select item"), div, linksDiv, {width: 600})
     }
+
+
+   var updateSelector = function(id, type, div, fun) {
+    if(id) {
+        var url = "/api/node/"+type+"/"+id
+        updateItemPreview(url, div, "default", fun)
+    } else {
+        var out = $("<span>").text("N/A").click(fun)
+        div.html(out)
+    }
+   }
+
+   var updateItemView = function(id, type, div) {
+    if(id) {
+        var url = "/api/node/"+type+"/"+id
+        updateItemPreview(url, div, "default")
+    } else {
+        var out = $("<span>").text("N/A")
+        div.html(out)
+    }
+   }
+
+   var attachItemView = function(type, div) {
+       var id = parseInt(div.text())
+       div.empty()
+       updateItemView(id, type, div)
+   }
+
+
+   var attachSelector = function(input, type) {
+       input.hide()
+       var pDiv = $("<div>").insertAfter(input)
+
+       var fun = function() {
+            showItemSelector([type], function(data) {
+                console.log("Selected:", data)
+                var id = data ? data._id : null
+                input.val(id)
+                updateSelector(id, type, pDiv, fun)
+            })
+       }
+       var id = input.val()
+       updateSelector(id, type, pDiv, fun)
+   }
+
+   var attachSelectorsToForm = function(type, action, container) {
+        if(type == "user") {
+            attachSelector(container.find("input[name=locationId]"), "location")
+            attachSelector(container.find("input[name=presetId]"), "preset")
+        }
+        else if(type == "preset") {
+            attachSelector(container.find("input[name=button1LinkId]"), "shortcut")
+            attachSelector(container.find("input[name=button2LinkId]"), "shortcut")
+            attachSelector(container.find("input[name=button3LinkId]"), "shortcut")
+            attachSelector(container.find("input[name=themeId]"), "theme")
+        }
+
+   }
+
+   var updateItemsView = function(type) {
+        if(type == "user") {
+            attachItemView("location", $("#view .field-locationId .value"))
+            attachItemView("preset", $("#view .field-presetId .value"))
+        }
+        else if(type == "preset") {
+            attachItemView("shortcut", $("#view .field-button1LinkId .value"))
+            attachItemView("shortcut", $("#view .field-button2LinkId .value"))
+            attachItemView("shortcut", $("#view .field-button3LinkId .value"))
+            attachItemView("theme", $("#view .field-themeId .value"))
+        }
+
+   }
    
     var filterData = function(value, schema) {
       for(var key in value) {
@@ -458,6 +514,9 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
                 })
                 return false;
             })
+
+            // attach selectors...
+            attachSelectorsToForm(type, action, control.container)
           }
         })    
     }
@@ -559,9 +618,12 @@ _.each(editableNodes, function(en) {
             })
 
         })
+
+        updateItemsView(nodeType)
     }
 
    // shows item preview in a div
+   /*
    var pDiv = $("<div>").appendTo("body")
 
    var fun = function() {
@@ -572,8 +634,13 @@ _.each(editableNodes, function(en) {
         })
    }
    updateItemPreview("/api/node/app/3", pDiv, "default", fun)
+    */
 
+/*   
+   var input = $('<input type="text" name="imageId" value="">').appendTo("body")
 
+   attachSelector(input, "image")
+*/
 }
 
 module.exports = AdminPage

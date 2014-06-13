@@ -53,7 +53,6 @@ module.exports = function(app, express, Auth, API) {
       var name = req.params.name
       var page = req.params.page
       var locale = req.user.user.locale || 'en'
-      // TODO plug-in the plugin locale...
       var prefix = "/plugins/"+name
       if(!(name in pluginCfg.plugins) || !pluginCfg.plugins[name].enabled) {
         // not available
@@ -71,6 +70,7 @@ module.exports = function(app, express, Auth, API) {
           view = fs.readFileSync(htmlPath, "utf8")
           view = mustache.to_html(view, {defs:svgDefs, query: req.query})
         }
+        /**/console.log("PRESET:", defaults.preset, req.user.user)
         var preset = merge({}, defaults.preset, req.user.user.preset)
         var presetStr = JSON.stringify(preset)
         var location = merge({}, defaults.location, req.user.user.location)
