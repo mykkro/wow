@@ -4224,7 +4224,7 @@ module.exports = function(Wow) {
                 $("<iframe nwfaketop nwdisable>").attr({
                     width: "100%",
                     height: "100%",
-                    src: src + "?showquitbutton=no&lang=de",
+                    src: src + "?showquitbutton=no&lang="+Wow.locale,
                     frameborder: 0
                 }).load(function() {
                     // reloading does not seem to help...

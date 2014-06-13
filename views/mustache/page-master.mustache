@@ -21,10 +21,11 @@
         var pageInfo = require("PageInfo")(window)
         console.log(pageInfo)
 
+        var currentLocale = '{{locale}}'
     // new i18n... 
     i18n.init({ 
       resGetPath: '/locales/__lng__/__ns__.json', 
-      lng: '{{locale}}',
+      lng: currentLocale,
       ns: { 
           namespaces: ['core','plugin'], 
           defaultNs: 'core'
@@ -133,6 +134,7 @@
           $: $,
           _: _,
           i18n: i18next,
+          locale: currentLocale,
           SVG: SVG,
           moment: moment,
           Widgetizer: Widgetizer,
