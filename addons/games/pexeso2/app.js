@@ -91,17 +91,18 @@ var Pexeso = Game.extend({
   },
   init: function(cb) {
     var self = this;
-    this.tilesetBaseUrl = this.getResourceUri("media/tilesets/sampleTileset/")
-    this.tileBackUrl = this.tilesetBaseUrl+"assets/tileback.png"
+    var tilesetName = "animals" // "sports"
+    this.tilesetBaseUrl = this.getResourceUri("media/tilesets/"+tilesetName+"/")
 
     // create empty board...
     $(".game-container").html($("<div>").attr("id","board"))
     // load tileset...
     $.getJSON(this.tilesetBaseUrl + "metadata.json").done(function(d) {
       self.tileset = d      
+      self.tileBackUrl = self.tilesetBaseUrl+d.tiles.backgrounds[0].url
       /* start with a set of cards.. */
       self.cards = []
-      _.each(self.tileset.tiles, function(ttt) {
+      _.each(self.tileset.tiles.game, function(ttt) {
         self.cards.push({name: ttt.name, tile:null, url:ttt.url});
       })
       // callback...
@@ -129,11 +130,12 @@ var Pexeso = Game.extend({
       var blk = function(klass, attrs) {
         return $("<div>").addClass(klass).attr(attrs||{})
       }
+      var cardSize = this.cardSize-8
       var row = Math.floor(j/this.columns)
       var col = j%this.columns
       var tile = blk("tile")
           .css({"background-image": "url("+this.tilesetBaseUrl + tileObj.url+")"})
-      var card = blk("card").addClass("flipped").append(
+      var card = blk("card").css({"width":cardSize+"px", "height":cardSize+"px"}).addClass("flipped").append(
         /* face */
         blk("tcf")
           .html(tile)
@@ -160,10 +162,13 @@ var Pexeso = Game.extend({
   start: function(cb) {
       var self = this
       /* use only first ten... */
-      this.totalCards = 10;
+      this.totalCards = this.tileset.count;
+      var tilesCnt = 2 * this.totalCards
       /* arranged to a grid with 4 rows and 5 columns */
-      this.rows = 4
-      this.columns = 5
+      this.cardSize = Math.floor(Math.sqrt(600*450/tilesCnt))
+      this.columns = Math.floor(600/this.cardSize)
+      this.rows = Math.ceil(tilesCnt/this.columns)
+      // alert("Rows="+this.rows+", columns="+this.columns)
       this.playground = []
       this.turnedCards = {}
       this.foundTiles = {}

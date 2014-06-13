@@ -25,6 +25,7 @@
 		"Submit": "Benutzen",
 		"Reset": "Zurücksetzen",
 		"Lives":"Leben",
-		"Level":"Stufe"		
+		"Level":"Stufe",
+		"Tileset":"Tileset"		
 	}
 }

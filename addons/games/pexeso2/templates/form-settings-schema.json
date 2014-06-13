@@ -8,6 +8,12 @@
         "required": true,
         "default": "easy",
         "enum": ["easy", "medium", "hard"]
+      },
+      "tileset": {
+        "type": "string",
+        "required": true,
+        "default": "sports",
+        "enum": ["sports", "animals"]
       }
     }
 }

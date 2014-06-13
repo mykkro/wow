@@ -25,6 +25,7 @@
 		"Submit": "Apply",
 		"Reset": "Reset",
 		"Lives":"Lives",
-		"Level":"Level"
+		"Level":"Level",
+		"Tileset":"Tileset"
 	}
 }

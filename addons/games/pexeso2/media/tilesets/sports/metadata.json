@@ -5,7 +5,9 @@
   "version": "1.0",
   "width": 256,
   "height": 256,
-  "tiles": [
+  "count": 10,
+  "tiles": {
+    "game":[
     {
       "name": "tile1",
       "url": "assets/baseball_ball.png"
@@ -53,10 +55,13 @@
     {
       "name": "tile12",
       "url": "assets/tennis.png"
-    },
+    }
+  ],
+  "backgrounds": [
     {
       "name": "tileBackground",
       "url": "assets/tileback.png"
     }
   ]
+  }
 }
