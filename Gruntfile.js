@@ -85,7 +85,7 @@ module.exports = function(grunt) {
                     "js/vendor/gamepad.js",
                     "js/vendor/mustache.js",
                     "js/vendor/alpaca.min.js",
-                    "js/vendor/moment-with-langs.min.js",
+                    "js/vendor/moment-with-langs.js",
                     "js/vendor/raphael-min.js",
                     "js/vendor/raphaelicious-1.0.js",
                     "js/vendor/yetii.js",

@@ -396,16 +396,38 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
        updateSelector(id, type, pDiv, fun)
    }
 
+   var attachLocaleSelector = function(input) {
+       input.hide()
+       var pDiv = $("<div>").addClass("lang-selector").insertAfter(input)
+       var langs = ['en','de','cz']
+        _.each(langs, function(lang) {
+            var langSel = $("<img>").attr("src", "/locale/"+lang+"/icon").attr("data-lang", lang)
+            langSel.click(function() {
+                var lang = $(this).attr("data-lang")
+                input.val(lang)
+                updateLocaleSelector(lang)
+            })
+            pDiv.append(langSel)            
+        })
+       var updateLocaleSelector = function(currentLang) {
+            pDiv.find("img").removeClass("selected")
+            pDiv.find("img[data-lang="+currentLang+"]").addClass("selected")
+       }
+       var lang = input.val()
+       updateLocaleSelector(lang)
+   }
+
    var attachSelectorsToForm = function(type, action, container) {
         if(type == "user") {
             attachSelector(container.find("input[name=locationId]"), "location")
             attachSelector(container.find("input[name=presetId]"), "preset")
+            attachLocaleSelector(container.find("input[name=locale]"))
         }
         else if(type == "preset") {
             attachSelector(container.find("input[name=button1LinkId]"), "shortcut")
             attachSelector(container.find("input[name=button2LinkId]"), "shortcut")
             attachSelector(container.find("input[name=button3LinkId]"), "shortcut")
-            attachSelector(container.find("input[name=themeId]"), "theme")
+            attachLocaleSelector(container.find("input[name=themeId]"), "theme")
         }
 
    }

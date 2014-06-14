@@ -1,3 +1,21 @@
 {
-	
+	"Hello!": "Vítejte!",
+	"afternoon": "odpoledne",
+	"midday": "poledne",
+	"morning": "dopoledne",
+	"This will quit the application. Are you sure?": "Aplikace bude ukončena. Provést?",
+	"Exit": "Konec",
+	"Are you sure?": "Provést?",
+	"Yes": "Ano",
+	"No": "Ne",
+	"Remove": "Odstranit",
+	"Remove this item?": "Odstranit tuto položku?",
+	"Today's weather": "Dnešní počasí",
+	"Today is":"Dnes je",
+	"year":"roku",
+	"Radio":"Rádio",
+	"Apps":"Aplikace",
+	"Entertainment":"Zábava",
+	"Videos":"Videa",
+    "Select image": "Výběr obrázku"
 }

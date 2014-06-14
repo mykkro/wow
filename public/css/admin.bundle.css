@@ -543,3 +543,12 @@ body {
 .type-selector img.selected {
   opacity: 1;
 }
+.lang-selector img {
+  width: 45px;
+  height: 30px;
+  margin: 5px;
+  opacity: 0.2;
+}
+.lang-selector img.selected {
+  opacity: 1;
+}

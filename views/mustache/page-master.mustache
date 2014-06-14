@@ -125,6 +125,11 @@
         var preset = {{{preset}}}
         var location = {{{location}}}
 
+        // initialization of Moment library...
+        var loc = currentLocale
+        if(loc == 'cz') loc = 'cs'
+        moment.lang(loc)
+
         // create widgetizer and load widgets
         var Widgetizer = require("Widgetizer")(window, $, SVG)
 
