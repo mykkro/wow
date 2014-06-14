@@ -11,6 +11,7 @@ module.exports = function(app, api, passport) {
     }
 
     app.get("/userlogin", function(req, res) {
+      var locale = req.query.lang || 'en'
       UserAPI.find({}, function(err, users) {
         if(err) {
            res.status(500);
@@ -19,7 +20,7 @@ module.exports = function(app, api, passport) {
           _.each(users, function(u) {
             u.avatarUri = UserAPI.getThumbnailUri(u) || UserAPI.getTypeThumbnailUri()
           })     
-          res.render('userlogin', {users: users})
+          res.render('userlogin', {users: users, locale:locale})
         }
       })
     })

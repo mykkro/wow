@@ -331,7 +331,7 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
     /* test area... */
 
     var showItemSelector = function(types, cb) {
-        var div = $("<div>").css("width","580px")
+        var div = $("<div>").addClass("node-itemselector")
         var linksDiv = $("<div>")
         var dlg = null
         function updateSelectorItemsPreview(div, page) {

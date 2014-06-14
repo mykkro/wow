@@ -92,9 +92,8 @@ html {
 
 
 .modal_dialog {
-	width: 500px;
 	height: auto;
-	padding-bottom: 20px;
+	padding-bottom: 12px;
 	background-color: #def;
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
 	-webkit-border-radius: 20px;
@@ -106,11 +105,15 @@ html {
 		-webkit-border-radius: 20px 20px 0px 0px;
 	}
 	.content {
-		padding: 20px;
+		margin: 12px;
+		padding: 5px;
 		font-size: 22px;
+		>div {
+			overflow: hidden !important;
+		}
 	}
 	.footer {
-		padding: 20px;
+		margin: 12px;
 	}
 	.button {
 		float: right;

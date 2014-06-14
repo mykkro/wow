@@ -46,45 +46,72 @@
 
 <script>
 $(document).ready(function() {
-  var logMeIn = function() {
-    console.log("Logging user in...")
-    $("#userlogin-form").submit()
-  } 
 
-  var showKeyboard = function() {
-    $("#pickeyboard").show()
-  }
+  var currentLocale = '{{locale}}'
 
-  var hideKeyboard = function() {
-    $("#pickeyboard").hide()
-  }
+    i18n.init({ 
+      resGetPath: '/locales/__lng__/__ns__.json', 
+      lng: currentLocale,
+      ns: { 
+          namespaces: ['core'], 
+          defaultNs: 'core'
+        } 
+    }, function(i18n) {
+         var dialogs = require("Dialogs")($, i18n)
+         var dlg = null
 
-  var userSelected = function() {
-    console.log("User selected!")
-    var el = $(this)
-    var usesPassword = el.find("input[name=usesPassword]").val()
-    $("#userlogin-username").val(el.find("input[name=username]").val())
-    if(usesPassword != "true") {
-      logMeIn()
-    } else {
-      $("#userlogin-password").val("")
-      $(".userlogin-user").removeClass("active")
-      el.addClass("active")
-      $("#pickeyboard").picKeyboard({input:$("#userlogin-password"), onenter: logMeIn, onescape: hideKeyboard})
-      showKeyboard()
-    }
-  }
+        var logMeIn = function() {
+          console.log("Logging user in...")
+          $("#userlogin-form").submit()
+        } 
 
-  $(".userlogin-user").each(function() {
-    $(this).click(userSelected)
-  })
+        var showKeyboard = function(pk) {
+          dlg = dialogs.simpleDialog(i18n("Enter password"), pk, null, {width: 350})
+        }
 
-  $("#adminlogin-submit").click(function() {
-    $("#adminlogin-form").submit()
-  })
+        var hideKeyboard = function() {
+          if(dlg) {
+            dlg.hide()
+            dlg = null
+          }
+        }
 
-  $("#adminlogin-form .adminlogin-title").click(function() {
-    $("#adminlogin-form .adminlogin-controls").toggle()
-  })
+        var userSelected = function() {
+          console.log("User selected!")
+          var el = $(this)
+          var usesPassword = el.find("input[name=usesPassword]").val()
+          $("#userlogin-username").val(el.find("input[name=username]").val())
+          if(usesPassword != "true") {
+            logMeIn()
+          } else {
+            $("#userlogin-password").val("")
+            $(".userlogin-user").removeClass("active")
+            el.addClass("active")
+            var pk = $("<div>").picKeyboard({input:$("#userlogin-password"), onenter: logMeIn, onescape: hideKeyboard})
+            showKeyboard(pk)
+          }
+        }
+
+        var initControls = function() {
+          $(".userlogin-user").each(function() {
+            $(this).click(userSelected)
+          })
+
+          $("#adminlogin-submit").click(function() {
+            $("#adminlogin-form").submit()
+          })
+
+          $("#adminlogin-form .adminlogin-title").click(function() {
+            $("#adminlogin-form .adminlogin-controls").toggle()
+          })
+        }
+
+
+         initControls()
+
+         
+    })
+
+  
 })
 </script>

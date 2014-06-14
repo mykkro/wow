@@ -8,7 +8,9 @@
 $.fn.picKeyboard = function (settings) {
 
     settings = $.extend({
-        maxchars: 3
+        maxchars: 3,
+        show: true,
+        switchable: false
         // additional options:
         // input
         // onenter
@@ -66,16 +68,20 @@ $.fn.picKeyboard = function (settings) {
    var picKeyboard = function() {      
       var out = $("<div>").addClass("pickeyboard")
       display = $("<div>").addClass("display")
-      display.click(function() {
-        keys.toggle()
-      })
+      if(settings.switchable) {
+        display.click(function() {
+          keys.toggle()
+        })
+      }
       if(settings.input) {
         settings.input.hide()
         setBuffer($(settings.input).val())
       }
 
       keys = $("<div>").addClass("keys")
-      keys.hide()
+      if(!settings.show) {
+        keys.hide()
+      }
       // add keys
       for(var i=0; i<10; i++) {
         var c = String.fromCharCode(i+48)
