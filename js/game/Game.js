@@ -10,6 +10,12 @@ var Game = Base.extend({
         this.root = root
         this.appUrl = appUrl
         this.controller = null
+        this.settings = {}
+    },
+    // set game config (difficulty etc.)
+    config: function(settings) {
+        console.log("Setting game configuration for next game...", settings)
+        this.settings = settings
     },
     init: function(cb) {
         // do some initialization...

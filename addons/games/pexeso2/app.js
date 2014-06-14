@@ -90,25 +90,7 @@ var Pexeso = Game.extend({
     })
   },
   init: function(cb) {
-    var self = this;
-    var tilesetName = "animals" // "sports"
-    this.tilesetBaseUrl = this.getResourceUri("media/tilesets/"+tilesetName+"/")
-
-    // create empty board...
-    $(".game-container").html($("<div>").attr("id","board"))
-    // load tileset...
-    $.getJSON(this.tilesetBaseUrl + "metadata.json").done(function(d) {
-      self.tileset = d      
-      self.tileBackUrl = self.tilesetBaseUrl+d.tiles.backgrounds[0].url
-      /* start with a set of cards.. */
-      self.cards = []
-      _.each(self.tileset.tiles.game, function(ttt) {
-        self.cards.push({name: ttt.name, tile:null, url:ttt.url});
-      })
-      // callback...
-      if(cb) cb()
-    })
-
+    if(cb) cb()
   },
   getTile: function(row, col) {
     return this.playground[col+row*this.columns]
@@ -160,30 +142,41 @@ var Pexeso = Game.extend({
       }
   },
   start: function(cb) {
-      var self = this
-      /* use only first ten... */
-      this.totalCards = this.tileset.count;
-      var tilesCnt = 2 * this.totalCards
-      /* arranged to a grid with 4 rows and 5 columns */
-      this.cardSize = Math.floor(Math.sqrt(600*450/tilesCnt))
-      this.columns = Math.floor(600/this.cardSize)
-      this.rows = Math.ceil(tilesCnt/this.columns)
-      // alert("Rows="+this.rows+", columns="+this.columns)
-      this.playground = []
-      this.turnedCards = {}
-      this.foundTiles = {}
-      this.cardFlipping = true
+    var self = this;
+    var tilesetName = this.settings.tileset || "animals" // "sports"
+    this.tilesetBaseUrl = this.getResourceUri("media/tilesets/"+tilesetName+"/")
+
+    // create empty board...
+    $(".game-container").html($("<div>").attr("id","board"))
+    // load tileset...
+    $.getJSON(this.tilesetBaseUrl + "metadata.json").done(function(d) {
+      self.tileset = d      
+      self.tileBackUrl = self.tilesetBaseUrl+d.tiles.backgrounds[0].url
+      /* start with a set of cards.. */
+      self.cards = []
+      _.each(self.tileset.tiles.game, function(ttt) {
+        self.cards.push({name: ttt.name, tile:null, url:ttt.url});
+      })
+      self.totalCards = self.tileset.count;
+      var tilesCnt = 2 * self.totalCards
+      self.cardSize = Math.floor(Math.sqrt(600*450/tilesCnt))
+      self.columns = Math.floor(600/self.cardSize)
+      self.rows = Math.ceil(tilesCnt/self.columns)
+      self.playground = []
+      self.turnedCards = {}
+      self.foundTiles = {}
+      self.cardFlipping = true
       /* deal up cards */
-      for(var i=0; i<this.totalCards; i++) {
-        this.playground.push(this.cards[i])
-        this.playground.push($.extend({},this.cards[i]))
+      for(var i=0; i<self.totalCards; i++) {
+        self.playground.push(self.cards[i])
+        self.playground.push($.extend({},self.cards[i]))
       }
       /* shuffle... */
-      this.playground = this.shuffle(this.playground);
-      console.log(this.playground);
-      this.gridCtl = new GridController({
-          width: this.columns,
-          height: this.rows,
+      self.playground = self.shuffle(self.playground);
+      console.log(self.playground);
+      self.gridCtl = new GridController({
+          width: self.columns,
+          height: self.rows,
           changed: function(row, col) {
               self.updateSelection(row, col)
           },
@@ -192,12 +185,13 @@ var Pexeso = Game.extend({
           }
       })
       /* display board */
-      this.drawBoard()
+      self.drawBoard()
       // call this to trigger change event to draw selection box
-      this.gridCtl.select(0,0)
+      self.gridCtl.select(0,0)
 
       // game started callback...
       if(cb) cb();    
+    })
   },
   isGameOver: function() {
     return false

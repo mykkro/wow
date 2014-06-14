@@ -18,7 +18,8 @@ module.exports = function(Wow) {
             var server = this.wtr.rpc
             var self = this
             var appName = data.query.importname
-            var appUrl = "/imports/" + appName + "/"
+            var devel = data.query.devel
+            var appUrl = devel ? "/addons/games/"+appName+"/" : "/imports/" + appName + "/"
             var locale = Wow.locale
             var defaultLocaleUrl = "lang/labels." + locale + ".json"
             var localeUrl = "lang/" + locale + ".json"
@@ -92,8 +93,6 @@ module.exports = function(Wow) {
                 var formSchema = JSON.parse(Mustache.render(formSchemaTpl, dd))
                 var formOptions = JSON.parse(Mustache.render(formOptionsTpl, dd))
 
-                console.log(formSchema, formOptions)
-
                 // translate labels...
                 for (var key in buttons) {
                     var btn = buttons[key]
@@ -108,10 +107,31 @@ module.exports = function(Wow) {
 
                 $(".game-info .title").text(dd.translated.title)
 
+                var defaultConfig = {}
+                for(var key in formSchema.properties) {
+                    var val = formSchema.properties[key].default
+                    if(val) defaultConfig[key] = val
+                }
+
                 // initialize settings form...
                 $(".game-settings").alpaca({
                     "schema": formSchema,
-                    "options": formOptions
+                    "options": formOptions,
+                    postRender: function(control) {
+                        var applyBtn = $(".game-settings-form button[name=apply]")
+                        applyBtn.click(function() {
+                            console.log("Submit clicked!")
+                            // clicked on submit button...
+                            if(!control.isValid()) {
+                                // form is not valid!
+                                console.log("Form not valid!")
+                                return false
+                            }
+                            var vals = control.getValue()
+                            self.game.config(vals)
+                            return false;
+                        })
+                    }
                 })
 
 
@@ -259,6 +279,7 @@ module.exports = function(Wow) {
                                     var game = new MyGame(opts, root, gameData, appUrl)
 
                                     self.game = game
+                                    self.game.config(defaultConfig)
                                     self.playing = false
                                     self.paused = false
                                     game.setLogger(function(name, value) {

@@ -4409,10 +4409,31 @@ module.exports = function(Wow) {
 
                 $(".game-info .title").text(dd.translated.title)
 
+                var defaultConfig = {}
+                for(var key in formSchema.properties) {
+                    var val = formSchema.properties[key].default
+                    if(val) defaultConfig[key] = val
+                }
+
                 // initialize settings form...
                 $(".game-settings").alpaca({
                     "schema": formSchema,
-                    "options": formOptions
+                    "options": formOptions,
+                    postRender: function(control) {
+                        var applyBtn = $(".game-settings-form button[name=apply]")
+                        applyBtn.click(function() {
+                            console.log("Submit clicked!")
+                            // clicked on submit button...
+                            if(!control.isValid()) {
+                                // form is not valid!
+                                console.log("Form not valid!")
+                                return false
+                            }
+                            var vals = control.getValue()
+                            self.game.config(vals)
+                            return false;
+                        })
+                    }
                 })
 
 
@@ -4430,6 +4451,7 @@ module.exports = function(Wow) {
                 var game = new MyClass(opts, root, appUrl)
                     //var gui = new GameUI(game, self)    
                 self.game = game
+                self.game.config(defaultConfig)
                 self.playing = false
                 self.paused = false
                 game.setLogger(function(name, value) {
