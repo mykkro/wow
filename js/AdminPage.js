@@ -427,7 +427,10 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
             attachSelector(container.find("input[name=button1LinkId]"), "shortcut")
             attachSelector(container.find("input[name=button2LinkId]"), "shortcut")
             attachSelector(container.find("input[name=button3LinkId]"), "shortcut")
-            attachLocaleSelector(container.find("input[name=themeId]"), "theme")
+            attachSelector(container.find("input[name=themeId]"), "theme")
+        }
+        else if(type == "admin") {
+            attachLocaleSelector(container.find("input[name=locale]"))
         }
 
    }
