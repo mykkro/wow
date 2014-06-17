@@ -9,9 +9,8 @@ module.exports = function(Wow) {
     var SelectChain = require("../../../js/SelectChain")
     var RuleParser = require("../../../js/rulegame/RuleParser")
     var MiniLog = require("../../../js/game/MiniLog")
+    var Commons = require("../../../js/Commons")
     var MyGame = require("./mygame")
-
-
 
     var RuleGamePage = BasePage.extend({
         init: function(data, next) {
@@ -20,6 +19,7 @@ module.exports = function(Wow) {
             var appName = data.query.importname
             var devel = data.query.devel
             var appUrl = devel ? "/addons/games/"+appName+"/" : "/imports/" + appName + "/"
+            var settingsUrl = "/api/settings/"+appName
             var locale = Wow.locale
             var defaultLocaleUrl = "lang/labels." + locale + ".json"
             var localeUrl = "lang/" + locale + ".json"
@@ -77,11 +77,14 @@ module.exports = function(Wow) {
                 $.getJSON(appUrl + metadataUrl),
                 $.getJSON(appUrl + defaultLocaleUrl),
                 $.getJSON(appUrl + localeUrl),
+                $.getJSON(settingsUrl),
                 $.get(appUrl + "templates/form-settings-schema"),
                 $.get(appUrl + "templates/form-settings-options")
-            ).done(function(meta, dl, l, t1, t2) {
+            ).done(function(meta, dl, l, st, t1, t2) {
                 var metadata = meta[0]
                 var localedata = $.extend({}, l[0], dl[0])
+                var appSettings = st[0]
+                appSettings = appSettings ? appSettings.settings : {}
                 var dd = {
                     wow: metadata,
                     translated: localedata
@@ -112,11 +115,15 @@ module.exports = function(Wow) {
                     var val = formSchema.properties[key].default
                     if(val) defaultConfig[key] = val
                 }
+                console.log("Default config: ", defaultConfig)
+                console.log("App settings: ", appSettings)
+                appSettings = $.extend(defaultConfig, appSettings)
 
                 // initialize settings form...
                 $(".game-settings").alpaca({
                     "schema": formSchema,
                     "options": formOptions,
+                    data: appSettings,
                     postRender: function(control) {
                         var applyBtn = $(".game-settings-form button[name=apply]")
                         applyBtn.click(function() {
@@ -129,6 +136,11 @@ module.exports = function(Wow) {
                             }
                             var vals = control.getValue()
                             self.game.config(vals)
+                            // store settings to DB...
+                            Commons.doAjax("POST", settingsUrl, vals, function(err, res) {
+                                if(err) console.error(err);
+                                else console.log(res)
+                            })
                             return false;
                         })
                     }

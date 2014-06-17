@@ -124,7 +124,7 @@ var BasePage = BasicLayer.extend({
 
 module.exports = BasePage
 
-},{"./BasicLayer":2,"./SoftwareKeyboard":5,"basejs":13,"url":21}],2:[function(require,module,exports){
+},{"./BasicLayer":2,"./SoftwareKeyboard":6,"basejs":14,"url":22}],2:[function(require,module,exports){
 var Base = require("basejs")
 
 var BasicLayer = Base.extend({
@@ -194,7 +194,67 @@ var BasicLayer = Base.extend({
 
 module.exports = BasicLayer
 
-},{"basejs":13}],3:[function(require,module,exports){
+},{"basejs":14}],3:[function(require,module,exports){
+// Commons.js
+
+// commonly used functions.
+if (!String.prototype.startsWith) {
+    Object.defineProperty(String.prototype, 'startsWith', {
+        enumerable: false,
+        configurable: false,
+        writable: false,
+        value: function(searchString, position) {
+            position = position || 0;
+            return this.indexOf(searchString, position) === position;
+        }
+    });
+}
+
+var Commons = {
+    doAjax: function(method, uri, data, cb) {
+        var opts = (method == "GET" || method == 'DELETE') ? {
+            url: uri,
+            type: method,
+            contentType: "application/json; charset=utf-8"
+        } : {
+            url: uri,
+            type: method,
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8"
+        }
+        $.ajax(opts).then(function(res) {
+            if (!res.error) {
+                cb(null, res)
+            } else {
+                cb(res.error)
+            }
+        })
+    },
+    /* find topmost nodes satisfying a condition */
+    findTopmostNodes: function(node, inNodes, childrenOnly, condition) {
+        if (!inNodes) inNodes = []
+        if (!childrenOnly && node.nodeType == 1) {
+            if (condition(node)) {
+                inNodes.push(node)
+                // do not search deeper in this subtree...
+                return inNodes
+            }
+        }
+        var children = node.children
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].nodeType == 1) {
+                // element --> recurse
+                inNodes = this.findTopmostNodes(children[i], inNodes, false, condition)
+            }
+        }
+        return inNodes
+    }
+
+}
+
+module.exports = Commons
+},{}],4:[function(require,module,exports){
 var BasicLayer = require("./BasicLayer")
 
 var Overlay = BasicLayer.extend({
@@ -227,7 +287,7 @@ var Overlay = BasicLayer.extend({
 
 module.exports = Overlay
 
-},{"./BasicLayer":2}],4:[function(require,module,exports){
+},{"./BasicLayer":2}],5:[function(require,module,exports){
 
 var Base = require("basejs")
 
@@ -319,7 +379,7 @@ var SelectChain = Base.extend({
 
 module.exports = SelectChain
 
-},{"basejs":13}],5:[function(require,module,exports){
+},{"basejs":14}],6:[function(require,module,exports){
 var Overlay = require("./Overlay")
 var _ = require("underscore")
 var SelectChain = require("./SelectChain")
@@ -1043,7 +1103,7 @@ var SoftwareKeyboard = Overlay.extend({
 
 module.exports = SoftwareKeyboard
 
-},{"./Overlay":3,"./SelectChain":4,"underscore":14}],6:[function(require,module,exports){
+},{"./Overlay":4,"./SelectChain":5,"underscore":15}],7:[function(require,module,exports){
 var svgNS = "http://www.w3.org/2000/svg"
 var htmlNS = "http://www.w3.org/1999/xhtml"
 var xlinkNS = "http://www.w3.org/1999/xlink"
@@ -1166,7 +1226,7 @@ var SvgHelper = {
 
 module.exports = SvgHelper
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 
 var Base = require("basejs")
@@ -1297,7 +1357,7 @@ var Game = Base.extend({
 
 module.exports = Game
 
-},{"./Splash":10,"basejs":13}],8:[function(require,module,exports){
+},{"./Splash":11,"basejs":14}],9:[function(require,module,exports){
 var Base = require("basejs")
 
 var GridController = Base.extend({
@@ -1357,7 +1417,7 @@ var GridController = Base.extend({
 
 module.exports = GridController
 
-},{"basejs":13}],9:[function(require,module,exports){
+},{"basejs":14}],10:[function(require,module,exports){
 "use strict";
 
 var Base = require("basejs")
@@ -1406,7 +1466,7 @@ var LivesMiniLog = MiniLog.extend({
 
 module.exports = MiniLog
 
-},{"basejs":13}],10:[function(require,module,exports){
+},{"basejs":14}],11:[function(require,module,exports){
 "use strict";
 
 var Splash = function(options) {
@@ -1445,7 +1505,7 @@ Splash.removeAll = function() {
 
 module.exports = Splash
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var Game = require("../game/Game")
 var GridController = require("../game/GridController")
 
@@ -1788,7 +1848,7 @@ var GameWithRules = Game.extend({
 
 module.exports = GameWithRules
 
-},{"../game/Game":7,"../game/GridController":8}],12:[function(require,module,exports){
+},{"../game/Game":8,"../game/GridController":9}],13:[function(require,module,exports){
 module.exports = (function() {
     /*
      * Generated by PEG.js 0.8.0.
@@ -3841,7 +3901,7 @@ module.exports = (function() {
     };
 })();
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /*
   Based on Base.js 1.1a (c) 2006-2010, Dean Edwards
   Updated to pass JSHint and converted into a module by Kenneth Powers
@@ -3988,7 +4048,7 @@ module.exports = (function() {
   return Base;
 });
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -5266,7 +5326,7 @@ module.exports = (function() {
 
 }).call(this);
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -5494,7 +5554,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("FWaASH"))
-},{"FWaASH":16}],16:[function(require,module,exports){
+},{"FWaASH":17}],17:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -5559,7 +5619,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -6070,7 +6130,7 @@ process.chdir = function (dir) {
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6156,7 +6216,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6243,13 +6303,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":18,"./encode":19}],21:[function(require,module,exports){
+},{"./decode":19,"./encode":20}],22:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6958,7 +7018,7 @@ function isNullOrUndefined(arg) {
   return  arg == null;
 }
 
-},{"punycode":17,"querystring":20}],"pagescript":[function(require,module,exports){
+},{"punycode":18,"querystring":21}],"pagescript":[function(require,module,exports){
 module.exports=require('HJD/OK');
 },{}],"HJD/OK":[function(require,module,exports){
 module.exports = function(Wow) {
@@ -6972,9 +7032,8 @@ module.exports = function(Wow) {
     var SelectChain = require("../../../js/SelectChain")
     var RuleParser = require("../../../js/rulegame/RuleParser")
     var MiniLog = require("../../../js/game/MiniLog")
+    var Commons = require("../../../js/Commons")
     var MyGame = require("./mygame")
-
-
 
     var RuleGamePage = BasePage.extend({
         init: function(data, next) {
@@ -6983,6 +7042,7 @@ module.exports = function(Wow) {
             var appName = data.query.importname
             var devel = data.query.devel
             var appUrl = devel ? "/addons/games/"+appName+"/" : "/imports/" + appName + "/"
+            var settingsUrl = "/api/settings/"+appName
             var locale = Wow.locale
             var defaultLocaleUrl = "lang/labels." + locale + ".json"
             var localeUrl = "lang/" + locale + ".json"
@@ -7040,11 +7100,14 @@ module.exports = function(Wow) {
                 $.getJSON(appUrl + metadataUrl),
                 $.getJSON(appUrl + defaultLocaleUrl),
                 $.getJSON(appUrl + localeUrl),
+                $.getJSON(settingsUrl),
                 $.get(appUrl + "templates/form-settings-schema"),
                 $.get(appUrl + "templates/form-settings-options")
-            ).done(function(meta, dl, l, t1, t2) {
+            ).done(function(meta, dl, l, st, t1, t2) {
                 var metadata = meta[0]
                 var localedata = $.extend({}, l[0], dl[0])
+                var appSettings = st[0]
+                appSettings = appSettings ? appSettings.settings : {}
                 var dd = {
                     wow: metadata,
                     translated: localedata
@@ -7075,11 +7138,15 @@ module.exports = function(Wow) {
                     var val = formSchema.properties[key].default
                     if(val) defaultConfig[key] = val
                 }
+                console.log("Default config: ", defaultConfig)
+                console.log("App settings: ", appSettings)
+                appSettings = $.extend(defaultConfig, appSettings)
 
                 // initialize settings form...
                 $(".game-settings").alpaca({
                     "schema": formSchema,
                     "options": formOptions,
+                    data: appSettings,
                     postRender: function(control) {
                         var applyBtn = $(".game-settings-form button[name=apply]")
                         applyBtn.click(function() {
@@ -7092,6 +7159,11 @@ module.exports = function(Wow) {
                             }
                             var vals = control.getValue()
                             self.game.config(vals)
+                            // store settings to DB...
+                            Commons.doAjax("POST", settingsUrl, vals, function(err, res) {
+                                if(err) console.error(err);
+                                else console.log(res)
+                            })
                             return false;
                         })
                     }
@@ -7449,7 +7521,7 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/BasePage":1,"../../../js/SelectChain":4,"../../../js/SvgHelper":6,"../../../js/game/MiniLog":9,"../../../js/rulegame/RuleParser":12,"./mygame":24,"path":15}],24:[function(require,module,exports){
+},{"../../../js/BasePage":1,"../../../js/Commons":3,"../../../js/SelectChain":5,"../../../js/SvgHelper":7,"../../../js/game/MiniLog":10,"../../../js/rulegame/RuleParser":13,"./mygame":25,"path":16}],25:[function(require,module,exports){
 var Base = require("basejs")
 var GameWithRules = require("../../../js/rulegame/GameWithRules.js")
 var GridController = require("../../../js/game/GridController.js")
@@ -7569,4 +7641,4 @@ var MyGame = GameWithRules.extend({
 
 module.exports = MyGame
 
-},{"../../../js/game/GridController.js":8,"../../../js/rulegame/GameWithRules.js":11,"basejs":13}]},{},["HJD/OK"])
+},{"../../../js/game/GridController.js":9,"../../../js/rulegame/GameWithRules.js":12,"basejs":14}]},{},["HJD/OK"])
