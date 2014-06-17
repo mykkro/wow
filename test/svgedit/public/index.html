@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Generated App</title>
+<script src="/js/vendor/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="/js/vendor/method-draw/src/embedapi.js"></script>
+<script src="js/app.js"></script>
+<script>
+$(function () {
+        var svgCanvas = null;
+
+        function init_embed() {
+            var iframe = $("#svgedit").load(function() {
+				// Hide main button, as we will be controlling new/load/save etc from the host document
+				var doc = frame.contentDocument;
+				if (!doc) doc = frame.contentWindow.document;
+				$(doc).find("#menu_bar > div:first").hide()
+            })
+            var frame = iframe.get(0);
+			svgCanvas = new embedded_svg_edit(frame);
+        }
+        
+        function handleSvgData(data, error) {
+			if (error)
+			{
+				alert('error ' + error);
+			}
+            else
+			{
+				alert('Congratulations. Your SVG string is back in the host page, do with it what you will\n\n' + data);
+			}			
+        }
+        
+        function loadSvg() {
+            var svgexample = '<svg width="320" height="200" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g><title>Layer 1</title><rect stroke-width="5" stroke="#000000" fill="#FF0000" id="svg_1" height="35" width="51" y="35" x="32"/><ellipse ry="15" rx="24" stroke-width="5" stroke="#000000" fill="#0000ff" id="svg_2" cy="60" cx="66"/></g></svg>';
+            svgCanvas.setSvgString(svgexample);
+        }
+		
+		function saveSvg() {			
+			svgCanvas.getSvgString()(handleSvgData);
+		}
+
+		$("#loadsvg").click(loadSvg)
+		$("#savesvg").click(saveSvg)
+		init_embed()
+});
+</script>
+</head>
+<body>
+	<div>
+    <button id="loadsvg">Load example</button>
+    <button id="savesvg">Save data</button>
+    </div>
+
+    <iframe src="/js/vendor/method-draw/index.html" width="800px" height="500px" id="svgedit"></iframe>    
+
+
+</body> 
+</html>
