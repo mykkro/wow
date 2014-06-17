@@ -6,35 +6,9 @@ module.exports = function(Wow) {
     var BasePage = require("../../../js/BasePage")
     var SelectChain = require("../../../js/SelectChain")
 
-    $.playable('/swf/')
+    $.playable('/js/vendor/soundmanager2/')
 
     return BasePage.extend({
-        radios: [{
-            "name": "Klassik Radio",
-            "src": "http://edge.live.mp3.mdn.newmedia.nacamar.net/klassikradio128/livestream.mp3"
-        }, {
-            "name": "Sport 1 FM",
-            "src": "http://stream.sport1.fm/api/livestream-redirect/SPORT1FM_24_7.mp3"
-        }, {
-            "name": "Antenne 1",
-            "src": "http://stream.antenne1.de/stream1/livestream.mp3"
-        }, {
-            "name": "Radio FFN",
-            "src": "http://player.ffn.de/ffn.mp3"
-        }, {
-            "name": "Ostseewelle",
-            "src": "http://edge.live.mp3.mdn.newmedia.nacamar.net/ostseewellelive/livestream.mp3"
-        }, {
-            "name": "Radio 21",
-            "src": "http://edge.live.mp3.mdn.newmedia.nacamar.net/ps-radio21/livestream.mp3"
-        }, {
-            "name": "Radio ZUSA",
-            "src": "http://stream.radio-zusa.net:8000/zusa-hifi.ogg"
-        }, {
-            "name": "Kronhit 90sDance",
-            "src": "http://onair.krone.at/kronehit-90sdance.mp3"
-        }],
-        currentTrack: 0,
         playPreviousTrack: function() {
             this.stopPlaying()
             this.currentTrack = (this.currentTrack + this.radios.length - 1) % this.radios.length;
@@ -47,7 +21,7 @@ module.exports = function(Wow) {
         },
         startPlaying: function(radio) {
             var self = this
-            $("#labelRadioTitle").text(radio.name)
+            $("#labelRadioTitle").text(radio.title)
             $("#labelRadioFreq").text("")
             self.link = $(self.playlist.children()[self.currentTrack])
             self.link.click()
@@ -58,7 +32,7 @@ module.exports = function(Wow) {
         createPlaylist: function() {
             var out = $('<div id="netradio-playlist" style="display: none;">')
             for (var i = 0; i < this.radios.length; i++) {
-                out.append($("<a>").text(this.radios[i].name).attr("href", this.radios[i].src))
+                out.append($("<a>").text(this.radios[i].title).attr("href", this.radios[i].url))
             }
             return out
         },
@@ -85,18 +59,22 @@ module.exports = function(Wow) {
                 self.playNextTrack()
             })
 
-            self.playlist = self.createPlaylist().appendTo($("body"))
-            self.playlist = $(self.playlist).playable()
-
-            this.startPlaying(this.radios[this.currentTrack])
-
             this.selectChain = new SelectChain([
                 homeButton.element,
                 quitButton.element
             ])
 
-            /* continue when finished */
-            if (next) next(this)
+            self.radios = []
+            self.currentTrack = 0
+            $.getJSON('/api/netRadio/list?limit=100').done(function(radios) {
+                self.radios = radios
+                self.playlist = self.createPlaylist().appendTo($("body"))
+                self.playlist = $(self.playlist).playable()
+                self.startPlaying(self.radios[self.currentTrack])
+                /* continue when finished */
+                if (next) next(self)
+            })
+
         },
         onVirtualControl: function(evt) {
             switch (evt.control) {

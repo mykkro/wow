@@ -81,6 +81,23 @@ module.exports = function(app, api, Auth) {
 	    out(res, null, metainfo)
 	})
 
+	// quick list (eg. internet radios)
+	// TODO move to 'personal' radios or to playlist
+	app.get('/api/:type/list', function(req, res) {
+		var type = req.params.type
+		var query = req.query
+		var q = {
+			limit: parseInt(query.limit || 10),
+			skip: parseInt(query.skip || 0),
+			sort: { 'title': 'asc' },
+			query: {}
+		}
+	 	console.log("Finding items: "+type)
+	 	api[type].findWithOptions(q, function(err, rr) {
+	    	out(res, err, rr)
+	  	})		  	
+	});
+
 	app.get('/api/:type/search', Auth.isAuthenticatedAsAdmin, function(req, res) {
 		var ownerAdminId = req.user.admin._id		
 		var type = req.params.type

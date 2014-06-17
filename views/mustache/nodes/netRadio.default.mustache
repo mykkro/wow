@@ -21,7 +21,13 @@
 <span class="value">{{tags}}</span>
 </div>
 <div class="field field-url">
+<script>
+$.playable('/js/vendor/soundmanager2/');
+$(function(){
+	$("a.playable-link").playable()
+})
+</script>
 <span class="title">Radio Stream URL</span>
-<span class="value">{{url}}</span>
+<span class="value"><a class="playable-link" href="{{{url}}}">{{url}}</a></span>
 </div>
 </div>

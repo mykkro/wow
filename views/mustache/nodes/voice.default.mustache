@@ -20,9 +20,14 @@
 <span class="title">Tags</span>
 <span class="value">{{tags}}</span>
 </div>
-<div>
-	<audio src="{{{voice.url}}}" controls>
-		<p>Your browser does not support the <code>audio</code> element.</p>
-	</audio>
+<div class="field field-url">
+<script>
+$.playable('/js/vendor/soundmanager2/');
+$(function(){
+	$("a.playable-link").playable()
+})
+</script>
+<span class="title">Audio file</span>
+<span class="value"><a class="playable-link" href="{{{voice.url}}}">{{title}}</a></span>
 </div>
 </div>
