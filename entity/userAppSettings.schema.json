@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "title": "Entity",
+  "properties": {
+    "userId": {
+      "title": "User ID",
+      "type": "number",
+      "required": true
+    },
+    "appUUID": {
+      "title": "App UUID",
+      "type": "string",
+      "required": true
+    },
+    "settings": {
+      "title": "Settings",
+      "type": "object",
+      "required": false
+    }
+  }
+}
