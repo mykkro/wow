@@ -154,7 +154,7 @@
       "break": false
     },
     {
-      "contents": "\r\n\tFirstY = A.Y;\r\n    ",
+      "contents": "\r\n\tFirstY = A.y;\r\n    ",
       "break": false
     },
     {

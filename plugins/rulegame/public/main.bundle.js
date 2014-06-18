@@ -1559,7 +1559,7 @@ var GameWithRules = Game.extend({
         var gamedata = this.gameData
         var valid = this.symbols.VALID
         if (valid.rows[y][x]) {
-            console.log("Valid cell selected: " + x + "," + y)
+            ////console.log("Valid cell selected: " + x + "," + y)
             this.processValidMove(x, y)
         }
     },
@@ -1576,14 +1576,12 @@ var GameWithRules = Game.extend({
         var symbols = this.symbols
         var rules = gamedata.rules
         var self = this
-        console.log("Processing rules")
         for (var i = 0; i < rules.length; i++) {
             var rule = rules[i]
             if (this.processRule(rule.content, rule.breaking)) break
         }
-        console.log("Rules processed!")
-        // update board
-        console.log(symbols)
+        ////console.log("Rules processed!")
+        ////console.log(symbols)
         this.updateBoard(symbols.STATE, symbols.VALID)
         // compare state with some of final states...
         var finished = this.testFinalState()
@@ -1630,7 +1628,7 @@ var GameWithRules = Game.extend({
         var gamedata = this.gameData
         var symbols = this.symbols
         var mt1 = symbols.VALID
-        console.log("Testing valid states...")
+        ////console.log("Testing valid states...")
 
         for (var i = 0; i < mt1.height; i++) {
             for (var j = 0; j < mt1.width; j++) {
@@ -1645,7 +1643,7 @@ var GameWithRules = Game.extend({
         var symbols = this.symbols
         var STATE = symbols.STATE
         var FINAL = gamedata.currentLevel.layout.matrices.FINAL
-        console.log("Comparing state with final states...")
+        ////console.log("Comparing state with final states...")
         for (var i = 0; i < FINAL.length; i++) {
             if (this.compareMatrix(STATE, FINAL[i])) {
                 return true
@@ -1685,7 +1683,7 @@ var GameWithRules = Game.extend({
     },
 
     processSetRule: function(rule, breaking) {
-        console.log("Processing set rule", rule)
+        ////console.log("Processing set rule", rule)
         var accessor = this.getRef(rule.left)
         var value = this.getIntValue(rule.right)
         accessor.set(value)
@@ -1712,7 +1710,7 @@ var GameWithRules = Game.extend({
         var symbols = this.symbols
         return {
             set: function(value) {
-                console.log("SET", obj, value)
+                ////console.log("SET", obj, value)
                 symbols[obj].value = value
             }
         }
@@ -1727,7 +1725,7 @@ var GameWithRules = Game.extend({
                 if (obj.ref == "VALID") {
                     value = (value == "true")
                 }
-                console.log("SET INDEXED", obj.ref, xIndex, yIndex, value)
+                ////console.log("SET INDEXED", obj.ref, xIndex, yIndex, value)
                 var arr = symbols[obj.ref].rows
                 if (yIndex >= 0 && yIndex < arr.length && xIndex >= 0 && xIndex < arr[yIndex].length) {
                     arr[yIndex][xIndex] = value
@@ -1830,16 +1828,20 @@ var GameWithRules = Game.extend({
     },
 
     processIfRule: function(rule, breaking) {
-        console.log("Processing if rule", rule)
+        ////console.log("Processing if rule", rule)
         var cond = this.getBoolValue(rule.condition)
-        if (cond) {
+        ////console.log("Condition: "+cond)
+        if (cond) {                        
+            ////console.log("Processing THEN branch")
             this.processRule(rule.then)
             return true
-        } else if (rule['else']) {
-            this.processRule(rule['else'])
+        } else {
+            if (rule['else']) {
+                ////console.log("Processing ELSE branch")
+                this.processRule(rule['else'])
+            }
             return false
         }
-        return false
     }
 
 
