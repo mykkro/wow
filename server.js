@@ -32,6 +32,7 @@ var passport = require("passport");
 var SessionStore = require("sessionstore")
 var multer  = require('multer')
 var morgan  = require('morgan')
+var flash = require('connect-flash');
 
 // wow APIs and middlewares
 var API = require("./lib/api/API")
@@ -126,6 +127,7 @@ var WowServer = {
       app.use(session({
           secret: 'keyboard cat'
       }))
+      app.use(flash())
       app.use(passport.initialize());
       app.use(passport.session());
 

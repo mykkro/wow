@@ -20,7 +20,10 @@ module.exports = function(app, api, passport) {
           _.each(users, function(u) {
             u.avatarUri = UserAPI.getThumbnailUri(u) || UserAPI.getTypeThumbnailUri()
           })     
-          res.render('userlogin', {users: users, locale:locale})
+          var status = req.flash('loginstatus')
+          status = status ? status[0] : null
+          console.log("Login status:", status)
+          res.render('userlogin', {users: users, locale:locale, loginstatus:status})
         }
       })
     })
@@ -43,11 +46,8 @@ module.exports = function(app, api, passport) {
     });
 
     app.get('/loginFailure', function(req, res, next) {
-      res.send('Failed to authenticate');
+      req.flash('loginstatus', 'Failed to authenticate')
+      res.redirect("/userlogin")
     });
    
-    app.get('/loginSuccess', function(req, res, next) {
-      res.send('Successfully authenticated');
-    });
-
 }
