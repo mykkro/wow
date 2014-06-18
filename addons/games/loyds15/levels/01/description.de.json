@@ -1,0 +1,14 @@
+{
+  "$type": "game-description",
+  "version": "1.0",
+  "name": "Loyds fünfzehn",
+  "rules": "Ordnen Sie alle Zahlen in aufsteigender Reihenfolge von 1 bis 15, so dass das letzte Feld frei bleibt. Die Zahlen kann man nur durch leeres Feld und in die orthogonale (rechtwinklige) Richtung zu verschieben.",
+  "levelTakeTime": "5 Minuten",
+  "difficulty": "mittelschwer",
+  "category": "logisch",
+  "piecesUri": "pieces.json",
+  "rulesUri": "rules.json",
+  "settingsUri": "settings.json",
+  "levelsUri": "levels.json",
+  "thumbnailUri": "preview.png"
+}

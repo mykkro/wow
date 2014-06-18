@@ -235,101 +235,100 @@ module.exports = function(Wow) {
                     }
                 }
 
-                // 1. get game url
-                var gameUrl = getUrl("description.json")
+                var piecesUri = "pieces.json"
+                var rulesUri = "rules.json"
+                var settingsUri = "settings.json"
+                var levelsUri = "levels.json"
+                var thumbnailUri =  "preview.png"
 
                 var gameData = {}
-                $.getJSON(gameUrl).done(function(data) {
-                    // game data loaded!
-                    gameData.description = data
+                gameData.description = localedata
 
-                    // show thumbnail
-                    var thumbnailUrl = getUrl(data.thumbnailUri)
-                    $("#info").append(
-                        $("<h2>").text(data.name),
-                        $("<div>").text(data.rules),
-                        $("<img>").attr("src", thumbnailUrl)
-                    )
+                // show thumbnail
+                var thumbnailUrl = getUrl(thumbnailUri)
+                $("#info").append(
+                    $("<h2>").text(data.name),
+                    $("<div>").text(data.rules),
+                    $("<img>").attr("src", thumbnailUrl)
+                )
 
-                    $.when(
-                        $.getJSON(getUrl(data.piecesUri)),
-                        $.getJSON(getUrl(data.levelsUri)),
-                        $.getJSON(getUrl(data.settingsUri)),
-                        $.getJSON(getUrl(data.rulesUri))
-                    ).done(function(aa, bb, cc, dd) {
-                        var pieces = aa[0]
-                        var levels = bb[0]
-                        var settings = cc[0]
-                        var rules = dd[0]
-                            // display all pieces in a table...
-                        console.log(rules)
-                        gameData.pieces = pieces.pieces
-                        gameData.settings = settings
-                        gameData.levels = levels.levels
-                        gameData.rules = _.map(rules.rules, function(rr) {
-                            return ruleParser(rr.contents, rr.break)
-                        })
-
-                        // levels:
-                        if (levels.levels.length == 0) {
-                            alert("Game has no levels defined!")
-                        } else {
-                            console.log("Loading first level...")
-                            var levelUrl = getUrl(levels.levels[0].uri)
-                            $.getJSON(levelUrl).done(function(lvlData) {
-                                console.log("Level info loaded!")
-                                var layoutUrl = getUrl(lvlData.layoutUri)
-                                $.getJSON(layoutUrl).done(function(lvlLayout) {
-                                    console.log("Level layout loaded!")
-
-                                    gameData.currentLevel = {
-                                        info: lvlData,
-                                        layout: lvlLayout
-                                    }
-                                    var opts = {}
-                                    var root = $(".game-container")
-                                    var game = new MyGame(opts, root, gameData, appUrl)
-
-                                    self.game = game
-                                    self.game.config(defaultConfig)
-                                    self.playing = false
-                                    self.paused = false
-                                    game.setLogger(function(name, value) {
-                                        self.updateLogs(name, value)
-                                    })
-                                    game.onGameOver = function() {
-                                        console.log("rulegame.js onGameOver")
-                                        self.quitGame()
-                                    }
-                                    game.onFinished = function() {
-                                        console.log("rulegame.js onFinished")
-                                        self.quitGame()
-                                    }
-                                    self.logs = {}
-                                    self.initLogs()
-
-                                    console.log("Ready!")
-
-                                    self.game.init(function() {
-                                        console.log("Game initialized!")
-                                        self.playing = false
-                                        self.paused = false
-                                        self.updateUI()
-                                        self.showGameInfo()
-                                        $(".game-viewport").resize()
-                                        self.selectChain.select(buttons.newGameButton.element)
-                                    })
-
-                                    //game.start()      
-                                    //playGame(gameData)
-
-                                })
-
-                            })
-                        }
+                $.when(
+                    $.getJSON(getUrl(piecesUri)),
+                    $.getJSON(getUrl(levelsUri)),
+                    $.getJSON(getUrl(settingsUri)),
+                    $.getJSON(getUrl(rulesUri))
+                ).done(function(aa, bb, cc, dd) {
+                    var pieces = aa[0]
+                    var levels = bb[0]
+                    var settings = cc[0]
+                    var rules = dd[0]
+                        // display all pieces in a table...
+                    console.log(rules)
+                    gameData.pieces = pieces.pieces
+                    gameData.settings = settings
+                    gameData.levels = levels.levels
+                    gameData.rules = _.map(rules.rules, function(rr) {
+                        return ruleParser(rr.contents, rr.break)
                     })
 
+                    // levels:
+                    if (levels.levels.length == 0) {
+                        alert("Game has no levels defined!")
+                    } else {
+                        console.log("Loading first level...")
+                        var levelBaseUri = levels.levels[0].uri
+                        var levelDescUrl = getUrl(levelBaseUri)
+                        $.getJSON(levelDescUrl + "description."+locale+".json").done(function(lvlData) {
+                            console.log("Level info loaded!")
+                            var layoutUrl = getUrl(levelBaseUri + "layout.json")
+                            $.getJSON(layoutUrl).done(function(lvlLayout) {
+                                console.log("Level layout loaded!")
 
+                                gameData.currentLevel = {
+                                    info: lvlData,
+                                    layout: lvlLayout
+                                }
+                                var opts = {}
+                                var root = $(".game-container")
+                                var game = new MyGame(opts, root, gameData, appUrl)
+
+                                self.game = game
+                                self.game.config(defaultConfig)
+                                self.playing = false
+                                self.paused = false
+                                game.setLogger(function(name, value) {
+                                    self.updateLogs(name, value)
+                                })
+                                game.onGameOver = function() {
+                                    console.log("rulegame.js onGameOver")
+                                    self.quitGame()
+                                }
+                                game.onFinished = function() {
+                                    console.log("rulegame.js onFinished")
+                                    self.quitGame()
+                                }
+                                self.logs = {}
+                                self.initLogs()
+
+                                console.log("Ready!")
+
+                                self.game.init(function() {
+                                    console.log("Game initialized!")
+                                    self.playing = false
+                                    self.paused = false
+                                    self.updateUI()
+                                    self.showGameInfo()
+                                    $(".game-viewport").resize()
+                                    self.selectChain.select(buttons.newGameButton.element)
+                                })
+
+                                //game.start()      
+                                //playGame(gameData)
+
+                            })
+
+                        })
+                    }
 
                     /* continue when finished */
                     if (next) next(self)

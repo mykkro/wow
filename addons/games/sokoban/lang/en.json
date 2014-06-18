@@ -3,6 +3,6 @@
   "lang": "en",
   "title": "Sokoban",
   "info": "",
-  "rules": "Dopravte všechny krabice na nůžky a tím je otevřete. Přes nůžky můžete volně přecházet. Stejně tak můžete již umístěnou krabici z nůžek odsunout, pak se ale opět zavře. Nelze přesouvat dvě krabice najednou, stejně tak není možné krabici zatlačenou do rohu nebo vysvobodit a je pak nutné začít hru od začátku.",
+  "rules": "You transport all the boxes on the scissors and it allow you open the boxes. You can go free through the scissors icons. You can push already positioned box on the scissors icon gone as well, bt then the box coloses. It does not move at the same time with the two boxes. If is not possible \"save\" the box, which was placed in a corner. In this case you hae to start the game from the begining. ",
   "labels": {}
 }

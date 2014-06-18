@@ -1,8 +1,8 @@
 {
   "name": "en",
   "lang": "en",
-  "title": "Jezdcova procházka",
+  "title": "Knight's tour",
   "info": "",
-  "rules": "Vyjeďte jezdcem ze startovního pole a postupně s ním projděte všechna prázdná pole šachovnice tak, abyste skončili opět na výchozím poli. Každé pole musí být navštíveno právě jednou a jezdec smí táhnout jen v souladu s šachovými pravidly.",
+  "rules": "You take out the knight from start fild and step by step proceed with him through all the empty fields of the schessboard so that you are at the and of the start fild again. Each field must be visited exactly once and the knight may be pull only in accordance with the rules of chess.",
   "labels": {}
 }

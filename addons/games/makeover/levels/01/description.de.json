@@ -1,0 +1,14 @@
+{
+  "$type": "game-description",
+  "version": "1.0",
+  "name": "Viktorianisches Rätsel",
+  "rules": "Ersetzen/Tauschen Sie die roten und blauen Steinen. Die Steine können Sie nur auf ein beiliegendes freies Feld zu verschieben und das auch mit der Hilfe der Sprung über einen Stein (von jeder Farbe), hinter dem ist ein freies Feld. Erlaubt sind nur die Ziehungen in der orthogonalen Richtung (von rechts nach links, rechts, oben und unten aus dem freien Feld).",
+  "levelTakeTime": "10 Minuten",
+  "difficulty": "mittelschwer",
+  "category": "logisch",
+  "piecesUri": "pieces.json",
+  "rulesUri": "rules.json",
+  "settingsUri": "settings.json",
+  "levelsUri": "levels.json",
+  "thumbnailUri": "preview.png"
+}

@@ -1,8 +1,8 @@
 {
   "name": "en",
   "lang": "en",
-  "title": "Zhasni",
+  "title": "Lights out!",
   "info": "",
-  "rules": "Zhasněte všechna světla. Po zvolení žárovky se přepne její stav a stav čtyř žárovek v jejím nejbližším okolí (vlevo, vpravo, nahoře a dole), pokud to hranice pole dovoluje.",
+  "rules": "Switch off all the lights. After selecting a light bulb, his condition is changed and also condition of four light bulbs in its environment (left, right, up and down) if that allows a field bouzndary.",
   "labels": {}
 }

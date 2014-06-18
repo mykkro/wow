@@ -1,8 +1,8 @@
 {
   "name": "de",
   "lang": "de",
-  "title": "Netwalk",
+  "title": "Netzweg",
   "info": "",
-  "rules": "Propojte všechny počítače se serverem. Žádná z \"datových rour\" nesmí ústit do prázdna.\r\nPo vybrání jednotlivé části rotují proti směru hodinových ručiček, tím měníte cestu \"datového toku\".\r\nPro nejtěžší úrovně mohou trubky přecházet přes hranici pole a navázat spojení na opačné straně.",
+  "rules": "Verbinden Sie alle Computer mit dem Server. Keine der \"Datenleitungen\" darf nicht in die Leerheit leiten.\r\nNach der Auswahl des einzelnen Teiles, drehen Sie es in die Gegenrichtung zum Uhrzeiger und so ändern Sie den Weg (Richtung) des \"Datenflusses\".\r\nIn der schwerste Schwierigkeitsstufe können die \"Datenleitungen\" die Feldgrenzen überschritten und eine Verbindung auf der gegenüberliegende Seite herstellen.",
   "labels": {}
 }

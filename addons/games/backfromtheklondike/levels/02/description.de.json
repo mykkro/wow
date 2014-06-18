@@ -1,0 +1,7 @@
+{
+  "$type": "level-description",
+  "id": "02",
+  "name": "Eine überarbeitete Version, die John Hallyburtonh durchgeführt hat. Die einzige Änderung ist der Ersatz der Nummer 2 mit der Nummer 1 an der Position [-1,-5] von Mitte.",
+  "difficulty": "schwer",
+  "minNoOfMoves": "9"
+}

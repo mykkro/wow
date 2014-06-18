@@ -1,8 +1,8 @@
 {
   "name": "de",
   "lang": "de",
-  "title": "Nonogramy",
+  "title": "Nonogramme",
   "info": "",
-  "rules": "Odhalte obrázek, který je zakódovaný do čísel na začátku řádků a v záhlaví sloupců. Každé číslo udává počet za sebou jdoucích vyplněných čtverečků. Pokud je v jednom řádku nebo sloupci více čísel, je mezi těmito úseky alespoň jedno prázdné políčko. Mezi okrajem a prvním, či posledním úsekem mezery být mohou, ale nemusí.\r\nPo každém vybrání čtverečku se změní jeho obsah. Od prázdného přes označené tečkou až po vyplněné. Bílá barva značí ještě neurčené pole, tečkou si označte ta pole, kde má být mezera a černá pak značí vyplněné pole. Abyste obrázek úspěšně dokončili, nesmí na hrací ploše zbýt žádné neurčené pole, musíte tedy tečkou označit všechny mezery.",
+  "rules": "Entdecken Sie ein Bild, das in den Zahlen zum Beginn der Zeilen und Spaltenüberschriften kodiert ist. Jede Zahl gibt die Anzahl der aufeinanderfolgenden ausgefüllter kleiner Rechtecke. Wenn es in einer Zeile oder Spalte mehr Zahlen gibt, dann gibt es zwischen diesen Abschnitten zumindest ein leeres Feld. Die Abstände können zwischen dem Rand und dem ersten oder dem letzten Abschnitt sein, müssen aber nicht.\r\nNach jeder Auswahl des Rechtecks wird sein Inhalt geändert. Von einem leeren durch mit einem Punkt markierten bis zu einem ausgefüllten.  Die weiße Farbe steht für noch ungelöstes Feld. Mit dem Punkt markiert man die Felder,  wo ein Abstand sein soll. Und schwarze Farbe bedeutet ausgefülltes Feld. Um das Bild erfolgreich zu fertigstellen, darf kein ungelöstes Feld auf dem Spielfeld bleiben. Deswegen müssen Sie mit dem Punkt alle Abstände markieren.",
   "labels": {}
 }

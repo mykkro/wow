@@ -6,6 +6,13 @@
   "className": "RuleGame",
   "version": "0.2",
   "langs": [
+    "en",
+    "de",
     "cz"
-  ]
+  ],
+  "rulegame": {
+    "category": "logical",
+    "difficulty": "easy",
+    "levelTakeTime": "5 min."
+  }
 }

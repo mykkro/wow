@@ -1,0 +1,14 @@
+{
+  "$type": "game-description",
+  "version": "1.0",
+  "name": "Loyds fifteen",
+  "rules": "You order all the numbers in ascending order form 1 to 15, so that the last field remains free. The figures can be move only through emty fild and in the orthogonal (rectangular) direction.",
+  "levelTakeTime": "5 min.",
+  "difficulty": "middle hard",
+  "category": "logical",
+  "piecesUri": "pieces.json",
+  "rulesUri": "rules.json",
+  "settingsUri": "settings.json",
+  "levelsUri": "levels.json",
+  "thumbnailUri": "preview.png"
+}

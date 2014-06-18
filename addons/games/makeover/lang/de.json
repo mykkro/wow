@@ -1,8 +1,8 @@
 {
   "name": "de",
   "lang": "de",
-  "title": "Viktoriánský hlavolam",
+  "title": "Viktorianisches Rätsel",
   "info": "",
-  "rules": "Vyměňte červené a modré kameny. Kameny můžete posunovat pouze na sousední volné pole, a to i za pomoci přeskoku přes jiný kámen (jakékoli barvy), za nímž je další pole volné. Povoleny jsou pouze tahy v ortogonálním směru (přímo doleva, doprava, nahoru a dolů od volného pole).",
+  "rules": "Ersetzen/Tauschen Sie die roten und blauen Steinen. Die Steine können Sie nur auf ein beiliegendes freies Feld zu verschieben und das auch mit der Hilfe der Sprung über einen Stein (von jeder Farbe), hinter dem ist ein freies Feld. Erlaubt sind nur die Ziehungen in der orthogonalen Richtung (von rechts nach links, rechts, oben und unten aus dem freien Feld).",
   "labels": {}
 }

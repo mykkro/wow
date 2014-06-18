@@ -1,0 +1,14 @@
+{
+  "$type": "game-description",
+  "version": "1.0",
+  "name": "Sudoku für Kinder",
+  "rules": "In die freie Felder der Spielfläche legen/platzieren Sie die Zahlen im Bereich von 1 bis 9. In keinem der neun kleinerer Rechtecke oder in einer Zeile oder Spalte darf sich keine der Zahlen wiederholen. Mit anderen Worten, in jeder von der Zeile, Spalte und kleinerer Rechteck müssen alle Zahlen von 1 bis 9 sein.",
+  "levelTakeTime": "10 Minuten",
+  "difficulty": "einfach",
+  "category": "logisch",
+  "piecesUri": "pieces.json",
+  "rulesUri": "rules.json",
+  "settingsUri": "settings.json",
+  "levelsUri": "levels.json",
+  "thumbnailUri": "preview.png"
+}

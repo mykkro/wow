@@ -1,8 +1,8 @@
 {
   "name": "de",
   "lang": "de",
-  "title": "Loydova patnáctka",
+  "title": "Loyds fünfzehn",
   "info": "",
-  "rules": "Seřaďte všechna čísla vzestupně od 1 po 15 tak, aby poslední pole zůstalo volné. Čísla lze přesouvat pouze přes prázdné pole a v ortogonálním (kolmém) směru.",
+  "rules": "Ordnen Sie alle Zahlen in aufsteigender Reihenfolge von 1 bis 15, so dass das letzte Feld frei bleibt. Die Zahlen kann man nur durch leeres Feld und in die orthogonale (rechtwinklige) Richtung zu verschieben.",
   "labels": {}
 }

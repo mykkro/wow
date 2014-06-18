@@ -1,8 +1,8 @@
 {
   "name": "de",
   "lang": "de",
-  "title": "Jezdcova procházka",
+  "title": "Rundgang des Ritters (Pferdes)",
   "info": "",
-  "rules": "Vyjeďte jezdcem ze startovního pole a postupně s ním projděte všechna prázdná pole šachovnice tak, abyste skončili opět na výchozím poli. Každé pole musí být navštíveno právě jednou a jezdec smí táhnout jen v souladu s šachovými pravidly.",
+  "rules": "Kommen Sie mit dem Ritter (Pferd) aus dem Startfeld hinaus und schrittweise gehen Sie mit ihm durch alle leere Felder des Schachbretts, so dass Sie am Ende wieder am Startfeld stehen. Jedes Feld muss genau einmal besucht werden und der Ritter (das Pferd)  darf nur in Übereinstimmung mit den Schach Spielregeln ziehen.",
   "labels": {}
 }

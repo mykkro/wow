@@ -1,8 +1,8 @@
 {
   "name": "en",
   "lang": "en",
-  "title": "Temné rovnice",
+  "title": "Dark equations",
   "info": "",
-  "rules": "Ze zadané nerovnice utvořte tři různé rovnice zakrytím vybraných operací nebo čísel. V prvním řádku zakryjte dvě políčka, v prostředním tři a v posledním čtyři.\r\nPořadí operací je standardní: násobení a dělení má přednost před sčítáním a násobením. Počítá se pouze s celými čísly, výsledek může být i záporný.",
+  "rules": "From the given inequality make you three different equations covering selected operations or numbers. In the first line you cover two fields, in the middle threee fields and ind the last four field.\r\nThe order of operations is standard: the multiplication and division take precedence over the addition and multiplication. It is calculated only with integers and the result may bye negative.",
   "labels": {}
 }

@@ -1,0 +1,8 @@
+{
+  "$type": "level-description",
+  "id": "03",
+  "name": "",
+  "difficulty": "für Anfänger",
+  "minNoOfMoves": "4",
+  "layoutUri": "levels/03/layout.json"
+}

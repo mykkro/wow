@@ -1,8 +1,8 @@
 {
   "name": "de",
   "lang": "de",
-  "title": "Zhasni",
+  "title": "Licht aus!",
   "info": "",
-  "rules": "Zhasněte všechna světla. Po zvolení žárovky se přepne její stav a stav čtyř žárovek v jejím nejbližším okolí (vlevo, vpravo, nahoře a dole), pokud to hranice pole dovoluje.",
+  "rules": "Schalten Sie alle Lichte aus. Nach der Auswahl der Glühbirne wechselt sich sein Zustand und auch Zustände vier Glühbirnen in seiner Umgebung (links, rechts, oben und unten), falls das die Feldgrenze zulässt.",
   "labels": {}
 }

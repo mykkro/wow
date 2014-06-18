@@ -3,7 +3,7 @@
   "levels": [
     {
       "name": "01",
-      "uri": "levels/01/description.json"
+      "uri": "levels/01/"
     }
   ]
 }

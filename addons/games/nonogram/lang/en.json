@@ -1,8 +1,8 @@
 {
   "name": "en",
   "lang": "en",
-  "title": "Nonogramy",
+  "title": "Nonograms",
   "info": "",
-  "rules": "Odhalte obrázek, který je zakódovaný do čísel na začátku řádků a v záhlaví sloupců. Každé číslo udává počet za sebou jdoucích vyplněných čtverečků. Pokud je v jednom řádku nebo sloupci více čísel, je mezi těmito úseky alespoň jedno prázdné políčko. Mezi okrajem a prvním, či posledním úsekem mezery být mohou, ale nemusí.\r\nPo každém vybrání čtverečku se změní jeho obsah. Od prázdného přes označené tečkou až po vyplněné. Bílá barva značí ještě neurčené pole, tečkou si označte ta pole, kde má být mezera a černá pak značí vyplněné pole. Abyste obrázek úspěšně dokončili, nesmí na hrací ploše zbýt žádné neurčené pole, musíte tedy tečkou označit všechny mezery.",
+  "rules": "You discover a picture that is ancoded in the numbers at the beginning of the row and column headings. Each number indicates the number of consecutive filled small rectangles. If there are in a row or column more numbers, than ther is between these sections at least an one ampty field. The spaces can be provided between the edge and the first or the last section, but need not.\r\nAfter each selection of the rectangle its content is changed. From a blank by a dot marked up to a filled. The white color stands for unsolved field. With the dot marking the fields wehre should be a distance. And black color means solid Field. In order to finisch the painting successfully, no undissolved field can remain on the playing field. Therefore, you must mark with the dot all distances.",
   "labels": {}
 }

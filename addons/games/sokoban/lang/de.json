@@ -3,6 +3,6 @@
   "lang": "de",
   "title": "Sokoban",
   "info": "",
-  "rules": "Dopravte všechny krabice na nůžky a tím je otevřete. Přes nůžky můžete volně přecházet. Stejně tak můžete již umístěnou krabici z nůžek odsunout, pak se ale opět zavře. Nelze přesouvat dvě krabice najednou, stejně tak není možné krabici zatlačenou do rohu nebo vysvobodit a je pak nutné začít hru od začátku.",
+  "rules": "Bringen Sie alle Schachteln auf die Schere und damit öffnen Sie die Schachteln ein. Durch die Schere-Symbole können Sie frei durchkommen. Ebenso können Sie bereits positionierte Schachtel auf dem Schere-Symbol wieder weg schieben, aber dann schließt sich die Schachtel wieder. Es geht nicht mit den zwei Schachteln gleichzeitig bewegen. Es ist nicht möglich eine Schachtel \"retten\", die in eine Ecke eingebracht wurde. In diesem Fall muss man mit dem Spiel von Anfang beginnen.",
   "labels": {}
 }

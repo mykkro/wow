@@ -1,0 +1,7 @@
+{
+  "$type": "level-description",
+  "id": "02",
+  "name": "A revised version, which correction is performed by John Hallyburton. Only a one change is the replacement of the number 2 with the number 1 on position [-1,-5] from the center.",
+  "difficulty": "hard",
+  "minNoOfMoves": "9"
+}

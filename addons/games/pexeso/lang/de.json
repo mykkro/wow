@@ -1,8 +1,8 @@
 {
   "name": "de",
   "lang": "de",
-  "title": "Pexeso",
+  "title": "Memory",
   "info": "",
-  "rules": "Odhalte všechny shodné dvojice obrázků. Otočte nejprve jeden obrázek a pak druhý. Za každou správnou dvojici získáte deset bodů. Za každou špatně otočenou dvojici se Vám jeden bod odečte. Takže... PEKelně SE SOustřeď!",
+  "rules": "Entdecken Sie alle passende Bildpaare. Drehen Sie zuerst ein erstes Bild und danach zweites. Für jedes richtiges Bildpaar bekommen Sie 10 Punkte und für jedes falsches Bildpaar wird ein Punkt abgezogen.",
   "labels": {}
 }

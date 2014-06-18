@@ -3,6 +3,6 @@
   "lang": "en",
   "title": "Netwalk",
   "info": "",
-  "rules": "Propojte všechny počítače se serverem. Žádná z \"datových rour\" nesmí ústit do prázdna.\r\nPo vybrání jednotlivé části rotují proti směru hodinových ručiček, tím měníte cestu \"datového toku\".\r\nPro nejtěžší úrovně mohou trubky přecházet přes hranici pole a navázat spojení na opačné straně.",
+  "rules": "Connect all computers to the server. None of the \"data lines\" must not led into emtiness.\r\nAfter selectig the individual part, turn it in the opposite direction to clockwise and so change you the path (direction) of the \"data flow\".\r\nIn the hardest difficulty the \"data lines\" may exceeded the field boudaries and connect on the opposite side.",
   "labels": {}
 }

@@ -3,15 +3,15 @@
   "levels": [
     {
       "name": "01",
-      "uri": "levels/01/description.json"
+      "uri": "levels/01/"
     },
     {
       "name": "02",
-      "uri": "levels/02/description.json"
+      "uri": "levels/02/"
     },
     {
       "name": "03",
-      "uri": "levels/03/description.json"
+      "uri": "levels/03/"
     }
   ]
 }

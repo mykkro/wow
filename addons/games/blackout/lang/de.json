@@ -1,8 +1,8 @@
 {
   "name": "de",
   "lang": "de",
-  "title": "Temné rovnice",
+  "title": "Dunkle Gleichungen",
   "info": "",
-  "rules": "Ze zadané nerovnice utvořte tři různé rovnice zakrytím vybraných operací nebo čísel. V prvním řádku zakryjte dvě políčka, v prostředním tři a v posledním čtyři.\r\nPořadí operací je standardní: násobení a dělení má přednost před sčítáním a násobením. Počítá se pouze s celými čísly, výsledek může být i záporný.",
+  "rules": "Von der vorgegebene Ungleichung stellen Sie drei verschiedene Gleichungen so, dass Sie ausgewählte Operationen oder Zahlen verborgen. In der erste Zeile verbergen Sie zwei Felde, in mittlerer drei Felde und in letzter vier Felde.\r\nDie Reihenfolge der Operationen ist standardmäßig: die Multiplikation und Division haben einen Vorrang vor der Addition und Multiplikation. Man rechnet nur mit ganzen Zahlen und ein Ergebnis kann negativ sein.",
   "labels": {}
 }

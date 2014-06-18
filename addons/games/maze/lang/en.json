@@ -1,8 +1,8 @@
 {
   "name": "en",
   "lang": "en",
-  "title": "Bludiště",
+  "title": "Maze",
   "info": "",
-  "rules": "Nalezněte co nejkratší cestu domů.",
+  "rules": "Find the shortest way home.",
   "labels": {}
 }
