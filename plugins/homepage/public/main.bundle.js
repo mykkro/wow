@@ -19775,7 +19775,8 @@ module.exports = function(Wow) {
     function showQuitDialog() {
         dialogs.quitDialog(function(reallyQuit) {
             if (reallyQuit) {
-                $.post("/shutdown")
+                // $.post("/shutdown")
+                window.location.href = "/logout"
             }
         })
     }
