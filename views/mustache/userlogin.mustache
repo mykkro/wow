@@ -44,6 +44,10 @@
   </form>
 </div>
 
+<div id="controlpanel-wrapper">
+    <img src="/icons/PNG/128/quit.png"></img>
+</div>
+
 <div class="flashmessages">
 <p>{{loginstatus}}</p>
 </div>
@@ -107,6 +111,12 @@ $(document).ready(function() {
 
           $("#adminlogin-form .adminlogin-title").click(function() {
             $("#adminlogin-form .adminlogin-controls").toggle()
+          })
+
+          $("#controlpanel-wrapper img").click(function() {
+            // TODO put dialog prompt here
+            console.log("Shutting down the application..")
+            $.post("/shutdown")
           })
         }
 

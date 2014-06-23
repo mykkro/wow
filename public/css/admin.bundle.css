@@ -451,6 +451,19 @@
 .admin .admin-body .panel > .panel-body .buttons {
   padding: 10px;
 }
+#controlpanel-wrapper {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  opacity: 0.7;
+}
+#controlpanel-wrapper img {
+  width: 48px;
+  height: 48px;
+}
+#controlpanel-wrapper:hover {
+  opacity: 1;
+}
 #adminlogin-form {
   position: absolute;
   right: 20px;
