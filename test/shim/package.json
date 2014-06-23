@@ -1,0 +1,30 @@
+{
+  "name": "shim",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "private": "yes",
+  "license": "BSD-2-Clause",
+  "browser": {
+    "jquery": "../../js/vendor/jquery-2.1.0.min.js"
+  },
+  "browserify-shim": {
+    "jquery": "$"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-cli": "~0.1.13",
+    "browserify": "~4.1.11",
+    "grunt-browserify": "~2.1.0",
+    "browserify-shim": "~3.6.0"
+  }
+}
