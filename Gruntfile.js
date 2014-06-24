@@ -173,14 +173,11 @@ module.exports = function(grunt) {
         compress: {
             main: {
                 options: {
-                    // TODO how to get this filename by appending version number from package.json?
                     archive: 'dist/wow-<%= pkg.version %>.zip'
                 },
                 files: [{
                     src: [
-                        'addons/dist/**',
-                        '!addons/dist/scrapbooks/**',
-                        'bin/win32/node.exe',
+                        //'bin/win32/node.exe',
                         'bin/win64/node.exe',
                         'entity/**',
                         'js/**',
@@ -201,6 +198,8 @@ module.exports = function(grunt) {
                     src: [
                         'run.bat',
                         'run7.bat',
+                        'runadmin.bat',
+                        'runadmin7.bat',
                         'run.js',
                         'server.js',
                         'package.json',
@@ -230,6 +229,17 @@ module.exports = function(grunt) {
                         '!node_modules/grunt-downloadfile/**',
                         '!node_modules/grunt-ssh/**',
                         '!node_modules/grunt-hub/**'
+                    ]
+                }]
+            },
+            addons: {
+                options: {
+                    archive: 'dist/wow-addons-<%= pkg.version %>.zip'
+                },
+                files: [{
+                    src: [
+                        'addons/dist/**',
+                        '!addons/dist/scrapbooks/**'
                     ]
                 }]
             }
@@ -279,7 +289,10 @@ module.exports = function(grunt) {
         sftp: {
           test: {
             files: {
-              "./": "dist/wow-<%= pkg.version %>.zip"
+              "./": [
+                "dist/wow-<%= pkg.version %>.zip",
+                "dist/wow-addons-<%= pkg.version %>.zip"
+                ]
             },
             options: {
               path: '<%= secret.path %>',
