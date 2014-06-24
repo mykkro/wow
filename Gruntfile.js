@@ -50,7 +50,7 @@ module.exports = function(grunt) {
                     ],
                 }
             },
-			// TODO do automatic scanning or regular expression...
+            // TODO do automatic scanning or regular expression...
             pg_admin: {
                 src: ['./js/AdminPage.js'],
                 dest: 'public/js/admin.bundle.js',
@@ -59,7 +59,7 @@ module.exports = function(grunt) {
                     transform: ['brfs']
                 }
             }
-		},
+        },
         concat: {
             options: {
                 separator: ';',
@@ -272,10 +272,10 @@ module.exports = function(grunt) {
                     'js/util/**/*.js',
                     'js/widgets/**/*.js',
                     'js/*.js',
-                    'client.js'
+                    'server.js'
                 ],
                 options: {
-                    outDir: 'docs',
+                    outDir: 'docs/docker',
                     exclude: [
                         'node_modules/**',
                         // TODO exclude not working
@@ -287,25 +287,25 @@ module.exports = function(grunt) {
         },
         secret: grunt.file.readJSON('./lib/config/secret.json'),
         sftp: {
-          test: {
-            files: {
-              "./": [
-                "dist/wow-<%= pkg.version %>.zip",
-                "dist/wow-addons-<%= pkg.version %>.zip"
-                ]
-            },
-            options: {
-              path: '<%= secret.path %>',
-              host: '<%= secret.host %>',
-              username: '<%= secret.username %>',
-              password: '<%= secret.password %>',
-              showProgress: true,
-              srcBasePath: "dist/"
+            test: {
+                files: {
+                    "./": [
+                        "dist/wow-<%= pkg.version %>.zip",
+                        "dist/wow-addons-<%= pkg.version %>.zip"
+                    ]
+                },
+                options: {
+                    path: '<%= secret.path %>',
+                    host: '<%= secret.host %>',
+                    username: '<%= secret.username %>',
+                    password: '<%= secret.password %>',
+                    showProgress: true,
+                    srcBasePath: "dist/"
+                }
             }
-          }
         },
         clean: {
-            docs: ['docs']
+            docs: ['docs/docker']
         },
         downloadfile: {
             files: [{
@@ -318,8 +318,8 @@ module.exports = function(grunt) {
         },
         hub: {
             all: {
-              src: ['plugins/*/Gruntfile.js'],
-              tasks: ['default']
+                src: ['plugins/*/Gruntfile.js'],
+                tasks: ['default']
             }
         }
     })

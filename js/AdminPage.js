@@ -6,8 +6,8 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
     var dialogs = require("./Dialogs")($, i18n)
 
     var activeTab = 1
-    if(pageMode == "view") activeTab = 4;
-    if(pageMode == "edit") activeTab = 5
+    if (pageMode == "view") activeTab = 4;
+    if (pageMode == "edit") activeTab = 5
 
     // create tabs
     var tabber1 = new Yetii({
@@ -142,8 +142,10 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
         var types = $("input[name=searchtypes]").val()
         var out = $("#searchresults").css("position", "relative")
         var outLinks = $("#searchlinks").css("position", "relative")
-        types = _.filter(types.split(","), function(t) { return !!t})
-        var uri =  getSearchUri(page, types, query)
+        types = _.filter(types.split(","), function(t) {
+            return !!t
+        })
+        var uri = getSearchUri(page, types, query)
         updateItemsPreview(uri, out, "short")
         updatePageLinks(page, outLinks, function(ind) {
             // link changed...
@@ -155,14 +157,14 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
     // TODO intelligent showing of Next link
     function updatePageLinks(page, out, cb) {
         out.empty();
-        for(var i=1; i<=page+1; i++) {
+        for (var i = 1; i <= page + 1; i++) {
             (function(ind) {
-                var label = (ind<=page) ? ""+ind : "Next"
+                var label = (ind <= page) ? "" + ind : "Next"
                 var link = $('<a href="#">').text(label).click(function() {
-                    if(cb) cb(ind)
+                    if (cb) cb(ind)
                     return false;
                 })
-                if(ind == page) link.addClass("current")
+                if (ind == page) link.addClass("current")
                 out.append(link)
             })(i)
         }
@@ -180,7 +182,7 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
             if (dragging) {
                 return;
             }
-            if(cb) {
+            if (cb) {
                 cb(d)
             } else {
                 // click action here
@@ -196,9 +198,9 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
             // console.log("Received items:", data)
             out.empty()
             _.each(data, function(d) {
-                if(d) {
+                if (d) {
                     out.append(makeItemPreview(d, previewType, cb))
-                }                    
+                }
             })
         })
     }
@@ -206,11 +208,11 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
     // previewType: default, short
     function updateItemPreview(uri, out, previewType, cb) {
         $.getJSON(uri).done(function(d) {
-            if(d) {
+            if (d) {
                 out.html(makeItemPreview(d, previewType, cb))
             } else {
                 out.html("N/A")
-            }                   
+            }
         })
     }
 
@@ -334,12 +336,13 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
         var div = $("<div>").addClass("node-itemselector")
         var linksDiv = $("<div>")
         var dlg = null
+
         function updateSelectorItemsPreview(div, page) {
             var query = null
-            var uri =  getSearchUri(page, types, query)
+            var uri = getSearchUri(page, types, query)
             updateItemsPreview(uri, div, "default", function(data) {
                 dlg.hide()
-                if(cb) cb(data)
+                if (cb) cb(data)
             })
             updatePageLinks(page, linksDiv, function(ind) {
                 // link changed...
@@ -349,205 +352,206 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
         }
 
         updateSelectorItemsPreview(div, 1)
-        dlg = dialogs.simpleDialog(i18n("Select item"), div, linksDiv, {width: 600})
+        dlg = dialogs.simpleDialog(i18n("Select item"), div, linksDiv, {
+            width: 600
+        })
     }
 
 
-   var updateSelector = function(id, type, div, fun) {
-    if(id) {
-        var url = "/api/node/"+type+"/"+id
-        updateItemPreview(url, div, "default", fun)
-    } else {
-        var out = $("<span>").text("N/A").click(fun)
-        div.html(out)
+    var updateSelector = function(id, type, div, fun) {
+        if (id) {
+            var url = "/api/node/" + type + "/" + id
+            updateItemPreview(url, div, "default", fun)
+        } else {
+            var out = $("<span>").text("N/A").click(fun)
+            div.html(out)
+        }
     }
-   }
 
-   var updateItemView = function(id, type, div) {
-    if(id) {
-        var url = "/api/node/"+type+"/"+id
-        updateItemPreview(url, div, "default")
-    } else {
-        var out = $("<span>").text("N/A")
-        div.html(out)
+    var updateItemView = function(id, type, div) {
+        if (id) {
+            var url = "/api/node/" + type + "/" + id
+            updateItemPreview(url, div, "default")
+        } else {
+            var out = $("<span>").text("N/A")
+            div.html(out)
+        }
     }
-   }
 
-   var attachItemView = function(type, div) {
-       var id = parseInt(div.text())
-       div.empty()
-       updateItemView(id, type, div)
-   }
+    var attachItemView = function(type, div) {
+        var id = parseInt(div.text())
+        div.empty()
+        updateItemView(id, type, div)
+    }
 
 
-   var attachSelector = function(input, type) {
-       input.hide()
-       var pDiv = $("<div>").insertAfter(input)
+    var attachSelector = function(input, type) {
+        input.hide()
+        var pDiv = $("<div>").insertAfter(input)
 
-       var fun = function() {
+        var fun = function() {
             showItemSelector([type], function(data) {
                 console.log("Selected:", data)
                 var id = data ? data._id : null
                 input.val(id)
                 updateSelector(id, type, pDiv, fun)
             })
-       }
-       var id = input.val()
-       updateSelector(id, type, pDiv, fun)
-   }
+        }
+        var id = input.val()
+        updateSelector(id, type, pDiv, fun)
+    }
 
-   var attachLocaleSelector = function(input) {
-       input.hide()
-       var pDiv = $("<div>").addClass("lang-selector").insertAfter(input)
-       var langs = ['en','de','cz']
+    var attachLocaleSelector = function(input) {
+        input.hide()
+        var pDiv = $("<div>").addClass("lang-selector").insertAfter(input)
+        var langs = ['en', 'de', 'cz']
         _.each(langs, function(lang) {
-            var langSel = $("<img>").attr("src", "/locale/"+lang+"/icon").attr("data-lang", lang)
+            var langSel = $("<img>").attr("src", "/locale/" + lang + "/icon").attr("data-lang", lang)
             langSel.click(function() {
                 var lang = $(this).attr("data-lang")
                 input.val(lang)
                 updateLocaleSelector(lang)
             })
-            pDiv.append(langSel)            
+            pDiv.append(langSel)
         })
-       var updateLocaleSelector = function(currentLang) {
+        var updateLocaleSelector = function(currentLang) {
             pDiv.find("img").removeClass("selected")
-            pDiv.find("img[data-lang="+currentLang+"]").addClass("selected")
-       }
-       var lang = input.val()
-       updateLocaleSelector(lang)
-   }
+            pDiv.find("img[data-lang=" + currentLang + "]").addClass("selected")
+        }
+        var lang = input.val()
+        updateLocaleSelector(lang)
+    }
 
-   var attachSelectorsToForm = function(type, action, container) {
-        if(type == "user") {
+    var attachSelectorsToForm = function(type, action, container) {
+        if (type == "user") {
             attachSelector(container.find("input[name=locationId]"), "location")
             attachSelector(container.find("input[name=presetId]"), "preset")
             attachLocaleSelector(container.find("input[name=locale]"))
-        }
-        else if(type == "preset") {
+        } else if (type == "preset") {
             attachSelector(container.find("input[name=button1LinkId]"), "shortcut")
             attachSelector(container.find("input[name=button2LinkId]"), "shortcut")
             attachSelector(container.find("input[name=button3LinkId]"), "shortcut")
             attachSelector(container.find("input[name=themeId]"), "theme")
-        }
-        else if(type == "admin") {
+        } else if (type == "admin") {
             attachLocaleSelector(container.find("input[name=locale]"))
         }
 
-   }
+    }
 
-   var updateItemsView = function(type) {
-        if(type == "user") {
+    var updateItemsView = function(type) {
+        if (type == "user") {
             attachItemView("location", $("#view .field-locationId .value"))
             attachItemView("preset", $("#view .field-presetId .value"))
-        }
-        else if(type == "preset") {
+        } else if (type == "preset") {
             attachItemView("shortcut", $("#view .field-button1LinkId .value"))
             attachItemView("shortcut", $("#view .field-button2LinkId .value"))
             attachItemView("shortcut", $("#view .field-button3LinkId .value"))
             attachItemView("theme", $("#view .field-themeId .value"))
         }
 
-   }
-   
+    }
+
     var filterData = function(value, schema) {
-      for(var key in value) {
-        if(!(key in schema.properties)) {
-          delete value[key]
+        for (var key in value) {
+            if (!(key in schema.properties)) {
+                delete value[key]
+            }
         }
-      }
-      return value
+        return value
     }
 
     var postProcessData = function(type, action, schema, fschema, value) {
-      console.log("postProcessData: Form "+type+"."+action+" submitted!")
-      console.log(value)
-      // filter out items not in schema...
-      return filterData(value, schema)
+        console.log("postProcessData: Form " + type + "." + action + " submitted!")
+        console.log(value)
+        // filter out items not in schema...
+        return filterData(value, schema)
     }
 
     var formSubmitted = function(type, action, schema, fschema, value, next) {
-      value = postProcessData(type, action, schema, fschema, value)
-      if(action == "add") {
-        var uri = "/api/"+type+"/new"
-        var data = value
-        doAjax('POST', uri, data, function(err, res) {
-          if(!err) {
-            // console.log("Data received: ", res)
-            if(next) next(null, res[0])
-          } else {
-            next(err)
-          }
-        })
-      } else if(action=="edit") {
-        var uri = "/api/"+type+"/" + nodeId
-        var data = value
-        doAjax('PUT', uri, data, function(err, res) {
-          if(!err) {
-           if(next) next(null, $.extend({_id:nodeId},data))
-          } else {
-            next(err)
-          }
-        })
-      }
-    }             
-  // Alpaca-based form creation
+            value = postProcessData(type, action, schema, fschema, value)
+            if (action == "add") {
+                var uri = "/api/" + type + "/new"
+                var data = value
+                doAjax('POST', uri, data, function(err, res) {
+                    if (!err) {
+                        // console.log("Data received: ", res)
+                        if (next) next(null, res[0])
+                    } else {
+                        next(err)
+                    }
+                })
+            } else if (action == "edit") {
+                var uri = "/api/" + type + "/" + nodeId
+                var data = value
+                doAjax('PUT', uri, data, function(err, res) {
+                    if (!err) {
+                        if (next) next(null, $.extend({
+                            _id: nodeId
+                        }, data))
+                    } else {
+                        next(err)
+                    }
+                })
+            }
+        }
+        // Alpaca-based form creation
     var createForm = function(type, action, schema, fschema, options, data, div) {
         var form = div
         var opts = $.extend({}, options)
-        // do not show any buttons (we will use our own)
+            // do not show any buttons (we will use our own)
         opts.form.buttons = {}
         opts.form.attributes = {}
         form.empty()
         form.alpaca({
-          schema:fschema, 
-          options:opts,
-          data:data,
-          postRender: function(control) {
+            schema: fschema,
+            options: opts,
+            data: data,
+            postRender: function(control) {
 
-            // may be useful...
-            var oldValue = control.getValue()
-            $(control.getEl()).bind("fieldupdate", function(e) {
-                var value = control.getValue()
-                console.log("Form updated!", oldValue, value)
-                oldValue = value
-            });
+                // may be useful...
+                var oldValue = control.getValue()
+                $(control.getEl()).bind("fieldupdate", function(e) {
+                    var value = control.getValue()
+                    console.log("Form updated!", oldValue, value)
+                    oldValue = value
+                });
 
-            console.log("postRender: ")
-            var label = (action=="add") ? "Create" : "Update"
-            var createBtn = $("<button>").text(label).appendTo(control.container)
-            createBtn.click(function() {
-                console.log("Submit clicked!")
-                // clicked on submit button...
-                if(!control.isValid()) {
-                    // form is not valid!
-                    console.log("Form not valid!")
-                    return false
-                }
-                formSubmitted(type, action, schema, fschema, control.form.getValue(), function(err, rr) {
-                    if(err) {
-                        console.error(err)
+                console.log("postRender: ")
+                var label = (action == "add") ? "Create" : "Update"
+                var createBtn = $("<button>").text(label).appendTo(control.container)
+                createBtn.click(function() {
+                    console.log("Submit clicked!")
+                    // clicked on submit button...
+                    if (!control.isValid()) {
+                        // form is not valid!
+                        console.log("Form not valid!")
                         return false
                     }
-                    // show item's view
-                    console.log("rr:", rr)
-                    var oldhref = window.location.href
-                    window.location.href = '/admin/'+type+"/"+rr._id+"/view"
-                    if(window.location.href == oldhref) window.location.reload()
+                    formSubmitted(type, action, schema, fschema, control.form.getValue(), function(err, rr) {
+                        if (err) {
+                            console.error(err)
+                            return false
+                        }
+                        // show item's view
+                        console.log("rr:", rr)
+                        var oldhref = window.location.href
+                        window.location.href = '/admin/' + type + "/" + rr._id + "/view"
+                        if (window.location.href == oldhref) window.location.reload()
+                    })
+                    return false;
                 })
-                return false;
-            })
 
-            // attach selectors...
-            attachSelectorsToForm(type, action, control.container)
-          }
-        })    
+                // attach selectors...
+                attachSelectorsToForm(type, action, control.container)
+            }
+        })
     }
 
 
     var passwordMatchValidator = function(control, callback) {
         var controlVal = control.getValue();
-        if(!controlVal) {
-          // no value yet...
+        if (!controlVal) {
+            // no value yet...
             callback({
                 "message": "Form is empty",
                 "status": false
@@ -563,87 +567,89 @@ var AdminPage = function($, i18n, pageMode, editableNodes, node, nodeType) {
                 "status": true
             });
         }
-    }             
-      
-  var makeNodeControl = function(en) {
-    var out = $("<div>").addClass("node-control")
-    out.append($("<h3>").text(en.title))
-    out.append($("<img>").attr("src", en.thumbnailUri))
-    return out
-  }
-  var showAddForm = function(control, en) {
-    // highlight the selected node...
-    $("#newnode .node-control").removeClass("selected")
-    control.addClass("selected")
-    // get JSON metadata for forms...
-    $.getJSON(en.metainfoUri).done(function(metainfo) {
-        console.log("Got metainfo!")
-        console.log(metainfo)
-        var options = metainfo.forms.add.options
-        var schema = metainfo.schema
-        var fschema = metainfo.forms.add.schema || schema
-        var name = metainfo.name
-        var defaults = metainfo.defaults
-        if(name=="user" || name=="admin") {
-            options = $.extend({ validator: passwordMatchValidator }, options)
+    }
+
+    var makeNodeControl = function(en) {
+        var out = $("<div>").addClass("node-control")
+        out.append($("<h3>").text(en.title))
+        out.append($("<img>").attr("src", en.thumbnailUri))
+        return out
+    }
+    var showAddForm = function(control, en) {
+        // highlight the selected node...
+        $("#newnode .node-control").removeClass("selected")
+        control.addClass("selected")
+        // get JSON metadata for forms...
+        $.getJSON(en.metainfoUri).done(function(metainfo) {
+            console.log("Got metainfo!")
+            console.log(metainfo)
+            var options = metainfo.forms.add.options
+            var schema = metainfo.schema
+            var fschema = metainfo.forms.add.schema || schema
+            var name = metainfo.name
+            var defaults = metainfo.defaults
+            if (name == "user" || name == "admin") {
+                options = $.extend({
+                    validator: passwordMatchValidator
+                }, options)
+            }
+            createForm(name, "add", schema, fschema, options, defaults, $("#newnodeform .form"))
+        })
+    }
+
+    // display controls for all editable node types             
+    $("#newnode").empty()
+    _.each(editableNodes, function(en) {
+        var control = makeNodeControl(en)
+        control.click(function() {
+            showAddForm(control, en)
+        })
+        $("#newnode").append(control)
+    })
+
+    var typesInput = $("#searchcontrol input[name=searchtypes]")
+    var typeSelector = $("<div>").addClass("type-selector").insertAfter(typesInput)
+    _.each(editableNodes, function(en) {
+        var selector = $("<img>").attr("src", en.thumbnailUri)
+        selector.click(function() {
+            toggleTypeSelector(selector, en.name)
+            return false
+        })
+        typeSelector.append(selector)
+    })
+
+    var toggleTypeSelector = function(selector, type) {
+        var typeStr = typesInput.val()
+        var types = typeStr.split(",")
+        var tm = {}
+        _.each(types, function(t) {
+            if (t) tm[t] = t
+        })
+        if (type in tm) {
+            delete tm[type]
+            selector.removeClass("selected")
+        } else {
+            tm[type] = type
+            selector.addClass("selected")
         }
-        createForm(name, "add", schema, fschema, options, defaults, $("#newnodeform .form"))
-    })
-  }
-
-// display controls for all editable node types             
-$("#newnode").empty()
-_.each(editableNodes, function(en) {
-    var control = makeNodeControl(en)
-    control.click(function() {
-        showAddForm(control, en)
-    })
-    $("#newnode").append(control)
-})
-
-var typesInput = $("#searchcontrol input[name=searchtypes]")
-var typeSelector = $("<div>").addClass("type-selector").insertAfter(typesInput)
-_.each(editableNodes, function(en) {
-    var selector = $("<img>").attr("src", en.thumbnailUri)
-    selector.click(function() {
-        toggleTypeSelector(selector, en.name)
-        return false
-    })
-    typeSelector.append(selector)
-})
-
-var toggleTypeSelector = function(selector, type) {
-    var typeStr = typesInput.val()
-    var types = typeStr.split(",")
-    var tm = {}
-    _.each(types, function(t) {
-        if(t) tm[t] = t
-    })
-    if(type in tm) {
-        delete tm[type]
-        selector.removeClass("selected")
-    } else {
-        tm[type] = type
-        selector.addClass("selected")
+        var newTypes = []
+        for (var key in tm) {
+            newTypes.push(key)
+        }
+        typeStr = newTypes.join(",")
+        typesInput.val(typeStr)
+        return type in tm
     }
-    var newTypes = []
-    for(var key in tm) {
-        newTypes.push(key)
-    }
-    typeStr = newTypes.join(",")
-    typesInput.val(typeStr)
-    return type in tm
-}
 
-  if(node) {
+    if (node) {
         console.log(node);
         var nodeId = node._id
 
         console.log('Generating edit form...', node, editableNodes, nodeType)
         var en = null
         _.each(editableNodes, function(e) {
-            if(e.name==nodeType) {
-                en=e;
+            if (e.name == nodeType) {
+                en = e;
                 return;
             }
         })
@@ -655,14 +661,16 @@ var toggleTypeSelector = function(selector, type) {
             var schema = metainfo.schema
             var fschema = form.schema || schema
             var name = metainfo.name
-            if(name=="user" || name=="admin") {
-                options = $.extend({ validator: passwordMatchValidator }, options)
+            if (name == "user" || name == "admin") {
+                options = $.extend({
+                    validator: passwordMatchValidator
+                }, options)
             }
             createForm(name, "edit", schema, fschema, options, node, $("#editnodeform .form"))
         })
         $("#removeitembtn").click(function() {
-            var nodeUri = "/api/"+nodeType+"/"+nodeId
-            console.log("Deleting "+nodeUri)
+            var nodeUri = "/api/" + nodeType + "/" + nodeId
+            console.log("Deleting " + nodeUri)
             var opts = {
                 url: nodeUri,
                 type: 'DELETE',
@@ -678,8 +686,8 @@ var toggleTypeSelector = function(selector, type) {
         updateItemsView(nodeType)
     }
 
-   // shows item preview in a div
-   /*
+    // shows item preview in a div
+    /*
    var pDiv = $("<div>").appendTo("body")
 
    var fun = function() {
@@ -692,7 +700,7 @@ var toggleTypeSelector = function(selector, type) {
    updateItemPreview("/api/node/app/3", pDiv, "default", fun)
     */
 
-/*   
+    /*   
    var input = $('<input type="text" name="imageId" value="">').appendTo("body")
 
    attachSelector(input, "image")

@@ -1,4 +1,3 @@
-
 var Widget = require("./Widget")
 
 var InputWidget = Widget.extend({
@@ -36,4 +35,3 @@ var InputWidget = Widget.extend({
 })
 
 module.exports = InputWidget
-

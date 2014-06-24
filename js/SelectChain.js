@@ -1,4 +1,3 @@
-
 var Base = require("basejs")
 
 var SelectChain = Base.extend({

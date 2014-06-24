@@ -120,7 +120,7 @@ var GameWithRules = Game.extend({
         var gamedata = this.gameData
         var symbols = this.symbols
         var mt1 = symbols.VALID
-        ////console.log("Testing valid states...")
+            ////console.log("Testing valid states...")
 
         for (var i = 0; i < mt1.height; i++) {
             for (var j = 0; j < mt1.width; j++) {
@@ -135,7 +135,7 @@ var GameWithRules = Game.extend({
         var symbols = this.symbols
         var STATE = symbols.STATE
         var FINAL = gamedata.currentLevel.layout.matrices.FINAL
-        ////console.log("Comparing state with final states...")
+            ////console.log("Comparing state with final states...")
         for (var i = 0; i < FINAL.length; i++) {
             if (this.compareMatrix(STATE, FINAL[i])) {
                 return true
@@ -322,8 +322,8 @@ var GameWithRules = Game.extend({
     processIfRule: function(rule, breaking) {
         ////console.log("Processing if rule", rule)
         var cond = this.getBoolValue(rule.condition)
-        ////console.log("Condition: "+cond)
-        if (cond) {                        
+            ////console.log("Condition: "+cond)
+        if (cond) {
             ////console.log("Processing THEN branch")
             this.processRule(rule.then)
             return true
