@@ -1,9 +1,5 @@
 /* wow server */
 
-// !!!!!! static files and assets invoke the user deserialization in auth middleware
-// // https://github.com/jaredhanson/passport/issues/14
-// it seems that order of express/static and other middlewares matters VERY much
-
 var path = require("path")
 var http = require('http');
 var fs = require("fs-extra")
