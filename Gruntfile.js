@@ -179,7 +179,7 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     src: [
-                        //'bin/win32/node.exe',
+                        'bin/win32/node.exe',
                         'bin/win64/node.exe',
                         'entity/**',
                         'js/**',
@@ -199,16 +199,17 @@ module.exports = function(grunt) {
                 }, {
                     src: [
                         'run.bat',
-                        'run7.bat',
+                        'run32.bat',
                         'runadmin.bat',
-                        'runadmin7.bat',
+                        'runadmin32.bat',
                         'run.js',
                         'server.js',
                         'package.json',
                         'main.js',
                         'wow.js',
                         'install.js',
-                        'install.bat'
+                        'install.bat',
+                        'install32.bat'
                     ]
                 }, {
                     src: [

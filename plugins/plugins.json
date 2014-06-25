@@ -36,6 +36,9 @@
     },
     "youtubefavorite": {
       "enabled": true
+    },
+    "testpage": {
+      "enabled": true
     }
   }
 }
