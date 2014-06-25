@@ -18,120 +18,11 @@
   <script type="text/javascript" src="/plugins/{{name}}/assets/main.bundle.js"></script>
   <script>
   $(document).ready(function() {
-        var pageInfo = require("PageInfo")(window)
+        var PageInfo = require("PageInfo")
+        var pageInfo = PageInfo(window)
         console.log(pageInfo)
 
         var currentLocale = '{{locale}}'
-    // new i18n... 
-    i18n.init({ 
-      resGetPath: '/locales/__lng__/__ns__.json', 
-      lng: currentLocale,
-      ns: { 
-          namespaces: ['core','plugin'], 
-          defaultNs: 'core'
-        } 
-    }, function(__) {
-        var i18next = __
-
-        /* initialize logger... */
-        var Logger = require("Logger")
-        var logger = new Logger()
-
-        /* detect and initialize input devices... */
-
-        // virtual control device
-        // 4 direction buttons
-        // select (activate/forward/ok) button
-        // back (cancel, home) button
-        // play, pause, stop buttons
-        // only press event
-        var VirtualControl = require("VirtualControl")
-        var myControl = new VirtualControl()
-
-
-        var MyGamepad = require("MyGamepad")(window, $, Gamepad)
-        var myGamepad = new MyGamepad()
-        myGamepad.addListener("press", function(evt) {
-          // delegate gamepad events to virtual control device...
-          switch(evt.control) {
-            case "DPAD_LEFT": 
-              myControl.press("left")
-              break
-            case "DPAD_RIGHT": 
-              myControl.press("right")
-              break
-            case "DPAD_UP": 
-              myControl.press("up")
-              break
-            case "DPAD_DOWN": 
-              myControl.press("down")
-              break
-            case "SELECT_BACK": 
-            case "FACE_1": 
-              myControl.press("select")
-              break
-            case "START_FORWARD": 
-            case "HOME": 
-              myControl.press("home")
-              break
-            case "FACE_4": 
-              myControl.press("play")
-              break
-            case "FACE_2": 
-              myControl.press("pause")
-              break
-            case "FACE_3": 
-              myControl.press("stop")
-              break
-          }
-        })
-
-        $(document).on('keydown', null, 'alt+ctrl+u', function() {
-          console.log("Logging out!")
-          window.location.href = "/logout"
-        })
-
-        $(document).on('keydown', null, 'alt+ctrl+q', function() {
-          console.log("Quitting the application!")
-          $.post("/shutdown")
-        })
-
-        $(window.document)
-          .bind("keydown", function(e) {
-            switch(e.keyCode) {
-              case 37: 
-                myControl.press("left")
-                break
-              case 39: 
-                myControl.press("right")
-                break
-              case 38: 
-                myControl.press("up")
-                break
-              case 40: 
-                myControl.press("down")
-                break
-              case 13: 
-                myControl.press("select")
-                break
-              case 27: 
-              case 77: 
-                myControl.press("home")
-                break
-              case 80: 
-                myControl.press("play")
-                break
-              case 90: 
-                myControl.press("pause")
-                break
-              case 83: 
-                myControl.press("stop")
-                break
-            }
-          })
-
-
-        // TODO fill out default location and preset on the server...
         var preset = {{{preset}}}
         var location = {{{location}}}
 
@@ -140,66 +31,170 @@
         if(loc == 'cz') loc = 'cs'
         moment.lang(loc)
 
-        // create widgetizer and load widgets
-        var Widgetizer = require("Widgetizer")(window, $, SVG)
+        // new i18n... 
+        i18n.init({ 
+          resGetPath: '/locales/__lng__/__ns__.json', 
+          lng: currentLocale,
+          ns: { 
+              namespaces: ['core','plugin'], 
+              defaultNs: 'core'
+            } 
+        }, function(i18next) {
 
-        /* Global utility object holding useful things together */
-        var Wow = {
-          window: window,
-          $: $,
-          _: _,
-          i18n: i18next,
-          locale: currentLocale,
-          SVG: SVG,
-          moment: moment,
-          Widgetizer: Widgetizer,
-          preset: preset,
-          location: location,
-          logger: logger
-        }
+            /* initialize logger... */
+            var Logger = require("Logger")
+            var logger = new Logger()
 
-        var pageClass = require("pagescript")(Wow)
-        var page = new pageClass(Wow)
-        var allData = pageInfo
-        Widgetizer.useCommonWidgets()
-        Widgetizer.widgetize(document, function() {
-            page.init(allData, function(pg) {
+            /* detect and initialize input devices... */
 
-                myControl.addListener("press", function(evt) {
-                  pg.handleEvent($.extend({"device":"virtual"}, evt))
-                })
-                
-                myGamepad.addListener("press release axis", function(evt) {
-                  pg.handleEvent($.extend({"device":"gamepad"}, evt))
-                })
+            // virtual control device
+            // 4 direction buttons
+            // select (activate/forward/ok) button
+            // back (cancel, home) button
+            // play, pause, stop buttons
+            // only press event
+            var VirtualControl = require("VirtualControl")
+            var myControl = new VirtualControl()
 
 
-                /*
-                 * this swallows backspace keys on any non-input element.
-                 * stops backspace -> back
-                 */
-                var rx = /INPUT|SELECT|TEXTAREA/i;
-
-                // attach input devices to the page controller
-                $(window.document)
-                  .bind("keydown keypress keyup", function(e) {
-                    pg.handleEvent($.extend({"device":"keyboard"}, e))
-                    // FIX to prevent backspace key from doing "go back to previous page"
-                    // from: http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back
-                    if( e.which == 8 ){ // 8 == backspace
-                      if(!rx.test(e.target.tagName) || e.target.disabled || e.target.readOnly ){
-                        e.preventDefault();
-                      }
-                    }
-                });
-
+            var MyGamepad = require("MyGamepad")(window, $, Gamepad)
+            var myGamepad = new MyGamepad()
+            myGamepad.addListener("press", function(evt) {
+              // delegate gamepad events to virtual control device...
+              switch(evt.control) {
+                case "DPAD_LEFT": 
+                  myControl.press("left")
+                  break
+                case "DPAD_RIGHT": 
+                  myControl.press("right")
+                  break
+                case "DPAD_UP": 
+                  myControl.press("up")
+                  break
+                case "DPAD_DOWN": 
+                  myControl.press("down")
+                  break
+                case "SELECT_BACK": 
+                case "FACE_1": 
+                  myControl.press("select")
+                  break
+                case "START_FORWARD": 
+                case "HOME": 
+                  myControl.press("home")
+                  break
+                case "FACE_4": 
+                  myControl.press("play")
+                  break
+                case "FACE_2": 
+                  myControl.press("pause")
+                  break
+                case "FACE_3": 
+                  myControl.press("stop")
+                  break
+              }
             })
-        })
+
+            $(document)
+              // logout shortcut...
+              .on('keydown', null, 'alt+ctrl+u', function() {
+                console.log("Logging out!")
+                window.location.href = "/logout"
+              })
+              // quit shortcut...
+              .on('keydown', null, 'alt+ctrl+q', function() {
+                console.log("Quitting the application!")
+                $.post("/shutdown")
+              })
+              // attach virtual controller...
+              .bind("keydown", function(e) {
+                switch(e.keyCode) {
+                  case 37: 
+                    myControl.press("left")
+                    break
+                  case 39: 
+                    myControl.press("right")
+                    break
+                  case 38: 
+                    myControl.press("up")
+                    break
+                  case 40: 
+                    myControl.press("down")
+                    break
+                  case 13: 
+                    myControl.press("select")
+                    break
+                  case 27: 
+                  case 77: 
+                    myControl.press("home")
+                    break
+                  case 80: 
+                    myControl.press("play")
+                    break
+                  case 90: 
+                    myControl.press("pause")
+                    break
+                  case 83: 
+                    myControl.press("stop")
+                    break
+                }
+              })
+
+              // create widgetizer and load widgets
+              var Widgetizer = require("Widgetizer")(window, $, SVG)
+
+              /* Global utility object holding useful things together */
+              var Wow = {
+                window: window,
+                $: $,
+                _: _,
+                i18n: i18next,
+                locale: currentLocale,
+                SVG: SVG,
+                moment: moment,
+                Widgetizer: Widgetizer,
+                preset: preset,
+                location: location,
+                logger: logger
+              }
+
+              var pageClass = require("pagescript")(Wow)
+              var page = new pageClass(Wow)
+              var allData = pageInfo
+              Widgetizer.useCommonWidgets()
+              Widgetizer.widgetize(document, function() {
+                  page.init(allData, function(pg) {
+
+                      myControl.addListener("press", function(evt) {
+                        pg.handleEvent($.extend({"device":"virtual"}, evt))
+                      })
+                      
+                      myGamepad.addListener("press release axis", function(evt) {
+                        pg.handleEvent($.extend({"device":"gamepad"}, evt))
+                      })
 
 
-    });
+                      /*
+                       * this swallows backspace keys on any non-input element.
+                       * stops backspace -> back
+                       */
+                      var rx = /INPUT|SELECT|TEXTAREA/i;
 
+                      // attach input devices to the page controller
+                      $(window.document)
+                        .bind("keydown keypress keyup", function(e) {
+                          pg.handleEvent($.extend({"device":"keyboard"}, e))
+                          // FIX to prevent backspace key from doing "go back to previous page"
+                          // from: http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back
+                          if( e.which == 8 ){ // 8 == backspace
+                            if(!rx.test(e.target.tagName) || e.target.disabled || e.target.readOnly ){
+                              e.preventDefault();
+                            }
+                          }
+                      });
 
+                  })
+              })
+      });
 
   })
   </script>
