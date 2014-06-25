@@ -86,6 +86,16 @@
           }
         })
 
+        $(document).on('keydown', null, 'alt+ctrl+u', function() {
+          console.log("Logging out!")
+          window.location.href = "/logout"
+        })
+
+        $(document).on('keydown', null, 'alt+ctrl+q', function() {
+          console.log("Quitting the application!")
+          $.post("/shutdown")
+        })
+
         $(window.document)
           .bind("keydown", function(e) {
             switch(e.keyCode) {

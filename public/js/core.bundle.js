@@ -256,6 +256,7 @@ var Commons = {
 }
 
 module.exports = Commons
+
 },{}],"Commons":[function(require,module,exports){
 module.exports=require('JY97rG');
 },{}],"Dialogs":[function(require,module,exports){
@@ -377,7 +378,6 @@ module.exports = EventTarget
 },{"basejs":42}],"EventTarget":[function(require,module,exports){
 module.exports=require('C6/c90');
 },{}],10:[function(require,module,exports){
-
 var Widget = require("./Widget")
 
 var InputWidget = Widget.extend({
@@ -415,7 +415,6 @@ var InputWidget = Widget.extend({
 })
 
 module.exports = InputWidget
-
 
 },{"./Widget":24}],"Logger":[function(require,module,exports){
 module.exports=require('+1Q85x');
@@ -663,7 +662,6 @@ module.exports = function(window) {
 }
 
 },{}],19:[function(require,module,exports){
-
 var Base = require("basejs")
 
 var SelectChain = Base.extend({
