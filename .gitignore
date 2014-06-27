@@ -3,7 +3,7 @@ webkitbuilds/
 tools/tibor/
 cache/
 tmp/
-docs/
+docs/docker/
 dist/
 *.log
 logs

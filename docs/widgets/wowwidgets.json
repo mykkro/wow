@@ -1,0 +1,411 @@
+{
+	"bigbutton": {
+		"name": "bigbutton",
+		"title": "Big Button",
+		"description": "Big colored button found on the home page of user GUI.",
+		"version": "0.1",
+		"author": "Myrousz",
+		"attributes": {
+			"width": {
+				"type": "integer",
+				"default": 280
+			},
+			"height": {
+				"type": "integer",
+				"default": 155
+			},
+			"name": {
+				"type": "string"
+			},
+			"class": {
+				"type": "string"
+			},
+			"text": {
+				"type": "string"
+			}
+		},
+		"usesContent": "text"
+	},
+	"box": {
+		"name": "box",
+		"title": "Box",
+		"description": "Box containing some contents, with fill and stroke.",
+		"version": "0.1",
+		"author": "Myrousz",
+		"attributes": {
+			"width": {
+				"type": "integer",
+				"default": 100
+			},
+			"height": {
+				"type": "integer",
+				"default": 100
+			},
+			"name": {
+				"type": "string"
+			},
+			"class": {
+				"type": "string"
+			},
+			"fill": {
+				"type": "string",
+				"default": "gray"
+			},
+			"stroke": {
+				"type": "string",
+				"default": "black"
+			}
+		},
+		"usesContent": "elements"
+	},
+	"button": {
+		"name": "button",
+		"title": "Button",
+		"description": "Just a button.",
+		"version": "0.1",
+		"author": "Myrousz",
+		"attributes": {
+			"width": {
+				"type": "integer"
+			},
+			"height": {
+				"type": "integer"
+			},
+			"name": {
+				"type": "string"
+			},
+			"class": {
+				"type": "string"
+			},
+			"icon": {
+				"type": "string",
+				"required": true
+			},
+			"iconAt": {
+				"enum": ["left", "right", "top", "bottom"],
+				"default": "left"
+			},
+			"gap": {
+				"type": "number",
+				"default": 20
+			},
+			"iconSize": {
+				"type": "number",
+				"default": 40
+			},
+			"fontSize": {
+				"type": "number",
+				"default": 20
+			},
+			"inset": {
+				"type": "number",
+				"default": 5
+			},
+			"text": {
+				"type": "string"
+			}
+		},
+		"usesContent": "text"
+	},
+	"flow": {
+		"name": "flow",
+		"title": "Flow Layout",
+		"description": "Container component - vertical or horizontal flow layout.",
+		"version": "0.1",
+		"author": "Myrousz",
+		"attributes": {
+			"name": {
+				"type": "string"
+			},
+			"class": {
+				"type": "string"
+			},
+			"direction": {
+				"enum": ["left", "right", "up", "down"],
+				"default": "right"
+			},
+			"gap": {
+				"type": "number",
+				"default": 0
+			},
+			"anchor": {
+				"enum": ["left", "right", "middle", "top", "bottom"],
+				"default": "middle"
+			}
+		},
+		"usesContent": "widgets"
+	},
+	"grid": {
+		"name": "grid",
+		"title": "Grid Layout",
+		"description": "Container component - grid layout.",
+		"version": "0.1",
+		"author": "Myrousz",
+		"attributes": {
+			"name": {
+				"type": "string"
+			},
+			"class": {
+				"type": "string"
+			},
+			"rows": {
+				"type": "integer",
+				"default": 3
+			},
+			"cols": {
+				"type": "integer",
+				"default": 3
+			},
+			"halign": {
+				"enum": ["left", "right", "center"],
+				"default": "center"
+			},
+			"valign": {
+				"enum": ["top", "bottom", "center"],
+				"default": "center"
+			},
+			"uniformRows": {
+				"type": "string",
+				"default": "false"
+			},
+			"uniformColumns": {
+				"type": "string",
+				"default": "false"
+			}
+		},
+		"usesContent": "widgets"
+	},
+	"iconbutton": {
+		"name": "iconbutton",
+		"title": "Icon Button",
+		"description": "Button with a text and an icon.",
+		"version": "0.1",
+		"author": "Myrousz",
+		"attributes": {
+			"width": {
+				"type": "integer",
+				"required": true
+			},
+			"height": {
+				"type": "integer",
+				"required": true
+			},
+			"name": {
+				"type": "string"
+			},
+			"class": {
+				"type": "string"
+			},
+			"src": {
+				"type": "string",
+				"required": true
+			}
+		},
+		"usesContent": false
+	},
+	"image": {
+		"name": "image",
+		"title": "Image",
+		"description": "Image.",
+		"version": "0.1",
+		"author": "Myrousz",
+		"attributes": {
+			"width": {
+				"type": "integer",
+				"required": true
+			},
+			"height": {
+				"type": "integer",
+				"required": true
+			},
+			"name": {
+				"type": "string"
+			},
+			"class": {
+				"type": "string"
+			},
+			"src": {
+				"type": "string",
+				"required": true
+			}
+		},
+		"usesContent": false
+	},
+	"piechart": {
+		"name": "piechart",
+		"title": "Pie Chart",
+		"description": "Demo Pie Chart component.",
+		"version": "0.1",
+		"author": "Myrousz",
+		"attributes": {
+			"width": {
+				"type": "integer"
+			},
+			"height": {
+				"type": "integer"
+			},
+			"name": {
+				"type": "string"
+			},
+			"class": {
+				"type": "string"
+			}
+		},
+		"tags": {
+			"pieslice": {
+				"name": "pieslice",
+				"attributes": {
+					"label": {
+						"type": "string",
+						"required": true
+					},
+					"value": {
+						"type": "number",
+						"required": true
+					},
+					"color": {
+						"type": "string",
+						"required": true
+					}
+				}
+			}
+		},
+		"usesContent": "tags"
+	},
+	"plain": {
+		"name": "plain",
+		"title": "Plain",
+		"description": "Wraps some SVG content as a widget.",
+		"version": "0.1",
+		"author": "Myrousz",
+		"attributes": {
+			"name": {
+				"type": "string"
+			},
+			"class": {
+				"type": "string"
+			}
+		},
+		"usesContent": "elements"
+	},
+	"switcher": {
+		"name": "switcher",
+		"title": "Switcher Layout",
+		"description": "Container component - switcher layout.",
+		"version": "0.1",
+		"author": "Myrousz",
+		"attributes": {
+			"width": {
+				"type": "integer"
+			},
+			"height": {
+				"type": "integer"
+			},
+			"name": {
+				"type": "string"
+			},
+			"class": {
+				"type": "string"
+			},
+			"active": {
+				"type": "integer",
+				"description": "Index of visible subwidget (zero-based).",
+				"default": 0
+			}
+		},
+		"usesContent": "widgets"
+	},
+	"text": {
+		"name": "text",
+		"title": "Text",
+		"description": "Text label.",
+		"version": "0.1",
+		"author": "Myrousz",
+		"attributes": {
+			"width": {
+				"type": "integer",
+				"default": 100
+			},
+			"height": {
+				"type": "integer",
+				"default": 100
+			},
+			"name": {
+				"type": "string"
+			},
+			"class": {
+				"type": "string"
+			},
+			"text": {
+				"type": "string"
+			}
+		},
+		"usesContent": "text"
+	},
+	"textbox": {
+		"name": "textbox",
+		"title": "Textbox",
+		"description": "Input widget for entering a line of text.",
+		"version": "0.1",
+		"author": "Myrousz",
+		"attributes": {
+			"width": {
+				"type": "integer",
+				"default": 200
+			},
+			"height": {
+				"type": "integer",
+				"default": 30
+			},
+			"name": {
+				"type": "string"
+			},
+			"class": {
+				"type": "string"
+			},
+			"maxchars": {
+				"type": "number",
+				"default": 20
+			},
+			"text": {
+				"type": "string"
+			},
+			"value": {
+				"type": "string"
+			}
+		},
+		"usesContent": "text"
+	},
+	"viewport": {
+		"name": "viewport",
+		"title": "Viewport",
+		"description": "SVG Viewport in form of a widget.",
+		"version": "0.1",
+		"author": "Myrousz",
+		"attributes": {
+			"width": {
+				"type": "integer",
+				"default": 100
+			},
+			"height": {
+				"type": "integer",
+				"default": 100
+			},
+			"name": {
+				"type": "string"
+			},
+			"class": {
+				"type": "string"
+			},
+			"viewBox": {
+				"type": "string",
+				"required": true
+			},
+			"preserveAspectRatio": {
+				"type": "string",
+				"default": "xMidYMid meet"
+			}
+		},
+		"usesContent": "widgets"
+	}
+}
