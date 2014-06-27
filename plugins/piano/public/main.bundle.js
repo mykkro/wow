@@ -228,7 +228,6 @@ var Overlay = BasicLayer.extend({
 module.exports = Overlay
 
 },{"./BasicLayer":2}],4:[function(require,module,exports){
-
 var Base = require("basejs")
 
 var SelectChain = Base.extend({

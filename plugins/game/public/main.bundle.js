@@ -254,6 +254,7 @@ var Commons = {
 }
 
 module.exports = Commons
+
 },{}],4:[function(require,module,exports){
 var BasicLayer = require("./BasicLayer")
 
@@ -288,7 +289,6 @@ var Overlay = BasicLayer.extend({
 module.exports = Overlay
 
 },{"./BasicLayer":2}],5:[function(require,module,exports){
-
 var Base = require("basejs")
 
 var SelectChain = Base.extend({

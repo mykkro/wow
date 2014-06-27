@@ -12,3 +12,11 @@
 <g transform="translate(14, 402)">
     <wow:bigbutton name="navButton03" class="purple"></wow:bigbutton>
 </g>
+
+<g transform="translate(345,480)">
+<wow:image src="/assets/logos/SPES_logo_short_OK.svg" width="85" height="50"></wow:image>
+</g>
+
+<g transform="translate(470,486)">
+<wow:image src="/assets/logos/CE.jpg" width="240" height="45"></wow:image>
+</g>
