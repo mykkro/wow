@@ -6,16 +6,22 @@ var _ = require("lodash")
 var wdata = require("../docs/widgets/wowwidgets.json")
 
 
-var widgetTpl = '<div class="widget-info"><h2>{{title}}</h2><div class="description">{{description}}</div><div class="author">Author: {{author}}</div><div class="version">Version: {{version}}</div><pre class="exampletag">{{tag}}</pre><div class="attributes">{{{attrs}}}</div></div>'
+var loadTpl = function(name) {
+	return fs.readFileSync("templates/widget-docs/"+name+".mustache", "utf8")
+}
 
-var tagTpl = '<wow:{{name}}{{{attrs}}}>{{{contents}}}</wow:{{name}}>'
-
-var attrTpl = '<div class="attr-info"><span class="name">{{name}}</span><span class="type">{{type}}</span><span class="default">{{default}}</span></div>'
-
-var headerTpl = '<style> .attributes { margin-left: 20px; } .attr-info .name { display: inline-block; width: 200px; } .attr-info .type { display: inline-block; width: 100px; }</style>'
+var widgetTpl = loadTpl("widget")
+var tagTpl = loadTpl("tag")
+var attrTpl = loadTpl("attribute")
+var headerTpl = loadTpl("header")
+var footerTpl = loadTpl("footer")
 
 var processHeader = function() {
 	return  mustache.render(headerTpl, {});
+}
+
+var processFooter = function() {
+	return  mustache.render(footerTpl, {});
 }
 
 var processWidget = function(widget) {
@@ -48,6 +54,7 @@ var processAttr = function(key, attr) {
 		description: attr.description,
 		type: type,
 		required: attr.required,
+		isrequired: attr.required ? " required" : "",
 		default: attr.default
 	}
 	return mustache.render(attrTpl, data);
@@ -84,10 +91,15 @@ var processTag = function(tag) {
 /////////////////////////////////////////////////////////
 var out = []
 out.push(processHeader())
+out.push('<div class="widgets-info">')
 for(var key in wdata) {
 	var widget = wdata[key]
 	out.push(processWidget(widget))
 }
+out.push('</div>')
+out.push(processFooter())
 
 out = out.join("\n")
 console.log(out)
+
+fs.writeFileSync("../docs/widgets/widgetdocs.html", out, "utf8")
