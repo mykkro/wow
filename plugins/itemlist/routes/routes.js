@@ -30,8 +30,22 @@ module.exports = function(prefix, app, Auth, API) {
 		return url.format(q)
 	}
 
+	var editAppUrl = function(myUrl, apptype, pathname) {
+		var q = url.parse(myUrl, true)
+		q.search = null
+		q.query.type = 'app'
+		q.query.apptype = apptype
+		q.pathname = pathname
+		return url.format(q)
+	}
+
 	var redirectToSearch = function(req, res, type) {
 		var targetUrl = editUrl(req.url, type, prefix+'/index')
+		res.redirect(targetUrl)
+	}
+
+	var redirectToAppSearch = function(req, res, apptype) {
+		var targetUrl = editAppUrl(req.url, apptype, prefix+'/index')
 		res.redirect(targetUrl)
 	}
 
@@ -41,6 +55,14 @@ module.exports = function(prefix, app, Auth, API) {
 
 	app.get(prefix+"/apps", function(req, res) {
 		redirectToSearch(req, res, "app")
+	})
+
+	app.get(prefix+"/books", function(req, res) {
+		redirectToAppSearch(req, res, "wow/scrapbook")
+	})
+
+	app.get(prefix+"/games", function(req, res) {
+		redirectToAppSearch(req, res, "wow/game|wow/app/game|wow/app/rulegame")
 	})
 
 	app.get(prefix+"/videos", function(req, res) {
@@ -70,11 +92,21 @@ module.exports = function(prefix, app, Auth, API) {
 		var conds = []
 		var qb = new QueryBuilder()
 		// add type condition...
+		console.log("doSearch", qq)
 		if(qq.type) {
 			if(qq.type.length==1) {
 				conds.push(qb.eq('type', qq.type[0]))
 			} else {
 				var typeConds = _.map(qq.type, function(t) { return qb.eq('type', t)})
+				conds.push(qb.or(typeConds))
+			}
+		}
+		/* app specific stuff */
+		if(qq.apptype) {
+			if(qq.apptype.length==1) {
+				conds.push(qb.eq('apptype', qq.apptype[0]))
+			} else {
+				var typeConds = _.map(qq.apptype, function(t) { return qb.eq('apptype', t)})
 				conds.push(qb.or(typeConds))
 			}
 		}

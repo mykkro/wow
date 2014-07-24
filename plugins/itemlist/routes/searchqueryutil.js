@@ -46,6 +46,7 @@
 
     getDataFromQueryObj: function(q) {
         var out = {}
+        /* general fields... */
         this.getStringField("query", q, out)
         this.getIntField("page", q, out)
         this.getIntField("itemsPerPage", q, out)
@@ -58,6 +59,9 @@
         this.getStringArrayField("type", q, out)
         this.getBooleanField("favorite", q, out)
         this.getBooleanField("personal", q, out)
+        /* app specific fields */
+        this.getStringArrayField("apptype", q, out)
+
         return out
     }
  }

@@ -6,6 +6,8 @@ var fixtures = [
 	{ "type":"location", "name":"defaultLocation", "file":"location.vienna.json", "autowire": {"ownerAdminId":"defaultAdmin._id"} }, 
 	{ "type":"shortcut", "name":"homepageLink", "file":"shortcut.homepage.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}},
 	{ "type":"shortcut", "name":"appsLink", "file":"shortcut.apps.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}}, 
+	{ "type":"shortcut", "name":"booksLink", "file":"shortcut.books.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}}, 
+	{ "type":"shortcut", "name":"gamesLink", "file":"shortcut.games.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}}, 
 	{ "type":"shortcut", "name":"radioLink", "file":"shortcut.netradio.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}}, 
 	{ "type":"shortcut", "name":"pianoLink", "file":"shortcut.piano.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}},
 	{ "type":"shortcut", "name":"youtubeLink", "file":"shortcut.youtubesearch.json", "autowire": {"ownerAdminId":"defaultAdmin._id"}},
