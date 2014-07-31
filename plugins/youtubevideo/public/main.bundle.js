@@ -3866,9 +3866,7 @@ function isNullOrUndefined(arg) {
   return  arg == null;
 }
 
-},{"punycode":8,"querystring":11}],"pagescript":[function(require,module,exports){
-module.exports=require('HJD/OK');
-},{}],"HJD/OK":[function(require,module,exports){
+},{"punycode":8,"querystring":11}],"Bkkh3s":[function(require,module,exports){
 module.exports = function(Wow) {
     var window = Wow.window
     var $ = Wow.$
@@ -4004,4 +4002,6 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/BasePage":1,"../../../js/SelectChain":4,"basejs":6}]},{},["HJD/OK"])
+},{"../../../js/BasePage":1,"../../../js/SelectChain":4,"basejs":6}],"pagescript":[function(require,module,exports){
+module.exports=require('Bkkh3s');
+},{}]},{},["Bkkh3s"]);
