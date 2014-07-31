@@ -1,7 +1,7 @@
 
    $.fn.drags = function(opt) {
 
-        opt = $.extend({handle:"",cursor:"move"}, opt);
+        opt = $.extend({handle:"",cursor:"move", onmove: null, ondrag: null}, opt);
 
         if(opt.handle === "") {
             var $el = this;
@@ -21,9 +21,15 @@
                 pos_y = $drag.offset().top + drg_h - e.pageY,
                 pos_x = $drag.offset().left + drg_w - e.pageX;
             $drag.css('z-index', 1000).parents().on("mousemove", function(e) {
+			    var top = e.pageY + pos_y - drg_h
+				var left = e.pageX + pos_x - drg_w
+				if(opt.onmove) {
+					console.log("Moving mouse", left, top, pos_x, pos_y, drg_w, drg_h)
+					opt.onmove({x:left, y:top})
+				}
                 $('.draggable').offset({
-                    top:e.pageY + pos_y - drg_h,
-                    left:e.pageX + pos_x - drg_w
+                    top:top,
+                    left:left
                 }).on("mouseup", function() {
                     $(this).removeClass('draggable').css('z-index', z_idx);
                 });
@@ -35,6 +41,10 @@
             } else {
                 $(this).removeClass('active-handle').parent().removeClass('draggable');
             }
+			if(opt.ondrag) {
+				console.log("Dragging ended")
+				opt.ondrag()
+			}
         });
 
     }
@@ -87,6 +97,23 @@ var SplitImage = Game.extend({
 			cont.append(tile)
 		}
 	}
+
+	var gridTiles = []
+	
+	var testPoint = function(x, y) {
+		var dist = 20
+		for(var i=0; i<gridTiles.length; i++) {
+			var t = gridTiles[i]
+			var cx = t.x + t.width/2
+			var cy = t.y + t.height/2
+			// put test here... 
+			if(Math.abs(x-cx)<dist && Math.abs(y-cy<dist)) {
+				return gridTiles[i]
+			}
+		}
+		return null
+	}
+	
 	
 	for(var i=0; i<opts.gridrows; i++) {
 		for(var j=0; j<opts.gridcols; j++) {
@@ -106,14 +133,29 @@ var SplitImage = Game.extend({
 			tile.css("background-position", dx+"px "+ dy+"px")
 			tile.css("background-size", imageSize+"px "+imageSize+"px")
 			cont.append(tile)
-			$(tile).drags()
+			$(tile).drags({
+				onmove: function(x, y) {
+					console.log("Moved!", x, y)
+				},
+				ondrag: function() {
+					console.log("Dragged!")
+				}
+			})
 			var newX = Math.floor(Math.random() * (stageWidth - tileWidth))
 			var newY = Math.floor(Math.random() * (stageHeight - tileHeight))
-			console.log(newX, newY)
 			tile.css("left", newX+"px")
 			tile.css("top", newY+"px")
+			gridTiles.push({
+				x: newX,
+				y: newY,
+				width: tileWidth,
+				height: tileHeight,
+				element: tile
+			})
 		}
 	}
+	
+	console.log(gridTiles)
 	
     if(cb) cb()
   },
