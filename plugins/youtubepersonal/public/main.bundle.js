@@ -4422,8 +4422,8 @@ function isNullOrUndefined(arg) {
 }
 
 },{"punycode":12,"querystring":15}],"pagescript":[function(require,module,exports){
-module.exports=require('HJD/OK');
-},{}],"HJD/OK":[function(require,module,exports){
+module.exports=require('Bkkh3s');
+},{}],"Bkkh3s":[function(require,module,exports){
 module.exports = function(Wow) {
     var $ = Wow.$
     var i18n = Wow.i18n
@@ -4464,4 +4464,4 @@ module.exports = function(Wow) {
 
 }
 
-},{"../../../js/VideosPage":8}]},{},["HJD/OK"])
+},{"../../../js/VideosPage":8}]},{},["Bkkh3s"])

@@ -1,4 +1,6 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"OdyuDH":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"BasePage":[function(require,module,exports){
+module.exports=require('SkL0EX');
+},{}],"SkL0EX":[function(require,module,exports){
 var Base = require("basejs")
 var url = require("url")
 
@@ -124,9 +126,7 @@ var BasePage = BasicLayer.extend({
 
 module.exports = BasePage
 
-},{"./BasicLayer":3,"./SoftwareKeyboard":20,"basejs":42,"url":50}],"BasePage":[function(require,module,exports){
-module.exports=require('OdyuDH');
-},{}],3:[function(require,module,exports){
+},{"./BasicLayer":3,"./SoftwareKeyboard":20,"basejs":42,"url":50}],3:[function(require,module,exports){
 var Base = require("basejs")
 
 var BasicLayer = Base.extend({
@@ -196,7 +196,7 @@ var BasicLayer = Base.extend({
 
 module.exports = BasicLayer
 
-},{"basejs":42}],"JY97rG":[function(require,module,exports){
+},{"basejs":42}],"vQnHGQ":[function(require,module,exports){
 // Commons.js
 
 // commonly used functions.
@@ -258,10 +258,8 @@ var Commons = {
 module.exports = Commons
 
 },{}],"Commons":[function(require,module,exports){
-module.exports=require('JY97rG');
-},{}],"Dialogs":[function(require,module,exports){
-module.exports=require('yQdLKh');
-},{}],"yQdLKh":[function(require,module,exports){
+module.exports=require('vQnHGQ');
+},{}],"88rru7":[function(require,module,exports){
 var Dialog = require('modal-dialog');
 
 Dialog.styles = false
@@ -314,7 +312,11 @@ module.exports = function($, i18n) {
 
 }
 
-},{"modal-dialog":52}],"C6/c90":[function(require,module,exports){
+},{"modal-dialog":52}],"Dialogs":[function(require,module,exports){
+module.exports=require('88rru7');
+},{}],"EventTarget":[function(require,module,exports){
+module.exports=require('p0ouoe');
+},{}],"p0ouoe":[function(require,module,exports){
 //Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
 //Modified by Myrousz 2014
 //MIT License
@@ -375,9 +377,7 @@ var EventTarget = Base.extend({
 
 module.exports = EventTarget
 
-},{"basejs":42}],"EventTarget":[function(require,module,exports){
-module.exports=require('C6/c90');
-},{}],10:[function(require,module,exports){
+},{"basejs":42}],10:[function(require,module,exports){
 var Widget = require("./Widget")
 
 var InputWidget = Widget.extend({
@@ -417,8 +417,8 @@ var InputWidget = Widget.extend({
 module.exports = InputWidget
 
 },{"./Widget":24}],"Logger":[function(require,module,exports){
-module.exports=require('+1Q85x');
-},{}],"+1Q85x":[function(require,module,exports){
+module.exports=require('cPGetY');
+},{}],"cPGetY":[function(require,module,exports){
 var Base = require("basejs")
 
 var Logger = Base.extend({
@@ -445,9 +445,7 @@ var Logger = Base.extend({
 
 module.exports = Logger
 
-},{"basejs":42}],"MyGamepad":[function(require,module,exports){
-module.exports=require('K9mVN7');
-},{}],"K9mVN7":[function(require,module,exports){
+},{"basejs":42}],"k/UA9y":[function(require,module,exports){
 module.exports = function(window, $, Gamepad) {
 
     var EventTarget = require("./EventTarget")
@@ -509,7 +507,9 @@ module.exports = function(window, $, Gamepad) {
     return MyGamepad
 }
 
-},{"./EventTarget":"C6/c90"}],15:[function(require,module,exports){
+},{"./EventTarget":"p0ouoe"}],"MyGamepad":[function(require,module,exports){
+module.exports=require('k/UA9y');
+},{}],15:[function(require,module,exports){
 var BasicLayer = require("./BasicLayer")
 
 var Overlay = BasicLayer.extend({
@@ -543,8 +543,8 @@ var Overlay = BasicLayer.extend({
 module.exports = Overlay
 
 },{"./BasicLayer":3}],"PageInfo":[function(require,module,exports){
-module.exports=require('RpOZIU');
-},{}],"RpOZIU":[function(require,module,exports){
+module.exports=require('tFkC1Z');
+},{}],"tFkC1Z":[function(require,module,exports){
 var url = require('url')
 var path = require('path')
 
@@ -1599,9 +1599,7 @@ var SvgHelper = {
 
 module.exports = SvgHelper
 
-},{}],"VirtualControl":[function(require,module,exports){
-module.exports=require('eOgcpX');
-},{}],"eOgcpX":[function(require,module,exports){
+},{}],"unf9o0":[function(require,module,exports){
 var EventTarget = require("./EventTarget")
 
 // virtual control device
@@ -1632,7 +1630,9 @@ var VirtualControl = EventTarget.extend({
 
 module.exports = VirtualControl
 
-},{"./EventTarget":"C6/c90"}],24:[function(require,module,exports){
+},{"./EventTarget":"p0ouoe"}],"VirtualControl":[function(require,module,exports){
+module.exports=require('unf9o0');
+},{}],24:[function(require,module,exports){
 var Base = require("basejs")
 
 
@@ -1688,7 +1688,7 @@ var Widget = Base.extend({
 
 module.exports = Widget
 
-},{"basejs":42}],"z4/vQj":[function(require,module,exports){
+},{"basejs":42}],"4DgOoE":[function(require,module,exports){
 // create a browserified version of widgetizer:
 //  browserify -r./js/widgetizer:widgetizer -o public/js/widgetizer-bundle.js
 module.exports = function(window, $, SVG) {
@@ -2021,8 +2021,8 @@ module.exports = function(window, $, SVG) {
     return Widgetizer
 }
 
-},{"./Commons":"JY97rG","./InputWidget":10,"./SvgHelper":21,"./Widget":24,"./widgets/bigbutton/bigbutton":29,"./widgets/box/box":30,"./widgets/button/button":31,"./widgets/flow/flow":32,"./widgets/grid/grid":33,"./widgets/iconbutton/iconbutton":34,"./widgets/image/image":35,"./widgets/piechart/piechart":36,"./widgets/plain/plain":37,"./widgets/switcher/switcher":38,"./widgets/text/text":39,"./widgets/textbox/textbox":40,"./widgets/viewport/viewport":41,"underscore":58}],"Widgetizer":[function(require,module,exports){
-module.exports=require('z4/vQj');
+},{"./Commons":"vQnHGQ","./InputWidget":10,"./SvgHelper":21,"./Widget":24,"./widgets/bigbutton/bigbutton":29,"./widgets/box/box":30,"./widgets/button/button":31,"./widgets/flow/flow":32,"./widgets/grid/grid":33,"./widgets/iconbutton/iconbutton":34,"./widgets/image/image":35,"./widgets/piechart/piechart":36,"./widgets/plain/plain":37,"./widgets/switcher/switcher":38,"./widgets/text/text":39,"./widgets/textbox/textbox":40,"./widgets/viewport/viewport":41,"underscore":58}],"Widgetizer":[function(require,module,exports){
+module.exports=require('4DgOoE');
 },{}],27:[function(require,module,exports){
 /*
 Scripts to create interactive textboxes in SVG using ECMA script
@@ -4591,8 +4591,8 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-}).call(this,require("FWaASH"))
-},{"FWaASH":45}],45:[function(require,module,exports){
+}).call(this,require("Zbi7gb"))
+},{"Zbi7gb":45}],45:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -15694,7 +15694,7 @@ return jQuery;
   Q = require('q');
 
   try {
-    $ = require('jquery');
+    $ = (window.$);
   } catch (_error) {
     err = _error;
     $ = window.jQuery;
@@ -15727,7 +15727,7 @@ return jQuery;
 
 }).call(this);
 
-},{"jquery":51,"q":54}],54:[function(require,module,exports){
+},{"q":54}],54:[function(require,module,exports){
 (function (process){
 // vim:ts=4:sts=4:sw=4:
 /*!
@@ -16055,6 +16055,22 @@ if (typeof ReturnValue !== "undefined") {
     };
 }
 
+// Until V8 3.19 / Chromium 29 is released, SpiderMonkey is the only
+// engine that has a deployed base of browsers that support generators.
+// However, SM's generators use the Python-inspired semantics of
+// outdated ES6 drafts.  We would like to support ES6, but we'd also
+// like to make it possible to use generators in deployed browsers, so
+// we also support Python-style generators.  At some point we can remove
+// this block.
+var hasES6Generators;
+try {
+    /* jshint evil: true, nonew: false */
+    new Function("(function* (){ yield 1; })");
+    hasES6Generators = true;
+} catch (e) {
+    hasES6Generators = false;
+}
+
 // long stack traces
 
 var STACK_JUMP_SEPARATOR = "From previous event:";
@@ -16355,7 +16371,6 @@ defer.prototype.makeNodeResolver = function () {
  * @returns a promise that may be resolved with the given resolve and reject
  * functions, or rejected by a thrown exception in resolver
  */
-Q.Promise = promise; // ES6
 Q.promise = promise;
 function promise(resolver) {
     if (typeof resolver !== "function") {
@@ -16369,11 +16384,6 @@ function promise(resolver) {
     }
     return deferred.promise;
 }
-
-promise.race = race; // ES6
-promise.all = all; // ES6
-promise.reject = reject; // ES6
-promise.resolve = Q; // ES6
 
 // XXX experimental.  This method is a way to denote that a local value is
 // serializable and should be immediately dispatched to a remote upon request,
@@ -16699,14 +16709,42 @@ Promise.prototype.isRejected = function () {
 // shimmed environments, this would naturally be a `Set`.
 var unhandledReasons = [];
 var unhandledRejections = [];
+var unhandledReasonsDisplayed = false;
 var trackUnhandledRejections = true;
+function displayUnhandledReasons() {
+    if (
+        !unhandledReasonsDisplayed &&
+        typeof window !== "undefined" &&
+        window.console
+    ) {
+        console.warn("[Q] Unhandled rejection reasons (should be empty):",
+                     unhandledReasons);
+    }
+
+    unhandledReasonsDisplayed = true;
+}
+
+function logUnhandledReasons() {
+    for (var i = 0; i < unhandledReasons.length; i++) {
+        var reason = unhandledReasons[i];
+        console.warn("Unhandled rejection reason:", reason);
+    }
+}
 
 function resetUnhandledRejections() {
     unhandledReasons.length = 0;
     unhandledRejections.length = 0;
+    unhandledReasonsDisplayed = false;
 
     if (!trackUnhandledRejections) {
         trackUnhandledRejections = true;
+
+        // Show unhandled rejection reasons if Node exits without handling an
+        // outstanding rejection.  (Note that Browserify presently produces a
+        // `process` global without the `EventEmitter` `on` method.)
+        if (typeof process !== "undefined" && process.on) {
+            process.on("exit", logUnhandledReasons);
+        }
     }
 }
 
@@ -16721,6 +16759,7 @@ function trackRejection(promise, reason) {
     } else {
         unhandledReasons.push("(no stack) " + reason);
     }
+    displayUnhandledReasons();
 }
 
 function untrackRejection(promise) {
@@ -16744,6 +16783,9 @@ Q.getUnhandledReasons = function () {
 
 Q.stopUnhandledRejectionTracking = function () {
     resetUnhandledRejections();
+    if (typeof process !== "undefined" && process.on) {
+        process.removeListener("exit", logUnhandledReasons);
+    }
     trackUnhandledRejections = false;
 };
 
@@ -16907,17 +16949,7 @@ function async(makeGenerator) {
         // when verb is "throw", arg is an exception
         function continuer(verb, arg) {
             var result;
-
-            // Until V8 3.19 / Chromium 29 is released, SpiderMonkey is the only
-            // engine that has a deployed base of browsers that support generators.
-            // However, SM's generators use the Python-inspired semantics of
-            // outdated ES6 drafts.  We would like to support ES6, but we'd also
-            // like to make it possible to use generators in deployed browsers, so
-            // we also support Python-style generators.  At some point we can remove
-            // this block.
-
-            if (typeof StopIteration === "undefined") {
-                // ES6 Generators
+            if (hasES6Generators) {
                 try {
                     result = generator[verb](arg);
                 } catch (exception) {
@@ -16929,7 +16961,6 @@ function async(makeGenerator) {
                     return when(result.value, callback, errback);
                 }
             } else {
-                // SpiderMonkey Generators
                 // FIXME: Remove this case when SM does ES6 generators.
                 try {
                     result = generator[verb](arg);
@@ -17634,15 +17665,15 @@ return Q;
 
 });
 
-}).call(this,require("FWaASH"))
-},{"FWaASH":45}],55:[function(require,module,exports){
+}).call(this,require("Zbi7gb"))
+},{"Zbi7gb":45}],55:[function(require,module,exports){
 // Generated by CoffeeScript 1.6.3
 (function() {
   var $, EventEmitter, Overlay, Q, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  $ = window.jQuery || require('jquery');
+  $ = window.jQuery || (window.$);
 
   Q = require('q');
 
@@ -17775,7 +17806,7 @@ return Q;
 
 }).call(this);
 
-},{"events":43,"jquery":51,"q":56}],56:[function(require,module,exports){
+},{"events":43,"q":56}],56:[function(require,module,exports){
 (function (process){
 // vim:ts=4:sts=4:sw=4:
 /*!
@@ -19529,8 +19560,8 @@ return Q;
 
 });
 
-}).call(this,require("FWaASH"))
-},{"FWaASH":45}],57:[function(require,module,exports){
+}).call(this,require("Zbi7gb"))
+},{"Zbi7gb":45}],57:[function(require,module,exports){
 (function (process){
 // vim:ts=4:sts=4:sw=4:
 /*!
@@ -21470,8 +21501,8 @@ return Q;
 
 });
 
-}).call(this,require("FWaASH"))
-},{"FWaASH":45}],58:[function(require,module,exports){
+}).call(this,require("Zbi7gb"))
+},{"Zbi7gb":45}],58:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -22749,4 +22780,4 @@ return Q;
 
 }).call(this);
 
-},{}]},{},["z4/vQj","RpOZIU","yQdLKh","K9mVN7","OdyuDH","+1Q85x","C6/c90","eOgcpX","JY97rG"])
+},{}]},{},["4DgOoE","tFkC1Z","88rru7","k/UA9y","SkL0EX","cPGetY","p0ouoe","unf9o0","vQnHGQ"])
