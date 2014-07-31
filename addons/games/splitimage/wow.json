@@ -1,0 +1,10 @@
+{
+	"name": "wow-contrib-games-splitimage",
+	"apptype": "wow/app/game",
+	"title": "Split Image",
+	"description": "Wow Demo Game",
+	"className": "SplitImage",
+	"version": "0.1",
+	"author": "Myrousz",
+	"langs": ["en", "de", "cz"]
+}
