@@ -1344,7 +1344,7 @@ easily in the skin designer. http://designer.videojs.com/
   margin-left: -2.1em;
   /* Center it vertically */
   top: 50%;
-  margin-top: -1.4000000000000001em;
+  margin-top: -1.4em;
 }
 /* Hide if controls are disabled */
 .vjs-default-skin.vjs-controls-disabled .vjs-big-play-button {
