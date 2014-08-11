@@ -1,0 +1,10 @@
+{
+	"name": "wow-contrib-games-pingpong",
+	"apptype": "wow/app/game",
+	"title": "Ping Pong",
+	"description": "PingPong Game",
+	"className": "PingPong",
+	"version": "0.1",
+	"author": "Marek (be inspired by Makzan)",
+	"langs": ["en","de","cz"]
+}

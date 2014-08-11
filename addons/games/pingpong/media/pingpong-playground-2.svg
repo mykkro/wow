@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="700"
+   height="450"
+   id="svg2">
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="matrix(0.875,0,0,1.125,0,-733.90746)"
+     id="layer1">
+    <g
+       id="pingpong-playground">
+      <rect
+         width="800"
+         height="400"
+         ry="0"
+         x="0"
+         y="652.36218"
+         id="rect2985"
+         style="fill:#004b00;fill-opacity:1;stroke:none" />
+      <rect
+         width="790.22803"
+         height="390.22809"
+         x="4.8859863"
+         y="657.24811"
+         id="rect3757"
+         style="fill:none;stroke:#ffffff;stroke-width:3.77191758;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <rect
+         width="3.6862798"
+         height="383.68628"
+         x="398.15686"
+         y="660.51904"
+         id="rect3759"
+         style="fill:none;stroke:#ffffff;stroke-width:4;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         d="m 23.500028,852.88013 359.025752,-1.0359"
+         id="path3761"
+         style="fill:none;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         d="m 417.47421,852.88013 359.02576,-1.0359"
+         id="path3761-1"
+         style="fill:none;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    </g>
+  </g>
+</svg>
