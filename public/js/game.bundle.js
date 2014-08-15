@@ -66,8 +66,10 @@ var Game = Base.extend({
         console.log("Controller Event: ", evt)
     },
     onKeyboard: function(evt) {
-        console.log("Keyboard Event: ", evt)
+        // console.log("Keyboard Event: ", evt)
     },
+	onGamepad: function() {
+	},
     getResourceUri: function(uri) {
         return (uri && uri.charAt(0) == "/") ? uri : this.appUrl + uri
     },

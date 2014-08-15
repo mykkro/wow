@@ -39,6 +39,10 @@ var PingPong = Game.extend({
 		}
 	},
 	
+	onGamepad: function(evt) {
+		console.log(evt)
+	},
+	
 	start: function(cb) {
 		var self = this
 		var pingpong = this

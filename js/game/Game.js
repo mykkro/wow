@@ -65,6 +65,8 @@ var Game = Base.extend({
     onKeyboard: function(evt) {
         // console.log("Keyboard Event: ", evt)
     },
+	onGamepad: function() {
+	},
     getResourceUri: function(uri) {
         return (uri && uri.charAt(0) == "/") ? uri : this.appUrl + uri
     },

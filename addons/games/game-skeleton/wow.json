@@ -1,0 +1,10 @@
+{
+	"name": "wow-contrib-games-game-skeleton",
+	"apptype": "wow/app/game",
+	"title": "Game Skeleton",
+	"description": "Game Skeleton",
+	"className": "GameSkeleton",
+	"version": "0.1",
+	"author": "Marek",
+	"langs": ["en","de","cz"]
+}
