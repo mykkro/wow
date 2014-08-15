@@ -182,6 +182,7 @@
                       // attach input devices to the page controller
                       $(window.document)
                         .bind("keydown keypress keyup", function(e) {
+						  // console.log(e)
                           pg.handleEvent($.extend({"device":"keyboard"}, e))
                           // FIX to prevent backspace key from doing "go back to previous page"
                           // from: http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back

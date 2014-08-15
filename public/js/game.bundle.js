@@ -14,6 +14,8 @@ var Game = Base.extend({
         this.appUrl = appUrl
         this.controller = null
         this.settings = {}
+		this.paused = false
+		this.started = false
     },
     // set game config (difficulty etc.)
     config: function(settings) {
@@ -28,10 +30,11 @@ var Game = Base.extend({
     start: function(cb) {
         // start the game...
         this.log("status", "start")
+		this.started = true
         if (cb) cb()
     },
-    restart: function(cb) {
-        // restart game
+	/* utility method */
+    restart: function(cb) {        
         this.log("status", "restart")
         var self = this
         this.stop(function() {
@@ -40,24 +43,30 @@ var Game = Base.extend({
 
     },
     pause: function(cb) {
-        // restart game
+        this.paused = true
         this.log("status", "pause")
         if (cb) cb()
     },
     resume: function(cb) {
+		this.paused = false
         this.log("status", "resume")
         if (cb) cb()
     },
     stop: function(cb) {
         this.log("status", "stop")
+		this.started = false
         if (cb) cb()
     },
+	/* utility method */
     quit: function(cb) {
         this.log("status", "quit")
         this.stop(cb)
     },
     onVirtualControl: function(evt) {
         console.log("Controller Event: ", evt)
+    },
+    onKeyboard: function(evt) {
+        console.log("Keyboard Event: ", evt)
     },
     getResourceUri: function(uri) {
         return (uri && uri.charAt(0) == "/") ? uri : this.appUrl + uri

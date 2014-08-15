@@ -4717,8 +4717,9 @@ module.exports = function(Wow) {
         restartGame: function() {
             this.game.hidePrompt()
             var self = this
+			self.paused = true;
             this.game.startGamePrompt(function() {
-                self.game.start(function() {
+                self.game.restart(function() {
                     self.playing = true
                     self.paused = false
                     self.updateUI()
@@ -4730,6 +4731,12 @@ module.exports = function(Wow) {
             var target = $(this.selectChain.current())
             $(target).click()
         },
+		onKeyboard: function(evt) {
+            var self = this
+            if (this.playing && !this.paused) {
+				this.game.onKeyboard(evt)
+			}
+		},
         onVirtualControl: function(evt) {
             var self = this
             if (this.playing && !this.paused) {
